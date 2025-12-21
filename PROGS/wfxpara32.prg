@@ -1,0 +1,270 @@
+PARAMETER xnum,xtime,xdate,xname,xcomp,xsubj,xkeyw,xbill,filename,highsres,prntsetup
+**,SHOWSCRN
+
+*David Kirchner
+*dmk@iname.com
+
+PRIVATE ct
+PRIVATE wfxtime ,wfxdate ,wfxname ,wfxcomp ,wfxsubj ,wfxkeyw ,wfxbill
+PRIVATE m.currhd,channum1,m.lpoke,m.lexec,channum2
+PRIVATE defprn,savprn,faxdevice,fpsprinter
+PRIVATE GetProfStr,WrProf,settings,retlen,M.CURRPRNTW
+
+*public Iphone, Faxnum, Iperson, Icompany
+*DO WFXPARA32 WITH '6757051','','','DAVID','','','','','C:\backup.bat',.T.,.T.
+
+
+IF FILE(SYS(5)+SYS(2003)+"\ERPSetup.mem")
+	RESTORE FROM (SYS(5)+SYS(2003)+"\ERPSetup.mem") ADDITIVE
+ELSE
+	LoginHome="C:\Program Files\HPA\MEM\"
+ENDIF
+
+
+
+IF EMPTY(xnum)
+	WAIT WINDOW 'NO FAX NUMBER -any key to continue'
+	RETURN .F.
+ENDIF
+
+IF EMPTY(filename)
+	WAIT WINDOW 'NO FILE NAME TO SEND'
+	RETURN .F.
+ENDIF
+
+IF NOT FILE(filename)
+	DO CASE
+	CASE filename = "quote"
+	CASE filename = "sndinquire"
+		*sndinquire
+	CASE filename = "inquirer"
+		m.Iphone   = " "
+		m.Faxnum   = xnum
+		m.Iperson  = xname
+		m.Icompany = xcomp
+	OTHERWISE
+		WAIT WINDOW 'REPORT FILE NOT FOUND '+filename+' -any key to continue'
+		RETURN .F.
+	ENDCASE
+ENDIF
+
+
+IF LEN(xnum) > 47
+	WAIT WINDOW 'Phone number is limited to 47 charaters'+' -any key to continue'
+ENDIF
+wfxnum  = ["]+xnum+["]                                      && 47MAX
+
+IF NOT EMPTY(xtime)
+	IF LEN(xtime) = 5
+		xtime = xtime+":00"
+	ENDIF
+ENDIF
+wfxtime = ","+IIF( EMPTY(xtime ), "", ["]+xtime +["] )      && HH:MM:SS
+IF SET('CENTURY') = 'ON'
+	SET CENTURY OFF
+	IF NOT EMPTY(xdate ) AND TYPE('xdate')="C"
+		xdate = CTOD(xdate)
+	ENDIF
+	wfxdate = ","+IIF( EMPTY(xdate ), "", ["]+DTOC(xdate) +["] )      && MM/DD/YY
+	SET CENTURY ON
+ELSE
+	wfxdate = ","+IIF( EMPTY(xdate ), "", ["]+DTOC(xdate) +["] )      && MM/DD/YY
+ENDIF
+IF LEN(xname) > 31
+	xname = LEFT(xname,31)
+ENDIF
+wfxname =IIF( EMPTY(xname ), "", xname )      && 31MAX
+IF LEN(xcomp ) > 42
+	xcomp = LEFT(xcomp ,42)
+ENDIF
+wfxcomp = IIF( EMPTY(xcomp ), "", xcomp )      && 42MAX
+IF LEN(xsubj ) > 79
+	xsubj = LEFT(xsubj ,79)
+ENDIF
+wfxsubj = IIF( EMPTY(xsubj ), "", xsubj )      && 79MAX
+IF LEN(xkeyw ) > 33
+	xkeyw = LEFT(xkeyw ,33)
+ENDIF
+wfxkeyw = IIF( EMPTY(xkeyw ), "", xkeyw )      && 33MAX
+IF LEN(xbill ) > 26
+	xbill = LEFT(xbill ,26)
+ENDIF
+wfxbill = IIF( EMPTY(xbill ), "", xbill )      && 26MAX
+
+*DDEPOKE(channum2, "Sendfax", "recipient("+wfxnum+wfxtime+wfxdate+wfxname+ wfxcomp+wfxsubj+wfxkeyw+wfxbill+")" )
+*----------------------------------------------------------------
+*MAKE SURE WINFAX IS THE PRINTER
+nPrinters=APRINTERS(aaprinters)
+IF nPrinters= 0
+	Wait Window "No Printers!!"
+	RETURN .F.
+ENDIF
+
+lWinFax = .F.
+lMSFax = .F.
+FOR CT = 1 TO nPrinters
+	IF aaPrinters(ct,1)="WinFax"
+		lWinFax = .T.
+	ENDIF
+	IF aaPrinters(ct,1)="Fax"
+		lMSFax = .T.
+	ENDIF
+NEXT CT
+
+IF NOT lWinFax
+	IF lMSFax
+		DO Progs\SendWindowsFax WITH xnum,xtime,xdate,xname,xcomp,xsubj,xkeyw,xbill,filename,highsres,prntsetup
+		RETURN .T.
+	ELSE
+		Wait Window "No WinFax printer!!"
+		RETURN .F.
+	ENDIF
+ENDIF
+
+Private oWFSend
+*
+* Set the printer to WinFax to fax a report
+* if printer "WinFax" does not exist then they don't have 
+* WinFax on the PC.  If it was renamed then tough.
+set printer to name 'WinFax'
+
+*TRY
+*	oWFSend = CreateObject("WinFax.SDKSend8.0")
+*CATCH
+*	oWFSend = CreateObject("WinFax.SDKSend")	
+	oWFSend = CREATEOBJECT("WinFax.SDKSend")
+*ENDTRY
+
+WAIT WINDOW "Starting WinFax" TIMEOUT 1
+oWFSend.SetClientID("")
+*
+*
+**************************************************************
+* Cover page stuff
+* -------------------
+oWFSend.SetUseCover (0)
+oWFSend.SetQuickCover (0)
+oWFSend.SetCoverFile ("CoverSheet")
+*
+* Even if SetUseCover is set to (0) if you use this
+* you get a cover page. If mCoverText is an empty string
+* WinFax pops up a window for you to enter the cover text
+*if .f.
+*  oWFSend.SetCoverText ("CoverText")
+*endif
+**************************************************************
+*
+* set resolution to 1 for fine (takes much longer to send)
+
+IF highsres
+	oWFSend.SetResolution (1)
+ELSE
+	oWFSend.SetResolution (0)
+ENDIF
+*
+oWFSend.SetDeleteAfterSend (0)  && set to 0 to not delete 
+*
+**************************************************************
+* Turn Status windows on and off
+* -------------------------------
+* ShowCallProgress = 1 shows only the smaller progress window
+*                  = 0 shows no window
+oWFSend.ShowCallProgess (1)
+*
+* If this is set to 1 then you get the full WinFAx window.
+* I don't recommend it.
+oWFSend.ShowSendScreen (0)
+**************************************************************
+*PARAMETER xnum,xtime,xdate,xname,xcomp,xsubj,xkeyw,xbill,filename,highsres,prntsetup
+*+wfxnum+wfxtime+wfxdate+wfxname+ wfxcomp+wfxsubj+wfxkeyw+wfxbill+")" )
+oWFSend.EnableBillingCodeKeyWords (1)  &&0=disabled
+oWFSend.SetBillingCode(wfxbill)
+oWFSend.SetKeywords('')
+*oWFSend.SetCountryCode('1')
+*oWFSend.SetAreaCode('765')
+oWFSend.SetNumber(wfxnum)
+oWFSend.SetSubject(wfxsubj)
+oWFSend.SetCompany(wfxcomp)
+oWFSend.SetTo(wfxname)
+oWFSend.SetClientID(wfxbill)&&SalesP in Fax Quote
+* 
+* Set AreaCode, SetCountryCode, SetTime, SetOffPeak, SetPreviewFax
+* enters the suff above
+oWFSend.AddRecipient
+*
+* Tell WinFax we are going to print a report to it.
+oWFSend.SetPrintFromApp(1)
+oWFSend.Send (1)
+WAIT WINDOW "Printing to WinFax" TIMEOUT 1
+* A most important line.  
+* SDK manual says usage is strongly recommended.
+oWFSend.LeaveRunning()
+*
+DO CASE
+CASE filename = "quote"
+	REPORT FORM reports\Quote09 NOCONSOLE TO PRINTER
+CASE filename = "sndinquire"
+	REPORT FORM reports\sndinquire NOCONSOLE TO PRINTER
+OTHERWISE
+	m.currpd = _PDSETUP
+	_PDSETUP = ""   && TURN PRINTER DRIVER SETUP OFF
+
+	SET PRINTER TO prn
+	SET PRINTER ON
+
+	m.currhd =  SET('HEADING')
+	SET HEADING OFF
+	SET CONSOLE OFF
+
+	TYPE (filename) TO PRINTER       && auto wrap prompt
+
+	SET CONSOLE ON
+
+	IF m.currhd = "ON"
+		SET HEADING ON
+	ENDIF
+
+	IF NOT EMPTY(m.currpd)
+		SET PDSETUP TO m.currpd    && TURN PRINTER DRIVER SETUP BACK ON
+	ENDIF
+	SET PRINTER OFF
+	IF NOT TYPE('listprnt') = 'u'
+		SET PRINTER TO &listprn
+	ENDIF
+ENDCASE
+*
+wait window nowait 'Press Esc to Cancel.'
+do while oWFSend.IsEntryIDReady(0) <> 1
+  * Use this loop to make sure WinFax is ready for
+  * the next fax before you exit this procedure.
+  * Esc allows the user to exit if something hangs.
+  if lastkey() = 27 
+    exit
+  endif
+enddo
+wait clear
+*
+* New 2-12-2001 JJH
+* get the messageid for the conformation.
+mMessageId = oWFSend.GetEntryID(0)
+*
+***************************************************************
+* change this to .t. to see the message id as it is created
+if .f.
+  wait window 'Messageid:' + mMessageId + ':<--' + chr(13) ;
+  + 'Length of MessageId:' + alltrim(str(len(mMessageId)))
+endif
+***************************************************************
+*
+mError = oWFSend.GetLastError()
+if mError <> 0
+  =MessageBox('An error occured sending the fax.',48, 'Fax')
+endif
+
+
+oWFSend.DONE()
+
+*
+SET PRINTER TO Default
+
+RETURN

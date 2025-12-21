@@ -1,0 +1,17 @@
+Pricing:
+dbo.StockLst_Master
+Paid		Money
+mS_QTY		Money	Computed
+mWeight		N18,8	Computed
+
+dbo.StockLst_Detail
+CostValue		Money	Depricated
+InvoiceValue	Money	Depricated
+
+Unit		Char(6)	duplicate of S_PU in Text
+
+S_QTY		Money	Quantity by the Form Standard Units
+S_P			Money	Current Price per Quantity
+S_Total		Money	Current Cost Total for Accounting Value of Cost
+S_PU		TinyInt	Form Standard Pricing Units
+

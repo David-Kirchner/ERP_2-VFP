@@ -1,0 +1,20 @@
+WIP Work In Progress List
+Material that is not Stock on the floor or material intended for another company (Broker).
+
+Main use:
+Easy grouping of material being worked down at HPA.
+	Open Die Press
+	Radial Forge
+	(Not sure to include material being centerless ground)
+
+Material out for conversion work.
+	Haynes 
+	Elgilloy
+	SMC
+	
+
+Disabled in PurchaseOrder class.
+Most new WIP would be created here.
+Not ready for deployment 3/8/2019.
+need more code support code before enabling here.  
+	

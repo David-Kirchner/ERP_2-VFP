@@ -1,0 +1,75 @@
+PARAMETERS pcSalesP, pcCover
+*SalesPDescription( cUserInit, Cover )
+*Returns SalesRep
+********************************************************************
+** CHANGES HERE MUST BE REPLICATED TO:
+** Proc_Quotes.prg
+********************************************************************
+PRIVATE lcSalesPName
+lcSalesPName = "All Salesmen"
+
+IF VARTYPE(pcSalesP) != "C"
+	RETURN lcSalesPName
+ENDIF
+
+PRIVATE cCover
+cCover = ''
+
+IF VARTYPE(pcCover) = "C"
+	cCover = UPPER(pcCover)
+	IF pcSalesP = "1" AND LEN(cCover) > 0
+		pcSalesP = cCover
+	ENDIF
+ENDIF
+
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
+ENDIF
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+
+	cSQL = "SELECT [UN] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'SalesP' AND [ANS] = '"+pcSalesP+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn , cSQL , 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn ,  cSQL , 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF VARTYPE(tmpSqlAns.UN) = "C"
+			lcSalesPName = RTRIM(tmpSqlAns.UN)
+		ENDIF
+
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_setup:AppSetup_Get_Machine",LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ENDIF
+ENDIF
+
+RETURN lcSalesPName

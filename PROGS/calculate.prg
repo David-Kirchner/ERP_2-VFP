@@ -1,0 +1,134 @@
+PRIVATE M.A1,M.A2
+
+m.sD1=m.D1
+m.sL1=m.L1
+*m.sL1f=m.L1/12
+m.sD2=m.D2
+m.sL2=m.L2
+*m.sL2f=m.L2/12
+m.sW1=m.W1
+m.sRA=m.RA
+
+*FIND D1 BY D2 AND LENGTHS
+IF M.sD2 > 0 AND M.L1 > 0 AND M.L2 > 0 AND M.D1 = 0
+	M.A2= 3.14156*M.sD2*M.sD2/4
+	M.A1 = M.A2*M.L2 / M.L1
+	M.sD1 = SQRT(M.A1*4/3.14156)
+	SHOW GET M.sD1
+ENDIF
+
+*FIND D2 BY D1 AND LENGTHS
+IF M.sD1 > 0 AND M.L1 > 0 AND M.L2 > 0 AND M.D2 = 0
+	M.A1= 3.14156*M.sD1*M.sD1/4
+	M.A2 = M.A1*M.L1 / M.L2
+	M.sD2 = SQRT(M.A2*4/3.14156)
+	SHOW GET M.sD2
+ENDIF
+
+*FIND RA BY DIA'S    (ORIG-FINAL)/ORIG=%
+IF M.sD1 > 0 AND M.sD2 >0 AND M.RA = 0
+	M.A1= 3.14156*M.sD1*M.sD1/4
+	M.A2= 3.14156*M.sD2*M.sD2/4
+	M.sRA = (M.A1-M.A2)/M.A1
+	SHOW GET M.sRA
+ENDIF
+
+*FIND L2 BY DIA'S AND L1
+IF M.sL1 > 0 AND M.sD1 > 0 AND M.sD2 >0 AND M.L2 = 0	
+	M.sL2=M.sD1*M.sD1*M.sL1/(M.sD2*M.sD2)
+	SHOW GET M.sL2
+ENDIF
+
+*FIND L1 BY DIA'S AND L2
+IF M.sL2 > 0 AND M.sD1 > 0 AND M.sD2 >0 AND M.L1 = 0
+	M.sL1=M.sD2*M.sD2*M.sL2/(M.sD1*M.sD1)
+	SHOW GET M.sL1
+ENDIF
+
+
+*FIND D2 BY D1 AND RA
+IF M.sD1 > 0 AND M.RA > 0 AND M.D2 = 0
+	M.A1= 3.14156*M.sD1*M.sD1/4
+	M.A2 = M.A1 - ( M.A1 * M.RA)
+	M.sD2 = SQRT(M.A2*4/3.14156)
+	SHOW GET M.sD2
+ENDIF
+
+*FIND D1 BY D2 AND RA
+IF M.sD2 > 0 AND M.sRA > 0 AND M.D1 = 0
+	M.A2= 3.14156*M.sD2*M.sD2/4
+	M.A1 = M.A2/(1-M.sRA)
+	M.sD1 = SQRT(M.A1*4/3.14156)
+	SHOW GET M.sD1
+ENDIF
+*****
+*FIND L2 BY DIA'S AND L1
+IF M.sL1 > 0 AND M.sD1 > 0 AND M.sD2 >0 AND M.L2 = 0	
+	M.sL2=M.sD1*M.sD1*M.sL1/(M.sD2*M.sD2)
+	SHOW GET M.sL2
+ENDIF
+
+*FIND L1 BY DIA'S AND L2
+IF M.sL2 > 0 AND M.sD1 > 0 AND M.sD2 >0 AND M.L1 = 0
+	M.sL1=M.sD2*M.sD2*M.sL2/(M.sD1*M.sD1)
+	SHOW GET M.sL1
+ENDIF
+*****
+m.sL1f = m.sL1/12
+m.sL2f = m.sL2/12
+
+PRIVATE M.DUSE,M.LUSE,Zdens
+
+IF M.D1>0 AND M.L1>0
+	M.DUSE = M.D1
+	M.LUSE = M.L1
+ELSE
+	IF M.D2>0 AND M.L2>0
+		M.DUSE = M.D2
+		M.LUSE = M.L2
+	ELSE
+***		MUST USE A COMPUTED VALUE on length
+		IF M.D1>0 AND M.sL1>0
+			M.DUSE = M.D1
+			M.LUSE = M.sL1
+		ELSE
+			IF M.D2>0 AND M.sL2>0
+				M.DUSE = M.D2
+				M.LUSE = M.sL2
+			ELSE
+***		MUST USE A COMPUTED VALUE on Dia
+				IF M.sD1>0 AND M.L1>0
+					M.DUSE = M.sD1
+					M.LUSE = M.L1
+				ELSE
+					IF M.sD2>0 AND M.L2>0
+						M.DUSE = M.sD2
+						M.LUSE = M.L2
+					ELSE
+						M.DUSE = 0
+						M.LUSE = 0
+						WAIT WINDOW 'could not figure Dia and Length'
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF		
+	ENDIF
+ENDIF
+
+PRIVATE Zdens
+
+IF NOT EMPTY(R_alloy)
+	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
+	ENDIF
+	
+	zDens = GetAlloyDensity( R_Alloy )
+ELSE
+	Zdens = .290
+ENDIF
+
+
+
+
+M.sW1 = ROUND( ((M.DUSE+.005)^2* 3.14159 * Zdens* M.LUSE /4) ,1)
+

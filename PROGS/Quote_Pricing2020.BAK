@@ -1,0 +1,221 @@
+*Quote_Pricing
+**DO "c:\program files (x86)\hpa\progs\quote_pricing2020.prg"
+
+SET DECIMALS TO 4
+ON ERROR DO (SYS(5)+SYS(2003)+"\Progs\ErrorHandlerLog.prg") WITH ERROR(),MESSAGE(1),MESSAGE(),PROGRAM(),LINENO()
+
+IF NOT "QUOTES" $ SET("PROCEDURE")
+	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
+ENDIF
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
+ENDIF
+IF NOT "Proc_Setup" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
+ENDIF 
+
+IF VARTYPE(gnConnHandle) = "U"
+	PUBLIC gnConnHandle
+ENDIF
+gnConnHandle = get_SQLSTRINGCONNECT()
+
+
+PRIVATE nQuotesID
+PRIVATE cAlloy,cForm
+PRIVATE cCC,cCL,nPieces,nThck,nSz2,nSz3,nWeight,cDescript,nP_lb,nP_pc,nP_ft
+PRIVATE ncWeight, ncP_lb, ncP_pc, ncP_ft, ncP_Pcc, ccThk, ncLotP, ncLotCp, ncCut
+PRIVATE nCuts,cOtherFld,nOtherP,nLotP,nLotCost
+PRIVATE nSaleNum,cSOitem
+
+***
+
+
+IF USED('tmpQuotes')
+	USE IN tmpQuotes
+ENDIF
+
+cSQL = "SELECT TOP 1000 * FROM dbo.AllQuotes WITH(NOLOCK) "
+cSQL = cSQL + " WHERE Salesnum = 115757"
+cSQL = cSQL + " ORDER BY ID DESC"
+
+
+SELECT 0
+nSQLEXEC = SQLEXEC(gnConnHandle, cSQL, 'tmpQuotes' )
+
+DO WHILE nSQLEXEC = 0
+	WAIT WINDOW 'SQL' TIMEOUT 1
+	nSQLEXEC = SQLEXEC( gnConnHandle, cSQL, 'tmpQuotes' )
+ENDDO
+IF nSQLEXEC < 0 &&Try again!
+	nSQLEXEC = SQLEXEC(gnConnHandle, cSQL, "tmpQuotes")
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL 2' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(gnConnHandle, cSQL, "tmpQuotes")
+		
+		IF nSQLEXEC < 0
+			IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+				nSQLEXEC = 0
+			ENDIF
+		ENDIF
+	ENDDO
+ENDIF 
+IF nSQLEXEC < 0
+	SQLExecError(cSQL, gnConnHandle, nSQLEXEC, 'tmpQuotes')
+ENDIF
+
+IF USED('tmpQuotes')
+	IF RECCOUNT('tmpQuotes') > 0
+		SCAN
+			
+			
+			cAlloy			= PrepareSQLtxt(tmpQuotes.Alloy,'Alloy',12)
+			cForm			= PrepareSQLtxt(tmpQuotes.Form,'Form',2)
+			cCC				= PrepareSQLtxt(tmpQuotes.CC,'CC',1)
+			cCL				= PrepareSQLtxt(tmpQuotes.CL,'CL',1)
+			nPieces			= PrepareSQLnum(tmpQuotes.Pieces,'Pieces',7,0)
+			nThck			= PrepareSQLnum(tmpQuotes.Thck,'Thck',10,4)
+			nSz2			= PrepareSQLnum(tmpQuotes.Sz2,'Sz2',9,3)
+			nSz3			= PrepareSQLnum(tmpQuotes.Sz3,'Sz3',9,3)
+			nWeight			= PrepareSQLnum(tmpQuotes.Weight,'Weight',8,1)
+			cDescript		= PrepareSQLtxt(tmpQuotes.Descript,'Descript',50)
+			nP_lb			= PrepareSQLnum(tmpQuotes.P_lb,'P_lb',8,2)
+			nP_pc			= PrepareSQLnum(tmpQuotes.P_pc,'P_pc',9,2)
+			nP_ft			= PrepareSQLnum(tmpQuotes.P_ft,'P_ft',8,2)
+*		*	ncWeight, ncP_lb, ncP_pc, ncP_ft, ncP_Pcc, ccThk, ncLotP, ncLotCp, ncCut
+			nCuts			= PrepareSQLnum(tmpQuotes.Cuts,'Cuts',6,0)
+			cOtherFld		= PrepareSQLtxt(tmpQuotes.OtherFld,'OtherFld',10)
+			nOtherP			= PrepareSQLnum(tmpQuotes.OtherP,'OtherP',8,2)
+			nLotP			= PrepareSQLnum(tmpQuotes.LotP,'LotP',8,2)
+		*	nLotCost		= PrepareSQLnum(tmpQuotes.LotCost,'LotCost',8,2)
+
+			nQ_P		= PrepareSQLnum(tmpQuotes.Q_P,'Q_P',-5)
+			nQ_PU		= PrepareSQLnum(tmpQuotes.Q_PU,'Q_PU',-1)
+			nQ_QTY		= PrepareSQLnum(tmpQuotes.Q_QTY,'Q_QTY',-5)
+			nQ_Total	= PrepareSQLnum(tmpQuotes.Q_Total,'Q_Total',-5)
+			
+			***********
+			cNoNoiseName = PrepareSQLtxt( tmpQuotes.NoNoiseName,'NoNoiseName',30)
+			cNoNoiseNameNew = get_NoNoiseName(tmpQuotes.Company, gnConnHandle)
+			
+			***************
+			nQ_Pnew		= 0
+			nQ_PUnew	= 0
+			nQ_QTYnew	= 0
+			nQ_Totalnew	= 0
+			
+			nQ_Pnew		= PrepareSQLnum(Get_Qoute_P(nPieces,cAlloy,cForm,nThck,nSz2,nSz3,nWeight,nP_lb,nP_pc,nP_ft,nLotP,cOtherFld,nOtherP, gnConnHandle),'Q_P',-5)
+			nQ_QTYnew	= PrepareSQLnum(Calc_QTY(cAlloy,cForm,nPieces,nThck,nSz2,nSz3,cOtherFld,gnConnHandle ) ,'Q_QTY',-5)
+			
+			nSalesNum = PrepareSQLnum(tmpQuotes.SalesNum,'SalesNum',-3)
+			cSOitem = PrepareSQLtxt(tmpQuotes.SOitem,'SOitem',10)
+			
+			****************************************************
+			*Use this Function to return a table with the Quoted Answers
+			*This overwrite typical units and uses Units found in OtherFld and OtherP
+			IF Get_Quote_Pricing(nPieces,cAlloy,cForm,nThck,nSz2,nSz3,nWeight,nP_lb,nP_pc,nP_ft,nLotP,cOtherFld,nOtherP, gnConnHandle)
+				IF USED('tmpQuote_Pricing')
+					*nQ_P		= Get_Quote_P(nPieces,cAlloy,cForm,nThck,nSz2,nSz3,nWeight,nP_lb,nP_pc,nP_ft,nLotP,cOtherFld,nOtherP, gnConnHandle)
+					nQ_Pnew		= PrepareSQLnum(tmpQuote_Pricing.P,'Q_P',-5)
+					nQ_PUnew	= PrepareSQLnum(tmpQuote_Pricing.PU,'Q_PU',-1)
+					nQ_QTYnew	= PrepareSQLnum(tmpQuote_Pricing.QTY,'Q_QTY',-5)
+					nQ_Totalnew	= PrepareSQLnum(tmpQuote_Pricing.Total,'Q_Total',-5)
+					USE IN tmpQuote_Pricing
+				ENDIF
+			ENDIF
+			SELECT tmpQuotes
+			
+*			IF nQ_P <> nQ_Pnew OR nQ_PU <> nQ_PUnew OR nQ_QTY <> nQ_QTYnew OR nQ_Total <> nQ_Totalnew
+				
+				CLEAR
+				? "**************************"
+				? "nQ_P=" +STR(nQ_P,18,4)
+				? "nQ_Pnew=" +STR(nQ_Pnew,18,4)
+				? "nQ_PU =" +STR(nQ_PU )
+				? "nQ_PUnew=" +STR(nQ_PUnew)
+				? "nQ_QTY =" +STR(nQ_QTY ,18,4)
+				? "nQ_QTYnew=" +STR(nQ_QTYnew,18,4)
+				? "nQ_Total =" +STR(nQ_Total ,18,4)
+				? "nQ_Totalnew=" +STR(nQ_Totalnew,18,4)
+				
+				? "nP_lb=" +STR(nP_lb,8,2)
+				? "nP_pc=" +STR(nP_pc,8,2)
+				? "nP_ft=" +STR(nP_ft,8,2)
+				? "nP_lb=" +STR(nP_lb,8,2)
+				? "nCuts=" +STR(nCuts)
+				
+				? "cOtherFld=" +cOtherFld
+				? "nOtherP=" +STR(nOtherP,8,2)
+				? "nLotP=" +STR(nLotP,8,2)
+					
+					***Save
+				nQuotesID = tmpQuotes.ID
+				? "nQuotesID =" +STR(nQuotesID)
+				
+				IF nSalesNum > 0
+					nItemSale = Get_ItemSaleinSales(cSOItem, gnConnHandle)
+					? "nItemSale =" +STR(nItemSale ,18,4)
+					
+					*LOOP
+					*WAIT WINDOW STR(nSalesNum )	 NOWAIT
+					? "Update SOitem '"+cSOitem+"'"
+					IF MESSAGEBOX("Update SOitem '"+cSOitem+"'" ,4+32,"Save Update")<>6
+						IF MESSAGEBOX("Go to next record."+CHR(13)+"ESC to Exit routine",4+32,"LOOP")=6
+							LOOP
+						ELSE
+							EXIT
+						ENDIF
+					ENDIF
+				ENDIF
+				? ''
+				? ''
+				? ''
+				? ''
+				
+				PRIVATE cUpdate
+				cUpdate = "UPDATE dbo.AllQuotes SET "
+				cUpdate = cUpdate + " NoNoiseName='"+cNoNoiseNameNew+"'"
+				cUpdate = cUpdate + ",Q_P="+STR(nQ_Pnew ,18,4)
+				cUpdate = cUpdate + ",Q_QTY="+STR(nQ_QTYnew ,18,4)
+				cUpdate = cUpdate + ",Q_PU="+STR(nQ_PUnew ,1,0)
+				cUpdate = cUpdate + ",Q_Total="+STR(nQ_Totalnew,18,4)
+				cUpdate = cUpdate + " WHERE AllQuotes.ID = " + ALLTRIM(STR(nQuotesID))
+		
+				nSQLEXEC = SQLEXEC(gnConnHandle,cUpdate)
+				
+				DO WHILE nSQLEXEC = 0
+					WAIT WINDOW 'SQL' TIMEOUT 1
+					nSQLEXEC = SQLEXEC( gnConnHandle, cUpdate)
+				ENDDO
+				IF nSQLEXEC < 0 &&Try again!
+					nSQLEXEC = SQLEXEC(gnConnHandle, cUpdate, "")
+					DO WHILE nSQLEXEC = 0
+						WAIT WINDOW 'SQL 2' TIMEOUT 1
+						nSQLEXEC = SQLEXEC(gnConnHandle, cUpdate, "")
+						
+						IF nSQLEXEC < 0
+							IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+								nSQLEXEC = 0
+							ENDIF
+						ENDIF
+					ENDDO
+				ENDIF
+				IF nSQLEXEC < 0
+					SQLExecError(cUpdate,gnConnHandle,nSQLEXEC, '')
+				ELSE
+				ENDIF
+
+*			ENDIF
+		ENDSCAN
+		
+	ENDIF
+	USE IN tmpQuotes
+ENDIF
+
+**********
+
+IF VARTYPE(gnConnHandle) = "N" 
+	IF gnConnHandle > -1
+		= SQLDISCONNECT(gnConnHandle)
+	ENDIF
+	RELEASE gnConnHandle
+ENDIF

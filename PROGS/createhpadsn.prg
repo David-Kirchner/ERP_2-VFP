@@ -1,0 +1,347 @@
+*CreateHPADSN()
+
+#define ODBC_ADD_DSN       1    &&' Add data source
+#define ODBC_CONFIG_DSN    2    &&' Configure (edit) data source
+#define ODBC_REMOVE_DSN    3    &&' Remove data source
+#define vbAPINull          0    &&' NULL Pointer
+
+*'Function Declare
+DECLARE LONG SQLConfigDataSource IN ODBCCP32.DLL ;
+   LONG hwndParent, LONG fRequest, ;
+   STRING lpszDriver, STRING lpszAttributes
+
+LOCAL intRet, strDriver, strAttributes
+PRIVATE llRtnVal
+llRtnVal = .F.
+
+SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
+
+PRIVATE cSQLServer 
+IF VARTYPE(gGlobalServer)="C"
+	cSQLServer = gGlobalServer 
+ELSE
+	RecordTest( 'Record Test Data.', PROGRAM(), LINENO(1),'gGlobalServer was not set!')
+ 	cSQLServer = "RAPTOR"
+ENDIF
+
+  *'Set the driver to SQL Server
+  strDriver = "SQL Server"
+  *'Set the attributes delimited by null.
+  strAttributes = 				  "SERVER="+cSQLServer		+ Chr(0)
+  strAttributes = strAttributes + "DESCRIPTION="+"E Quotes"	+ Chr(0)
+  strAttributes = strAttributes + "DSN="+"HPA" 				+ Chr(0)
+  strAttributes = strAttributes + "DATABASE=HPAlloy"		+ Chr(0)
+  strAttributes = strAttributes + "Trusted_Connection=YES"	+ Chr(0)
+  *'To show dialog, use Form1.Hwnd instead of vbAPINull.
+  intRet = SQLConfigDataSource(vbAPINull, ODBC_ADD_DSN, ;
+         strDriver, strAttributes)
+  If intRet>0
+	=MessageBox( "DSN Created" )
+	llRtnVal = .T.
+  Else
+	=MessageBox( "Create Failed" )
+	llRtnVal = .F.
+  EndIf
+ 
+RETURN llRtnVal
+ 
+*!*	  *****   To Delete a DSN: 
+*!*	  strDriver = "SQL Server"
+*!*	  strAttributes = "DSN=HPA" + Chr(0)
+*!*	  *'To show dialog, use Form1.Hwnd instead of vbAPINull.
+*!*	  intRet = SQLConfigDataSource(vbAPINull, ODBC_REMOVE_DSN, ;
+*!*	             strDriver, strAttributes)
+*!*	  If intRet
+*!*		MessageBox( "DSN Deleted" )
+*!*	  Else
+*!*		MessageBox( "Delete Failed" )
+*!*	  EndIf
+
+
+
+
+
+
+
+
+
+
+*This stopped working after Win XP
+*!*	* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*!*	*CreateHPADSN()
+*!*	*  Program: CreateDSN
+*!*	*  Author: LFG
+*!*	*  Date: 02/22/07 02:40:09 PM
+*!*	*  Copyright: Luis Guzman
+*!*	*  Description: Creates a DSN by taping directly into the registry
+*!*	*  Revision Information: R1.01
+*!*	*  PARAMETERS: tcDSNName    	  : Name of the DSN
+*!*	*			   tcDataBase   	  : Name of the database
+*!*	*			   tcDriverPath 	  : Windows path for the SQL Server driver
+*!*	*			   tcServer		      : Your SQL Server name
+*!*	*			   tlTrustedConnection:	If .T. use Windows authentication (Recomended)			
+*!*	*		       tlOverWrite        : If .T. will overwrite the DSN if it exists
+*!*	*  The usual disclaimer           : This code is given for free AS IS, with 
+*!*	*  NO WARRANTIES implied or non-implied, blah, blah, blah....	
+*!*	* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*!*	*CreateHPADSN('HPA','HPAlloy','','RAPTOR',.T.,.T.)
+*!*	LPARAMETERS tcDSNName,;
+*!*		tcDataBase,;
+*!*		tcDriverPath,;
+*!*		tcServer,;
+*!*		tlTrustedConnection,;
+*!*		tlOverWrite
+
+*!*	* Registry roots
+*!*	#DEFINE HKEY_CLASSES_ROOT           -2147483648  && BITSET(0,31)
+*!*	#DEFINE HKEY_CURRENT_USER           -2147483647  && BITSET(0,31)+1
+*!*	#DEFINE HKEY_LOCAL_MACHINE          -2147483646  && BITSET(0,31)+2
+*!*	#DEFINE HKEY_USERS                  -2147483645  && BITSET(0,31)+3
+*!*	#DEFINE SECURITY_ACCESS_MASK 		 983103      && SAM value KEY_ALL_ACCESS
+
+*!*	* Error Codes
+*!*	#DEFINE ERROR_SUCCESS       0		&& Success error code from WINERROR.H
+*!*	#DEFINE NO_KEY_FOUND		2
+*!*	#DEFINE _EOF	 			259
+
+*!*	* Data types for keys
+*!*	#DEFINE REG_SZ 				1	&& Data string
+*!*	#DEFINE REG_EXPAND_SZ		2	&& Binary data
+*!*	#DEFINE REG_BINARY			3	&& Binary data
+*!*	#DEFINE REG_DWORD			4	&& DWord Data
+
+*!*	*FROM  http://msdn2.microsoft.com/en-us/library/ms724878.aspx
+*!*	#DEFINE KEY_SET_VALUE 		0x0002 	    &&Required to create, delete, or set a registry value.,
+
+*!*	#DEFINE MB_ICONINFORMATION      64      && Information message
+*!*	#DEFINE MB_OK                   0       && OK button only
+*!*	#DEFINE CR						CHR(13) && Carriage Return
+*!*	#DEFINE FORMAT_MESSAGE_FROM_SYSTEM     0x00001000 && Value for use with 
+*!*													  && FormatMessage API. From WINBASE.H
+
+*!*	LOCAL lnHandle,;
+*!*		lnErrorRtn,;
+*!*		lnRtnHandle,;
+*!*		lcDSNName,;
+*!*		llOverWrite,;
+*!*		llRtnVal,;
+*!*		llKeyExists,;
+*!*		lnResult,;
+*!*		lnDisplay,;
+*!*		lnRtnHandle,;
+*!*		lnDisplay,;
+*!*		lcDSNPath,;
+*!*		lcDataBase,;
+*!*		lcDriverPath,;
+*!*		lcLastUser,;
+*!*		lcServer
+
+*!*	* This are sample values I included here so you can just run the program 
+*!*	* and see how it works  without having to send any parameters, 
+*!*	* just remember to comment it after you finish testing the code.
+*!*	*** Sample values for parameters *****
+
+*!*	tcDSNNAme 			= 'HPA' &&Replace with the DSN Name you want
+*!*	tlOverWrite 		= .T.
+*!*	tcDatabase  		= 'HPALLOY'     &&This is your database name
+*!*	tcLastUser			= ''               &&System Administrator Password, you can use any authorized user  
+*!*	DO CASE
+*!*	CASE FILE( 'C:\WINDOWS\System32\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'C:\WINDOWS\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'C:\WINNT\System32\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'C:\WINNT\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'C:\WINDOWS\System\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'C:\WINDOWS\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'C:\WINNT\System\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'C:\WINNT\System\SQLSRV32.dll' && Windows XP path
+*!*		
+*!*	CASE FILE( 'D:\WINDOWS\System32\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'D:\WINDOWS\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'D:\WINNT\System32\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'D:\WINNT\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'D:\WINDOWS\System\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'D:\WINDOWS\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'D:\WINNT\System\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'D:\WINNT\System\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'E:\WINDOWS\System32\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'E:\WINDOWS\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'E:\WINNT\System32\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'E:\WINNT\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'E:\WINDOWS\System\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'E:\WINDOWS\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'E:\WINNT\System\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'E:\WINNT\System\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'F:\WINDOWS\System32\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'F:\WINDOWS\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'F:\WINNT\System32\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'F:\WINNT\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'F:\WINDOWS\System\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'F:\WINDOWS\System32\SQLSRV32.dll' && Windows XP path
+*!*	CASE FILE( 'F:\WINNT\System\SQLSRV32.dll' )
+*!*		tcDriverPath 	    = 'F:\WINNT\System\SQLSRV32.dll' && Windows XP path
+*!*	OTHERWISE
+*!*		tcDriverPath 		= 'C:\WINDOWS\System32\SQLSRV32.dll' && Windows XP path
+*!*	ENDCASE
+
+*!*	tcServer			= 'RAPTOR'			 && Your SQL Server name
+*!*	tlTrustedConnection	= .T.
+
+*!*	* Just run the program go to Fox and run SQLCONNECT() and you will see 
+*!*	* your DSN listed or check your Registry in \HKEY_LOCAL_MACHINE\SOTWARE\ODBC\ODBC.INI
+*!*	* you'll see the DSN you just created.
+*!*	* Enjoy it.
+
+*!*	*eof Sample values *
+
+
+
+
+
+*!*	lcTrustedConnection = IIF(NOT ISNULL(tlTrustedConnection) AND tlTrustedConnection = .T.,'Yes','No' )
+*!*	lnRtnHandle 		= 0
+*!*	lcDSNName			= ALLTRIM(UPPER(tcDSNNAme))
+*!*	lcDSNPath  		    = 'SOFTWARE\ODBC\ODBC.INI\'  && This is where Windows XP store the DSNs,
+*!*													 && change apropriate for your OS
+*!*	llOverWrite 		= tlOverWrite
+*!*	llRtnVal			= DeclareDLLs()
+*!*	lnRtnHandle   		= 0
+*!*	lcDataBase			= ALLTRIM(UPPER(tcDatabasE))
+*!*	lcDriverPath		= tcDriverPath
+*!*	lcLastUser			= tcLastUser
+*!*	lcServer			= ALLTRIM(UPPER(tcServer))
+
+*!*	*Try to open the key to see if it already exists
+*!*	lnErrorRtn			= RegOpenKeyEx(HKEY_LOCAL_MACHINE, lcDSNPath + lcDSNName, 0, KEY_SET_VALUE, @lnRtnHandle)
+
+*!*	*!*	IF lnErrorRtn <> ERROR_SUCCESS
+*!*	*!*		DO CASE
+*!*	*!*		CASE lnErrorRtn = NO_KEY_FOUND &&If failed opened then the key does not exists
+*!*	*!*			llKeyExists = .F.
+
+*!*	*!*		CASE lnErrorRtn	= _EOF && I never have had this before, but just in case
+*!*	*!*			MESSAGEBOX('Reached the end of the registry', MB_ICONINFORMATION + MB_OK, 'ERROR')
+*!*	*!*			RETURN llRtnVal
+
+*!*	*!*		OTHERWISE && Unhandle error
+*!*	*!*			=GetSystemError(lnErrorRtn)
+*!*	*!*			RETURN llRtnVal
+
+*!*	*!*		ENDCASE
+*!*	*!*	ELSE
+*!*			llKeyExists = .T.	&&Key is already there
+*!*	*!*	ENDIF
+
+
+*!*	*!*	IF llKeyExists AND !tlOverWrite && If key exists and OverWrite was not specified do nothing.
+*!*	*!*		MESSAGEBOX('Key ' + lcDSNName + ' exists', MB_ICONINFORMATION + MB_OK, 'ERROR')
+*!*	*!*		RETURN llRtnVal
+*!*	*!*	ENDIF
+
+
+
+*!*	*!*	IF !llKeyExists && If key doesn't exists create it.
+*!*	*!*		lnRtnHandle = 0
+*!*	*!*		lnDisplay   = 0
+*!*	*!*		lnErrorRtn  = RegCreateKeyEx(HKEY_LOCAL_MACHINE,lcDSNPath + lcDSNNAme,0,'',0,SECURITY_ACCESS_MASK,0,@lnRtnHandle,@lnDisplay)
+*!*	*!*		IF lnErrorRtn <> ERROR_SUCCESS
+*!*	*!*			=GetSystemError(lnErrorRtn)
+*!*	*!*			RETURN llRtnVal
+*!*	*!*		ENDIF
+*!*	*!*	ENDIF
+
+*!*	*Set the properties for the DSN
+*!*	lnErrorRtn = lnErrorRtn + RegSetValueEx(lnRtnHandle, "Database",           0, REG_SZ, lcDatabase,          LEN(lcDataBase))
+*!*	lnErrorRtn = lnErrorRtn + RegSetValueEx(lnRtnHandle, "Description",        0, REG_SZ, lcDSNName,           LEN(lcDSNName))
+*!*	lnErrorRtn = lnErrorRtn + RegSetValueEx(lnRtnHandle, "Driver",             0, REG_SZ, lcDriverPath,        LEN(lcDriverPath))
+*!*	lnErrorRtn = lnErrorRtn + RegSetValueEx(lnRtnHandle, "LastUser",           0, REG_SZ, lcLastUser,          LEN(lcLastUser))
+*!*	lnErrorRtn = lnErrorRtn + RegSetValueEx(lnRtnHandle, "Server",             0, REG_SZ, lcServer,            LEN(lcServer))
+*!*	lnErrorRtn = lnErrorRtn + RegSetValueEx(lnRtnHandle, "Trusted_Connection", 0, REG_SZ, lcTrustedConnection, LEN(lcTrustedConnection))
+
+*!*	*!*	IF lnErrorRtn <> ERROR_SUCCESS &&Should add to 0 if all the calls to RegSetValueEx were succesful
+*!*	*!*		=GetSystemError(lnErrorRtn)
+*!*	*!*		RETURN llRtnVal
+*!*	*!*	ELSE
+*!*			llRtnVal = 0
+*!*	*!*	ENDIF
+
+*!*	lnErrorRtn = RegCloseKey(lnRtnHandle) &&Close the key
+*!*	CLEAR DLLS &&Release the DLLs from memory
+
+*!*	RETURN llRtnVal
+
+
+
+*!*	*------------------------
+*!*	FUNCTION DeclareDLLs
+*!*	*------------------------
+
+*!*	*!* Declare function to open a registry key
+*!*	DECLARE INTEGER RegOpenKeyEx IN WIN32API ;
+*!*		INTEGER nHKEY,;
+*!*		STRING  cSubKey,;
+*!*		INTEGER nOptions,;
+*!*		INTEGER nSamDesired,;
+*!*		INTEGER @nRtnHandle
+
+*!*	*!* Declare function to  return system error code if an API call fails
+*!*	DECLARE INTEGER GetLastError IN win32api
+
+*!*	*!* Declare function to return text message from system error code.
+*!*	DECLARE INTEGER FormatMessage IN kernel32.DLL ;
+*!*		INTEGER dwFlags, ;
+*!*		STRING @lpSource, ;
+*!*		INTEGER dwMessageId, ;
+*!*		INTEGER dwLanguageId, ;
+*!*		STRING @lcBuffer, ;
+*!*		INTEGER nSize, ;
+*!*		INTEGER Arguments
+
+*!*	*!* Declare function to close a registry key
+*!*	DECLARE RegCloseKey IN ADVAPI32.DLL	INTEGER nHKey
+
+
+*!*	*!* Declare function to create a SubKey
+*!*	DECLARE INTEGER RegCreateKeyEx IN AdvAPI32.DLL;
+*!*		INTEGER hKey,;
+*!*		STRING  lpSubKey,;
+*!*		INTEGER RESERVED,;
+*!*		STRING  lpClass,;
+*!*		INTEGER dwOptions,;
+*!*		INTEGER samDesired,;
+*!*		INTEGER lpSecurityAttributes,;
+*!*		INTEGER @phkResult,;
+*!*		INTEGER @lpdwDisposition
+
+*!*	*!* Declare function to delete a subkey
+*!*	DECLARE INTEGER  RegDeleteKey IN ADVAPI32.DLL;
+*!*		INTEGER hKey,;
+*!*		STRING lpSubKey
+
+*!*	*!* Declare function to set a key value
+*!*	DECLARE INTEGER  RegSetValueEx IN ADVAPI32.DLL;
+*!*		INTEGER hKey,;
+*!*		STRING lpSubKey,;
+*!*		INTEGER lpValueName,;
+*!*		INTEGER dwType,;
+*!*		STRING lpData,;
+*!*		INTEGER cbData
+
+
+
+*!*	*------------------------
+*!*	FUNCTION GetSystemError
+*!*	*----------------------
+*!*	LPARAMETERS tlErrorNumber
+*!*	LOCAL lcBuffer, lnError, lcMessage, lnRtnVal
+*!*	lnRtnVal = 0
+
+*!*	lcBuffer  = SPACE(128)
+*!*	lnError = tlErrorNumber &&GetLastError()
+
+*!*	lnRtnVal = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 'WINERROR.H', lnError, 0, @lcBuffer, 128 , 0)
+
+*!*	=MESSAGEBOX("System error has occurred." + CR + ;
+*!*		"System Error code: " + ALLTRIM(STR(lnError)) + CR + ;
+*!*		"System Error message: " + ALLT(lcBuffer),MB_ICONINFORMATION + MB_OK,"ERROR")
+
+*!*	RETURN lnRtnVal

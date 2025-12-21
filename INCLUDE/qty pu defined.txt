@@ -1,0 +1,121 @@
+*************************
+nPU		= nPU_Acct_Form(cForm,conn)
+nS_QTY	= Calc_QTY(cAlloy,cForm,nPieces,nThck,nSz2,nSz3,cOtherFld,ThisFormSet.nConnHandle)  -HPA Acct dbo.f_Calc_Acct_QTY()
+
+cSQL = cSQL + ",ISNULL(StockLst_PU,dbo.f_GetFormPU(Form)) AS StockLst_PU "
+
+cSQL= cSQL+",StockLst_QTY, StockLst_P, StockLst_PU "
+cSQL= cSQL+",ISNULL(StockLst_Total,dbo.f_GetPOItem_Total(P.POItem)) AS StockLst_Total "
+
+cLabel = Get_Label_from_nPU(nPU, pConnHandle)  uses SQL return CHAR(7) 'Pounds,Feet,Peices..
+
+ThisForm.txtAcct_Qty.Value	= PrepareSQLnum(tmpSDSOiHeat.Orig_QTY,'S_QTY',-5)	
+PRIVATE nAcct_PU
+ThisForm.lblAcct_PU.Caption = Get_cPUfrom_nPU( PrepareSQLnum(tmpSDSOiHeat.Orig_PU,'S_PU',-1), ThisForm.nConnHandle)
+ThisForm.lblAcct_PUstr.Caption = Get_PUstr_from_nPU( PrepareSQLnum(tmpSDSOiHeat.Orig_PU,'S_PU',-1), ThisForm.nConnHandle)									
+*
+ThisForm.txtPO_QTY.Value 	= Calc_Vend_QTYleft_PO(ThisForm.cPOitem, ThisForm.nConnHandle)
+ThisForm.txtPO_P.Value		= PrepareSQLnum(tmpSDSOiHeat.Q_P,'Q_P',-5)
+ThisForm.txtPO_QTY.Value 	= PrepareSQLnum( Get_From_Sales_SOitem (cSoItem, "Quoted_QTY", ThisForm.nConnHandle ),'Quoted_QTY',-5)
+ThisForm.txtPO_P.Value		= PrepareSQLnum( Get_From_Sales_SOitem (cSoItem, "Quoted_P", ThisForm.nConnHandle ),'Quoted_P',-5)
+
+PRIVATE nCust_PU
+nCust_PU = PrepareSQLnum(tmpSOitem.Q_PU,'Recv_PU',-1)	&&Cust
+ThisForm.lblPO_PU.Caption	= Get_cPUfrom_nPU( nCust_PU, ThisForm.nConnHandle)
+ThisForm.lblPO_PUstr.Caption	= Get_PUstr_from_nPU( nCust_PU, ThisForm.nConnHandle)
+
+
+*nPU = nPU_Acct_Form( cForm, nConn )
+nAcct_PU = PrepareSQLnum( nPU_Acct_Form( Get_From_AllQuote_SOitem (tmpRMA.SO_item, "Form", ThisForm.nConnHandle ), ThisForm.nConnHandle ),'PU',-1 )
+nAcct_PU = PrepareSQLnum( nPU_Acct_Form( Get_From_POitem(tmpPOp.PO_item, "Form", ThisForm.nConnHandle ), ThisForm.nConnHandle ),'PU',-1 )
+nCust_PU = PrepareSQLnum( Get_From_AllQuote_SOitem (ThisForm.cSOitem, "Q_PU", ThisForm.nConnHandle ), 'Q_PU',-1)
+nCust_PU = PrepareSQLnum( Get_From_POitem(ThisForm.cPOitem, "Order_PU", ThisForm.nConnHandle ), 'Order_PU',-1)
+nCustQTY = Calc_Vend_QTYleft_PO(cPOitem,nConnHandle)
+
+nAcct_PU = PrepareSQLnum(tmpReceivingPOitem.R_PU,'S_PU',-1)
+ThisForm.lblAcct_PU.Caption 	= Get_cPUfrom_nPU(nAcct_PU, ThisForm.nConnHandle)
+ThisForm.lblAcct_PUstr.Caption 	= Get_PUstr_from_nPU(nAcct_PU, ThisForm.nConnHandle)
+
+ThisForm.txtVendor.Value = PrepareSQLtxt(Get_From_POitem(cPOitem, "Company", ThisForm.nConnHandle ),'Vendor',30,.F.,.T.)
+
+
+*************** Proc:
+nPU = nPU_Acct_Form( cForm, nConn ) uses SQL
+nPU = GetPUfromForm(pForm, pConnHandle) uses SQL
+nPU = GetPUfromFormSvc( cForm, lLabServices,lConvServ, lIntP, lEquipment) --Return a 4 'Lot' if Svc is True
+nPU = Get_PUfromText(cPUtext)  - hard coded, use SQL instead
+nPU = GetPUfrom_SOitem(pcSOitem,ThisForm.nConnHandle)   	-HPA Acct
+nPU = GetPUfrom_POitem(pcPOitem,ThisForm.nConnHandle)   	-HPA Acct (Services, ConvServ, Equipment is /Pc )
+nPU = GetOrder_PUfrom_POitem(pcPOitem,ThisForm.nConnHandle)  -Vendor PU
+nPU = Get_PUinSales(cSOItem, ThisForm.nConnHandle)
+nPU = GetPUfromForm( cForm, nConn )
+
+nMax_P = get_Max_P_fromPU (nPU, pConnHandle) -- used to check data MAX
+
+cUnit = GetPRICEUNITfromFORM (pForm, pConnHandle)
+cUnit = getPricingUnitbyID( nID, cTBL, pConnHandle )
+cUnit = GetUNITfromFORM(cForm, nConn)
+cUnit = get_Unit_PU( nPU, nConn )  			uses SQL return 1,2,3
+cUnit = Get_cPUfrom_nPU(nPU, pConnHandle)  	uses SQL returns '$/Lb'
+cUnit = Get_PUtext(nPU)   - old hard coded
+cUnit = Get_PUstr_from_nPU(nPU, pConnHandle)  uses SQL return '$/#'
+cUnit = Get_PU_Price_String(Order_PU, Order_Qty, Order_P)   &&Remove0(pQTY,18,0,.F.) + ' Lbs '
+cCaption = Get_PriceU_from_nPU(nPU)  --hard coded
+
+lOK = IsPriceUnitAllowed( cForm, cUnit, nConn )
+lOK = Is_InvoiceValue_Valid(nInvoiceValue,nS_PU,pConnHandle)  --Compare to PU MAX
+
+lOK = Get_Quote_Pricing(nPieces, cAlloy, cForm, nThck, nSz2, nSz3,nWeight,nP_lb,nP_pc,nP_ft,nLotP,cOtherFld,nOtherP, gnConnHandle)
+opens CURSOR tmpQuote_Pricing (P N(18,4), PU N(1), QTY N(18,4), Total N(18,4) )
+
+nQTY = Get_QTYinSales(cSOItem, ThisForm.nConnHandle)				--Replace with getQTY_SOitem()
+nTotalCost = Calc_StockCost(D.CostValue, P.Pounds, P.PFt, nPPc, P.PU)  DEPRICATED
+nQTY = Calc_QTY(Alloy,Form,Pieces,Thck,Sz2,Sz3,cOtherFld,ThisForm.nConnHandle)  -calls SQL
+nQTY = get_QTYbySOitem( pcSOitem, nConn, cAndSome )  				--Replace with getQTY_SOitem()
+nQTY = getQTY_SOitem(cSOitem,ThisFormSet.nConnHandle)  				--starts with PT_Qty otherwise uses S_QTY
+nCustomer_QTY = getQTY_SOitem(cSOitem,ThisFormSet.nConnHandle)
+nProcessSelectedQTY = get_PartialPick_QTY(cSOitem,nWO,ThisFormSet.nConnHandle)
+
+
+nP = Get_Qoute_P (nPieces, cAlloy, cForm, nThck, nSz2, nSz3,nWeight,nP_lb,nP_pc,nP_ft,nLotP,cOtherFld,nOtherP, gnConn)  -old school
+
+nItemSale = Get_ItemSaleinSales(cSOItem, ThisForm.nConnHandle)   changed to gs_Sale, (S_QTY*S_P), Quoted_Total then ItemSale
+nItemSale = getSale_SOitem(cSOitem,ThisFormSet.nConnHandle)
+
+nLBS = Get_LBSinSales(cSOItem, ThisForm.nConnHandle)
+nLBS = GetWeight(nPieces,cAlloy,cForm,nThck,nSz2,nSz3,pConnHandle)
+nLBS = GetWeight(tS.Pieces,tS.Alloy,tS.Form,tS.Thck,tS.Sz2,tS.Sz3,nConn)
+nLBS = CalcWeight(nPieces, cAlloy, cForm, nThickness, nSize2, nSize3, pConnHandle)  uses SQL
+
+nFeet = Calc_Feet(nPieces, cForm, nSZ2, nSZ3, gnConnHandle) 
+
+nQShipped = get_SOitem_PCs_Complete( pcSOitem, pnPCs, pnPS_No, nConn )  --needs work.
+nQShipped = get_SOitem_QTY_Complete( pcSOitem, pnPCs, pnPS_No, nConn )  --needs work
+lComplete = IS_SOitem_Complete( pcSOitem, pnPCs, pnQTY, pnWeight, pnPS_No, nConn )  --needs work
+
+
+nPOCost = getPOCost_PO(nHPAPO,ThisFormSet.nConnHandle, cAndSome)
+nStkCost = getStkCost_SOitem(cSOitem,ThisFormSet.nConnHandle)
+nStkPaid = getStkPaid_SOitem(cSOitem,ThisFormSet.nConnHandle)
+
+*********** SQL:
+dbo.f_Get_nPU_Form(Form)
+dbo.f_Get_Unit_nPU(nPU)
+dbo.f_GetPUstrPU(nPU)
+
+SELECT PU FROM dbo.Forms WITH(NOLOCK) WHERE FormNumber='"+pForm+ "'"
+
+dbo.f_Get_QTY(Alloy,Form,Pieces,Thck,Sz2,Sz3)   --not robust.
+dbo.f_Get_QTY_SOitem(SOitem)
+
+dbo.f_Calc_Acct_QTY(Alloy,Form,Pieces,Thck,Sz2,Sz3)
+
+dbo.f_CalcSale_SOitem(SOitem)
+dbo.f_CalcPOCost_SOitem(SOitem)
+dbo.f_CalcStkPaid_SOitem(SOitem)
+
+
+dbo.f_GetWeight()
+
+dbo.f_Return_Lbs_if_kg(Weight,kg)
+

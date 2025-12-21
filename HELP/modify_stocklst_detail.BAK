@@ -1,0 +1,148 @@
+Modify_StockLst_Detail
+*********************************************
+*ThisForm.ConsumeQTY()
+Check Dim1
+Get Process Weight and Pc -Read in data of Process
+compare to consumed Weight and PC
+Get Remove Stock Summ totals
+compare to consumed QTY and PC
+Get Stock Detail Weight and Pc - Subtract for consumed Weight and PC.
+Check PU
+Save to Global ARRAY aConsumeQTY
+Check to see if Detail is there - then report other SO's that also use this Detail
+
+*********************************************
+*ThisForm.ConsumeStock(lScrap)
+Are you sure you want to Consume
+If Yes
+	ThisForm.ConsumeQTY('CONSUME')
+	ThisForm.SaveStockLstEdit_tmpStkSum(.T.,lScrap )
+	ThisForm.Modify_StockLst_Detail( "DEL", cTbl )
+	
+	ThisForm.Modify_StockLst_How = "DONE"
+	ThisForm.Modify_StockLst_Detail_Report(nID_Detail_Process, cSOitem)
+	ThisForm.Partial_ID_Detail_Process()
+	
+	Remove_StockLst_Detail_by_ID_Detail(
+	
+	*Remove orphened Corrections
+		DELETE FROM dbo.StockLst_Process
+	
+	Count Details, if non found DELETE master	
+		DELETE FROM dbo.StockLst_Master
+
+ThisForm.Hide_StkSum
+
+
+*********************************************
+*Partial_ID_Detail_Process(nID_Detail_Process, nID_Detail,pSOitem,cTbl, nConnHandle
+Read Global ARRAY aConsumeQTY
+Collect QTY if there is a PartialPik
+Remove_ID_Detail_Process(nID_Detail_Process,cSOitem,cTbl,ThisForm.nConnhandle,"Sell Stock" )
+Check need for a PartialPik.
+*Did this Process Finish the WO/SOitem??????
+*Check WO, SOitem and PARTIALPIK for QTY
+*See if This Stock QTY would cover it.
+? Add a StockLst_Process_Orig search ?
+
+IF lNeedPartial
+	EXEC dbo.p_StockLst_Process_ins 
+	UPDATE dbo.StockLst_Process
+	
+	
+*********************************************
+*ThisForm.Sales_Detail_ConsumeStock()
+Get Stock Data: alloy,Form,Heat,Lot,CC
+Check Alloy in selected Stock to Quote SOitem
+nStkPaid_P = getInvoiceValue_ID_Detail(
+SCAN tmpStkSum
+	INSERT INTO dbo.Sales_Stock OR UPDATE dbo.Sales_Stock SET
+SCAN tmpStkSum	
+	Get Allquotes Data
+	INSERT INTO dbo.Sales_Detail
+	
+EXEC dbo.p_Sales_Stock_UPDATE_Sales cSOitem
+
+
+*********************************************
+*Save_Sales_Stock_Detail()
+lScrap = .F.
+Check for PackingSlip that was created before Shop Stock Edit!!
+IF MESSAGEBOX("Update using this PackingSlip?")
+	lUpdateSS = .T.
+	Get Master,Detail,Process for ID_Detail
+		UPDATE dbo.Sales_Stock 
+
+IF NOT lUpdateSS 
+	INSERT INTO dbo.Sales_Stock 
+
+*********************************************
+*SaveStockDetail(lScrapOverRide)
+Read Screen
+Check Data
+Check AccountingCosting() to see if need to write off detail save.
+getReceivingIDfromHeat()
+
+Transaction
+ThisForm.SaveStockLstEdit_tmpStkSum(lConsume, lScrap)
+ThisForm.Modify_StockLst_How = "ADD"
+	EXEC dbo.p_StockLst_Detail_ins2
+	UPDATE dbo.StockLst_Detail 
+	
+?	IF nCostValue > 0  &&Current Accounting Price per Unit
+?		*Add to Sales_Stock so this material cost can be applied to that order.
+
+ThisForm.Modify_StockLst_How = "EDIT"
+	INSERT INTO dbo.StockLst_Process_Detail
+	UPDATE dbo.StockLst_Detail
+	IF lOK 			
+			ThisForm.Hide_StkSum(.T.)
+			
+=SQLCOMMIT(ThisForm.nConnHandle)
+ThisForm.ConsumeQTY('SAVE')
+ThisForm.Partial_ID_Detail_Process()
+
+*********************************************
+*SaveStockLstEdit_tmpStkSum()
+Get Data alloy,Form,Heat,Lot,CC of Stock
+Get new StockLst_Total
+Get new Dims form Screen
+Check Alloy in selected Stock to Quote SOitem
+nStkPaid_P = getInvoiceValue_ID_Detail
+SCAN tmpStkSum --Created with Removed Summary
+	*Save_Sales_Stock_Detail()
+	Check for PackingSlip that was created before Shop Stock Edit!!
+	IF MESSAGEBOX("Update using this PackingSlip?")
+		lUpdateSS = .T.
+		Get Master,Detail,Process for ID_Detail
+			UPDATE dbo.Sales_Stock 
+
+	IF NOT lUpdateSS 
+		INSERT INTO dbo.Sales_Stock 
+		
+ENDSCAN
+
+Collect Old Stock
+Collect AllQuotes item data
+SCAN tmpStkSum --Created with the Removed Summary
+	INSERT INTO dbo.Sales_Detail 
+ENDSCAN
+
+Update SalesOrder with the new Sales_Stock Cost data! p_Sales_Stock_UPDATE_Sales 
+
+*********************************************
+*SaveStockLstEdit_to_Sales_Stock()
+Get current Stock Master: Data alloy,Form,Heat,Lot,CC
+Check Alloy in selected Stock to Quote SOitem
+Check Form in selected Stock to Quote SOitem
+Get current Stock Detail
+
+SCAN tmpStkSum
+	INSERT INTO dbo.Sales_Stock
+SCAN tmpStkSum	
+	Get AllQuote data
+	INSERT INTO dbo.Sales_Detail
+	
+EXEC dbo.p_Sales_Stock_UPDATE_Sales 'cSOitem'
+
+*********************************************

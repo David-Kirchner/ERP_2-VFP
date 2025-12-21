@@ -1,0 +1,20 @@
+Receive PO Flow
+
+Receiving: [Add new Receive]
+Receive_Edit:
+Enter PO runs ThisForm.GetPOitemDetail(cPOitem)
+ show found heats for PO item
+ 
+ Get ReceivingID WITH Process
+ OR Get ReceivingID without Process!
+ 
+ bring in stock with INCOMING/SELECTED Process
+ OR bring in stock with ID_Detail
+ 
+ Collects the TBL, Master_ID, ID_Detail 
+ (The Incomming Inv record is convered Received if this is the last Receive.)
+ (The Incomming Inv record is reduced and a new INV record is created with this receive data.)
+
+ Still here?
+ 
+ 

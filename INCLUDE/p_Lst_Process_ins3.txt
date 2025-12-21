@@ -1,0 +1,79 @@
+	
+	IF USED('tmpID_Detail_Process')
+		USE IN tmpID_Detail_Process
+	ENDIF
+	SELECT 0
+	
+
+	cSQLi = "EXEC dbo.p_Lst_Process_ins3 "
+	cSQLi = cSQLi + ",@TBL = '"+cTBL+"'"
+	cSQLi = cSQLi + ",@SOitem = '"+cSOitem+"'"
+	cSQLi = cSQLi + ",@PO_item = '"+cPOitem+"'"
+	cSQLi = cSQLi + ",@SalesPerson = '"+cSalesPerson+"'"
+	cSQLi = cSQLi + ",@StartDate = '"+DtoC(DATE())+"'"	&&GetDate()"
+	cSQLi = cSQLi + ",@DueDate = '"+IIF(EMPTY(dDueDate)," ",DTOC(dDueDate))+"'"
+	cSQLi = cSQLi + ",@Comment = '"+cComment+"'"		&&"Selected Stock was used, but more stock is needed to finish."
+	cSQLi = cSQLi + ",@Process_ID = '"+cProcess_ID+"'"	&&"PARTSELECT"
+	cSQLi = cSQLi + ",@Processor = '"+cProcessor+"'"	&&"PARTIAL SELECT Prc"
+	cSQLi = cSQLi + ",@AllowSub= '"+cAllowSub+"'"   &&'Y' Computer does not Select the Stock!
+
+	cSQLi = cSQLi + ",@PU	="+STR(nPU)
+	cSQLi = cSQLi + ",@QTY	="+STR(nWeightLeft,18,4)		&&QTY in this Process
+	cSQLi = cSQLi + ",@Ordered_QTY	="+STR(nWeightLeft,18,4)	&&QTY for SOitem
+	cSQLi = cSQLi + ",@Pounds ="+STR(nWeightLeft,18,4)
+	cSQLi = cSQLi + ",@ID_Detail = 0 "
+	cSQLi = cSQLi + ",@ReceivingID = 0" &&STR(nReceivingID)
+
+	cSQLi = cSQLi + ",@WO	= 0 "	&&+STR(nWO)
+	cSQLi = cSQLi + ",@WO_Detail = 0 "	&&+STR(nWO_Detail)
+
+	cSQLi = cSQLi + ",@Prc_Form	= ''"
+	cSQLi = cSQLi + ",@Prc_Dim1	= 0"  &&Numeric(10,4),
+	cSQLi = cSQLi + ",@Prc_Dim2	= 0"  &&Numeric(9,3),
+	cSQLi = cSQLi + ",@Prc_Dim3	= 0 "		&&Numeric(9,3),
+	cSQLi = cSQLi + ",@Prc_Q_QTY = 0 " &&	Money,  Customer QTY
+	cSQLi = cSQLi + ",@Prc_Q_PU	= 0" 	&&Money, Customer PU
+
+	
+*	cSQLi = cSQLi + " @ID_Detail = 0"
+*	cSQLi = cSQLi + ",@SalesPerson = '"+cSalesPerson+"'"
+*	cSQLi = cSQLi + ",@StartDate = '"+IIF(EMPTY(dtStartDate),'',TTOC(dtStartDate))+"'"
+*	cSQLi = cSQLi + ",@DueDate = '"+IIF(EMPTY(dDueDate),'',DTOC(dDueDate))+"'"
+*	cSQLi = cSQLi + ",@AllowSub = 'Y'"  &&'Y' 
+*	cSQLi = cSQLi + ",@pWeight = "+STR(nWeightLeft,18,4)
+*	cSQLi = cSQLi + ",@pPc = "+STR(nPCLeft)
+*	cSQLi = cSQLi + ",@SOitem = '"+cSOitem+"'"
+*	cSQLi = cSQLi + ",@PO_Item = ''"
+*	cSQLi = cSQLi + ",@Process_ID = 'PARTSELECT'"
+*	cSQLi = cSQLi + ",@Processor = 'Partial SELECT Process'"
+*	cSQLi = cSQLi + ",@Comment = '"+cComment+"'"	
+
+	nSQLEXEC = SQLEXEC(ThisForm.nConnhandle, cSQLi, 'tmpID_Detail_Process')
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(ThisForm.nConnhandle, cSQLi, 'tmpID_Detail_Process')
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQLi, 'tmpID_Detail_Process')
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQLi, 'tmpID_Detail_Process')
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQLi, "tmpID_Detail_Process")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQLi, "tmpID_Detail_Process")
+			
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF 
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQLi, ThisForm.nConnhandle, nSQLEXEC, 'tmpID_Detail_Process')
+		RecordError(nSQLEXEC,'SQL Error',PROGRAM(),LINENO(1), cSQLi )
+	ENDIF

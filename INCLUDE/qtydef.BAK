@@ -1,0 +1,56 @@
+dbo.Receiving:
+R_QTY 		HPA Acct
+R_P 		HPA Acct
+R_Total 	HPA Acct
+R_PU	 	HPA Acct
+[PO_QTY]	Vendor
+[PO_P]		Vendor
+[PO_Total]	Vendor
+[PO_PU]		Vendor
+
+dbo.PurchaseOrder:
+[StockLst_QTY]		HPA Acct
+[StockLst_P]		HPA Acct
+[StockLst_Total]	HPA Acct
+[Order_QTY]		Vendor      
+[Order_P]		Vendor
+[Order_PU]		Vendor
+[Pounds]
+      
+dbo.Sales:
+[Quoted_QTY]		Customer
+[Quoted_P]		Customer
+[Quoted_Total]		Customer
+[Quoted_PU]		Customer
+
+dbo.AllQuotes:
+[Q_P]		Customer
+[Q_QTY]		Customer
+[Q_PU]		Customer
+[Q_Total]	Customer
+[S_QTY]		HPA Acct by Form
+[S_P]		HPA Acct
+
+dbo.StockLst_Detail:
+[S_QTY]		HPA Acct
+[S_P]		HPA Acct
+[S_Total]	HPA Acct
+[S_PU]		HPA Acct
+
+dbo.StockLst_Process:
+[PU]		HPA Acct
+[QTY]		HPA Acct
+[Prc_QTY]	HPA Acct
+[PO_QTY]	Vendor
+[PO_PU]		Vendor
+
+dbo.Sales_Stock:
+Removed_QTY	HPA Acct
+Form		HPA Acct
+Invoice_QTY	Customer
+Invoice_P	Customer
+PS_QTY		Customer
+Left_QTY	HPA Acct
+
+*************************
+nPU = nPU_Acct_Form(form,conn)

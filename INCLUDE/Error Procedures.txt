@@ -1,0 +1,100 @@
+Proc_ERP:TrackMess 				:1 Parameter, INSERT INTO HPAlloyNR.dbo.UserTrack
+--TrackMess(cMess) &&only C1024
+
+Proc_ERP:TrackError 			:4 Parameter, Sends to RecordError()
+--TrackError("Problem Memo","Title C254", PROGRAM(), LINENO(1))
+--CALLS: RecordError()
+
+Proc_ERP:RecordError			:5 Parameter, cRun = "ErrorCapture.EXE "
+          ,INSERT Parameters INTO Errors.DBF 
+*AND RecordError 	+.prg	
+--RecordError(nSQLEXEC_ErrorNum,'SQL Error',PROGRAM(),LINENO(1), cSQL_Memo )
+RecordError( 0, 'Error Title', "Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"VFP message: No nSoldCode Parameter" )
+
+
+Proc_SQL:SQLExecError 			:4 Parameter, Retries Query!, then Sends to RecordError()
+ --SQLExecError( pSQL, pnConnection, nSQLEXEC, cWorkArea )
+ 
+
+Main.PRG: ON ERROR DO (SYS(5)+SYS(2003)+"\Progs\ErrorHandlerLog.prg") WITH ERROR(),MESSAGE(1),MESSAGE(),PROGRAM(),LINENO() --ErrorHandlerLog.prg has a diferent parameter order then RecordError
+RecordError(nSQLEXEC,"SQL Error" ,PROGRAM(),LINENO(1),cSQL )
+INSERT INTO dbo.Errors ([nerror],[mess1],[cprogram],[nlineno],[errordate],[MACHINE],[Revision],[Memo1])
+
+*ErrorHandlerlog.prg
+--ERROR(),MESSAGE(1),MESSAGE(),PROGRAM(),LINENO()
+
+Proc_ERP:RecordTest         	:4 Parameter, Sends to RecordError()  
+--RecordTest("Record Test Data.", PROGRAM(), LINENO(1),"Long Message") 
+*uses a local Errors VFP table, then Send_HTML_Email() and PACK
+*Email to David.Kirchner@hpalloy.com (The Raptor@HPAlloys.com was getting over GoDaddy limit per hour)
+*Does not get stored in HPAlloy.dbo.Errors.
+
+**************************************************************************
+*Record Error of Screen
+TRY
+	cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)
+	+[" David.Kirchner@Windfall.HPA.local ]
+	RUN /N &cRun
+CATCH
+ENDTRY
+
+
+
+Proc_ERP:Track_Sales_No_Chng(cBody,nSalesNum,lShopRecv,nVer)
+
+-- GET SALES REP CHATTER ID
+SELECT TOP(1) @userId = UserID FROM [Messenger].[dbo].[Users] WITH(NOLOCK) 
+		  WHERE LTRIM(RTRIM(UserName)) = @salesRep
+
+
+
+INSERT INTO Messenger.dbo.Message([UserID],[Message]) VALUES (nUserID,'Text')
+
+Proc_SQL:Send_Chatter(pcType_Name, pnNumber, pcNumber, pcMessage, pConnHandle)  --needs a Type_Name
+*Send a Specific Type_Name Message over Chatter
+PROC_SQL:Send_Chatter('ReceivingID',nReceivingID,"BLANK","The receiving material did not PASS Specs",ThisForm.nConnHandle)
+
+Proc_SQL:Chatter (pcUser, pcMessage, pConnHandle)  RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 )
+*Send a quick Message over Chatter to a specific user
+
+
+-----------------------------------------------------			
+--Proc_Setup:CollectErrors(lSkipPackDB,lQuite)
+--on SQL 2017, no longer build VFP table to send to SQL, Send if can!
+--no longer using CollectErrors 2019-05-20.  Errors.dbf
+
+
+
+PRIVATE lTranAlreadySet, nProp 
+nProp = SQLGETPROP(nConn, 'Transactions')
+lTranAlreadySet = (nProp = 2)
+		
+IF NOT lTranAlreadySet
+	= SQLSETPROP(nConn, 'Transactions', 2)  && Manual transactions
+ENDIF
+
+IF NOT lTranAlreadySet
+	= SQLCOMMIT(nConn)
+	= SQLROLLBACK(nConn)
+	= SQLSETPROP(nConn, 'Transactions', 1)  && 1AUTO, 2MANUAL Trans
+ENDIF
+
+
+nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, '' )
+DO WHILE nSQLEXEC = 0
+	WAIT WINDOW 'SQL' TIMEOUT 1
+	nSQLEXEC = SQLEXEC( ThisForm.nConnHandle, cSQL, '')
+ENDDO
+IF nSQLEXEC < 0 &&Try again!
+	nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, '')
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL 2' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, '')
+	ENDDO
+ENDIF
+IF nSQLEXEC < 0
+	SQLEXECError(cSQL,ThisForm.nConnHandle,nSQLEXEC, '')
+	RecordError(nSQLEXEC,'SQL Error',PROGRAM(),LINENO(1), cSQL )
+ENDIF
+		
+cUser = RIGHT(SYS(0),LEN(SYS(0))-AT("#",SYS(0))-1 )

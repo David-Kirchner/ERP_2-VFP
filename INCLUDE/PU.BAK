@@ -1,0 +1,1 @@
+nPU = GetPUfromForm( cForm, nConn )

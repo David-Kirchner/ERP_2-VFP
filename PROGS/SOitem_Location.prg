@@ -1,0 +1,75 @@
+PARAMETERS cSOitem
+*? SOitem_Location('  93797-01')
+********************************************************************
+** CHANGES HERE MUST BE REPLICATED TO:
+** Proc_Quotes
+********************************************************************
+PRIVATE lcReturn
+lcReturn = ''
+
+IF VARTYPE(cSOitem) != "C"
+	RETURN lcReturn
+ENDIF
+
+IF Proper_SO_item(cSOitem) =  Proper_SO_item('')
+	RETURN lcReturn
+ENDIF
+
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
+ENDIF
+IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
+ENDIF 
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	cSQL = "SELECT SP.AllowSub, SD.[Location]"
+	cSQL = cSQL + " FROM dbo.Stocklst_Detail SD "
+	cSQL = cSQL + " INNER JOIN dbo.StockLst_Process SP ON SD.ID_Detail = SP.ID_Detail "
+	cSQL = cSQL + " WHERE SP.SOitem = '"
+	
+	nSQLEXEC = SQLEXEC(nConn , cSQL , 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn ,  cSQL , 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+*			lcReturn = PrepareSQLtxt(tmpSqlAns.AllowSub,'AllowSub',1)
+			lcReturn = PrepareSQLtxt(tmpSqlAns.Location,'Location',10)
+		ENDIF
+
+		USE IN tmpSqlAns
+	ENDIF
+	
+	**************************	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","SOitem_Location.PRG",LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ENDIF
+ENDIF
+
+RETURN ALLTRIM(lcReturn)

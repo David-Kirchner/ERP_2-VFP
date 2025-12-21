@@ -1,0 +1,19 @@
+In FoxPro
+o = CREATEOBJECT("Create2DCode.BarCode")
+? 0.BarCodeString("1122334455ABC")
+
+namespace create2DCode
+{
+    public class BarCode
+    {
+        public static Image BarCodeImage(string code, int fontSize)
+        {
+			returns image
+		}
+		
+		public static String BarCodeString(string code)
+        {
+			returns encoded string
+		}	
+	}
+}

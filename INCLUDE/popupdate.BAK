@@ -1,0 +1,12 @@
+*take a look at the Mscomct2.ocx an ActiveX control from Microsoft.
+*It contains among other controls a MonthView control and a DateTimePicker control that looks very similar to the screen shot of Your first posting.
+
+PRIVATE m.dDate1,m.dDate2
+
+
+m.dDate1 = ThisForm.txtReceived.Value
+DO FORM "forms\popupdate.scx" WITH m.dDate1, 'Dock Date', This.Top, This.Left TO m.dDate2
+
+ThisForm.txtReceived.Value = m.dDate2
+ThisForm.txtReceived.Refresh
+ThisForm.txtReceived.SetFocus

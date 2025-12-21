@@ -1,0 +1,576 @@
+*IF NOT "PROC_DRAW" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*	SET PROCEDURE TO Progs\Proc_Draw ADDITIVE
+*ENDIF
+
+************************************************************************
+
+***********************************
+*PROCEDURE ( ,  )
+*PRIVATE
+*RETURN 
+*ENDPROC
+
+***********************************
+PROCEDURE Reduction_of_Area( Ao, A1 )
+*gamma
+PRIVATE nRA
+IF Do*Do = 0
+	nRA = Ao*A1
+ELSE
+	nRA = (Ao-A1)/Ao
+ENDIF
+*nRA = 1-(A1/Ao
+*percent reduction	[(Ao-A1)/Ao]*100
+RETURN nRA
+ENDPROC
+
+***********************************
+PROCEDURE Reduction_of_Area_D( Do, D1 )
+PRIVATE nRA	&&gamma
+* commercial practice rarely involves reductions above 30%
+* use *100 for Percentage
+IF Do*D1 = 0
+	nRA = 0
+ELSE
+	nRA = ((Do*Do) - (D1*D1))/(Do*Do)
+ENDIF
+
+RETURN nRA
+ENDPROC
+
+
+***********************************
+PROCEDURE AlphaRad(nDegAngle)
+PRIVATE nAlphaRad
+nAlphaRad = (nDegAngle/360)*(2*3.14156)
+RETURN nAlphaRad
+ENDPROC
+
+
+***********************************
+PROCEDURE DegreeAngle(nAlphaRad)
+PRIVATE nDegreeAngle
+nDegreeAngle = nAlphaRad*180/3.14156
+RETURN nDegreeAngle
+ENDPROC
+
+***********************************
+PROCEDURE Deformation_Zone(nAlphaRad,nRA)
+*deformation zone	 the ratio of Angle / reduction of area
+PRIVATE nDelta 
+nDelta = ( nAlphaRad/nRA)*(1+(1-nRA)^.5 ) ^2
+*also can use for deformation zone
+*nDelta = 4 * TAN( nRad)/ LN( 1/(1-nRA) )
+
+*!*	Delta above 1.3 the centerline hydrostatic stress is tensile
+*!*	 higher die angles result in increased values of centerline tension 
+*!*	 for higher ? values, plastic deformation occurs both upstream and downstream from this nominal deformation zone
+*!*	redundant work increase substantially as Delta increases.
+
+*!*	function of reduction and die angle
+*!*	 die designs involving low Delta values (i.e., low approach angles and/or large reductions)
+*!*	 should offer superior performance in terms of reduced wear, reduced requirements for intermediate annealing
+*!*	 reduced cuppy core breakage, improved final product ductility, and minimization of thinning beyond the die exit.
+*!*	Delta above 1.3, the centerline hydrostatic stress is tensile
+*!*	 low Delta die design fosters relatively uniform metal flow with reduced redundant work
+
+RETURN nDelta 
+ENDPROC
+
+
+***********************************
+PROCEDURE deform_zone_length(do, d1, nRad )
+*length of deform zone	Ld	(do-d1)/(2 TAN( nRad ))
+PRIVATE nLd
+nLd = (do-d1)/(2 * TAN( nRad ))
+RETURN nLd
+ENDPROC
+
+
+***********************************
+PROCEDURE die_contact_length(do, d1, nRad )
+*Die contact length		Lc	(do-d1)/(2 SIN( nRad ))
+PRIVATE nLc
+nLc = (do-d1)/(2 * SIN( nRad ))
+RETURN nLc
+ENDPROC
+
+
+
+***********************************
+PROCEDURE drawing_stress( nPull_force, nA1 )
+*sigma_d	Pulling force / A1
+PRIVATE sigma_d
+sigma_d = nPull_force * nA1
+RETURN sigma_d
+ENDPROC
+
+
+***********************************
+PROCEDURE back_stress( nBack_force, nA0 )
+*Back stress	 		sigma_b	back force / A0
+PRIVATE sigma_b
+sigma_b = nBack_force / nA0
+RETURN sigma_b
+ENDPROC
+
+
+***********************************
+*PROCEDURE die_pressure( )
+*P	 average die pressure acting upon the wire in the deformation zone
+*sophisticated drawing analyses indicate that the pressure is not uniform 
+* but higher near the drawing channel entrance and exit and lower in between.
+*PRIVATE nP
+*nP = 0
+*RETURN nP
+*ENDPROC
+	 		
+
+***********************************
+PROCEDURE draw_work(nForce, nLength)
+*Work=Force*length 		W = F * L
+PRIVATE nWork
+nWork = nForce * nLength
+RETURN nWork
+ENDPROC
+
+*!*	work /volume = force / area
+
+
+*!*						mu	coefficient of friction
+*!*						
+*!*						
+*!*	*		 the role of higher die angles in increasing Delta.
+*!*	Centerline stress	 sigma_m	 mean normal stress at the centerline, particularly at the point where sigma_m has the most tensile
+*!*			 great concern in drawing because they can lead to fracture at the wire center.
+*!*	 hydrostatic cl stress	sigma_m	 Above a Delta value of about 1.3, sigma_m becomes increasingly tensile
+
+
+
+
+***********************************
+PROCEDURE draw_force(nDrawStress, nArea1)
+* F = draw stress * A1
+PRIVATE nDrawForce
+nDrawForce = nDrawStress * nArea1
+RETURN nDrawForce
+ENDPROC
+
+***********************************
+PROCEDURE draw_stress_volume(nDraw_Work, nVolume)
+*!*	draw stress is sigma_d	 work divided by volume
+PRIVATE nDrawStress
+nDrawStress = nDraw_Work / nVolume
+RETURN nDrawStress
+ENDPROC
+
+***********************************
+PROCEDURE draw_stress_Area(nDraw_Force, nArea1)
+*!*	draw stress	sigma_d	Force / Area = F/A1 or W/(L*A1)
+PRIVATE nDrawStress
+nDrawStress = nDraw_Force/ nArea1
+RETURN nDrawStress
+ENDPROC
+
+
+***********************************
+PROCEDURE draw_stress_Pull_Back(nPull_Force, nArea1, nBackForce, nArea0)
+*!*	 drawing stress	=	Pull Force/A1 + Back Force/A0
+PRIVATE nDrawStress
+nDrawStress = (nPull_Force/ nArea1)+ (nBackForce/ nArea0)
+RETURN nDrawStress
+ENDPROC
+
+***********************************
+PROCEDURE draw_stress_Work(nWu, nWr, nWf)
+*!*	draw stress	sigma_d	is Work = (Wu + Wr + Wf)
+PRIVATE nDrawStress
+nDrawStress = nWu + nWr + nWf
+RETURN nDrawStress
+ENDPROC
+
+
+***********************************
+PROCEDURE work_uniform(nWork, nArea)
+*!*	work uniform	Wu	work per unit volume
+PRIVATE nWork
+nWork = nWork / nArea
+RETURN nWork
+ENDPROC
+
+***********************************
+PROCEDURE work_uniform_stress(nStress, nArea0, nArea1)
+*!*		Wu	avg flow stress*LN(Ao/A1)
+PRIVATE nWork
+nWork = nStress * Log( nArea0/ nArea1 )
+RETURN nWork
+ENDPROC
+
+
+*!*	***********************************
+*!*	PROCEDURE work_uniform_stress2(nStress, nArea0, nArea1)
+*!*	*		Wu	sigma_a * LN( 1/(1-?) )
+*!*	*		it should be understood that the flow stress can be expected to increase from die entry to die exit due to strain hardening.
+*!*	PRIVATE nWork
+*!*	nWork = nStress * Log(  )
+*!*	RETURN nWork
+*!*	ENDPROC
+
+
+***********************************
+PROCEDURE work_redundant(nWork, nArea)
+*	Wr	Redundant stress - The perpindiculat strain that is die pressure with no net effect.
+*!*	redundant work	Wr	related work that does not cancel.  This work divided by volume
+*!*	redundant work increase substantially as Delta increases.
+PRIVATE nWork
+nWork = (nWork / nArea)
+RETURN nWork
+ENDPROC
+
+
+*!*	***********************************
+*!*	PROCEDURE work_friction(nWork, nArea)
+*!*	*!*	friction work	Wf	friction
+*!*	PRIVATE nWork
+*!*	nWork = (nWork / nArea)
+*!*	RETURN nWork
+*!*	ENDPROC
+
+
+***********************************
+PROCEDURE drawing_stress_ratio(nDraw_Stress, nAve_Stress)
+*	drawing stress ratio	Sigma = sigma_d / sigma_a
+PRIVATE nStress_Ratio
+nStress_Ratio = (nDraw_Stress / nAve_Stress)
+RETURN nStress_Ratio
+ENDPROC
+
+
+***********************************
+PROCEDURE redundant_work_factor_Work(nWu,nWr,nWu)
+*!*	 redundant work factor	Phi
+*!*	Phi = 1 when there is NO redundant work
+*!*	redundant work factor		(Wu + Wr) / Wu
+PRIVATE nPhi
+nPhi = (nWu + nWr) / nWu
+RETURN nPhi
+ENDPROC
+
+***********************************
+PROCEDURE work_redundant_factor_Phi(nPhi,nStress,nRA)
+PRIVATE nWork
+*!*	redundant work	Wr	(? -1)Wu
+*!*		Wr	(Phi -1)* sigma *LN(1/(1-nRA))
+nWork = (nPhi - 1) *nStress *LOG(1/(1-nRA))
+RETURN nWork
+ENDPROC
+
+***********************************
+PROCEDURE redundant_work_factor_Dia(nDia,nLength_Contact)
+*!*	 redundant work factor	Phi
+*!*	Phi = 0.88 + 0.12* (nDia /nLength_Contact)
+PRIVATE nPhi
+nPhi = 0.88 + ( 0.12 * (nDia /nLength_Contact) )
+RETURN nPhi
+ENDPROC
+
+***********************************
+PROCEDURE redundant_work_factor_Delta(nDeformationZone)
+*!*	 redundant work factor	Phi
+*!*	Phi = 0.8+  ( Delta*4.4)
+PRIVATE nPhi
+nPhi = 0.88 + ( nDeformationZone * 4.4 )
+RETURN nPhi
+ENDPROC
+
+
+***********************************
+PROCEDURE die_pressure(nPhi,nAve_Stress)
+PRIVATE nDieP 
+*!*	Avg die pressure	P	Phi * sigma_a	
+*aka redundant work factor * draw stress
+*!*		die pressure reflects redundant and uniform work
+nDieP = (nPhi *nAve_Stress)
+RETURN nDieP 
+ENDPROC
+
+
+***********************************
+PROCEDURE redundant_work_factor_RA(nMu,nRad,nRA)
+*!*	 redundant work factor	Phi
+*!*	Wf	= mu * 1/TAN( nRad) * LN(1/(1-nRA))
+PRIVATE nWorkR
+nWorkR = nMu * (1/TAN( nRad)) * LOG(1/(1-nRA) )
+RETURN nWorkR
+ENDPROC
+
+***********************************
+PROCEDURE redundant_work_factor_Stress(nMu, nPhi, nStressAve, nDelta)
+*!*	 redundant work factor	Phi
+*!*	Wf	= 4 mu Phi sigma_a/ Delta
+PRIVATE nWorkR
+nWorkR = 4 *nMu * nPhi * ( nStressAve/ nDelta)
+RETURN nWorkR
+ENDPROC
+
+
+***********************************
+PROCEDURE coefficient_of_friction(nSigma_d, nSigma_a, nDelta, nRad )
+*!*	coefficient of friction	mu = (sigma_d/sigma_a) ((3.2/ Delta)+.9)^-1  -nRad		8.4
+PRIVATE nCOF
+nCOF = ((nSigma_d/nSigma_a)* ((3.2/ nDelta)+.9)^-1) -nRad	
+RETURN nCOF
+ENDPROC
+
+
+***********************************
+PROCEDURE work_friction_RA(nMu, nRAD, nPhi, nSigma_a, nDelta, nRA )
+*!*	frictional work	Wf	mu COT(nRad) Phi sigma_a * LN(1/(1-nRA))		5.9
+*!*		friction on bearing or land does not count!
+*!*		
+*!*		Issues of Optimum Die Angle and Delta
+*!*		Redundant Work (thus drawing stress) increase as Delta increase
+*!*		Friction Work (thus drawing stress) decrease as Delta increases
+PRIVATE nWF
+nWF = nMu * (COS(nRad)/SIN(nRAD)) * nPhi *nSigma_a * Log(1/(1-nRA))
+RETURN nWF
+ENDPROC
+
+
+
+***********************************
+PROCEDURE work_friction(nMu, nPhi, nSigma_a, nDelta, nRA )
+*!*		Wf	4*mu*Phi * sigma_a / Delta		5.10
+*!*		friction on bearing or land does not count!
+*!*		
+*!*		Issues of Optimum Die Angle and Delta
+*!*		Redundant Work (thus drawing stress) increase as Delta increase
+*!*		Friction Work (thus drawing stress) decrease as Delta increases
+PRIVATE nWF
+nWF = 4*nMu*nPhi*(nSigma_a/nDelta)
+RETURN nWF
+ENDPROC
+
+*!*	***********************************
+*!*	PROCEDURE drawing stress( )
+*!*	*!*	sigma_d	= sigma_a * LN(1/(1-nRA)) + (Phi-1) mu COT(nRad) * sigma_a * LN(1/(1-nRA)) + 4 mu * Phi * sigma_a /Delta
+*!*	*!*		drawing stress must remain below the flow stress at the die exit
+*!*	PRIVATE nDrawStress
+*!*	nDrawStress = sigma_d	= sigma_a * LN(1/(1-nRA)) + (Phi-1) mu COT(nRad) * sigma_a * LN(1/(1-nRA)) + 4 mu * Phi * sigma_a /Delta
+*!*	RETURN nDrawStress
+*!*	ENDPROC
+
+***********************************
+PROCEDURE drawing_stress_ratio_Stress(nSigma_d, nSigma_a)
+*!*	drawing stress ratio	sigma_d/sigma_a	=(4Phi/Delta) (nRad+mu)
+PRIVATE nStressRatio
+nStressRatio = (nSigma_d / nSigma_a )
+RETURN nStressRatio
+ENDPROC
+
+***********************************
+PROCEDURE drawing_stress_ratio_Phi(nPhi,nDelta,nRad,nMu))
+*!*	drawing stress ratio	(4Phi/Delta) (nRad+mu)
+PRIVATE nStressRatio
+nStressRatio = (4 * nPhi/nDelta) * (nRad +nMu)
+RETURN nStressRatio
+ENDPROC
+
+***********************************
+PROCEDURE drawing_stress_ratio_Delta(nDelta,nRad,nMu)
+*!*	drawing stress ratio	Sigma = [(3.2/Delta ) + 0.9]  (nRad + mu)
+PRIVATE nStressRatio
+nStressRatio = ((3.2/nDelta) +0.9) + (nRad + nMu)
+RETURN nStressRatio
+ENDPROC
+
+
+***********************************
+PROCEDURE drawing_limit(nSigma_d,nSigma_a)
+*!*	Drawing limit	Sigma	drawing limit is Sigma = 1
+*!*	Sigma =	sigma_d/sigma_a		delta draw stress / delta ave flow stress		
+PRIVATE nSigma
+nSigma = (nSigma_d/nSigma_a)
+RETURN nSigma
+ENDPROC
+
+***********************************
+PROCEDURE drawing_limit_Rad(nDelta, nRAD, nMu)
+*!*	Sigma = sigma_d/sigma_a		=[( 3.2/ Delta )+0.9] (nRad+mu)
+PRIVATE nSigma
+nSigma = (( 3.2/ nDelta )+0.9) * (nRad+nMu)
+RETURN nSigma
+ENDPROC
+
+***********************************
+PROCEDURE drawing_limit_RA(nDelta, nRA, nMu)
+*!*	Sigma = sigma_d/sigma_a	=  [( 3.2/ Delta )+0.9]*[Delta*nRA* [1+ (1-nRa) ^.5 ]^-2 +mu]
+PRIVATE nSigma
+nSigma = (( 3.2/ nDelta )+0.9)*(nDelta*nRA* (1+ (1-nRa) ^.5 )^-2) +nMu
+RETURN nSigma
+ENDPROC
+
+*!*	 Optimum Die Angles and Delta Values
+***********************************
+PROCEDURE delta_opt(nMu,nRA)
+*!*	Delta optimum	Delta_opt	= (1.89)( mu/nRa  )^.5 [1+(1 - nRa)^.5 ]
+PRIVATE nDelta_opt
+nDelta_opt = 1.89*(nMu / nRa)^.5 *(1+(1 - nRA)^.5 )
+RETURN nDelta_opt 
+ENDPROC
+
+***********************************
+PROCEDURE angle_opt(nMu,nRa)
+*!*	Angle optimum	Angle_opt	= (1.89)(  mu*nRa )^.5 [1+(1 - nRA)^.5 ] 5.16
+PRIVATE nAngle_opt
+nAngle_opt = 1.89*(nMu * nRa)^.5 * (1+(1 - nRA)^.5 )
+RETURN nAngle_opt
+ENDPROC
+
+
+
+*!*	Average die pressure	P	= Wu+Wr uniform and redundant work
+*!*	Ave press/Ave flow stress	= P/sigma_a	= Delta/4 + .06
+*!*	High levels of friction will, however, substantially decrease die pressure.
+*!*	Centerline tension in drawing is of great concern because it promotes the development and growth of porosity and ductile fracture of the wire at the centerline
+*!*	The average stress at the centerline is less compressive than at the die wall and may evenbe tensile. This is particularly the case for higher values of ?.
+
+
+*!*	Ave friction stress						
+*!*	back tension	sigma_d	= sigma_do + sigma_ab (in the absence of friction)				5.19
+*!*					sigma_d	= sigma_a[ (3.2/Delta) + .09]( nRad+mu ) + sigma_b[ 1- ( mu*nRa / nRad )(1 - nRA)^-1 ]				5.20
+
+*!*	Avg die pressure, back tension	Po	Avg die pressure in the absence of back tension and b = sigma_d/sigma_a	
+*!*		P /Po	= 1 - [2b/(2-Sigma)]	
+*!*	back tension	b	sigma_b/sigma_a	
+*!*	Sigma	= sigma_d/sigma_a	drawing stress ratio
+*!*	ave flow stress	Sigma 	 through two dies in tandem, the draw stress for the initial die constitutes a back stress for the final die	
+
+*!*	 just prior to die entry	T0	Temperature
+*!*	 work per unit volume	w	is equivalent to the drawing stress, sigma_d
+*!*	drawing stress	sigma_d	
+
+*!*			 the wire will be hotter at the surface than at the center.				
+*!*	 equilibrated temperature	Teq	T0  + sigma_d/ (C*rho)				6.1
+*!*		C is specific heat of the wire				
+*!*		rho	is density of the wire				
+*!*	adiabatic heat = sigma_d/ (C*rho)				
+*!*	Length equilibrium	Leq	(velocity *C*rho dia^2) /(24K)				6.2
+*!*		K	 thermal conductivity				
+*!*		
+*!*	uniform work	Tuw	 adiabatic drawing temperature increase associated with uniform work				
+*!*		Tuw = sigma_a * LN( 1/(1-nRa) )/ (C*rho)				6.3
+*!*	 redundant work	= Trw = (Delta-1) sigma_a * LN( 1/(1-nRa) )/ (C*rho)				6.4
+*!*	 total contribution	Tw = Delta sigma_a * LN( 1/(1-nRa) )/ (C*rho)				6.5
+*!*	wire temperature	Tw					
+
+
+*!*	 adiabatic drawing temperature increase associated with friction work
+*!*	friction temperature	Tf = mu* COT(nRad) Delta * sigma_a * LN( 1/(1-nRA) )/ (C*rho)
+*!*	 frictional heating		 (1.25) * mu * Delta * sigma_a * [(velocity * Ld)/(C * rho * K)]^.5
+*!*	adiabatic temp increase	 DeltaTd = Delta * sigma_a *LN(1/1-nRA)/ C*rho
+
+
+
+
+*!*	Tmax	 wire surface temperature at the die exit
+*!*	Tmax	(1.25) mu * Delta * sigma_a *((vLd)/(C rho K))^.5 + Delat *sigma_a * LN( 1/(1-nRa) )/ (C rho)  +T0
+*!*	v	 drawing speed
+*!*		
+*!*	mu	The coefficients of friction in drawing with oil-based lubricants directly reflect the viscosities of the lubricants
+*!*		 frictional stresses increase with increasing viscosity in the functional temperature range of the lubricant
+*!*		
+*!*		Frictional stresses with solid soap lubrication most directly reflect the shear strengths of the lubricants
+*!*		 increases in temperature during drawing may be beneficial as well as detrimental
+
+
+*!*			Drawing Speed Ch7				
+*!*	Drawing Speed		Practical drawing speeds range from 10 to 5000 m/min.				
+*!*	 volume does not change	V0 A0	= V1 A1				7.1
+*!*		A0/A1	= V1/V0				7.2
+*!*	 wire velocity	V 					
+*!*	pulling speed	V1	3.14 * D * rpm 				7.3
+*!*	diameter	D	diameter of bar, rod or wire				
+*!*	rpm	block speed in revolution per unit time				
+*!*							
+*!*	 power	F * V1	 drawing force times the exit speed				
+*!*	power		newton meter per second = joules persecond = watts				
+*!*		F	force in Newtons				
+
+
+*!*	 true strain rate	 d_epsilon_t/dt	 since strain is dimensionless, the units of strain rate are s? 1				
+*!*	average strain rate	 d_epsilon_t/dt	= epsilon_t *(V0+V1) / (2Ld)				7.4
+*!*		Ld	length of the deformation zone				
+*!*	 frictional heating		 (1.25)mu * Delta * sigma_a *[(v * Ld)/(C * rho * K)]^.5				
+
+*!*	  equilibration temperature
+*!*	Leq	= (v C*rho d^2) /(24K)
+*!*	Teq	= Leq/ v = (C*rho* d^2) /(24K)
+*!*	Teq	= (1 + mu COT(nRad)) Delta * sigma_a * LN( 1/(1-nRa) )/ (C rho) +To
+*!*	Teq	= T0 + sigma_d/(Crho)
+
+*!*	increased drawing speed can increase drawing temperature
+*!*	eta	is lubricant viscosity
+*!*	eta * v/P	lubricant film thickness increases with the index (eta v/P)
+*!*	drawing speed	v	
+*!*	die pressure	P	
+
+
+*!*	redundant work factor is Theta
+*!*	Theta = ratio of total deformation work to the deformation work implied by dimensional change
+*!*	Theta = 0.8 + ( Delta /4.4)
+*!*	Theta = (Delta/6) + 1
+*!*		 Relatively sharp blends are recommended for the drawing of high carbon steel and stainless steel
+*!*		 A blend likely exposes the last stages of the drawing pass to the conditions of a lower die angle and thus a lower ?
+*!*		This should reduce redundant work, die pressure, and centerline tension at the end of the pass.
+*!*		This can be a big factor in the case of light passes, where the nominal, overall ? may be uncomfortably large
+
+*!*			 Archard equation, is widely used for general analysis of wear behavior:				
+*!*			Vwear / Lsliding = qF/H				9.1
+*!*		Vwear	the volume of material worn away				
+*!*		Lsliding	the distance of sliding	Length of wire			
+*!*		F	Force				
+*!*		H 	Hardness				
+*!*		 q	proportion constant				
+*!*	delta = average die diameter increase due to wear.				
+*!*	(not sigma)	delta = P(2 Lsliding q /H)				9.2
+*!*	 Lsliding		(H delta)/(2qP)				9.3
+*!*	t life		(H delta)/(2vqP)				9.4
+*!*		v	drawing speed				
+*!*	Mass	M	( 3.14/4)Lsliding Pd^2				9.5
+*!*		p	wire density				
+*!*		d	as-drawn wire diameter				
+*!*	t life		Qd / (vP)				9.6
+*!*	constant	Qd	(H delta)/(2q)				
+*!*							
+*!*	Poor lubrication nearly always leads to shortened die life.				
+*!*	Die wear will generally be increased by increased die pressure, as caused by lighter reductions, higher die angles, higher Delta values, and higher wire flow stress.
+
+*!*					
+*!*	To divide up a sequence of passes from A0 to A1 into n equal area reductions, true strain must be calculated				
+*!*	True strain	epsilon_t 	LN(Ao/A1)				
+*!*		 rn	1- EXP( - epslion * tn )				
+*!*	die angle	alpha = gamma(1+(1-gamma)^.5) ^-2  * Delta				9.7
+
+*!*	Pass schedules designed for maximum reduction in each pass should involve a constant ratio of draw stress				
+*!*	draw stress	sigma_d = sigma_a * [(3.2/Delta ) + 0.9]  (alpha + mu)  	=	sigma_a * Sigma		5.13
+*!*	Sigma = sigma_d / sigma_a				
+
+
+*!*	sigma_0 = K * epsilon ^n  for rt work-hardening	
+*!*	sigma_0	representing strength or true flow stress 	
+*!*	epsilon	as true strain	
+*!*	K	 strength coefficient	
+*!*	^n 	work-hardening exponent	
+*!*					
+*!*	High Delta drawing, leading to greater degrees of redundant work and a greater potential for nonuniformity.
+*!*	Worn dies, since wear and the related interference with lubrication may not be circumferentially uniform
+*!*	Die misalignment, including intentional misalignments to create cast.
+*!*	Misalignments of the “wire route” with the die holder (influences of capstans, guides, etc.).
+*!*	Dies drilled off center, or with asymmetric blends.
+*!*	Vibrations along the wire route.
+
+*!*	 A light reduction may be associated with a high Delta value. 
+*!*	 Equation (5.18) indicates that an increased Delta value will increase die pressure, which in turn should increase die wear
+
+

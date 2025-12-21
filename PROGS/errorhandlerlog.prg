@@ -1,0 +1,169 @@
+PARAMETER Pnerror, pMess1EHL, Pmess, Pcprogram, Pnlineno
+*ON ERROR DO (SYS(5)+SYS(2003)+"\Progs\ErrorHandlerLog.prg") WITH ERROR(),MESSAGE(1),MESSAGE(),PROGRAM(),LINENO()  &&Set in Main.prg
+*Called before SYS(2003) is SET to \MEM\
+*	IF "\MEM" $ SYS(2003)
+IF TYPE('Pnerror') <> "N"
+	Pnerror = 0
+ENDIF	
+IF TYPE('Pmess') <> "C"
+	Pmess = "No Message"
+ENDIF	
+IF TYPE('pMess1EHL') <> "C"
+	pMess1EHL = "No Message"
+ELSE
+	IF Pmess = "No Message"
+		IF LEN(pMess1EHL) > 254
+			*place the full message here.
+			Pmess = pMess1EHL
+		ENDIF
+	ENDIF
+ENDIF	
+
+IF TYPE('Pcprogram') <> "C"
+	Pcprogram = "No Program"
+ENDIF	
+IF TYPE('Pnlineno') <> "N"
+	Pnlineno = 0
+ENDIF	
+
+************
+IF Pmess = "No Message" OR LEN(ALLTRIM(Pmess)) = 0
+	*place the full message here.
+	Pmess = pMess1EHL
+ENDIF
+			
+*****************
+
+
+DO CASE
+CASE Pnerror = 13 AND pMess1EHL = "SELECT QDBsendTo"
+	MESSAGEBOX("Seams like HPA is already loaded, Please close and use the running program!"+CHR(13)+"Could not 'SELECT QDBSendTo'",0+16,"You cannot run the HPA App more than once!")
+	CANCEL
+CASE Pnerror = 13 AND pMess1EHL = "SELECT Quotes"  &&2011-11 most of HPA can be run simutanously. QDB is an Exclusive lock thou!
+	MESSAGEBOX("Seams like HPA Quote is already running, Please finish the previous Quote!"+CHR(13)+"Could not select Alias 'QDB'",0+16,"You cannot run this part of HPA App more than once!")
+	CANCEL
+CASE Pnerror = 108 AND Pcprogram = "HPA.Load"
+	MESSAGEBOX("Seams like HPA is already loaded, Please close and use the running program!",0+16,"You cannot run the HPA App more than once!")
+	CANCEL
+CASE Pnerror = 1104
+	WAIT WINDOW "Please wait while trying to get file!" TIMEOUT 3
+	
+	
+	WhatDo=MESSAGEBOX('Error number: ' + LTRIM(STR(Pnerror))+CHR(13)+' Error: ' + pMess1EHL+CHR(13)+' Error: ' + Pmess+CHR(13)+ 'Line of code with error: ' + LTRIM(STR(Pnlineno))+CHR(13)+"Do you want to continue, try again?",3+16+0,"ERROR: Cancel to STOP.")
+	**1	OK  2Cancel
+	IF EMPTY(WhatDo) 
+		WhatDo = 2
+	ENDIF
+	
+
+	PRIVATE cLastVersion, nLastVersion 
+	cLastVersion = Get_HPAVersion(.F.,"STABLE")
+	IF VARTYPE(cLastVersion) = "C"
+		nLastVersion = VAL(RIGHT( LEFT(cLastVersion,AT(".",cLastVersion)-1), LEN(LEFT(cLastVersion,AT(".",cLastVersion)-1))-8))*10000000 +VAL(RIGHT(cLastVersion,LEN(cLastVersion)-AT(".",cLastVersion)))*10000
+	ELSE
+		nLastVersion = 0
+	ENDIF
+			 
+	IF WhatDo = 7 &&No
+		RETURN
+	ENDIF
+	IF WhatDo = 2 &&Cancel
+		Cancel
+	ENDIF
+	IF WhatDo = 6 &&Yes
+		RETRY
+	ENDIF
+	
+	
+	RETRY
+CASE Pnerror = 1429 AND UPPER(pMess1EHL) = "SENDQUOTES.CMDEMAIL.CLICK"
+	RETURN
+CASE Pnerror = 1466	&&Connection handle is invalid.
+	*Nothing to do here
+CASE Pnerror = 1526  &&An ODBC error has occurred
+	=AERROR(aErrorArray)
+	
+	aErrorArray1 = IIF(ISNULL(aErrorArray(1)),0,aErrorArray(1))
+	aErrorArray2 = IIF(ISNULL(aErrorArray(2)),'',aErrorArray(2))
+	aErrorArray3 = IIF(ISNULL(aErrorArray(3)),'',aErrorArray(3))
+	aErrorArray4 = IIF(ISNULL(aErrorArray(4)),'',aErrorArray(4))
+	aErrorArray5 = IIF(ISNULL(aErrorArray(5)),0,aErrorArray(5))
+	aErrorArray6 = IIF(ISNULL(aErrorArray(6)),0,aErrorArray(6))
+	
+	cSTR = 'Error number: ' + LTRIM(STR(aErrorArray1))+CHR(13)+;
+	 'Error: ' + ALLTRIM(aErrorArray2)+CHR(13)+;
+	 'ODBC: ' + ALLTRIM(aErrorArray3)+CHR(13)+;
+	 'SQL state: ' + ALLTRIM(aErrorArray4)+CHR(13)+;
+	 'ODBC Error: ' + ALLTRIM(STR(aErrorArray5 ))+CHR(13)+;
+	 'connection handle: ' + ALLTRIM(STR(aErrorArray6 ))
+	 
+	nRet=MESSAGEBOX(cSTR +CHR(13)+CHR(13)+;
+	 'Do you want to retry?';
+	 ,4+16,"ODBC Error, Please wait and retry")
+	
+	*RecordError( Pnerror, pMess1EHL, Pcprogram, Pnlineno, cSTR )
+		 
+
+	IF nRet = 6
+		RETRY
+	ELSE
+		RETURN
+	ENDIF
+	
+CASE Pnerror = 1705 &&File access is denied
+	WAIT WINDOW Pcprogram + "- File access is denied." 	
+	*RETURN	&&Do not return from here - do the RecordError() First.
+	
+CASE pnError = 1709 &&Database object is being used by someone else.
+	WAIT WINDOW "Please wait while database server is busy!" TIMEOUT 30
+	RETRY
+	*RETURN
+CASE Pnerror = 1925 &&Unknown member "name" (Error 1925)
+	IF Pcprogram = "HPA.INIT"
+		MESSAGEBOX( "Please reinstall HPA App."+"Press 'Y' to continue anyways.", 4+16+256, "OLE Component missing.")
+		pMess1EHL = "Please reinstall HPA App."
+		RecordError( Pnerror, pMess1EHL, Pcprogram, Pnlineno, pMess )
+		CANCEL
+	ENDIF
+CASE LOWER(LEFT(ALLTRIM(pMess1EHL),10)) = "nholdcalcs" 
+	MESSAGEBOX("Can not Calculate Value!",16,"ILLEAGAL CHARACTER")
+	RETURN
+*OTHERWISE
+ENDCASE
+
+
+*IF 'create cursor HPAdata from array' $ pMess 
+*	pMess = ''   &&Not sure why this would be needed.
+*ENDIF
+
+
+WhatDo = MESSAGEBOX('Error number: ' + LTRIM(STR(Pnerror))+CHR(13)+'Error: ' + pMess1EHL+CHR(13)+'Error: ' + Pmess+CHR(13)+ 'Line of code with error: ' + LTRIM(STR(Pnlineno))+CHR(13)+"Do you want to continue ?",3+16+0,"ERROR: answer No to DEBUG, Cancel to STOP.")
+**1	OK  2Cancel
+IF EMPTY(WhatDo) 
+	WhatDo = 2
+ENDIF
+
+
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
+ENDIF
+IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
+ENDIF
+
+*Proc_ERP:RecordError and RecordError.prg
+RecordError(Pnerror, pMess1EHL, Pcprogram, Pnlineno, pMess)
+*MESSAGEBOX("RecordError.prg will not be run to Email this message.",0,"Skipping Email!")
+	 
+IF WhatDo = 7 &&No
+	DEBUG
+	SUSPEND
+	RETURN
+ENDIF
+IF WhatDo = 2 &&Cancel
+	Cancel
+ENDIF
+IF WhatDo = 6 &&Yes
+	RETURN
+ENDIF
+

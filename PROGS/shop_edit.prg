@@ -1,0 +1,147 @@
+
+
+IF FILE(SYS(5)+SYS(2003) +"\HPASetup.MEM")
+	RESTORE FROM (SYS(5)+SYS(2003) +"\HPASetup.MEM") ADDITIVE
+ELSE
+
+	IF FILE(SYS(5)+SYS(2003) +"\HPASetup.MEM")
+		RESTORE FROM (SYS(5)+SYS(2003) +"\HPASetup.MEM") ADDITIVE
+		SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\HPASetup.MEM")
+		DELETE FILE (SYS(5)+SYS(2003) +"\HPASetup.MEM") 
+	ELSE
+		IF FILE(SYS(5)+SYS(2003)+"\MEM\HPASetup.MEM")
+			RESTORE FROM (SYS(5)+SYS(2003)+"\MEM\HPASetup.MEM") ADDITIVE
+			SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\MEM\HPASetup.MEM")
+			*DELETE FILE ("C:\HPASetup.MEM") 
+		ELSE
+			MESSAGEBOX("Run the HPA Setup to set defaults.",48,"Set Defaults")
+			DO FORM LOCFILE("c:\Program Files\HPA\SetupHPA.SCX","SCX","SetupHPA")
+			
+			IF FILE(SYS(5)+SYS(2003) +"\HPASetup.MEM")
+				RESTORE FROM (SYS(5)+SYS(2003) +"\HPASetup.MEM") ADDITIVE
+			ELSE
+				IF FILE(SYS(5)+SYS(2003)+"\MEM\HPASetup.MEM")
+					RESTORE FROM (SYS(5)+SYS(2003)+"\MEM\HPASetup.MEM" ADDITIVE
+					*SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\MEM\HPASetup.MEM")
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
+
+IF TYPE("LoginAppHome") != "C"
+	LoginAppHome = "C:\Program Files\HPA\"
+	IF FILE(LoginAppHome+"HPA.EXE")
+		SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\HPASetup.MEM")
+	ELSE
+		IF FILE("C:\Program Files (x86)\HPA\"+"HPA.EXE")
+			LoginAppHome = "C:\Program Files (x86)\HPA\"
+			SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\HPASetup.MEM")
+		ENDIF
+	ENDIF
+ENDIF
+
+IF NOT FILE(LoginAppHome+"HPA.EXE") AND NOT FILE(LoginAppHome+"Hpa.APP")
+	MESSAGEBOX("Run the HPA Setup to set defaults.",0,"Home Directory not found!")
+	
+	DO LOCFILE("c:\Program Files\HPA\SetupHPA.EXE","EXE","SetupHPA")
+	*RESTORE FROM C:\HPASetup.MEM ADDITIVE
+	RESTORE FROM (SYS(5)+SYS(2003)+"\MEM\HPASetup.MEM" ADDITIVE
+ENDIF
+
+IF NOT ( FILE(LoginAppHome+"HPA.EXE") OR FILE(LoginAppHome+"Hpa.APP") )
+	MESSAGEBOX("Run the HPA Setup to set defaults."+CHR(13)+CHR(13)+"SYS(5)="+SYS(5)+CHR(13)+"SYS(2003)="+SYS(2003),48,"Home Directory not found!")
+
+	DO FORM LOCFILE("C:\Program Files\HPA\SetupHPA.SCX","SCX","SetupHPA")
+	*RESTORE FROM (SYS(5)+SYS(2003) +"\HPASetup.MEM") ADDITIVE
+	RESTORE FROM (SYS(5)+SYS(2003)+"\MEM\HPASetup.MEM" ADDITIVE
+ENDIF
+
+IF FILE(LoginAppHome+"Hpa.EXE") OR FILE(LoginAppHome+"Hpa.APP")
+	SET DEFAULT TO (LoginAppHome)
+ENDIF
+
+*IF VARTYPE(LoginServer) = "C"
+*	SET PATH TO (LoginServer);(LoginAppHome)
+*ELSE
+*	SET PATH TO (LoginAppHome)
+*ENDIF
+
+
+SET PATH TO &&Empty to Clear out
+SET PATH TO (LoginAppHome)
+SET PATH TO (LoginAppHome)+"PROGS\" ADDITIVE
+SET PATH TO (LoginAppHome)+"MEM\" ADDITIVE 
+
+SET PATH TO (LoginAppHome)+"FORMS\" ADDITIVE 
+SET PATH TO (LoginAppHome)+"GRAPHICS\" ADDITIVE 
+SET PATH TO (LoginAppHome)+"HELP\" ADDITIVE 
+SET PATH TO (LoginAppHome)+"ICO\" ADDITIVE 
+SET PATH TO (LoginAppHome)+"INCLUDE\" ADDITIVE 
+SET PATH TO (LoginAppHome)+"LIBS\" ADDITIVE 
+
+SET PATH TO (LoginAppHome)+"MENUS\" ADDITIVE 
+
+SET PATH TO (LoginAppHome)+"REPORTS\" ADDITIVE 
+************************************************
+
+SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_HPA.prg") ADDITIVE
+SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_Quotes.prg") ADDITIVE
+SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_SQL.prg") ADDITIVE
+SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_Setup.prg") ADDITIVE
+
+* Establish a global error handler.
+* The error events associated with objects
+* take precedence over ON ERROR routines.
+
+ON SHUTDOWN DO myShutDown
+
+cOldError = ON("ERROR")
+*ON ERROR DO SolutionErrHandle
+*ON ERROR ErrorHandlerLog(ERROR(),MESSAGE(),MESSAGE(1),PROGRAM(),LINENO())
+ON ERROR DO (SYS(5)+SYS(2003)+"\Progs\ErrorHandlerLog.prg") WITH ERROR(),MESSAGE(1),MESSAGE(),PROGRAM(),LINENO()
+
+
+
+_SCREEN.Icon = "\GRAPHICS\HPAlloy.ICO"
+_SCREEN.Caption="Shop Edit StockLst"
+
+_SCREEN.Height = 1
+_SCREEN.Width = 200
+
+
+************************************
+SET DEFAULT TO (LoginAppHome+"MEM\") 
+*add the MEM hear so the SYS(2003) works with SET PROC code block and ON ERROR.
+*This Changes the SYS(2003)!!
+
+
+PUSH MENU _msysmenu
+DO \Menus\Shop_Edit.mpr
+	
+	
+	
+* Run the main form and establish the event loop
+
+DO FORM Forms\Shop_StockLst_Edit_wt1
+READ EVENTS
+
+
+* Reset the global error handler
+ON ERROR &cOldError
+
+
+* Project resolution markers for API functions
+
+Procedure MAINHWND
+Procedure  _WHTOHWND
+Procedure  _WONTOP
+Procedure  GetFileVersion
+
+*********************************************************
+PROCEDURE myShutDown
+CLEAR EVENTS
+ON ShutDown
+QUIT
+*********************************************************

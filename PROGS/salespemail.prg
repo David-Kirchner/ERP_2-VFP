@@ -1,0 +1,118 @@
+PARAMETERS pcSalesP, pCover, plAddCover
+*? SalesPemail('D')
+********************************************************************
+** CHANGES HERE MUST BE REPLICATED TO:
+** Proc_Quotes
+********************************************************************
+
+PRIVATE lcReturnName
+lcReturnName = " "
+
+IF VARTYPE(pcSalesP) != "C"
+	RETURN lcReturnName
+ENDIF
+
+IF VARTYPE(plAddCover) != "L"
+	plAddCover = .F.
+ENDIF
+
+PRIVATE cCover
+cCover = ''
+
+IF VARTYPE(pCover) = "C"
+	cCover = UPPER(pCover)
+	*Always replace SalesP 1
+	IF pcSalesP = "1" AND LEN(cCover) > 0
+		pcSalesP = cCover
+	ENDIF
+ENDIF
+
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
+ENDIF
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+
+	cSQL = "SELECT S2.Ans FROM dbo.AppSetup S1 WITH(NOLOCK) , dbo.AppSetup S2 WITH(NOLOCK) "
+	cSQL = cSQL + " WHERE S1.Prp = 'SalesP' AND S1.Ans = '"+pcSalesP+"' AND S2.Un = S1.Un AND s2.prp='E-mail'" 
+	
+	nSQLEXEC = SQLEXEC(nConn , cSQL , 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn ,  cSQL , 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF VARTYPE(tmpSqlAns.ANS) = "C"
+			lcReturnName = ALLTRIM(PrepareSQLemail(tmpSqlAns.ANS,'Email',100))
+		ENDIF
+
+		USE IN tmpSqlAns
+	ENDIF
+	**************************
+	IF plAddCover
+		IF LEN(cCover) > 0
+			pcSalesP = cCover
+			
+			cSQL = "SELECT S2.Ans FROM dbo.AppSetup S1 WITH(NOLOCK) , dbo.AppSetup S2 WITH(NOLOCK) "
+			cSQL = cSQL + " WHERE S1.Prp = 'SalesP' AND S1.Ans = '"+pcSalesP+"' AND S2.Un = S1.Un AND s2.prp='E-mail'" 
+			
+			nSQLEXEC = SQLEXEC(nConn , cSQL , 'tmpSqlAns' )
+			DO WHILE nSQLEXEC = 0
+				WAIT WINDOW 'SQL' TIMEOUT 1
+				nSQLEXEC = SQLEXEC(nConn ,  cSQL , 'tmpSqlAns' )
+			ENDDO
+			IF nSQLEXEC < 0
+				SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+			ENDIF
+			
+			IF USED('tmpSqlAns')
+				IF VARTYPE(tmpSqlAns.ANS) = "C"
+					IF LEN(lcReturnName) > 0
+						lcReturnName = ";"+lcReturnName 
+					ELSE 
+						lcReturnName = ''
+					ENDIF
+					PRIVATE cReturn2
+					cReturn2 = ALLTRIM(PrepareSQLemail(tmpSqlAns.ANS,'Email',100))
+					IF LEN(cReturn2) > 0
+						lcReturnName = cReturn2 + lcReturnName 
+					ENDIF
+				ENDIF
+
+				USE IN tmpSqlAns
+			ENDIF
+			
+		ENDIF
+	ENDIF	
+
+	**************************	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_setup:SalesPDescription",LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ENDIF
+ENDIF
+
+RETURN ALLTRIM(lcReturnName)

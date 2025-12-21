@@ -1,0 +1,4 @@
+*PROCEDURE myShutDown
+CLEAR EVENTS
+ON ShutDown
+QUIT

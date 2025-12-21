@@ -1,0 +1,53 @@
+StockLst_Process Flow 
+******************************************************************
+*Create INCOMING PO,		Edit INCOMING PO
+*Create INCOMING WO_Detail,	Edit INCOMING WO_Detail
+*Create SELECTED SO,	 	Edit SELECTED SO
+*Create SELECTED WO,		Edit SELECTED WO
+
+***************************
+*Create INCOMING PO
+***************************
+
+PurchaseOrder Class
+PurchaseOrder.SaveStockLst( cAlloy,cForm,cCC,cCL,nPieces,nThck, nSz2, nSz3, nWeight, nShipWhere, cSOitem, cPOitem )
+
+
+PurchaseOrder.StockLst_Process_Custom_Save( nID_Detail, cSOitem, cSalesPerson, nPPC, cComment, dDueDate, cPoItem, cTableName)
+  UPDATE dbo.StockLst_Process SET *
+
+PurchaseOrder.StockLst_Process_Save()
+  UPDATE dbo.StockLst_Process SET 
+
+*****************************
+*Edit INCOMING PO
+
+
+***************************
+*Create INCOMING WO_Detail
+***************************
+
+***************************
+*Edit INCOMING WO_Detail
+
+
+*****************************
+*Create SELECTED SO WO_Detail
+***************************
+
+*****************************
+*Edit SELECTED SO
+
+EditSalesOrder.SaveQuote()
+  UPDATE dbo.StockLst_Process SET QTY
+
+EditSalesOrder.SaveSO()
+  UPDATE dbo.StockLst_Process SET DueDate
+
+EditSalesOrder.cmdDeleteSO_Dist.Click()
+  Remove_ID_Detail_Process(nID_Detail_Pro,"SOitem",cSOitem,cTbl,ThisFormSet.nConnHandle,"CANCELLED")
+
+	
+
+
+

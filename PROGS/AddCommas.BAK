@@ -1,0 +1,57 @@
+PARAMETERS pTextNumber
+*AddCommas
+
+IF VARTYPE(pTextNumber) != "C"
+	pTextNumber = ''
+ENDIF
+PRIVATE cReturnChar, nPositionDecimal, nNumberCommas
+cReturnChar = ''
+nPositionDecimal = AT(".",pTextNumber)
+
+PRIVATE PreDecimalTxt, PostDecimalTxt
+IF nPositionDecimal > 0
+	PreDecimalTxt = LEFT(pTextNumber,nPositionDecimal-1)
+	PostDecimalTxt = RIGHT(pTextNumber,LEN(pTextNumber)-nPositionDecimal)
+ELSE
+	PreDecimalTxt	= pTextNumber
+	PostDecimalTxt	= ''
+ENDIF
+
+PreDecimalTxt = ALLTRIM(PreDecimalTxt)
+
+IF LEN(PreDecimalTxt) > 1
+	nNumberCommas = FLOOR((LEN(PreDecimalTxt)-1)/3)
+	IF nNumberCommas = 0
+		IF LEN(PostDecimalTxt) = 0
+			cReturnChar = PreDecimalTxt
+		ELSE
+*			IF LEN(PostDecimalTxt)>0
+				cReturnChar = PreDecimalTxt+"."+PostDecimalTxt 
+*			ELSE
+*				cReturnChar = PreDecimalTxt
+*			ENDIF
+		ENDIF
+	ELSE
+		PRIVATE nIteration, nLengthPDT, nInsComma 
+		
+		nInsCommaL = 0
+		nCommaToGo = nNumberCommas 
+		
+		FOR nIteration = 1 TO nNumberCommas 
+			nCommaToGo = nNumberCommas - nIteration 
+			nLengthPDT = LEN(PreDecimalTxt)
+			nInsCommaL =  (3 * nIteration) + nIteration-1
+
+			
+			PreDecimalTxt = LEFT(PreDecimalTxt,nLengthPDT-nInsCommaL)+","+RIGHT(PreDecimalTxt,nInsCommaL)
+			
+		NEXT
+		IF LEN(PostDecimalTxt)>0
+			cReturnChar = PreDecimalTxt+"."+PostDecimalTxt 
+		ELSE
+			cReturnChar = PreDecimalTxt
+		ENDIF
+	ENDIF
+ENDIF
+
+RETURN cReturnChar

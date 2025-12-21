@@ -1,0 +1,11 @@
+ PARAMETERS cSYS0
+ *cUser = PCUser( SYS(0) )
+ 
+ IF VARTYPE(cSYS0) != "C"
+ 	cSYS0 = SYS(0)
+ ENDIF
+ 
+ PRIVATE cReturnUser 
+* cReturnUser = ALLTRIM(RIGHT(cSYS0,LEN(cSYS0)-AT('#',cSYS0)-1))
+ cReturnUser = ALLTRIM( RIGHT(SYS(0),AT("#",SYS(0))) )
+ RETURN cReturnUser 

@@ -1,0 +1,69 @@
+\\Windfall.HPA.local\SQL\HPAdata.xml
+
+IF VARTYPE(gGlobalServer) = "U"
+	PUBLIC gGlobalServer
+ENDIF
+
+SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
+DO GetSQLServers
+
+Proc_Setup:
+get_SQLSTRINGCONNECT()
+SAVE ALL LIKE cWindfallServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM" )
+SAVE ALL LIKE cTiptonServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM" )
+
+get_SQL_ServerName()
+*XMLTOCURSOR( "\\Windfall.HPA.local\SQL\HPAdata.xml", 'HPAdata', 512)
+XMLTOCURSOR( "\\FileServer\SQL\HPAdata.xml", 'HPAdata', 512)
+
+IF USED('HPAdata')
+	IF VARTYPE( HPAdata.WindfallServer ) = "C"
+		cWindfallServer1 = RTRIM(HPAdata.WindfallServer)
+		gGlobalServer = cWindfallServer1 
+		lFoundWindfall = .T.
+	ENDIF
+	IF VARTYPE( HPAdata.TiptonServer ) = "C"
+		cTiptonServer1 = RTRIM(HPAdata.TiptonServer)
+	ENDIF
+	IF VARTYPE( HPAdata.BackUpServer ) = "C"
+		cBackUpServer = RTRIM(HPAdata.BackUpServer)
+	ENDIF
+	USE IN HPAdata
+	
+	
+RedundantServer() &&to write XML
+
+*******************************************
+
+PRIVATE cSQLServer 
+IF VARTYPE(gGlobalServer)="C"
+	cSQLServer = gGlobalServer 
+ELSE
+	RecordTest( 'Record Test Data.', PROGRAM(), LINENO(1),'gGlobalServer was not set!')
+ 	cSQLServer = "BOBWHITE"
+ENDIF
+*"+cSQLServer+"
+
+*******************************************
+SET PROCEDURE TO Progs\Proc_Setup ADDITIVE HTML_PO()
+
+get_Email_ServerDir()
+cFullSQLPath = "\\"+cSQLServer+"\Email\"
+
+get_Server_Email()
+cSQLServer+"@HPAlloys.com"
+
+ get_Report_Server()+"
+cURL = "https://"+cSQLServer+"/ReportServer/Pages/ReportViewer.aspx?"
+
+PRIVATE loHyperlink
+loHyperlink = CREATEOBJECT("Hyperlink")
+loHyperlink.navigateto(cText)
+RELEASE loHyperlink
+
+get_SQL_Path()
+cFullSQLPath = "\\"+cSQLServer+"\HPAData\Quotes\"
+
+
+APPEND FROM (cFullSQLPath+"HPA SQL GreenSheet.CSV") CSV
+ "\\RAPTOR\HPAData\Quotes\CUSTOMER TERMS and List.CSV"

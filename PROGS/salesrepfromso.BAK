@@ -1,0 +1,84 @@
+PARAMETERS pnSO
+
+********************************************************************
+** CHANGES HERE MUST BE REPLICATED TO:
+** Proc_SQL:SalesRepfromSO() 
+********************************************************************
+
+IF VARTYPE(pnSO) = "C"
+	pnSO = VAL(pnSO)
+ENDIF
+
+IF VARTYPE(pnSO)<> "N"
+	RETURN ' '
+ENDIF
+
+IF pnSO = 0
+	RETURN ' '
+ENDIF
+
+*********
+PRIVATE lcReturnName
+lcReturnName = " "
+
+
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
+ENDIF
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+
+	cSQL = "SELECT SalesRep FROM dbo.Sales_No WHERE SalesNum = "+STR(pnSO)
+	
+	nSQLEXEC = SQLEXEC(nConn , cSQL , 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn ,  cSQL , 'tmpSqlAns' )
+	ENDDO
+	
+	IF nSQLEXEC < 0  &&Try again. Problem query!
+		nSQLEXEC = SQLEXEC(nConn , cSQL , 'tmpSqlAns' )
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn ,  cSQL , 'tmpSqlAns' )
+		ENDDO
+	ENDIF
+	
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF VARTYPE(tmpSqlAns.SalesRep ) = "C"
+			lcReturnName = tmpSqlAns.SalesRep 
+		ENDIF
+
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_SQL:SalesRepfromSO",LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ENDIF
+ENDIF
+
+RETURN ALLTRIM(lcReturnName)

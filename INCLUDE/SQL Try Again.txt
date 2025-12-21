@@ -1,0 +1,30 @@
+SELECT 0
+nSQLEXEC = SQLEXEC(gnConnHandle, cSQL, 'tmpPriceTbl')
+DO WHILE nSQLEXEC = 0
+	WAIT WINDOW 'SQL' TIMEOUT 1
+	nSQLEXEC = SQLEXEC( gnConnHandle, cSQL, 'tmpPriceTbl')
+ENDDO
+IF nSQLEXEC < 0 &&Try again!
+	nSQLEXEC = SQLEXEC(gnConnHandle, cSQL, "tmpPriceTbl")
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL 2' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(gnConnHandle, cSQL, "tmpPriceTbl")
+		
+		IF nSQLEXEC < 0
+			IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+				nSQLEXEC = 0
+			ENDIF
+		ENDIF
+	ENDDO
+ENDIF
+IF nSQLEXEC < 0
+	IF NOT SQLEXECError(cSQL,gnConnHandle,nSQLEXEC, 'tmpPriceTbl')
+		RecordError(nSQLEXEC,"SQL Error","Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )	
+	ENDIF
+ENDIF
+
+IF USED('tmpPriceTbl')
+	IF RECCOUNT('tmpPriceTbl') > 0
+		
+	ENDIF
+ENDIF

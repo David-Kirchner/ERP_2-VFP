@@ -1,0 +1,52 @@
+SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
+
+PrepareSQLtxt 	uData, cField, nLen, pPad, lQuite
+	RETURN cData, * -1 is unlimited text
+	
+PrepareSQLnum 	uData, cField, vWholeNumbers, vDecimalLen, vAllowNegative, lQuite
+	RETURN number, -1 TinyInt, -2 SmallInt, -3 INT, -4 BigInt, -5 Money or 18,4
+	
+PrepareSQLdate 	uData, cField, plReturnNull, plQuite
+	RETURN Date, removes Time
+	
+PrepareSQLdatetime uData, cField, plReturnNull, plQuite
+	RETURN DateTime
+	
+PrepareSQLbit 	uData, cField, lDefault2True
+	RETURN 0,1 or NULL
+	
+PrepareSQLchk	uData, cField, lDefault2True
+	RETURN 0,1, default is 0, never null
+	
+PrepareSQLlogic	uData, cField, lDefaultNullTo
+	RETURN .T. or .F. or NULL
+	
+PrepareSQLphone	cData,cField, nOption
+	RETURN character, strips ()-
+	
+PrepareSQLemail	cData,cField, nOption
+	RETURN character, looks for bad characters.
+	
+ShowSQLtxt 		cData, cField, nLen, pPad, lQuite
+	RETURN cData,  Use ShowSQLtxt to just show!!!!
+	
+ShowSQLdate		uData, cField
+	RETURN dDate,  Removes nulls!, Pass in Date
+	
+CheckSQLdate uData, cField, plQuite
+	RETURN .T. or .F. *See if within 10 years
+
+PrepareSQLlogic('True','ANS', lDefaultTo)
+	
+*Proper_PO_Item Proper_PO_Item_Item Proper_PO_Item_PO
+*Proper_SO_Item Proper_SO_Item_Item Proper_SO_Item_SO 
+*Proper_InqNumP (pInqNumP)or(InqNum,SalesP)
+*Proper_Form
+*Proper_Thk
+
+cTableName = TableName_TBL(cTBL)
+cTBL = TBL_TableName("StockLst")
+
+cFieldValue = PrepareSQL... Get_From_POitem (cPOitem, "Field", ThisForm.nConnHandle )
+
+AppSetup_Get_SalesRep_SalesP(cSalesP)

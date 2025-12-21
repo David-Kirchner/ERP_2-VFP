@@ -1,0 +1,33 @@
+TW Metals Barcode Structure
+Field Length of Field Field Description Explanation of Field Description
+ 1 – TW PO# 8, 0 1 – TW PO# TW Metals purchase order #.
+ 2 – Country of Origin 3 2 – Country of Origin The country the material originated from.
+ 3 – Freight info. for Collect 15 3 – Freight info. for Collect & Freight information pertaining to shipments that are
+ & Prepaid Shipments Prepaid Shipments sent either collect, (monies due upon arrival), or prepaid,
+ a – Terms (monies paid in full prior to material being shipped).
+ b – Carrier (SCAC Code) The freight information should contain the terms of the PO,
+ c – Weight the Carrier’s SCAC code, the weight of the shipment & the
+ d – BOL# bill of lading number.
+ 4 – Freight Carrier SCAC Code 4 4 – Freight Carrier SCAC Code The SCAC code is a 4 letter code that is used to identify
+ various shipping carriers, frequently used in EDI & other documents.
+ 5 – Carrier BOL# 15 5 – Carrier BOL# The incoming carrier’s bill of lading number.
+ 6 – Ttl. Order Gross Weight 10, 3 6 – Ttl. Order Gross Weight The total gross weight of the shipment by order number.
+ 7 – Partial or Complete Status 1 7 – Partial or Complete Status If the purchase order is a partial, (only a portion of the
+ material was shipped), or complete, (if all the material was
+ shipped at the same time).
+ 8 –TW PO Line # 4, 0 8 – TW PO Line # TW Metals line number corresponding to incoming
+ material.
+ 9 – Length 9, 4 9 – Length The specific length of the incoming material.
+10 – Minimum Length 9, 4 10 – Minimum Length The minimum length of the incoming material.
+11 – Maximum Length 9, 4 11 – Maximum Length The maximum length of the incoming material.
+12 – Total line qty & UOM 10, 3 & 3 12 – Total line qty & UOM Number of pieces for the specific line and the unit
+ of measure that they are being shipped by.
+13 – Qty. by Heat # & UOM 10, 3 & 3 13– Qty. by Heat # & UOM Qty of the incoming material by heat number & the unit of measure
+ that they are being shipped by.
+– if more than one heat is packaged within the box/bundle there
+will be more than one label – one for each heat.
+14 – Heat # 15 14 Heat # The specific heat number or numbers of the incoming material.
+
+Please Note: It would be best to have the label on each end of the package and one included with the packing list. The one with the packing list will serve
+two purposes. The first being if labels are damaged in transit and the second, if the package is too small to accommodate a bar code we will have it with
+the packing list.

@@ -1,0 +1,19 @@
+# ignore objects and archives, anywhere in the tree.
+#
+!README.txt
+!*.mem
+# MEM/
+Test/
+solution/
+samples/
+*.PDF
+*.CVS
+*.DBF
+*.DBT
+*.IDX
+*.XLS
+*.zip
+#
+# ignore generated html files,
+*.html
+/.vs

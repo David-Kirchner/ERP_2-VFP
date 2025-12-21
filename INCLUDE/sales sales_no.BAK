@@ -1,0 +1,266 @@
+Proc_SQL:
+
+UpdateShipAddr_in_Sales_No()	Called in PackingSlip
+PARAMETERS pSalesNum,pShipCode,nConn
+	cSQL = "UPDATE dbo.SALES_No "
+	cSQL = cSQL + " SET pShipAddr= "+STR(pShipCode)
+	cSQL = cSQL + " WHERE SalesNum = "+STR(pSalesNum)
+
+	Save_Sales_Status( nSalesNum,"Change Address", 'Changed Ship To Address in Packing Slip.', nConn )
+
+
+UpdateSoldAddr_in_Sales_No()
+PARAMETERS pSalesNum,pSoldCode,nConn
+	cSQL = "UPDATE dbo.Sales_No "
+	cSQL = cSQL + " SET pSoldAddr = "+STR(pSoldCode)
+	cSQL = cSQL + " WHERE SalesNum = "+STR(pSalesNum)
+
+	Save_Sales_Status( pSalesNum, "Change Address", 'Changed Sold To Address in Packing Slip.', nConn )
+
+
+Save_PrintedSOinSales_No()
+PARAMETERS lPrinted, nSalesNum, nConn
+	cSQL = "UPDATE dbo.Sales_No "
+	IF lPrinted
+		cSQL = cSQL + " SET PrintedSO = 1"
+		cSQL = cSQL + ",[Changing]=0"
+		cSQL = cSQL + ",[ShopRecv]=0"
+	ELSE
+		cSQL = cSQL + " SET PrintedSO = 0"
+		cSQL = cSQL + ",[ShopRecv]=0"
+	ENDIF
+	cSQL = cSQL + " WHERE SalesNum = "+STR(nSalesNum)
+
+
+Cancel_SO()
+PARAMETERS nSalesNum, nConn
+	cSQL = "UPDATE dbo.Sales SET "
+	cSQL = cSQL + " Cncld = 1"
+	cSQL = cSQL + " WHERE SalesNum = "+STR(nSalesNum)
+
+	cSQLu = "UPDATE dbo.Sales_No SET "
+	cSQLu = cSQLu + " Cncld = 1"
+	cSQLu = cSQLu + ",Changing=1"	---0---
+	cSQLu = cSQLu + ",ShopRecv=0"
+	cSQLu = cSQLu + " WHERE SalesNum = "+STR(nSalesNum)
+	
+	Cancel_Detail_Process_SOitem(tmpSOitems.SOitem,nConn)
+
+	Save_Sales_Status( nSalesNum, cWhat, '', nConn )
+
+
+Cancel_SOitem()
+PARAMETERS cSOitem, lAmend, nConn
+	cSQL = "UPDATE dbo.Sales SET "
+	cSQL = cSQL + " [Cncld] = 1 "
+	cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSoItem+"')"
+
+	cSQL = "UPDATE dbo.Ship SET "
+	cSQL = cSQL + " [Cncld] = 1 "
+	cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSoItem+"')"
+
+	cSQL = "UPDATE dbo.Sales_No SET "
+	cSQL = cSQL + " amendment = amendment+1 "
+	cSQL = cSQL + ",Changing = 1 "
+	cSQL = cSQL + ",ShopRecv = 0 "
+	cSQL = cSQL + " WHERE SalesNum = "+STR(nSalesNum)
+
+	cSQL= "INSERT INTO dbo.Sales_No_Rev ([SalesNum],[VER],[Comment]) VALUES ("
+	cSQL = cSQL +""+STR(nSalesNum)
+	cSQL = cSQL +","+STR(nAmendment)
+	cSQL = cSQL +","+"'Sales Order item '"+cSoItem+"' has been cancelled.'" +")"
+
+	Save_SOitem_Status( cSOitem, VAL(cSOitem), "Cancel", "Cancel from Proc_SQL:Cancel_SOitem()", nConn )
+
+	Update_Ship_Cncld_SOitem( .T., cSOitem, nConn )
+	
+	Save_SOitem_Status( cSOitem, nSalesNum, 'Cancel', 'Cancelled SO-Item', nConn )
+
+
+
+Set_Sales_No_Changing()
+PARAMETERS pSalesNum, nConn, lForce
+	cSQL = "UPDATE dbo.Sales_No SET "
+	cSQL = cSQL + "  Changing = 1 "
+	cSQL = cSQL + " ,ShopRecv = 0 "
+	cSQL = cSQL + " ,PrintedSO = 0 "
+	cSQL = cSQL + " WHERE SalesNum = "+STR(pSalesNum)
+
+
+Save_Sales_Status()
+PARAMETERS  nSO, cWhat, cComment, pConnHandle
+	DO FORM Forms\GetCancelReason WITH nSO TO cCancelReason
+
+	INSERT INTO dbo.Sales_Status (SOitem,SalesNum,[What],[Comment]) "
+	cSQL = cSQL +" SELECT Sales.SOitem, Sales.SalesNum, '"+cWhat+"' AS [What], '"+cComment+"' AS [Comment] "
+	cSQL = cSQL +" FROM dbo.Sales "
+	cSQL = cSQL +" WHERE Sales.SalesNum = "+STR(nSO)+""
+
+Save_SOitem_Status()
+PARAMETERS cSOitem, nSO, cWhat, cComment, pConnHandle
+	DO FORM Forms\GetCancelReason WITH cSOItem TO cCancelReason
+	
+	INSERT INTO dbo.Sales_Status (SOitem,SalesNum,[What],[Comment]) VALUES ("
+
+
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*--*
+PROC_SQL: 
+Is_Amendment_Allowed()
+PARAMETERS pSalesNum, nConn
+
+
+cSQL = "SELECT ISNULL(PrintedSO,0) AS PrintedSO ,ISNULL(Changing,0) AS Changing ,ISNULL(ShopRecv,0) AS ShopRecv "
+cSQL = cSQL + " FROM dbo.Sales_No WHERE SalesNum = "+STR(pSalesNum)
+
+
+Amendment is needed when
+IF lShopRecv 
+IF lPrinted AND lChanging 
+
+
+Get_Amendment_Sales_No()
+PARAMETERS nSO, nConn
+cSQL = "SELECT Amendment FROM dbo.Sales_No WHERE SalesNum = "+STR(nSO)
+
+
+
+
+****************************************************
+Proc_StockLst:
+Cancel_Detail_Process_SOitem()
+PARAMETERS pSOitem, pConnHandle
+	Remove_ID_Detail_Process(nID_Detail_Process, "SOitem", cSOitem, cTBL, nConn, 'CANCELLED')
+
+
+****************************************************
+select_so-item.scx  
+*cmdEditDate.Click()
+	cSQL = "UPDATE dbo.Sales_No SET amendment = amendment+1 ,ShopRecv = 0 ,PrintedSO = 0"
+	 WHERE SalesNum = "+STR(VAL(cSOitem))
+	 --AND Changing = 0 
+	 AND cmplt = 0 
+	 --AND cncld = 0
+
+	Save_SOitem_Status( cSOitem, VAL(cSOitem), 'ShipDue', "Changed Ship Due Date to "+DTOC(dHPA_Date_Update), nConn )
+
+
+editsalesorder.scx
+*SaveSO()
+	cSQL = "INSERT INTO dbo.Sales_No (SalesNum,SalesRep,ItemTot) VALUES ("+ALLTRIM(STR(ThisFormSet.SalesNum))
+	cSQL = cSQL + ",Amendment= "+STR(lnAmendment,2,0)+""
+
+
+	cSQL = "UPDATE dbo.Sales_No SET "
+	cSQL = cSQL + " Instrct= '"+ALLTRIM(lcInstrct) +"'"
+	cSQL = cSQL + ",Amendment= "+STR(lnAmendment,2,0)+""
+
+
+*SaveQuote()
+	cSQL = "UPDATE dbo.Sales_No SET	"
+	cSQL = cSQL + " PrintedSO =0 "
+	cSQL = cSQL + ",Changing =1 "
+	cSQL = cSQL + ",ShopRecv =0"
+	cSQL = cSQL + " WHERE SalesNum = "+STR(THISFORMSET.SalesNum)
+
+*PrintAll()
+	cSQL = "UPDATE dbo.Sales_No SET "
+	cSQL = cSQL + " PrintedSO = 1"
+	cSQL = cSQL + " ,ShopRecv = 0"
+	cSQL = cSQL + " WHERE SalesNum = "+ALLTRIM(STR(ThisFormSet.SalesNum))
+
+
+
+enterorder.scx        
+	cSQL = "UPDATE dbo.Sales_No SET "
+	cSQL = cSQL + "instrct= '"+ALLTRIM(lcInstrct) +"',"
+	cSQL = cSQL + "pSoldAddr= "+ALLTRIM(STR(lnSoldAddr))+","
+	cSQL = cSQL + "pShipAddr= "+ALLTRIM(STR(lnShipAddr))+","
+	cSQL = cSQL + "shiproute= '"+ALLTRIM(lcShipRoute)+"',"
+	cSQL = cSQL + "ShipPay= '"+lcShipPay+"',"
+	cSQL = cSQL + "PayType= '"+lcPayType+"',"
+	cSQL = cSQL + "Paper_PO	= "+IIF(llpaper_po,'1','0')+","
+	cSQL = cSQL + "Blind= "+IIF(llBlind,'1','0')+","
+	cSQL = cSQL + "FaxConf= "+IIF(llFaxConf,'1','0')+","
+	cSQL = cSQL + "EmailConf= "+IIF(llEmailConf,'1','0')+","
+	cSQL = cSQL + "FreightEst= "+STR(lnFreightEst)+","
+	cSQL = cSQL + "PrintedSO= "+IIF(llPrintedSO,'1','0')+","
+	cSQL = cSQL + "Addr_Ref= '"+lcAddr_Ref+"',"
+	cSQL = cSQL + "trt_lumber= "+IIF(llFoundCountry,'1','0')+","
+	cSQL = cSQL + "TarfBill= '"+lcTarfBill+"',"
+	cSQL = cSQL + "USA= "+IIF(llUSA,'1','0')+","
+	cSQL = cSQL + "Amendment= "+STR(lnAmendment,2,0)+","
+	cSQL = cSQL + "ECPC= "+IIF(lECPC,'1','0')+" "
+	cSQL = cSQL + " WHERE SalesNum = "+ALLTRIM(STR(lnSalesNum ))
+
+packingslip.scx                                   
+	cSQLi = "INSERT INTO dbo.Sales_No ( SalesNum, pSoldAddr, pShipAddr ) VALUES ("
+	cSQLi =cSQLi+STR(PackingSlipSO.SO)
+	cSQLi =cSQLi+","+STR(nsoldcode)+""
+	cSQLi =cSQLi+","+STR(nshipcode)+")"
+
+	Save_Sales_Status( ThisForm.nConnHandle, "PS Print", "Printed Packing Slip "+ALLTRIM(STR(nPS_No)), ThisForm.nConnHandle)
+
+	cSQLu = "UPDATE dbo.Sales_No SET "
+	cSQLu =cSQLu+" pSoldAddr = "+STR(nsoldcode)+""
+	cSQLu =cSQLu+",pShipAddr = "+STR(nshipcode)
+	cSQLu =cSQLu+" WHERE Sales_No.SalesNum = "+STR(PackingSlipSO.SO)
+
+	Save_Sales_Status( ThisForm.nConnHandle, "PS Print", "Printed Packing Slip "+ALLTRIM(STR(nPS_No)), ThisForm.nConnHandle)
+
+packingsliphistory.scx 
+	cSQL = "UPDATE dbo.Sales_No SET Cmplt = 1"
+	cSQL = cSQL + " WHERE SalesNum = "+STR(nSalesNum)
+
+receiveso.scx                                     
+	cSQL = "UPDATE dbo.Sales_No SET ShopRecv = '1', Changing='0' WHERE SalesNum = "+STR(nSO)
+
+
+shop_stocklst_edit.scx 
+	cSQL = "UPDATE dbo.Sales_No SET ShopRecv = 1 WHERE SalesNum = "+ALLTRIM(STR(nSalesNum))
+
+
+scan.scx          
+	cSQL = "UPDATE dbo.Sales_No SET ShopRecv = 1 WHERE SalesNum = "+STR(nSO)
+
+ship.scx                                      
+	cSQLu = "UPDATE dbo.Sales_no SET "
+	cSQLu = cSQLu + " shiproute='"+ cShipRoute +"'"
+	cSQLu = cSQLu + " WHERE SalesNum = "+STR(nSalesNum)
+
+	cSQLi = "INSERT INTO dbo.Sales_No "
+	cSQLi = cSQLi + "(SalesNum,shiproute) VALUES "
+	cSQLi = cSQLi + "( "+STR(nSalesNum)+",'"+cShipRoute+"')"
+
+	Save_Sales_Status( nSalesNum, "Add", "Changed Ship Route in Ship.cmdSave", ThisForm.nConnHandle)
+
+
+****************************************************
+editsalesorder.scx   
+*Refresh_pgQA    
+	cSQL= "INSERT INTO dbo.Sales_No_Rev ([SalesNum],[VER],[Comment]) VALUES ("
+	cSQL = cSQL +""+STR(ThisFormSet.SalesNum)
+	cSQL = cSQL +","+STR(ThisFormSet.nAmendment)
+	cSQL = cSQL +",'timestamp'" +")"
+
+*SaveQuote
+	cSQL= "INSERT INTO dbo.Sales_No_Rev ([SalesNum],[VER],[Comment]) VALUES ("
+	cSQL = cSQL +""+STR(ThisFormSet.SalesNum)
+	cSQL = cSQL +","+STR(nAmendment)
+	cSQL = cSQL +",'"+cMess+"'" +")"
+
+
+*pgBillTo.chkCancel.Click
+	cSQL= "INSERT INTO dbo.Sales_No_Rev ([SalesNum],[VER],[Comment]) VALUES ("
+	cSQL = cSQL +""+STR(ThisFormSet.SalesNum)
+	cSQL = cSQL +","+STR(ThisFormSet.nAmendment)
+	cSQL = cSQL +",'"+"The Cancelled mark has been removed for Sales Order." +"')"
+
+*frmEO.pf1.pgQA.cmdAddQA.Click
+	cSQL= "INSERT INTO dbo.Sales_No_Rev ([SalesNum],[VER],[Comment]) VALUES ("
+	cSQL = cSQL +""+STR(ThisFormSet.SalesNum)
+	cSQL = cSQL +","+STR(nVER)
+	cSQL = cSQL +",'"+cComment+"'" +")"
+
+
+
+

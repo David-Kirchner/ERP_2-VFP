@@ -1,0 +1,63 @@
+dbo.StockLst_Process Feild definition
+[Process_ID] CHAR(10)
+
+CANCELLED	-Trigger to Delete
+RECEIVED	-Trigger to Delete
+Sell Stock	-Trigger to Delete
+Shipped		-Trigger to Delete
+Receiving	-Trigger to Delete
+
+Main Process: 
+INCOMING 	-Material is incoming, from PO or WO_Detail 
+SELECTED 	-Material has been selected for a SO or WO
+
+CANCELLED	-a way to remove the process when the PO SO WO or WO_Detail is cancelled. -Trigger to Delete
+CORRECTION 	-Shop StockLst Edit-Inventory Correction, Bring back deleted StockLst records.
+
+depricate PARTSELECT -a partial Select, may not need to use. Just use SELECTED
+
+NOT2HPA  	-material is incoming but not to HPA, Simulate a Packing slip data
+Receiving	-Receive_Edit:Create_Receive_Process()  -Trigger to Delete
+depricate PARTRECV -Just use INCOMING 
+
+RECEIVED	-did not find as Process_ID -Trigger to Delete
+Sell Stock	-did not find as Process_ID -Trigger to Delete
+Shipped		-did not find as Process_ID	-Trigger to Delete
+SUBED	 	-did not find as Process_ID
+
+
+Process_After Trigger to Delete: 'RECEIVED' 'Sell Stock' 'Shipped' 'Receiving' 'CORRECTION' 'CANCELLED'
+QTY		-Process QTY Selected
+Ordered_QTY -Complete QTY needed for Ordered
+Ordered_P	-Price Sold or Purchased at
+
+*******************************************
+
+SELECT DISTINCT H.Process_ID 
+,( SELECT COUNT(Process_ID) FROM HPAlloy_Archive.dbo.StockLst_Process_History WHERE Process_ID = H.Process_ID ) AS CNTD
+FROM HPAlloy_Archive.dbo.StockLst_Process_History  H WHERE YEAR(H.[when] ) = 2018  ORDER BY CNTD
+
+Process_ID	CNTD
+CANCELLED 	194
+PARTSELECT	481
+PartRecv  	955
+Receiving 	7098
+INCOMING  	20338
+CORRECTION	35253
+RECEIVED  	48781
+SELECTED  	266026
+
+missing:
+RECEIVED- 
+Sell Stock-
+Shipped-
+SUBED
+PARTIALPIK
+Partl Ship
+
+Process_ID	CNTD Current StockLst_Process count in 3-2019
+PARTSELECT	5
+INCOMING  	72
+PartRecv  	129
+SELECTED  	172
+

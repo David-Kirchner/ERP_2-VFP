@@ -1,0 +1,5640 @@
+*IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
+*ENDIF 
+*IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
+*ENDIF 
+
+*get_SQLSTRINGCONNECT get_SQL_ServerName 
+*GetSQLServers CheckSQLConnection SetPrinterTo
+*AppSetup_Login AppSetup_SalesP_Exists AppSetup_ActiveSales_SalesP AppSetup_Login_SalesP AppSetup_Get_UserName 
+*AppSetup_Get_SalesP AppSetup_Get_SalesRep_SalesP
+*AppSetup_Get_UserName_from_Machine AppSetup_Is_UserName_IN_Table_for_Machine
+*AppSetup_Get_Machine, AppSetup_Get_Machine_Version
+*AppSetup_Get_ServerDir, AppSetup_Get_HomeDir, AppSetup_HomeDir, AppSetup_Get_Email 
+*AppSetup_Get_UN_From_PRP_ANS
+*AppSetup_Get_Active_Sales  get_Email_ServerDir get_Server_Email get_Report_Server 
+*get_SQL_Path get_SQL_SendPDF_Path 
+*-AppSetup_Get_DSN 
+*AppSetup_TableofSalesP AppSetup_TopTableofSalesP
+*HPAAppLoad, HPAVersion, AllowHPA_Version AppSetup_get_LatestVersion AppSetup_get_MinVersion
+*AppSetup_Get_AutoName
+*AppSetup_Insert AppSetup_Update_Ans AppSetup_Delete 
+*
+*HavePermision 
+*
+*HaveVendorApprovedPermision AllowFinalizeQuantity AllowFinalizeMoney
+*AllowAdminPODelete AllowAdminPOCancel AllowAdmin AllowCertDelete 
+*HaveSODeletePermision
+*RedundantServer getSOitemfromInvoiceDescription getHeatfromInvoiceDescription
+*CollectErrors ShortSalesP
+
+*UN_from_PRP_ANS
+*ANS_from_UN_PRP
+
+*********************************
+PROCEDURE get_SQLSTRINGCONNECT 
+* Found in Proc_Setup and Proc_SQL
+*? 'get_SQLSTRINGCONNECT()'
+*Return the Connection INT
+*Get NIC, Reads XML, Sets gGlobalServer
+*nConnHandle = get_SQLSTRINGCONNECT()
+
+PRIVATE nReturn
+nReturn = 0
+**Creating DSN-less connections to SQL Server:
+*nReturn = SQLStringConnect("Driver={SQL Server};Server=BOBWhite;Database=HPAlloy;Trusted_Connection=True;")
+*;Uid=sa;Pwd=secret;
+				
+************************
+*Where Am I
+************************
+PRIVATE lInWindfall, lInTipton
+lInWindfall = .T.	&&Every user is in Windfall Domain 
+lInTipton	= .F.	&& there is no Tipton SQL Server
+
+PRIVATE lTestWindfall, lTestTipton
+lTestWindfall	= .T.	
+lTestTipton		= .T.
+
+PRIVATE oAdapters, oWMI
+
+oWMI = getobject("winmgmts:")  &&OLE error code 0x800401ea: Moniker cannot open file
+oAdapters = oWMI.ExecQuery("Select * from Win32_NetworkAdapterConfiguration where IPEnabled=True")
+
+FOR EACH oAdapter in oAdapters
+	IF NOT isnull(oAdapter.ipaddress)
+		FOR EACH cAddress in oAdapter.ipaddress
+			IF "192.168.1." $ cAddress
+				lInWindfall= .T.
+			ENDIF
+			IF "192.168.2." $ cAddress
+				lInTipton = .T.
+			ENDIF
+		NEXT 
+	ENDIF 
+NEXT 
+
+RELEASE oAdapters 
+RELEASE oWMI
+
+*****************
+
+PRIVATE lFoundWindfall, lFoundWindfall2, lFoundTipton
+lFoundWindfall	= .F.
+lFoundWindfall2 = .F.
+lFoundTipton	= .F.
+
+IF USED('HPAdata')
+	USE IN HPAdata
+ENDIF
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+SELECT 0
+
+PRIVATE cWindfallServer1, cTiptonServer1, cWindfallServer2, cTiptonServer2, cBackUpServer 
+cWindfallServer1	= ""
+cTiptonServer1		= ""
+cWindfallServer2	= ""
+cTiptonServer2		= ""
+cBackUpServer 		= ""
+
+**********************
+*Populate SQL Server names
+**********************
+IF VARTYPE(gGlobalServer) != "C"
+	PUBLIC gGlobalServer
+	gGlobalServer = "-"
+	
+	*Read XML files only once	
+	IF FILE( "\\Windfall.HPA.local\SQL\HPAdata.xml" )
+		*READ file
+		TRY
+			XMLTOCURSOR( "\\Windfall.HPA.local\SQL\HPAdata.xml", 'HPAdata', 512)
+			
+			IF USED('HPAdata')
+				IF VARTYPE( HPAdata.WindfallServer ) = "C"
+					cWindfallServer1 = RTRIM(HPAdata.WindfallServer)
+					gGlobalServer = cWindfallServer1 
+					lFoundWindfall = .T.
+				ENDIF
+				
+				
+				IF VARTYPE( HPAdata.TiptonServer ) = "C"
+					cTiptonServer1 = RTRIM(HPAdata.TiptonServer)
+				ENDIF
+
+				IF VARTYPE( HPAdata.BackUpServer ) = "C"
+					cBackUpServer = RTRIM(HPAdata.BackUpServer)
+				ENDIF
+				
+				USE IN HPAdata
+			ENDIF
+		CATCH
+			MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\Windfall.HPA.local\SQL\HPAdata.xml"]+CHR(13)+[, 'HPAdata', 512)],16,"Could not get DFS file")
+		ENDTRY
+	ELSE
+		MESSAGEBOX("You could not read file:"+CHR(13)+ "\\Windfall.HPA.local\SQL\HPAdata.xml",0,"Proc_Setup:get_SQLSTRINGCONNECT()")
+		RETURN
+	ENDIF
+	
+	*Save to MEM
+	IF FILE(SYS(5)+SYS(2003) +"\SQLserver1.MEM")
+		IF NOT "\MEM" $ SYS(2003)
+			*Keep only in \MEM\
+			DELETE FILE (SYS(5)+SYS(2003) +"\SQLserver1.MEM")
+			SAVE ALL LIKE cWindfallServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM" )
+		ENDIF
+	ENDIF
+	
+*!*		IF "\MEM" $ SYS(2003)
+*!*			SAVE ALL LIKE cWindfallServer? TO ( SYS(5)+SYS(2003) +"\SQLserver1.MEM" )
+*!*		ELSE 
+*!*			SAVE ALL LIKE cWindfallServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM" )
+*!*		ENDIF
+	
+	
+	*Save to MEM
+	IF FILE(SYS(5)+SYS(2003) +"\SQLserver2.MEM")
+		IF NOT "\MEM" $ SYS(2003)
+			*Keep only in \MEM\
+			DELETE FILE (SYS(5)+SYS(2003) +"\SQLserver2.MEM")
+			SAVE ALL LIKE cTiptonServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM" )
+		ENDIF
+	ENDIF
+	
+*!*		IF "\MEM" $ SYS(2003)
+*!*			SAVE ALL LIKE cTiptonServer? TO ( SYS(5)+SYS(2003) +"\SQLserver2.MEM" )
+*!*		ELSE 
+*!*			SAVE ALL LIKE cTiptonServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM" )
+*!*		ENDIF
+		
+	
+ELSE
+	IF gGlobalServer = "-"
+		*Only do Disk MEM read if needed.
+		IF FILE( SYS(5)+SYS(2003) +"\SQLserver1.MEM" )
+			RESTORE FROM ( SYS(5)+SYS(2003) +"\SQLserver1.MEM" ) ADDITIVE
+		ELSE
+			IF FILE(SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM")
+				RESTORE FROM ( SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM" ) ADDITIVE
+			ENDIF
+		ENDIF
+		IF VARTYPE(cWindfallServer1) = "C"
+			lFoundWindfall = .T.
+		ENDIF
+		
+		IF FILE( SYS(5)+SYS(2003) +"\SQLserver2.MEM" )
+			RESTORE FROM ( SYS(5)+SYS(2003) +"\SQLserver2.MEM" ) ADDITIVE
+		ELSE
+			IF FILE(SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM")
+				RESTORE FROM ( SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM" ) ADDITIVE
+			ENDIF
+		ENDIF
+			
+		
+		IF VARTYPE(cTiptonServer1) = "C"
+			lFoundTipton= .T.
+		ENDIF
+	ENDIF
+ENDIF
+
+*Choose Server
+************************
+PRIVATE cServer
+cServer = ""
+
+*gGlobalServer, gGlobalTable are init in Main.prg, Values are kept here, not in a MEM file
+IF VARTYPE(gGlobalServer) = "C"
+
+	*Main.prg makes gGlobalServer Public but does not fill
+	IF NOT ( EMPTY(gGlobalServer) )
+		*USE filled gGlobalServer - Skip the next 2 checks 
+*		lInWindfall = .F.
+*		lInTipton	= .F.
+		lTestWindfall	= .F.	&&Assume Windfall/Tipton has been set because gGlobalServer is 
+		lTestTipton		= .F.	&&make the code faster by bypassing this test.
+	ELSE
+		*SetServer screen can be used and not overwritten here!
+		*lInWindfall = .T.
+		*lInTipton	= .T.
+	ENDIF
+ENDIF
+
+IF lInWindfall AND lTestWindfall
+	*Try to use the Windfall Server
+	IF lFoundWindfall
+		IF VARTYPE(cWindfallServer1) = "C"
+			cServer = cWindfallServer1
+			gGlobalServer = cServer
+		ENDIF
+	ELSE
+		IF VARTYPE(cWindfallServer2) = "C"
+			cServer = cWindfallServer2
+			gGlobalServer = cServer
+		ELSE
+			cServer = cBackUpServer 
+			gGlobalServer = cServer
+		ENDIF
+	ENDIF
+ELSE
+	IF lInTipton AND lTestTipton
+		*Try to use the Tipton Server
+		IF lFoundTipton
+			IF VARTYPE(cTiptonServer1) = "C"
+				*cServer = cTiptonServer1 
+				cServer = cWindfallServer1  &&Use Windfall untill testing is done
+				gGlobalServer = cServer
+			ELSE
+				cServer = cBackUpServer 
+				gGlobalServer = cServer
+			ENDIF
+		ELSE
+			IF VARTYPE(cTiptonServer2) = "C"
+				*cServer = cTiptonServer2
+				cServer = cWindfallServer1 &&Use Windfall untill testing is done
+				gGlobalServer = cServer
+			ELSE
+				cServer = cBackUpServer 
+				gGlobalServer = cServer
+			ENDIF
+		ENDIF
+	ELSE
+		*Use the Global gGlobalServer create on first run.
+		IF gGlobalServer != "-"
+			cServer = gGlobalServer
+		ELSE
+			MESSAGEBOX("gGlobalServer exists, but has no data."+CHR(13)+"no SQL Server name."+CHR(13)+"\\Windfall.HPA.local\SQL\HPAdata.xml",0,"Error")
+			*TrackError("Did not get SQL Server name."+CHR(13)+"\\Windfall.HPA.local\SQL\HPAdata.xml","Error.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+			RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),"gGlobalServer exists, but has no data."+CHR(13)+"no SQL Server name."+CHR(13)+"\\Windfall.HPA.local\SQL\HPAdata.xml"+CHR(13)+cSQL )
+		ENDIF
+		**Redundant code!!!
+		IF VARTYPE(gGlobalServer) = "C"
+			IF NOT ( EMPTY(gGlobalServer) )
+				*USE the gGlobalServer - Skip the next 2 checks
+				cServer = gGlobalServer
+			ENDIF
+		ENDIF
+		
+	ENDIF
+ENDIF
+
+IF ( EMPTY(cServer) ) AND NOT EMPTY(gGlobalServer)
+	cServer = gGlobalServer
+ENDIF
+
+***************
+PRIVATE cDatabaseTable
+cDatabaseTable = "HPAlloy"
+
+IF VARTYPE(GlobalTable) = "C"
+	IF NOT EMPTY(GlobalTable)
+		*USE the GlobalTable
+		cDatabaseTable = GlobalTable
+	ENDIF
+ENDIF
+
+***************
+*Overwrite cServer for now
+*cServer = "BIGHP"
+
+IF RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 ) = "David Kirchner"
+*	cServer = "SQLdev"
+*	cServer = "BOBWHITE"
+*	cServer = "PEREGRINE"
+	WAIT WINDOW "Server="+cServer NOWAIT
+ENDIF
+
+***************
+PRIVATE cDatabaseTable
+cDatabaseTable = "HPAlloy"
+
+IF VARTYPE(GlobalTable) = "C"
+	IF NOT ( EMPTY(GlobalTable) )
+		*USE the GlobalTable
+		cDatabaseTable = GlobalTable
+	ENDIF
+ENDIF
+
+IF EMPTY(cServer) 
+	MESSAGEBOX("Could not locate the SQL Server."+CHR(13)+"cServer is Empty.",16,"SQL Error")
+	TrackError("Could not locate the SQL Server.","Error.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+	nReturn = -1
+ELSE
+	WAIT WINDOW "Testing the SQL Server "+ALLTRIM(cServer) +" connection."+CHR(13)+"If you can read this message, you may have connection trouble." NOWAIT
+	nReturn = SQLStringConnect("Driver={SQL Server};Server="+cServer+";Database="+cDatabaseTable+";Trusted_Connection=yes;",.T.)
+	WAIT CLEAR
+ENDIF
+*nReturn = SQLSTRINGCONNECT('dsn=HPA',.T.)
+
+PRIVATE nCount
+nCount = 0
+
+IF nReturn < 1 AND LEN(cServer) > 1
+	MESSAGEBOX("Could not talk to server:"+cServer+CHR(13)+"Next will try Alternative Server.",0+16,"Server Error - server not answering.")
+
+	IF NOT lInWindfall
+		*Try to use the Windfall Server
+		IF lFoundWindfall
+			IF VARTYPE(cWindfallServer1) = "C"
+				cServer = cWindfallServer1
+			ENDIF
+		ELSE
+			IF VARTYPE(cWindfallServer2) = "C"
+				cServer = cWindfallServer2
+			ENDIF
+		ENDIF
+	ELSE
+		*Try to use the Tipton Server
+		IF lFoundTipton
+			IF VARTYPE(cTiptonServer1) = "C"
+				cServer = cTiptonServer1
+			ENDIF
+		ELSE
+			IF VARTYPE(cTiptonServer2) = "C"
+				cServer = cTiptonServer2
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	IF EMPTY(cServer)
+		cServer = " "
+	ENDIF
+	
+	WAIT WINDOW "Trying the alternative SQL Server "+ALLTRIM(cServer) +" connection."+CHR(13)+"If you can read this message, you may have connection trouble." NOWAIT
+	nReturn = SQLStringConnect("Driver={SQL Server};Server="+cServer+";Database=HPAlloy;Trusted_Connection=yes;",.T.)
+	*nReturn = SQLStringConnect("Driver={SQL Server};Server="+cServer+";Trusted_Connection=yes;",.T.)
+	WAIT CLEAR
+	IF nReturn > 0
+		MESSAGEBOX("Connected to alternative Server:"+cServer+CHR(13)+"This is not the fastest connection",0+64,"Connected!")
+	ENDIF
+ENDIF
+*WAIT WINDOW 'End of get_SQLSTRINGCONNECT' TIMEOUT 1
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+IF nReturn < 0
+	QUIT
+ENDIF
+
+RETURN nReturn 
+ENDPROC
+
+
+*********************************
+PROCEDURE get_SQL_ServerName 
+* returns the "ServerName"
+* get_SQLSTRINGCONNECT SETS gGlobalServer  
+*IF VARTYPE(gGlobalServer)="C"
+* "ServerName" = gGlobalServer 
+
+PRIVATE lInWindfall,lInTipton
+lInWindfall = .F.
+lInTipton	= .F.
+
+PRIVATE lFoundWindfall, lFoundWindfall2, lFoundTipton
+lFoundWindfall	= .F.
+lFoundWindfall2 = .F.
+lFoundTipton	= .F.
+
+PRIVATE cWindfallServer1, cTiptonServer1, cWindfallServer2, cTiptonServer2, cBackUpServer 
+cWindfallServer1	= ""
+cTiptonServer1		= ""
+cWindfallServer2	= ""
+cTiptonServer2		= ""
+cBackUpServer 		= ""
+
+**********************
+*Populate SQL Server names
+**********************
+IF VARTYPE(gGlobalServer) != "C"
+	PUBLIC gGlobalServer
+	gGlobalServer = "-"
+	
+	*Read XML files only once	
+	IF FILE( "\\Windfall.HPA.local\SQL\HPAdata.xml" )
+		*READ file
+		TRY
+			XMLTOCURSOR( "\\Windfall.HPA.local\SQL\HPAdata.xml", 'HPAdata', 512)
+			
+			IF USED('HPAdata')
+				IF VARTYPE( HPAdata.WindfallServer ) = "C"
+					cWindfallServer1 = RTRIM(HPAdata.WindfallServer)
+					gGlobalServer = cWindfallServer1 
+					lFoundWindfall = .T.
+				ENDIF
+				
+				
+				IF VARTYPE( HPAdata.TiptonServer ) = "C"
+					cTiptonServer1 = RTRIM(HPAdata.TiptonServer)
+				ENDIF
+
+				IF VARTYPE( HPAdata.BackUpServer ) = "C"
+					cBackUpServer = RTRIM(HPAdata.BackUpServer)
+				ENDIF
+				
+				USE IN HPAdata
+			ENDIF
+		CATCH
+			MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+"Cannot write error without database!"+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\Windfall.HPA.local\SQL\HPAdata.xml"]+CHR(13)+[, 'HPAdata', 512)],16,"Could not get DFS file")
+			*cannot write error witout database!
+		ENDTRY
+
+	ENDIF
+	
+	*Save to MEM
+	IF FILE(SYS(5)+SYS(2003) +"\SQLserver1.MEM")
+		IF NOT "\MEM" $ SYS(2003)
+			DELETE FILE (SYS(5)+SYS(2003) +"\SQLserver1.MEM")
+			SAVE ALL LIKE cWindfallServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM" )
+		ENDIF
+	ENDIF
+	
+	
+	IF FILE(SYS(5)+SYS(2003) +"\SQLserver2.MEM")
+		IF NOT "\MEM" $ SYS(2003)
+			DELETE FILE (SYS(5)+SYS(2003) +"\SQLserver2.MEM")
+			SAVE ALL LIKE cTiptonServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM" )
+		ENDIF
+	ENDIF
+	
+	
+ELSE
+	IF FILE( SYS(5)+SYS(2003) +"\SQLserver1.MEM" )
+		RESTORE FROM ( SYS(5)+SYS(2003) +"\SQLserver1.MEM" ) ADDITIVE
+	ELSE
+		IF FILE(SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM")
+			RESTORE FROM ( SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM" ) ADDITIVE
+		ENDIF
+	ENDIF
+	IF VARTYPE(cWindfallServer1) = "C"
+		lFoundWindfall = .T.
+	ENDIF
+	
+	IF FILE( SYS(5)+SYS(2003) +"\SQLserver2.MEM" )
+		RESTORE FROM ( SYS(5)+SYS(2003) +"\SQLserver2.MEM" ) ADDITIVE
+	ELSE
+		IF FILE(SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM")
+			RESTORE FROM ( SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM" ) ADDITIVE
+		ENDIF
+	ENDIF
+		
+	
+	IF VARTYPE(cTiptonServer1) = "C"
+		lFoundTipton= .T.
+	ENDIF
+ENDIF
+
+***********************
+*Choose Server
+************************
+PRIVATE cServer
+cServer = ""
+
+*gGlobalServer, gGlobalTable are init in Main.prg, Values are set in HPA menu
+IF VARTYPE(gGlobalServer) = "C"
+	IF NOT ( EMPTY(gGlobalServer) )
+		*USE the gGlobalServer -Force -Skip the next 2 checks
+		lInWindfall = .F.
+		lInTipton	= .F.
+	ENDIF
+ENDIF
+
+IF lInWindfall
+	*Try to use the Windfall Server
+	IF lFoundWindfall
+		IF VARTYPE(cWindfallServer1) = "C"
+			cServer = cWindfallServer1
+			gGlobalServer = cServer
+		ENDIF
+	ELSE
+		IF VARTYPE(cWindfallServer2) = "C"
+			cServer = cWindfallServer2
+			gGlobalServer = cServer
+		ELSE
+			cServer = cBackUpServer 
+			gGlobalServer = cServer
+		ENDIF
+	ENDIF
+ELSE
+	IF lInTipton
+		*Try to use the Tipton Server
+		IF lFoundTipton
+			IF VARTYPE(cTiptonServer1) = "C"
+				*cServer = cTiptonServer1 
+				cServer = cWindfallServer1  &&Use Windfall untill testing is done
+				gGlobalServer = cServer
+			ELSE
+				cServer = cBackUpServer 
+				gGlobalServer = cServer
+			ENDIF
+		ELSE
+			IF VARTYPE(cTiptonServer2) = "C"
+				*cServer = cTiptonServer2
+				cServer = cWindfallServer1 &&Use Windfall untill testing is done
+				gGlobalServer = cServer
+			ELSE
+				cServer = cBackUpServer 
+				gGlobalServer = cServer
+			ENDIF
+		ENDIF
+	ELSE
+		*Use the Global gGlobalServer create on first run.
+		IF gGlobalServer != "-"
+			cServer = gGlobalServer
+		ELSE
+			MESSAGEBOX("Did not get SQL Server name."+CHR(13)+"\\Windfall.HPA.local\SQL\HPAdata.xml",0,"Error")
+			TrackError("Did not get SQL Server name."+CHR(13)+"\\Windfall.HPA.local\SQL\HPAdata.xml","Error.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+		ENDIF
+		
+		IF VARTYPE(gGlobalServer) = "C"
+			IF NOT ( EMPTY(gGlobalServer) )
+				*USE the gGlobalServer - Skip the next 2 checks
+				cServer = gGlobalServer
+			ENDIF
+		ENDIF
+		
+	ENDIF
+ENDIF
+
+IF ( EMPTY(cServer) ) AND NOT EMPTY(gGlobalServer)
+	cServer = gGlobalServer
+ENDIF
+
+
+
+IF RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 ) = "David Kirchner"
+*	cServer = "SQLdev"
+*	cServer = "BOBWHITE"
+*	cServer = "PEREGRINE"
+	WAIT WINDOW "Server="+cServer NOWAIT
+ENDIF
+
+RETURN cServer
+
+ENDPROC
+
+
+***********************************************************************************************
+ PROCEDURE GetSQLServers
+* creates cursor sqlservers - available SQL Servers on network
+*DO GetSQLServers
+
+* define constants (from sql.h, sqlext.h, odbcss.h header files)  
+#DEFINE SQL_SUCCESS 0
+#DEFINE MAX_STRING 128
+#define SQL_HANDLE_DBC 2 
+#define SQL_NTS (-3)
+
+* DECLARE functions in WinAPI DLLs 
+DECLARE SHORT SQLAllocHandle IN odbc32; 
+      INTEGER   HandleType,; 
+      INTEGER   InputHandle,; 
+      INTEGER @ OutputHandlePtr  
+
+DECLARE SHORT SQLBrowseConnect IN odbc32; 
+      INTEGER   ConnectionHandle,; 
+      STRING    InConnectionString,; 
+      INTEGER   StringLength1,; 
+      STRING  @ OutConnectionString,; 
+      INTEGER   BufferLength,; 
+      INTEGER @ StringLength2Ptr  
+
+DECLARE SHORT SQLDisconnect IN odbc32; 
+      AS SQLDisconnect32; 
+      INTEGER ConnectionHandle
+
+* initialize memvars
+hdbc = 0
+lnretval = 0
+* get henv (ODBC environment handle) from VFP
+hEnv = INT(VAL(SYS(3053)))
+
+* call the SQLAllocHandle() function to get a connection handle
+* and update memvar hdbc with this value
+lnRetVal = SQLAllocHandle(2, henv, @hdbc)
+
+* more initialization
+browseresult = SPACE(128)
+sizeofBrowseResult = 128
+BrowseResultLen = 0
+
+* create result cursor to hold returned server names
+CREATE CURSOR sqlservers (server c(40))
+
+* call the SQLBrowseConnect() function to get list of servers
+lnRetVal2 = SQLBrowseConnect(;
+      hdbc, ;
+      "DRIVER={SQL Server};", ;
+      SQL_NTS, ;
+      @BrowseResult, ;
+      sizeofBrowseResult, ;
+      @BrowseResultLen)
+
+* now parse result string and insert each server into cursor
+* servers as a group are delimited in result string by curly braces: {}
+* here we identify the positions of the the curly brace
+* characters and put the included group of characters (the 
+* list of servers) in a substring for further processing.
+
+lnPos1 = AT('{',browseresult)
+lnPos2 = AT('}',browseresult)
+servstring = SUBSTR(browseresult,lnPos1+1,lnPos2-lnpos1-1)
+
+* individual servers are separated by commas in the result string
+* iterate thru servstring by "," position
+
+DO WHILE AT(',',servstring)>0
+      lnCommaPos = AT(',',servstring)
+      m.Server = LEFT(servstring,lnCommaPos-1)
+      IF m.server <> '.'
+            INSERT INTO sqlservers FROM memvar
+      ENDIF 
+
+      * remove leftmost server name from list
+      servstring = RIGHT(servstring,LEN(servstring)-lnCommaPos)
+
+ENDDO 
+
+* add last server in list (no more commas)
+m.server = servstring
+INSERT INTO sqlservers FROM memvar
+
+* drop connection
+lnretval0 = sqldisconnect32(hdbc)
+
+* examine the results
+SELECT sqlservers
+BROWSE
+
+RETURN
+*********************************
+PROCEDURE CheckSQLConnection 
+PARAMETERS pConnHandle
+*nConn = CheckSQLConnection(pConnHandle)
+
+*This is a common 'Bad SQL Connetion' initiation point
+*ThisForm.nConnHandle = CheckSQLConnection(ThisForm.nConnHandle)
+
+PRIVATE nConn
+
+*Make sure pConnHandle is a number greater than 0
+IF VARTYPE(pConnHandle) = "N"
+	IF pConnHandle > 0
+		nConn = pConnHandle
+	ELSE
+		nConn = get_SQLSTRINGCONNECT()
+	ENDIF
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+ENDIF
+
+
+PRIVATE cSource
+cSource = ''
+TRY
+	cSource = SQLGETPROP(nConn, "datasource")
+CATCH
+	nConn = get_SQLSTRINGCONNECT()
+ENDTRY
+
+*When SQLEXEC Fails on a connection, nSQLEXEC is FALSE!
+IF VARTYPE(cSource) != "C"
+	*Bad Connection
+	nConn = get_SQLSTRINGCONNECT()
+	IF nConn < 1
+	
+		*Write as Connection Error to a local dbf.
+		IF !USED('Errors')
+			IF "\MEM" $ SYS(2003)
+				cErrorsFile =  SYS(5)+SYS(2003)+"\Errors.DBF"
+			ELSE
+				cErrorsFile =  SYS(5)+SYS(2003)+"\MEM\Errors.DBF"
+			ENDIF
+				
+			IF FILE(cErrorsFile)
+				SELECT 0
+				USE (cErrorsFile) SHARED IN 0 ALIAS Errors
+			ENDIF
+		ELSE
+			SELECT Errors
+			*Do not try to keep Errors open, Only Open and close in same same Proc.
+		ENDIF
+		
+		IF USED('Errors')
+			PRIVATE Pnerror, Pmess1h2, Pcprogram, Pnlineno, cLastVersion, pMessMemo
+			Pnerror		= 0
+			Pmess1h2	= "Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1)
+			Pcprogram 	= "Proc_HPA:"+PROGRAM()
+			Pnlineno	= LINENO()
+			cLastVersion = 'NA'
+			pMessMemo	= 'Could not make SQL connection.'
+			
+			INSERT INTO Errors ( nerror, mess1, cprogram, nlineno, errordate, MACHINE, Revision, Memo1 );
+				 VALUES ( Pnerror, Pmess1h2, Pcprogram, Pnlineno, DATETIME(), SYS(0), cLastVersion, pMessMemo)
+			 
+			 USE IN Errors
+			 
+		ENDIF
+		
+		MESSAGEBOX("You are not Connected to the SQL Server."+CHR(13)+"Your program will not work untill you can connet to Server."+CHR(13)+CHR(13)+"     You may have to wait for the SQL Server to restart."+CHR(13)+"     You may have lost network connection."+CHR(13)+CHR(13)+"Let the IT staff know you are not connected, "+CHR(13)+"when you cannot make a connection after repeated tries."+CHR(13)+CHR(13)+"     Your HPA cannot recover from this."+CHR(13)+"You will need to end the HPA App Process runing in Windows.",16," Not Connected.    Do not continue.    Close the program.")
+	ENDIF
+ENDIF
+
+RETURN nConn
+ENDPROC
+
+********************************
+PROC SetPrinterTo 
+PARAMETER pPrinter
+
+*SetPrinterTo("TIPTONSHOP")
+IF VARTYPE(pPrinter) != "C"
+	RETURN
+ENDIF
+
+DO CASE 
+CASE pPrinter = "TIPTONSHOP"
+
+	PRIVATE nPrinters
+	nPrinters = APRINTERS(aaPrinters)
+	IF nPrinters > 0
+
+		PRIVATE lTipton
+		lTipton = .F.
+		FOR CT = 1 TO nPrinters
+			IF "TIPTON " $ UPPER(aaPrinters(ct,1))
+				TRY
+					SET PRINTER TO &aaPrinters(ct,1)
+					lTipton = .T.
+					EXIT
+				CATCH
+					MESSAGEBOX("Tell David Printer '"+ALLTRIM(aaPrinters(ct,1))+"' caused an Error."+CHR(13)+"Default printer will be used.",0+48,"Printer Error")		
+				FINALLY
+					SET PRINTER TO DEFAULT
+				ENDTRY
+			ENDIF
+			
+		NEXT CT
+
+		IF lTipton 
+			RETURN
+		ENDIF
+	ENDIF
+
+
+	*Otherwise use the shared Server printer
+
+	PRIVATE lNewConn, nConn
+	lNewConn  =.F.
+	nConn = get_SQLSTRINGCONNECT()
+	lNewConn = .T.
+
+	PRIVATE cAlias 
+	cAlias = ALIAS()
+
+	IF USED("tmpSetup")
+		USE IN tmpSetup
+	ENDIF
+	PRIVATE cSQL, nSQLEXEC 
+	cSQL = "SELECT ANS FROM dbo.AppSetup WITH(NOLOCK) WHERE "
+	cSQL = cSQL + " PRP='TIPTONSHOP' "
+	SELECT 0
+	nSQLEXEC = SQLEXEC( nConn, cSQL, 'tmpSetup')
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC( nConn, cSQL, 'tmpSetup')
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSetup")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSetup")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL, nConn, nSQLEXEC, 'tmpSetup')
+		RecordError(nSQLEXEC,"SQL Error","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED("tmpSetup")
+		IF VARTYPE(tmpSetup.ANS)='C'
+		
+			PRIVATE cPrinterName
+			cPrinterName = ALLTRIM(tmpSetup.ANS)
+			cPrinterName  = PrepareSQLtxt(cPrinterName,"PrinterName",100)
+			
+			TRY
+				SET PRINTER TO NAME &cPrinterName
+			CATCH
+				
+				MESSAGEBOX("Tell David Printer '"+ALLTRIM(cPrinterName)+"' caused an Error."+CHR(13)+"Default printer will be used.",0+48,"Printer Error")		
+			FINALLY
+				SET PRINTER TO DEFAULT
+			ENDTRY
+
+			USE IN tmpSetup
+		ENDIF
+	ENDIF
+
+	IF NOT EMPTY(cAlias)
+		IF USED(cAlias)
+			SELECT (cAlias)
+		ELSE
+			RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+		ENDIF
+	ENDIF
+
+	IF lNewConn 
+		SQLDISCONNECT(nConn )
+	ENDIF
+
+	
+	
+OTHERWISE
+	SET PRINTER TO DEFAULT
+ENDCASE
+
+
+ENDPROC
+
+*********************************
+
+PROCEDURE AppSetup_Login
+PARAMETER pLoginUN,pLoginPC,pLoginHome,pLoginServer
+*AppSetup_Login(LoginUN,LoginPC,LoginHome,LoginServer)
+*See if LoginUN is in Setup App and Update table with last connect.
+
+PRIVATE pConn
+
+IF VARTYPE(pLoginUN) != "C"
+	pLoginUN = " "
+ENDIF
+IF VARTYPE(pLoginPC) != "C"
+	pLoginPC = " "
+ENDIF
+IF VARTYPE(pLoginHome) != "C"
+	pLoginHome = " "
+ENDIF
+IF VARTYPE(pLoginServer) != "C"
+	pLoginServer = " "
+ENDIF
+
+PRIVATE lReturn
+lReturn = .T.
+
+PRIVATE nConn, lNewConn
+lNewConn = .F.
+IF VARTYPE(pConn) = "N"
+	IF pConn > 0
+		nConn = pConn
+	ELSE
+		nConn = get_SQLSTRINGCONNECT()
+		lNewConn = .T.
+	ENDIF
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNewConn = .T.
+ENDIF
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*See if LoginUN is in Setup App
+	cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.AppSetup WITH(NOLOCK) WHERE UN = '"+pLoginUN+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF tmpSqlAns.Cntd = 0
+		
+			AppSetup_Update_Ans( (DTOC(DATE())+" "+TIME()),pLoginUN,"NEW",nConn )
+
+		ENDIF
+
+		USE IN tmpSqlAns
+	ENDIF
+	
+	*AppSetup_Update_Ans(cAns, cUN, cPRP, nConn) - Updates/Inserts Ans
+	AppSetup_Update_Ans( pLoginPC,pLoginUN,"Machine",nConn  )		
+	AppSetup_Update_Ans( pLoginHome,pLoginUN,"Home",nConn  )
+	AppSetup_Update_Ans( pLoginServer,pLoginUN,"Server",nConn  )
+	*update LoginUN with 'Last Connect'
+	AppSetup_Update_Ans( DTOC(DATE())+" "+TIME(),pLoginUN,"Last Connect",nConn  )
+	
+	IF lNewConn 
+		SQLDISCONNECT( nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturn 
+ENDPROC
+
+*********************************
+
+PROCEDURE AppSetup_SalesP_Exists 
+PARAMETERS pSalesP
+*AppSetup_SalesP_Exists(cSalesP)
+
+IF VARTYPE(pSalesP) != "C"
+	pSalesP = " "
+	RETURN .F.
+ENDIF
+
+PRIVATE lReturn
+lReturn = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*See if LoginUN is in Setup App
+	cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'SalesP' AND [ANS] = '"+pSalesP+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF tmpSqlAns.Cntd > 0
+			lReturn = .T.
+		ENDIF
+
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+IF NOT lReturn 
+	TrackError("Did not find SalesP '"+pSalesP+"'",cSQL,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+RETURN lReturn 
+ENDPROC
+
+*********************************
+
+PROCEDURE AppSetup_ActiveSales_SalesP 
+PARAMETERS pSalesP
+*AppSetup_ActiveSales_SalesP(cSalesP)
+
+IF VARTYPE(pSalesP) != "C"
+	RETURN .F.
+ENDIF
+IF EMPTY(pSalesP)
+	RETURN .F.
+ENDIF
+
+PRIVATE lReturn
+lReturn = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*See if LoginUN is in Setup App
+	cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'ActiveSales' AND [ANS] = '"+pSalesP+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF tmpSqlAns.Cntd > 0
+			lReturn = .T.
+		ENDIF
+
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+IF NOT lReturn 
+*	TrackError("Did not find SalesP '"+pSalesP+"'",cSQL,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+RETURN lReturn 
+ENDPROC
+
+********************************* Check FILE \Progs\PCUser.prg
+*!*	PROCEDURE PCUser
+*!*	PARAMETERS cSYS0
+*!*	 *cUser = PCUser( SYS(0) )
+*!*	 *Strips Machine out
+*!*	 *returns User name logged in 
+*!*	 *Check FILE \Progs\PCUser.prg
+*!*	 
+*!*	IF VARTYPE(cSYS0) != "C"
+*!*		cSYS0 = SYS(0)
+*!*	ENDIF
+*!*	 
+*!*	PRIVATE cReturnUser 
+*!*	cReturnUser = RIGHT( cSYS0, LEN(cSYS0)-AT("#",cSYS0)-1 )	&& 2019-01-10
+*!*	 
+*!*	RETURN cReturnUser 
+
+*********************************
+PROCEDURE AppSetup_Login_SalesP 
+*cSalesP=AppSetup_Login_SalesP()
+*Returns SalesP that logged in
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+*suser_sname() = "WINDFALL\"+RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 )
+PRIVATE cUserLogin 
+cUserLogin = RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 )
+
+IF nConn > 0
+	*See if LoginUN is in Setup App
+	cSQL = "SELECT ANS FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'SalesP' AND [UN] =  RIGHT( suser_sname(), LEN(suser_sname())-CHARINDEX ('\',suser_sname()) )"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS)='C'
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ENDIF
+
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn
+ENDPROC
+*********************************
+
+PROCEDURE AppSetup_Get_UserName 
+PARAMETERS pSalesP,nConn
+*AppSetup_Get_UserName(pSalesP)
+*returns UN from SalesP
+
+IF VARTYPE(pSalesP) != "C"
+	RETURN ' '
+ENDIF
+IF LEN(pSalesP)=0
+	RETURN ' '
+ENDIF
+
+PRIVATE lCloseConn
+lCloseConn = .F.
+
+PRIVATE cReturn
+cReturn = pSalesP 
+
+IF VARTYPE(nConn) != "N"
+	nConn = 0 
+ENDIF
+IF nConn < 1
+	nConn = get_SQLSTRINGCONNECT() 
+	lCloseConn = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [UN] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'SalesP' AND [ANS] = '"+pSalesP+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.UN) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.UN)
+			ENDIF
+		ENDIF
+		USE IN tmpSqlAns
+	ENDIF
+	
+	IF lCloseConn
+		SQLDISCONNECT( nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+
+*********************************
+
+PROCEDURE AppSetup_Get_SalesP
+PARAMETERS pSalesRep 
+*AppSetup_Get_SalesP(pSalesRep)
+*Returns SalesP from SalesRep
+
+IF VARTYPE(pSalesRep) != "C"
+	*cUserName = LEFT(SYS(0),AT("#",SYS(0))-2)
+	cUserName = ALLTRIM(  RIGHT( SYS(0) ,LEN(SYS(0))-AT("#",SYS(0))-1 )  )
+ELSE
+	IF EMPTY(pSalesRep)
+		*cUserName = LEFT(SYS(0),AT("#",SYS(0))-2)
+		cUserName = ALLTRIM(  RIGHT( SYS(0) ,LEN(SYS(0))-AT("#",SYS(0))-1 )  )
+	ELSE
+		cUserName = ALLTRIM( pSalesRep )
+	ENDIF
+ENDIF
+
+PRIVATE cReturn
+cReturn = '0'
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+
+	*cSQL = "SELECT ANS FROM AppSetup WHERE UN = REPLACE(suser_sname(),'WINDFALL\','') AND prp = 'SalesP'"
+	cSQL = "SELECT ANS FROM dbo.AppSetup WITH(NOLOCK) WHERE UN = '"+cUserName+"' AND prp = 'SalesP'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN ALLTRIM(cReturn)
+ENDPROC
+
+**************************************
+PROCEDURE AppSetup_Get_SalesRep_SalesP 
+PARAMETERS pSalesP
+*AppSetup_Get_SalesRep_SalesP(pSalesP)
+*Returns SalesRep from AppSetup Table for SalesP
+
+IF VARTYPE(pSalesP) != "C"
+	RETURN ''
+ENDIF
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+
+	cSQL = "SELECT UN FROM dbo.AppSetup WITH(NOLOCK) WHERE ANS = '"+pSalesP+"' AND prp = 'SalesP'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.UN) = "C"
+				cReturn = tmpSqlAns.UN
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+
+**************************************
+PROCEDURE AppSetup_Get_UserName_from_Machine 
+PARAMETERS pMachine 
+*AppSetup_Get_UserName_from_Machine(pMachine)
+
+IF VARTYPE(pMachine) != "C"
+	RETURN ' '
+ENDIF
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [UN] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'Machine' AND [ANS] = '"+pMachine+"'"
+	     
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.UN) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.UN)
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+
+**************************************
+PROCEDURE AppSetup_Is_UserName_IN_Table_for_Machine 
+PARAMETERS pMachine 
+*AppSetup_Is_UserName_IN_Table_for_Machine(pMachine)
+
+IF VARTYPE(pMachine) != "C"
+	RETURN .F.
+ENDIF
+
+PRIVATE lReturn
+lReturn = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpUserNameTable')
+	USE IN tmpUserNameTable 
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [UN] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'Machine' AND [ANS] = '"+pMachine+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpUserNameTable' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpUserNameTable' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpUserNameTable")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpUserNameTable")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpUserNameTable')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpUserNameTable')
+		IF VARTYPE(tmpUserNameTable.UN) = "C"
+			lReturn = .T.
+		ENDIF
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+
+RETURN lReturn
+ENDPROC
+*********************************
+
+PROCEDURE AppSetup_Get_Machine 
+PARAMETERS pUserName 
+*AppSetup_Get_Machine(cUserName )
+
+IF VARTYPE(pUserName) != "C"
+	RETURN ' '
+ENDIF
+PRIVATE cUserName
+cUserName = ALLTRIM(pUserName)
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'Machine' AND [UN] = '"+cUserName+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+*********************************
+
+PROCEDURE AppSetup_Get_Machine_Version 
+PARAMETERS pMachine
+*AppSetup_Get_Machine_Version(cMachine)
+
+IF VARTYPE(pMachine) != "C"
+	RETURN ' '
+ENDIF
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn, lNewConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'Version' AND [UN] = '"+pMachine+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+
+********************************
+PROCEDURE AppSetup_Get_ServerDir 
+*AppSetup_Get_ServerDir()
+
+PRIVATE cLoginMachUser20
+cLoginMachUser20 = LEFT(SYS(0),20)
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn, lNewConn
+nConn = get_SQLSTRINGCONNECT()
+lNewConn = .T.
+
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'Server' AND [UN] = '"+cLoginMachUser20+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	IF lNewConn 
+		SQLDISCONNECT( nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+
+********************************
+PROCEDURE AppSetup_ServerDir 
+PARAMETERS cServerDir
+*AppSetup_ServerDir(cServerDir)
+
+IF VARTYPE(cServerDir) != "C"
+	RETURN ' '
+ENDIF
+IF EMPTY(ALLTRIM(cServerDir))
+	RETURN ' '
+ENDIF
+cServerDir= LEFT(cServerDir,30)
+
+PRIVATE cLoginMachUser20
+cLoginMachUser20 = LEFT(SYS(0),20)
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn, lNewConn
+nConn = get_SQLSTRINGCONNECT()
+lNewConn = .T.
+
+PRIVATE cSQL, nSQLEXEC
+
+IF nConn > 0
+	cSQL = "UPDATE dbo.AppSetup SET [ANS] = '"+cServerDir+"' WHERE [Prp] = 'Server' AND [UN] = '"+cLoginMachUser20+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn, nSQLEXEC )
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF lNewConn 
+		SQLDISCONNECT( nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+RETURN 
+ENDPROC
+
+*********************************
+PROCEDURE AppSetup_Get_HomeDir 
+*AppSetup_Get_HomeDir()
+
+PRIVATE cLoginMachUser20
+cLoginMachUser20 = LEFT(SYS(0),20)
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn, lNewConn
+nConn = get_SQLSTRINGCONNECT()
+lNewConn = .T.
+
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'Home' AND [UN] = '"+cLoginMachUser20+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	IF lNewConn 
+		SQLDISCONNECT( nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+
+*********************************
+PROCEDURE AppSetup_HomeDir 
+PARAMETERS cHomeDir
+*AppSetup_HomeDir(cHomeDir)
+
+IF VARTYPE(cHomeDir) != "C"
+	RETURN ' '
+ENDIF
+IF EMPTY(ALLTRIM(cHomeDir))
+	RETURN ' '
+ENDIF
+cHomeDir = LEFT(cHomeDir,30)
+
+PRIVATE cLoginMachUser20
+cLoginMachUser20 = LEFT(SYS(0),20)
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn, lNewConn
+*? "nConn = get_SQLSTRINGCONNECT()"
+nConn = get_SQLSTRINGCONNECT()
+lNewConn = .T.
+
+
+PRIVATE cSQL, nSQLEXEC
+
+
+IF nConn > 0
+	cSQL = "UPDATE dbo.AppSetup SET [ANS] = '"+cHomeDir+"' WHERE [Prp] = 'Home' AND [UN] = '"+cLoginMachUser20+"'"
+	*? cSQL 
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn,  cSQL )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn, nSQLEXEC )
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF lNewConn 
+		SQLDISCONNECT( nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+RETURN 
+ENDPROC
+
+*********************************
+PROCEDURE AppSetup_Get_Email 
+PARAMETERS pUserName 
+*AppSetup_Get_Email(cUserName)
+
+PRIVATE cUserName
+IF VARTYPE(pUserName) = "C"
+	pUserName = ALLTRIM(pUserName)
+ENDIF
+
+IF NOT EMPTY(pUserName)
+	cUserName = pUserName
+	*cUserName = RIGHT( SYS(0) ,LEN(SYS(0))-AT("#",SYS(0))-1 )
+ELSE
+	*Somewhere the '#' is being sent in!!!!
+	cUserName = RIGHT( SYS(0) ,LEN(SYS(0))-AT("#",SYS(0))-1 )
+ENDIF
+
+cUserName = ALLTRIM( cUserName )
+
+IF AT('#',cUserName) > 0		&&Double check
+	cUserName = RIGHT( cUserName, LEN(cUserName)-AT("#",cUserName)-1 )
+	cUserName = ALLTRIM( cUserName )
+ENDIF
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn, lNewConn
+nConn = get_SQLSTRINGCONNECT()
+lNewConn = .T.
+
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	IF UPPER(ALLTRIM(cUserName)) = 'ICK JENKINS'
+		cUserName = 'Rick Jenkins'  &&WTF
+	ENDIF
+	IF UPPER(ALLTRIM(cUserName)) = 'NDA NICHOLAS'
+		*HOUSTON-VM # Glenda Nicholas
+		cUserName = 'Glenda Nicholas'  &&WTF
+	ENDIF
+
+	cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'E-mail' AND [UN] = '"+cUserName+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ELSE
+			*not Found, Count UserName and write Error 
+			cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+cUserName+"'"
+			
+			nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+			DO WHILE nSQLEXEC = 0
+				WAIT WINDOW 'SQL' TIMEOUT 1
+				nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+			ENDDO
+			IF nSQLEXEC < 0 &&Try again!
+				nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+				DO WHILE nSQLEXEC = 0
+					WAIT WINDOW 'SQL 2' TIMEOUT 1
+					nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+					IF nSQLEXEC < 0
+						IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+							nSQLEXEC = 0
+						ENDIF
+					ENDIF
+				ENDDO
+			ENDIF
+			IF nSQLEXEC < 0
+				SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+				RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+			ENDIF
+			
+			IF USED('tmpSqlAns')
+				PRIVATE lFound,nCountSQL
+				lFound = .F.
+				nCountSQL = 0
+				IF RECCOUNT('tmpSqlAns') > 0	
+					lFound = .T.
+					PRIVATE cMess
+					cMess = "cSQL="+cSQL +CHR(13)+ "INSERT dbo.AppSetup ([Prp],[UN],[ANS])  VALUES ('E-mail','"+cUserName+"','' ). "
+					cMess = cMess +CHR(13)+ "Also add person to Database Mail!"
+					
+					nCountSQL = tmpSqlAns.CNTD					
+				ENDIF
+				USE IN tmpSqlAns
+				
+				IF lFound
+					IF nCountSQL = 0
+						TrackError("User not found UN='"+cUserName+"' when looking for thier Email"+CHR(13)+cMess ,"User not found.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())	
+					ELSE
+						TrackError("User email not found for UN='"+cUserName+"'"+CHR(13)+cMess ,"User not found.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())	
+					ENDIF
+				ENDIF
+								
+			ENDIF
+		ENDIF
+	ENDIF
+	
+	IF lNewConn 
+		SQLDISCONNECT( nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+IF EMPTY(cReturn) 
+	cReturn = "Sales@HPAlloy.com"
+*	PRIVATE cMess
+*	cMess = "INSERT dbo.AppSetup ([Prp],[UN],[ANS])  VALUES ('E-mail','"+cUserName+"','"+cReturn+"' ). "
+*	cMess = cMess +CHR(13)+"Also add person to Database Mail!"
+*	TrackError(cSQL+CHR(13)+"Failed!","No record of [UN] = UserName"+CHR(13)+cMess,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+
+*********************************
+PROCEDURE AppSetup_Get_UN_From_PRP_ANS 
+PARAMETERS pPRP, pANS
+*AppSetup_Get_UN_From_PRP_ANS(pPRP, pANS)
+
+PRIVATE cPRP, cANS
+cPRP = PrepareSQLtxt(pPRP,'PRP',20)
+cAns = PrepareSQLtxt(pANS,'ANS',30)
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn, lNewConn
+nConn = get_SQLSTRINGCONNECT()
+lNewConn = .T.
+
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0 
+	IF NOT EMPTY(cPRP) AND NOT EMPTY(cANS)
+		cSQL = "SELECT [UN] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = '"+cPRP+"' AND [ANS] = '"+cANS+"'"
+		
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+		ENDDO
+		IF nSQLEXEC < 0 &&Try again!
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+			DO WHILE nSQLEXEC = 0
+				WAIT WINDOW 'SQL 2' TIMEOUT 1
+				nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+				IF nSQLEXEC < 0
+					IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+						nSQLEXEC = 0
+					ENDIF
+				ENDIF
+			ENDDO
+		ENDIF
+		IF nSQLEXEC < 0
+			SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+			RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+		ENDIF
+		
+		IF USED('tmpSqlAns')
+			IF RECCOUNT('tmpSqlAns') > 0
+				IF VARTYPE(tmpSqlAns.UN) = "C"
+					cReturn = PrepareSQLtxt(tmpSqlAns.UN,'UN',20)
+				ENDIF
+			ENDIF
+			
+			USE IN tmpSqlAns
+		ENDIF
+		
+		IF lNewConn 
+			SQLDISCONNECT( nConn )
+		ENDIF
+	ELSE
+		TrackError("EMPTY(cPRP) '"+cPRP +"' or EMPTY(cANS) '"+cANS+"'","Parameter Error","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Error on Connection String"+CHR(13)+"or EMPTY(cPRP) or EMPTY(cANS)","Could not Connect to SQL","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+
+RETURN cReturn 
+ENDPROC
+
+
+*********************************
+
+PROCEDURE AppSetup_Get_Active_Sales 
+PARAMETERS pSalesP,nConn
+*lActiveSales = AppSetup_Get_Active_Sales(pSalesP)
+*returns ActiveSales from SalesP
+
+IF VARTYPE(pSalesP ) != "C"
+	RETURN .F.
+ENDIF
+
+PRIVATE lCloseConn
+lCloseConn = .F.
+
+PRIVATE cReturn
+cReturn = .F. 
+
+IF VARTYPE(nConn) != "N"
+	nConn = 0 
+ENDIF
+IF nConn < 1
+	nConn = get_SQLSTRINGCONNECT() 
+	lCloseConn = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT COUNT(*) AS CTND FROM dbo.AppSetup WITH(NOLOCK) WHERE [PRP] = 'ActiveSales' AND [ANS] = '"+pSalesP+"' "
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF tmpSqlAns.CTND  > 0
+				cReturn = .T.
+			ENDIF
+		ENDIF
+		USE IN tmpSqlAns
+	ENDIF
+	
+	IF lCloseConn
+		SQLDISCONNECT( nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+	
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+
+********************************* 
+PROCEDURE get_Email_ServerDir 
+*get_Email_ServerDir
+
+PRIVATE cSQLServer 
+IF VARTYPE(gGlobalServer)="C"
+	cSQLServer = gGlobalServer 
+ELSE
+	SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+	RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),'gGlobalServer was not set!')
+ 	*cSQLServer = "BOBWHITE"
+ 	cSQLServer = "PEREGRIN"
+ENDIF
+
+RETURN "\\"+cSQLServer+"\Email\"
+ENDPROC
+
+********************************* 
+PROCEDURE get_Server_Email 
+*get_Server_Email()
+
+PRIVATE cSQLServer 
+IF VARTYPE(gGlobalServer)="C"
+	cSQLServer = gGlobalServer 
+ELSE
+	SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+	RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),'gGlobalServer was not set!')
+ 	*cSQLServer = "BOBWHITE"
+ 	cSQLServer = "PEREGRINE"
+ENDIF
+
+IF cSQLServer = "192.168.1.5"
+	cSQLServer = "PEREGRINE"
+ENDIF
+
+RETURN cSQLServer+"@HPAlloy.com"
+ENDPROC
+
+********************************* 
+PROCEDURE get_Report_Server 
+*get_Report_Server()
+
+PRIVATE cSQLServer 
+IF VARTYPE(gGlobalServer)="C"
+	cSQLServer = gGlobalServer 
+ELSE
+	SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+	RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),'gGlobalServer was not set!')
+ 	*cSQLServer = "BOBWHITE"
+ 	cSQLServer = "PEREGRINE"
+ 	*cSQLServer = "RAPTOR"
+ENDIF
+
+IF cSQLServer = ""
+	cSQLServer = "RAPTOR:1443"
+ENDIF
+
+*May change from Default SQL machine to another Machine name.
+PRIVATE cURL
+cURL = "https://"+cSQLServer+"/ReportServer/Pages/ReportViewer.aspx?"
+
+RETURN cURL
+ENDPROC
+
+
+*!*	PRIVATE loHyperlink
+*!*	loHyperlink = CREATEOBJECT("Hyperlink")
+*!*	loHyperlink.navigateto(cText)
+*!*	RELEASE loHyperlink
+
+
+*!*	DECLARE INTEGER ShellExecute ;
+*!*	    IN SHELL32.dll ;
+*!*	    INTEGER nWinHandle,;
+*!*	    STRING cOperation,;
+*!*	    STRING cFileName,;
+*!*	    STRING cParameters,;
+*!*	    STRING cDirectory,;
+*!*	    INTEGER nShowWindow
+*!*	 
+*!*	DECLARE INTEGER FindWindow ;
+*!*	   IN WIN32API STRING cNull,STRING cWinName
+*!*	 
+*!*	RETURN ShellExecute(FindWindow(0,_SCREEN.caption),"OPEN",tcUrl, "",  SYS(2023),1)
+
+********************************* 
+PROCEDURE get_SQL_Path 
+*get_SQL_Path()
+
+PRIVATE cSQLServer 
+IF VARTYPE(gGlobalServer)="C"
+	cSQLServer = gGlobalServer 
+ELSE
+	SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+	RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),'gGlobalServer was not set!')
+ 	*cSQLServer = "BOBWHITE"
+ 	PRIVATE nConn
+ 	nConn = get_SQLSTRINGCONNECT()
+ 	IF nConn > 0
+		=SQLDISCONNECT(nConn )
+	ENDIF
+ 	RELEASE nConn
+  	
+ 	IF VARTYPE(gGlobalServer)="C"
+		cSQLServer = gGlobalServer 
+	ELSE
+		TrackError("Could not Connect to SQL","get_SQL_Path ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+		RETURN ''
+	ENDIF
+ENDIF
+
+PRIVATE cSQL_Path
+cSQL_Path = "\\"+cSQLServer+"\HPAData\Quotes\"
+
+RETURN cSQL_Path
+ENDPROC
+
+********************************* 
+PROCEDURE get_SQL_SendPDF_Path 
+*get_SQL_SendPDF_Path()
+
+PRIVATE cSQLServer 
+IF VARTYPE(gGlobalServer)="C"
+	cSQLServer = gGlobalServer 
+ELSE
+	SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+	RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),'gGlobalServer was not set!')
+ 	*cSQLServer = "BOBWHITE"
+ 	PRIVATE nConn
+ 	nConn = get_SQLSTRINGCONNECT()
+ 	IF nConn > 0
+		=SQLDISCONNECT(nConn )
+	ENDIF
+ 	RELEASE nConn
+ 	
+ 	IF VARTYPE(gGlobalServer)="C"
+		cSQLServer = gGlobalServer 
+	ELSE
+		TrackError("Could not Connect to SQL","get_SQL_SendPDF_Path ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+		RETURN ''
+	ENDIF
+ENDIF
+
+PRIVATE cSQL_Path
+cSQL_Path = "\\"+cSQLServer+"\HPAData\Quotes\SendPDF\"
+*+"SendPDF\"+cHomeSalesp+"\"
+*\\bobwhite\HPAData\Quotes\SendPDF
+
+RETURN cSQL_Path
+ENDPROC
+*********************************
+
+PROCEDURE AppSetup_Get_DSN
+*AppSetup_Get_DSN()
+RETURN
+
+*!*	PRIVATE cLoginMachUser20
+*!*	cLoginMachUser20 = LEFT(SYS(0),20)
+
+*!*	PRIVATE cReturn
+*!*	cReturn = ''
+
+*!*	PRIVATE nConn, lNewConn
+*!*	nConn = get_SQLSTRINGCONNECT()
+*!*	lNewConn = .T.
+
+
+*!*	PRIVATE cAlias 
+*!*	cAlias = ALIAS()
+
+*!*	PRIVATE cSQL, nSQLEXEC
+
+*!*	IF USED('tmpSqlAns')
+*!*		USE IN tmpSqlAns
+*!*	ENDIF
+*!*	SELECT 0
+
+*!*	IF nConn > 0
+*!*		cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'DSN' AND [UN] = '"+cLoginMachUser20+"'"
+*!*		
+*!*		nSQLEXEC = SQLEXEC(nConn , cSQL , 'tmpSqlAns' )
+*!*		DO WHILE nSQLEXEC = 0
+*!*			WAIT WINDOW 'SQL' TIMEOUT 1
+*!*			nSQLEXEC = SQLEXEC(nConn ,  cSQL , 'tmpSqlAns' )
+*!*		ENDDO
+*!*	IF nSQLEXEC < 0 &&Try again!
+*!*			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+*!*			DO WHILE nSQLEXEC = 0
+*!*				WAIT WINDOW 'SQL 2' TIMEOUT 1
+*!*				nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+*!*				IF nSQLEXEC < 0
+*!*					IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+*!*						nSQLEXEC = 0
+*!*					ENDIF
+*!*				ENDIF
+*!*			ENDDO
+*!*		ENDIF
+*!*		IF nSQLEXEC < 0
+*!*			SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+*RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+*!*		ENDIF
+*!*		
+*!*		IF USED('tmpSqlAns')
+*!*			IF RECCOUNT('tmpSqlAns') > 0
+*!*			IF VARTYPE(tmpSqlAns.ANS) = "C"
+*!*				cReturn = ALLTRIM(tmpSqlAns.ANS)
+*!*			ENDIF
+*!*			ENDIF
+*!*			USE IN tmpSqlAns
+*!*		ENDIF
+*!*		
+*!*		IF lNewConn 
+*!*			SQLDISCONNECT( nConn )
+*!*		ENDIF
+*!*	ELSE
+*!*		*Error on Connection String
+*!*		TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+*!*	ENDIF
+
+*!*	IF NOT EMPTY(cAlias)
+*!*		IF USED(cAlias)
+*!*			SELECT (cAlias)
+*	ELSE
+*		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+*!*		ENDIF
+*!*	ENDIF
+
+*!*	RETURN cReturn 
+ENDPROC
+
+*********************************
+
+PROCEDURE AppSetup_TableofSalesP 
+*AppSetup_TableofSalesP
+
+PRIVATE nConn, lReturn
+nConn = get_SQLSTRINGCONNECT()
+lReturn = .F.
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSalesP')
+	USE IN tmpSalesP
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	cSQL = "SELECT [ANS],[UN] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'SalesP' AND LEN([ANS])>0"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSalesP' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSalesP' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSalesP")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSalesP")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSalesP')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSalesP')
+		IF VARTYPE(tmpSalesP.ANS) = "C"
+			lReturn = .T.
+		ENDIF
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+
+RETURN lReturn 
+ENDPROC
+*********************************
+
+PROCEDURE AppSetup_TopTableofSalesP 
+*AppSetup_TopTableofSalesP
+*returns a Table of SalesP
+
+PRIVATE nConn, lReturn
+nConn = get_SQLSTRINGCONNECT()
+lReturn = .F.
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSalesP')
+	USE IN tmpSalesP
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	cSQL = "SELECT [AS].[ANS],[AS].[UN],COUNT(*) as [sold] "
+	cSQL = cSQL + "	FROM dbo.AppSetup [AS] WITH(NOLOCK) , dbo.AllQuotes [AQ] WITH(NOLOCK) "
+	cSQL = cSQL + " WHERE [AS].[Prp] = 'SalesP' AND LEN([AS].[ANS])>0 "
+	cSQL = cSQL + " AND [AS].[ANS] = [AQ].SalesP"
+	cSQL = cSQL + " AND [AQ].[SaleDate] > GETDATE() - 30"
+	cSQL = cSQL + " AND UN <> '0 '"
+	cSQL = cSQL + " GROUP BY [AS].[ANS],[AS].[UN]"
+
+	cSQL = cSQL + " UNION "
+	
+	cSQL = cSQL + " SELECT [AS].[ANS],[AS].[UN], 1 AS [Sold]"
+	cSQL = cSQL + " FROM dbo.AppSetup [AS] WITH(NOLOCK) "
+	cSQL = cSQL + " WHERE [AS].[Prp] = 'SalesP' AND LEN([AS].[ANS])>0 "
+	cSQL = cSQL + "	AND [AS].[ANS] != [AS].[UN]"
+	cSQL = cSQL + " GROUP BY [AS].[ANS],[AS].[UN]"
+
+	cSQL = cSQL + " ORDER BY [Sold] DESC "
+
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSalesP' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSalesP' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSalesP")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSalesP")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSalesP')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSalesP')
+		IF VARTYPE(tmpSalesP.ANS) = "C"
+			lReturn = .T.
+		ENDIF
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+
+RETURN lReturn 
+ENDPROC
+*********************************
+PROC HPAAppLoad
+PARAMETER cVersion
+*Records Version, called in LOAD procedure of HPA menu.
+
+IF VARTYPE(cVersion) != "C"
+	cVersion = '0'
+ENDIF
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE nArraySize, aArrayName, cHPAFile
+IF FILE("C:\Program Files\HPA\HPA.EXE")
+	nArraySize = aGETFILEVERSION(aArrayName, "C:\Program Files\HPA\HPA.EXE")
+ELSE
+	IF FILE("HPA.EXE")
+		nArraySize = aGETFILEVERSION(aArrayName, "HPA.EXE")
+	ELSE
+		cHPAFile = ALLTRIM(HOME())+"HPA.EXE" 
+		IF FILE(cHPAFile)
+			nArraySize = aGETFILEVERSION(aArrayName, (cHPAFile))
+		ELSE			
+			cHPAFile = SYS(5)+SYS(2003)+"HPA.EXE" 
+			IF FILE(cHPAFile)
+				nArraySize = aGETFILEVERSION(aArrayName, (cHPAFile))
+			ELSE
+				nArraySize = 0
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
+IF nArraySize > 0
+	cVersion = aArrayName(1,4)
+ELSE
+	cVersion = '0.0'
+ENDIF
+
+
+IF NOT cVersion = '0.0'
+	*Version
+	*AppSetup_Update_Ans(cAns, cUN, cPRP, nConn) - Updates/Inserts Ans
+	AppSetup_Update_Ans( cVersion ,cMach, 'Version' )	
+	*? 	"AppSetup_Update_Ans( cVersion ,cMach, 'Version'  )	"
+	*Machine
+	AppSetup_Update_Ans( cMach, cUserName, 'Machine' )		
+	*? "AppSetup_Update_Ans( cMach, cUserName, 'Machine' )"
+
+ENDIF
+ENDPROC
+
+**********************************
+
+PROC HPAVersion 
+PARAMETERS lNotCaption
+*WAIT WINDOW 'HPAVersion() Start' TIMEOUT 1
+*RETURN "Version 1.2.3"
+
+*lNotCaption
+
+
+PRIVATE cVersion, cCaption, nVersion 
+cVersion = ' '
+cCaption = ' '
+nVersion = 0
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+*WAIT WINDOW 'aGETFILEVERSION' TIMEOUT 1
+PRIVATE nArraySize, aArrayName, cHPAFile
+IF FILE("C:\Program Files (x86)\HPA\HPA.EXE")
+	nArraySize = aGETFILEVERSION(aArrayName, "C:\Program Files (x86)\HPA\HPA.EXE")
+ELSE
+	IF FILE("C:\Program Files\HPA\HPA.EXE")	
+		nArraySize = aGETFILEVERSION(aArrayName, "HPA.EXE")
+	ELSE
+		IF FILE("HPA.EXE")
+			nArraySize = aGETFILEVERSION(aArrayName, "HPA.EXE")
+		ELSE
+			cHPAFile = ALLTRIM(HOME())+"HPA.EXE" 
+			IF FILE(cHPAFile)
+				nArraySize = aGETFILEVERSION(aArrayName, (cHPAFile))
+			ELSE
+				nArraySize = 0
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
+*WAIT WINDOW 'nArraySize = '+STR(nArraySize) TIMEOUT 1
+IF nArraySize > 0
+	cVersion = aArrayName(1,4)
+	nVersion  = VAL(LEFT(cVersion,AT(".",cVersion)))*10000000 +INT(VAL(RIGHT(cVersion,LEN(cVersion)-AT(".",cVersion))))*10000+VAL(RIGHT(cVersion,LEN(cVersion)-AT(".",cVersion,2 )))
+	*VAL(LEFT(cVersion,AT(".",cVersion)))*10000000 +VAL(RIGHT(cVersion,LEN(cVersion)-AT(".",cVersion)))*10000
+	IF lNotCaption
+		cCaption = cVersion
+	ELSE
+		cCaption = "Version "+cVersion
+	ENDIF
+ELSE
+	cVersion = 'No EXE'
+	nVersion  = 0
+	cCaption = "Version "+cVersion
+ENDIF
+
+PRIVATE cLatestVersion , nLatestVersion 
+cLatestVersion = AppSetup_get_LatestVersion()
+IF EMPTY(cLatestVersion)
+	nLatestVersion = 0
+ELSE
+	nLatestVersion= VAL(LEFT(cLatestVersion ,AT(".",cLatestVersion )))*10000000 +INT(VAL(RIGHT(cLatestVersion ,LEN(cLatestVersion )-AT(".",cLatestVersion ))))*10000+VAL(RIGHT(cLatestVersion ,LEN(cLatestVersion )-AT(".",cLatestVersion,2 )))
+ENDIF
+*VAL(LEFT(cLastestVersion ,AT(".",cLastestVersion )))*10000000 +VAL(RIGHT(cLastestVersion ,LEN(cLastestVersion )-AT(".",cLastestVersion )))*10000
+
+IF lNotCaption
+	*Do not add text that Caption needs
+ELSE
+	IF nLatestVersion > nVersion OR nLatestVersion = 0
+		cCaption = "Version "+cVersion+" of "+cLatestVersion 
+	ELSE
+		IF nLatestVersion = nVersion 
+			cCaption = "Version "+cVersion+" current!"
+		ELSE
+			*nLastestVersion  < nVersion
+			cCaption = "Version "+cVersion+" current!"
+			
+			IF cUserName = "David Kirchner"
+				IF MESSAGEBOX( "Do you want to update Latest Version now (Y/N)?",4+32,"David Kirchner, only.") = 6
+					*UPDATE Setup SET Ans = cVersion WHERE Un = "Latest" AND Prp = "Version"
+					*AppSetup_Update_Ans(cAns, cUN, cPRP, nConn) - Updates/Inserts Ans
+					AppSetup_Update_Ans( cVersion ,"Latest", "Version"  )	
+					TrackError("HPA App Update","Updated HPA App to Version:"+cVersion,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+				ENDIF
+			ELSE
+				*WAIT WINDOW "UPDATE Setup SET Ans = cVersion " TIMEOUT 1
+				*UPDATE Setup SET Ans = cVersion WHERE Un = "Latest" AND Prp = "Version"
+				AppSetup_Update_Ans( cVersion ,"Latest", "Version"  )		
+				TrackError("HPA App Update","Updated HPA App to Version:"+cVersion,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+			ENDIF	
+			
+		ENDIF
+	ENDIF
+ENDIF
+
+RETURN cCaption
+ENDPROC
+
+**********************************
+
+PROC AllowHPA_Version 
+
+PRIVATE lAllowed
+lAllowed = .T.
+
+PRIVATE cLatestVersion, cMinAllowVersion, cUsersVersion
+cLatestVersion = AppSetup_get_LatestVersion()
+cMinAllowVersion = AppSetup_get_MinVersion()
+cUsersVersion = HPAVersion(.T.)
+
+IF EMPTY(cLatestVersion)
+	RETURN .T.	&&let thrue for now
+ENDIF
+IF EMPTY(cMinAllowVersion)
+	RETURN .T.	&&let thrue for now
+ENDIF
+IF EMPTY(cUsersVersion)
+	RETURN .T.	&&let thrue for now
+ENDIF
+
+*Break down the String '3.1.1'
+PRIVATE nMajorCurV, nMajorAllow
+nMajorCurV	= VAL(LEFT(cUsersVersion , AT(".",cUsersVersion )))
+nMajorAllow	= VAL(LEFT(cMinAllowVersion, AT(".",cMinAllowVersion)))
+IF nMajorCurV < nMajorAllow
+	RETURN .F.
+ENDIF
+IF nMajorCurV > nMajorAllow
+	RETURN .T.
+ENDIF
+
+PRIVATE cMinorCurV, cMinorAllow
+cMinorCurV	= SUBSTR(cUsersVersion ,AT(".",cUsersVersion )+1 )
+cMinorAllow	= SUBSTR(cMinAllowVersion,AT(".",cMinAllowVersion)+1 )
+
+PRIVATE nMinorCurV, nMinorAllow
+IF AT(".",cMinorCurV) > 0
+	nMinorCurV	= VAL(LEFT(cMinorCurV,AT(".",cMinorCurV)))
+ELSE
+	nMinorCurV	= VAL(cMinorCurV)
+ENDIF
+IF AT(".",cMinorAllow) > 0
+	nMinorAllow	= VAL(LEFT(cMinorAllow,AT(".",cMinorAllow)))
+ELSE
+	nMinorAllow	= VAL(cMinorAllow)
+ENDIF
+
+IF nMinorCurV < nMinorAllow
+	IF nMajorCurV = nMajorAllow
+		RETURN .F.	&&Minor is only bad if Major is Same
+	ENDIF
+ENDIF
+IF nMinorCurV > nMinorAllow
+	RETURN .T.
+ENDIF
+
+PRIVATE cBuildCurV, cBuildAllow, lBuildAllow
+lBuildAllow = AT(".",cMinorAllow) > 0
+IF lBuildAllow 
+	IF AT(".",cMinorCurV) > 0
+		cBuildCurV	= SUBSTR(cMinorCurV,AT(".",cMinorCurV)+1 )
+	ELSE
+		cBuildCurV	= cMinorCurV
+	ENDIF
+	IF AT(".",cMinorAllow) > 0
+		cBuildAllow	= SUBSTR(cMinorAllow,AT(".",cMinorAllow)+1 )
+	ELSE
+		cBuildAllow	= cMinorAllow
+	ENDIF
+	
+	PRIVATE nBuildCurV, nBuildAllow
+	nBuildCurV	= VAL(cBuildCurV)
+	nBuildAllow	= VAL(cBuildAllow)
+
+	IF nBuildCurV < nBuildAllow
+		*IF nMinorCurV = nMinorAllow
+		*	RETURN .F.	&&Build is only bad if Minor is Same
+		*ENDIF
+		
+		IF NOT "PROC_HPA" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+			SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+		ENDIF
+		
+		RecordTest("Record Test Data.", PROGRAM(), LINENO(1),"Build not Allowed")
+		TrackError("UsersVersion="+ALLTRIM(cUsersVersion )+", LatestVersion="+ALLTRIM(cLatestVersion)+", MinAllowVersion="+ALLTRIM(cMinAllowVersion),"Build not Allowed to run.", PROGRAM(), LINENO(1))
+		RETURN .F.
+		
+	ENDIF
+
+ENDIF
+
+RETURN lAllowed
+ENDPROC
+
+**********************************
+
+PROCEDURE AppSetup_get_LatestVersion 
+*AppSetup_get_LatestVersion()
+
+PRIVATE cReturn
+cReturn = ''
+*WAIT WINDOW "AppSetup_get_LatestVersion:get_SQLSTRINGCONNECT" TIMEOUT 1
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn < 1
+	MESSAGEBOX("Could not talk to server"+CHR(13)+"Wait 5 Min if Server is rebooting and this can work."+CHR(13)+"Just continue if you are setting up the HPA App."+CHR(13)+"If you continue before the server is back, you may need to restart the HPA App.",0+16,"Server Error - Server may be rebooting.",500000) 
+	nConn = get_SQLSTRINGCONNECT()
+ENDIF
+*WAIT WINDOW "AppSetup_get_LatestVersion:SELECT before" TIMEOUT 1
+IF nConn > 0
+	cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'Version' AND [UN] = 'Latest'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+*	WAIT WINDOW "AppSetup_get_LatestVersion:SELECT after" TIMEOUT 1
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+*		WAIT WINDOW "AppSetup_get_LatestVersion:SELECT error" 
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+*	WAIT WINDOW "AppSetup_get_LatestVersion:Disconnect " TIMEOUT 1
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+*	WAIT WINDOW "AppSetup_get_LatestVersion:TrackError " 
+*	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+*WAIT WINDOW "AppSetup_get_LatestVersion: end proc" TIMEOUT 1
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+
+**********************************
+
+PROCEDURE AppSetup_get_MinVersion 
+*AppSetup_get_MinVersion()
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn < 1
+	MESSAGEBOX("Could not talk to server"+CHR(13)+"Wait 5 Min if Server is rebooting and this can work."+CHR(13)+"Just continue if you are setting up the HPA App."+CHR(13)+"If you continue before the server is back, you may need to restart the HPA App.",0+16,"Server Error - Server may be rebooting.",500000) 
+	nConn = get_SQLSTRINGCONNECT()
+ENDIF
+
+*INSERT dbo.AppSetup (ANS,PRP,UN) VALUES ('3.1.1','Version','Minimun')
+
+IF nConn > 0
+	cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'Version' AND [UN] = 'Minimun'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+*	WAIT WINDOW "AppSetup_get_LatestVersion:SELECT after" TIMEOUT 1
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+*		WAIT WINDOW "AppSetup_get_LatestVersion:SELECT error" 
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+*	WAIT WINDOW "AppSetup_get_LatestVersion:Disconnect " TIMEOUT 1
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+*	WAIT WINDOW "AppSetup_get_LatestVersion:TrackError " 
+*	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+*WAIT WINDOW "AppSetup_get_LatestVersion: end proc" TIMEOUT 1
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN cReturn 
+ENDPROC
+*********************************
+
+PROCEDURE AppSetup_Get_AutoName 
+PARAMETERS pUserName 
+*AppSetup_Get_AutoName(cUserName)
+
+IF VARTYPE(pUserName) != "C"
+	RETURN .F.
+ENDIF
+
+PRIVATE cUserName
+cUserName = pUserName
+
+IF LEN(ALLTRIM(pUserName)) = 1
+	cUserName = AppSetup_Get_UserName(pUserName)
+ENDIF
+
+cUserName  = ALLTRIM(  cUserName  )
+
+PRIVATE cReturn
+cReturn = ''
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [Prp] = 'AutoName' AND [UN] = '"+cUserName+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				cReturn = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN (UPPER(cReturn) = "ON") 
+ENDPROC
+
+*********************************
+PROC AppSetup_Insert 
+PARAMETER pcUN,pcPRP,pcANS, pConnHandle
+*AppSetup_Insert(pcUN,pcPRP,pcANS, pConnHandle)
+
+IF VARTYPE(pcUN) != "C"
+	RETURN .F.
+ENDIF
+IF VARTYPE(pcPRP) != "C"
+	RETURN .F.
+ENDIF
+IF EMPTY(ALLTRIM(pcPRP))
+	RETURN .F.
+ENDIF
+IF VARTYPE(pcANS) != "C"
+	RETURN .F.
+ENDIF
+IF EMPTY(ALLTRIM(pcANS))
+	RETURN .F.
+ENDIF
+
+PRIVATE lGoodSave
+lGoodSave = .F.
+
+PRIVATE lNewConn, nConn
+lNewConn  =.F.
+IF VARTYPE(pConnHandle) = "N"
+	IF pConnHandle > 0
+		nConn = pConnHandle
+	ELSE
+		nConn = get_SQLSTRINGCONNECT()
+		lNewConn = .T.
+	ENDIF
+ELSE
+	nConn= get_SQLSTRINGCONNECT()
+	lNewConn = .T.
+ENDIF
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+cSQL = "INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES "
+cSQL = cSQL + "('"+pcUN+"'"
+cSQL = cSQL + ",'"+pcPRP+"'"
+cSQL = cSQL + ",'"+pcANS+"')"
+
+nSQLEXEC = SQLEXEC(nConn, cSQL )
+
+DO WHILE nSQLEXEC = 0
+	WAIT WINDOW 'SQL' TIMEOUT 1
+	nSQLEXEC = SQLEXEC( nConn, cSQL )
+ENDDO
+IF nSQLEXEC < 0 &&Try again!
+	nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL 2' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+
+		IF nSQLEXEC < 0
+			IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+				nSQLEXEC = 0
+			ENDIF
+		ENDIF
+	ENDDO
+ENDIF
+IF nSQLEXEC < 0
+	SQLEXECError(cSQL,nConn, nSQLEXEC, '')
+	RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+ELSE
+	lGoodSave = .T.
+	TrackMess( cSQL )
+ENDIF
+
+IF lNewConn 
+	SQLDISCONNECT(nConn )
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lGoodSave
+ENDPROC
+
+*********************************
+PROC AppSetup_Update_Ans 
+PARAMETER pcAns, pcUN, pcPRP, pConnHandle
+*AppSetup_Update_Ans( pcAns, pcUN, pcPRP, pConn )
+
+IF VARTYPE(pcUN) != "C"
+	RETURN .F.
+ENDIF
+IF VARTYPE(pcPRP) != "C"
+	RETURN .F. 
+ENDIF
+IF EMPTY(ALLTRIM(pcPRP))
+	RETURN .F.
+ENDIF
+
+IF VARTYPE(pcANS) != "C"
+	RETURN .F. 
+ENDIF
+IF EMPTY(ALLTRIM(pcANS))
+	RETURN .F.
+ENDIF
+
+PRIVATE lGoodSave
+lGoodSave = .F.
+
+PRIVATE lNewConn, nConn
+lNewConn  =.F.
+IF VARTYPE(pConnHandle) = "N"
+	IF pConnHandle > 0
+		nConn = pConnHandle
+	ELSE
+		nConn = get_SQLSTRINGCONNECT()
+		lNewConn = .T.
+	ENDIF
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNewConn = .T.
+ENDIF
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+IF USED("tmpSqlAns")
+	USE IN tmpSqlAns
+ENDIF
+
+PRIVATE cSQL, nSQLEXEC
+
+SELECT 0
+cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.AppSetup WITH(NOLOCK) "
+cSQL = cSQL + " WHERE UN = '"+pcUN+"'"
+cSQL = cSQL + " AND PRP = '"+pcPRP+"'"
+
+TRY 
+	nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns" )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC( nConn, cSQL, "tmpSqlAns" )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF USED("tmpSqlAns")
+		IF tmpSqlAns.Cntd > 0 
+			IF UPPER(pcPRP) != "NEW"
+				
+				*IF AppSetup_Update_Ans( cSalesPinit, ThisForm.LoginUN, "SalesP" )
+				IF pcPRP = "SalesP" AND LEN(pcANS) = 1
+					*do not update again!
+					lGoodSave = .T.
+				ELSE
+					cSQL = "UPDATE dbo.AppSetup SET ANS = '"+pcANS+"'"
+					cSQL = cSQL + " WHERE UN = '"+pcUN+"'"
+					cSQL = cSQL + " AND PRP = '"+pcPRP+"'"
+
+					nSQLEXEC = SQLEXEC(nConn, cSQL )
+					DO WHILE nSQLEXEC = 0
+						WAIT WINDOW 'SQL' TIMEOUT 1
+						nSQLEXEC = SQLEXEC( nConn, cSQL )
+					ENDDO
+					IF nSQLEXEC < 0 &&Try again!
+						nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+						DO WHILE nSQLEXEC = 0
+							WAIT WINDOW 'SQL 2' TIMEOUT 1
+							nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+
+							IF nSQLEXEC < 0
+								IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+									nSQLEXEC = 0
+								ENDIF
+							ENDIF
+						ENDDO
+					ENDIF
+					IF nSQLEXEC < 0
+						SQLEXECError(cSQL,nConn, nSQLEXEC, '')
+						RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+					ELSE
+						TrackMess( cSQL )
+						lGoodSave = .T.
+					ENDIF
+				ENDIF
+			ENDIF
+		ELSE
+			IF AppSetup_Insert (pcUN,pcPRP,pcANS, nConn )
+				lGoodSave = .T.
+			ENDIF
+		ENDIF
+	ELSE
+		IF AppSetup_Insert (pcUN,pcPRP,pcANS, nConn )
+			lGoodSave = .T.
+		ENDIF
+	ENDIF
+	
+CATCH TO oException
+	MESSAGEBOX("Could not read table AppSetup!"+CHR(13)+"SELECT COUNT(*) AS Cntd FROM dbo.AppSetup"+CHR(13)+"nConn="+ALLTRIM(STR(nConn))+CHR(13)+"Check SQL permisions!"+CHR(13)+CHR(13)+CHR(13)+"TRY Statement Failed in Proc_Setup.AppSetup_Update_Ans()"+CHR(13)+CHR(13)+"Please screen shot this for IT department."+CHR(13)+cSQL,16,"SQL Error.")
+	*nSQLEXEC = SQLEXEC(nConn, "SELECT GETDATE()", "tmpDateTime" )
+ENDTRY
+
+IF lNewConn 
+	SQLDISCONNECT(nConn )
+ENDIF
+
+IF USED("tmpSqlAns")
+	USE IN tmpSqlAns
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lGoodSave
+ENDPROC
+*********************************
+
+PROCEDURE AppSetup_Delete 
+ENDPROC
+
+*********************************
+PROC AppSetup_Update_Profile_Names 
+PARAMETER pProfileName, pEmail, pConnHandle
+*AppSetup_Update_Profile_Names( cProfileName, cEmail, pConn )
+
+IF VARTYPE(pProfileName) != "C"
+	RETURN .F.
+ENDIF
+IF VARTYPE(pEmail) != "C"
+	RETURN .F.
+ENDIF
+IF EMPTY(pProfileName)
+	RETURN .F.
+ENDIF
+IF EMPTY(pEmail)
+	RETURN .F.
+ENDIF
+
+PRIVATE lReturn
+lReturn = .T.
+
+PRIVATE lNewConn, nConn
+lNewConn  =.F.
+
+IF VARTYPE(pConnHandle) = "N"
+	IF pConnHandle > 0
+		nConn = pConnHandle
+	ELSE
+		nConn = get_SQLSTRINGCONNECT()
+		lNewConn = .T.
+	ENDIF
+ELSE
+	nConn= get_SQLSTRINGCONNECT()
+	lNewConn = .T.
+ENDIF
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+IF USED("cntAppSetup")
+	USE IN cntAppSetup
+ENDIF
+
+PRIVATE cSQL, nSQLEXEC
+**Check Profile Name
+SELECT 0
+*cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.Profile_Names "
+*cSQL = cSQL + " WHERE Profile_Name = '"+pProfileName+"'"
+cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.AppSetup WITH(NOLOCK) "
+cSQL = cSQL + " WHERE PRP='Profile_Name' AND ANS='"+pEmail+"'"
+
+
+nSQLEXEC = SQLEXEC(nConn, cSQL, "cntAppSetup" )
+DO WHILE nSQLEXEC = 0
+	WAIT WINDOW 'SQL' TIMEOUT 1
+	nSQLEXEC = SQLEXEC( nConn, cSQL, "cntAppSetup" )
+ENDDO
+IF nSQLEXEC < 0 &&Try again!
+	nSQLEXEC = SQLEXEC(nConn, cSQL, "cntAppSetup")
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL 2' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "cntAppSetup")
+
+		IF nSQLEXEC < 0
+			IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+				nSQLEXEC = 0
+			ENDIF
+		ENDIF
+	ENDDO
+ENDIF
+IF USED("cntAppSetup")
+	IF cntAppSetup.Cntd = 0 
+		*Insert
+		cSQL = "INSERT INTO dbo.AppSetup ([UN],[PRP],[ANS]) VALUES "
+		cSQL = cSQL + "('"+pProfileName+"'"
+		cSQL = cSQL + ",'Profile_Name'"
+		cSQL = cSQL + ",'"+pEmail+"')"
+		
+		nSQLEXEC = SQLEXEC(nConn, cSQL )
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL' TIMEOUT 1
+			nSQLEXEC = SQLEXEC( nConn, cSQL )
+		ENDDO
+		IF nSQLEXEC < 0 &&Try again!
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+			DO WHILE nSQLEXEC = 0
+				WAIT WINDOW 'SQL 2' TIMEOUT 1
+				nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+
+				IF nSQLEXEC < 0
+					IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+						nSQLEXEC = 0
+					ENDIF
+				ENDIF
+			ENDDO
+		ENDIF
+		IF nSQLEXEC < 0
+			SQLEXECError(cSQL,nConn, nSQLEXEC, '')
+			RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+			lReturn = .F.
+		ELSE
+			TrackMess( cSQL )
+		ENDIF
+	ENDIF
+ENDIF
+
+
+IF lNewConn 
+	SQLDISCONNECT(nConn )
+ENDIF
+
+IF USED("cntAppSetup")
+	USE IN cntAppSetup
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturn 
+ENDPROC
+
+********************************** 
+PROCEDURE HavePermision 
+PARAMETERS cTask,lReportFailure
+*IF HavePermision('Task')
+*returns .T. or .F.
+
+*--Select DISTINCT ANS from dbo.AppSetup WHERE PRP='YES'
+*Admin AdminDeleteCert DeleteMFGlog 
+*EditStockLst EditStockLstCostValue EditStockWants EditUserInfo ReReceiveSTK
+*FinalizeMoney FinalizeQuantity 
+*'PackingSlip Edit' 
+*EditPOLate AdminCancelPO AdminDeletePO ReconcilePO 
+*RMA_Approval RMA_Cancel 
+*CompleteSO AdminSODelete
+*VendorApproval VendorInactive  
+
+
+IF VARTYPE(cTask)!="C"
+	RETURN .F.
+ENDIF
+
+IF VARTYPE(lReportFailure)!="L"
+	lReportFailure = .F.
+ENDIF
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	*INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('David Kirchner','YES','EditStockWants')
+	*INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('David Kirchner','YES','EditPOLate')
+	*INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('Sutton','YES','ReconcilePO')
+	*INSERT into dbo.AppSetup (UN,PRP,ANS) VALUES ('Dave Morrow','YES','CofC Backup')
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = '"+cTask+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF UPPER(tmpSqlAns.PRP) = "YES"
+					lReturnApprove = .T.
+				ELSE
+					IF lReportFailure
+						TrackError(cUserName +" tried to "+cTask+".","No Permision ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+
+********************************** 
+PROCEDURE HaveVendorApprovedPermision 
+*HaveVendorApprovedPermision()
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = 'VendorApproval'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF tmpSqlAns.PRP = "YES"
+					lReturnApprove = .T.
+				ELSE
+					TrackError(cUserName +" tried to Approve Vendor.","No Vendor Permision ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+				ENDIF
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+**********************************
+PROCEDURE HaveVendorInactivePermision 
+*HaveVendorInactivePermision()
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = 'VendorInactive'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF tmpSqlAns.PRP = "YES"
+					lReturnApprove = .T.
+				ELSE
+					TrackError(cUserName+" tried to 'Inactive' Vendor.","No Vendor Inactive Permision ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+				ENDIF
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+
+**********************************
+PROCEDURE AllowFinalizeQuantity 
+*AllowFinalizeQuantity()
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = 'FinalizeQuantity'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF tmpSqlAns.PRP = "YES"
+					lReturnApprove = .T.
+				ELSE
+					TrackError(cUserName+" tried Allowed Finalize Quantity.","Allow Finalize Quantity","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+				ENDIF
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+
+**********************************
+PROCEDURE AllowFinalizeMoney 
+*AllowFinalizeMoney()
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = 'FinalizeMoney'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF tmpSqlAns.PRP = "YES"
+					lReturnApprove = .T.
+				ELSE
+					TrackError(cUserName+" tried to Finalize Money.","Allow Finalize Money","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+				ENDIF
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+
+**********************************
+PROCEDURE AllowAdminPODelete 
+*AllowAdminPODelete()
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = 'AdminDeletePO'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF tmpSqlAns.PRP = "YES"
+					lReturnApprove = .T.
+				ELSE
+					*TrackError(cUserName+" tried to Admin PO Delete.","Allow Admin PO Delete","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+				ENDIF
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+
+**********************************
+PROCEDURE AllowAdminPOCancel 
+*AllowAdminPOCancel()
+
+*****
+IF AllowAdminPODelete()
+	*If user has AdminPODelete, Give AdminPOCancel
+	RETURN .T.
+ENDIF
+****
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = 'AdminCancelPO'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF tmpSqlAns.PRP = "YES"
+					lReturnApprove = .T.
+				ELSE
+					*TrackError(cUserName+" tried to Admin PO Delete.","Allow Admin PO Delete","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+				ENDIF
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+
+**********************************
+PROCEDURE AllowAdmin 
+*AllowAdmin()
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = 'Admin'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF tmpSqlAns.PRP = "YES"
+					lReturnApprove = .T.
+				ELSE
+					*TrackError(cUserName+" tried to Admin PO Delete.","Allow Admin ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+				ENDIF
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+****************************************************
+
+PROCEDURE AllowCertDelete 
+PARAMETERS pConnHandle
+*AllowCertDelete()
+
+
+PRIVATE lNewConn, nConn
+lNewConn  =.F.
+IF VARTYPE(pConnHandle) = "N"
+	IF pConnHandle > 0
+		nConn = pConnHandle
+	ELSE
+		nConn = get_SQLSTRINGCONNECT()
+		lNewConn = .T.
+	ENDIF
+ELSE
+	nConn= get_SQLSTRINGCONNECT()
+	lNewConn = .T.
+ENDIF
+
+
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	*INSERT INTO dbo.AppSetup ([UN],[PRP],[ANS]) VALUES ( 'David Kirchner','YES','AdminDeleteCert')
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = 'AdminDeleteCert'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF tmpSqlAns.PRP = "YES"
+					lReturnApprove = .T.
+				ELSE
+					TrackError(cUserName+" tried to Delete Cert.","Allow Cert Delete ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+				ENDIF
+			ENDIF
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ENDIF
+	
+	IF lNewConn 
+		SQLDISCONNECT(nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+****************************************************
+
+PROCEDURE HaveSODeletePermision 
+PARAMETERS nSalesNum
+*HaveSODeletePermision(nSalesNum)
+
+IF VARTYPE(nSalesNum) != "N"
+	RETURN .F.
+ENDIF
+
+PRIVATE lReturnApprove
+lReturnApprove = .F.
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	*Un = cUserName AND SETUP.Prp = "Machine"
+	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = 'AdminSODelete'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.PRP) = "C"
+				IF tmpSqlAns.PRP = "YES"
+					lReturnApprove = .T.
+				ELSE
+					*Check for other rights to delete that SO
+				ENDIF
+			ELSE
+	*			*Check for other rights to delete that SO
+			ENDIF
+		ENDIF
+	ELSE
+*		*Check for other rights to delete that SO
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		USE IN tmpSqlAns
+	ENDIF
+	
+	
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT lReturnApprove 
+	*Need to check User with SO
+	
+	IF nSalesNum < 1
+		MESSAGEBOX("No Sales Number!",0,"Cannot Change")
+	ELSE
+		cSQL = "SELECT COUNT(*) AS cntd FROM dbo.Sales_No "
+		cSQL = cSQL + " WHERE Salesnum = "+ALLTRIM(STR(nSalesNum))
+		cSQL = cSQL + " AND SalesRep = '"+ALLTRIM(cUserName)+"'"
+		*Does not check Cover!
+		
+		IF USED('tmpSqlAns')
+			USE IN tmpSqlAns
+		ENDIF
+		SELECT 0
+			
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+		ENDDO
+		IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+		IF nSQLEXEC < 0
+			SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+			RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+		ENDIF
+		
+		IF USED('tmpSqlAns')
+			IF RECCOUNT('tmpSqlAns') > 0
+				IF VARTYPE(tmpSqlAns.CNTD) = "N"
+					IF tmpSqlAns.CNTD > 0
+						lReturnApprove = .T.
+					ELSE
+					**	
+					ENDIF
+				ENDIF
+			ENDIF
+			
+			USE IN tmpSqlAns
+		ENDIF
+		
+		*******************
+		IF NOT lReturnApprove 
+			*Check for Cover
+			PRIVATE cSalesP
+			cSalesP = AppSetup_Login_SalesP()
+			
+			cSQL = "SELECT COUNT(*) AS cntd FROM dbo.AllQuotes "
+			cSQL = cSQL + " WHERE Salesnum = "+ALLTRIM(STR(nSalesNum))
+			cSQL = cSQL + " AND Cover = '"+ALLTRIM(cSalesP)+"'"
+			
+			
+			IF USED('tmpSqlAns')
+				USE IN tmpSqlAns
+			ENDIF
+			SELECT 0
+				
+			nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+			DO WHILE nSQLEXEC = 0
+				WAIT WINDOW 'SQL' TIMEOUT 1
+				nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+			ENDDO
+			IF nSQLEXEC < 0 &&Try again!
+				nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+				DO WHILE nSQLEXEC = 0
+					WAIT WINDOW 'SQL 2' TIMEOUT 1
+					nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+					IF nSQLEXEC < 0
+						IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+							nSQLEXEC = 0
+						ENDIF
+					ENDIF
+				ENDDO
+			ENDIF
+			IF nSQLEXEC < 0
+				SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+				RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+			ENDIF
+			
+			IF USED('tmpSqlAns')
+				IF RECCOUNT('tmpSqlAns') > 0
+
+					IF tmpSqlAns.CNTD > 0
+						lReturnApprove = .T.
+					ENDIF
+
+				ENDIF
+				
+				USE IN tmpSqlAns
+			ENDIF			
+		ENDIF	
+		
+		*******************
+		
+		IF NOT lReturnApprove 
+			*Check for Short Name!
+			cUserName = ALLTRIM( ShortSalesP(cUserName) )
+			
+			*Un = cUserName AND SETUP.Prp = "Machine"
+			cSQL = "SELECT COUNT(*) AS cntd FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [PRP] = 'SalesP'"
+			
+			nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+			DO WHILE nSQLEXEC = 0
+				WAIT WINDOW 'SQL' TIMEOUT 1
+				nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+			ENDDO
+			IF nSQLEXEC < 0 &&Try again!
+				nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+				DO WHILE nSQLEXEC = 0
+					WAIT WINDOW 'SQL 2' TIMEOUT 1
+					nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+					IF nSQLEXEC < 0
+						IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+							nSQLEXEC = 0
+						ENDIF
+					ENDIF
+				ENDDO
+			ENDIF
+			IF nSQLEXEC < 0
+				SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+				RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+			ENDIF
+			
+			IF USED('tmpSqlAns')
+				IF RECCOUNT('tmpSqlAns') > 0
+					IF tmpSqlAns.CNTD > 0
+						lReturnApprove = .T.
+					ENDIF
+				ENDIF
+			ELSE
+		*		*Check for other rights to delete that SO
+			ENDIF
+			
+			IF USED('tmpSqlAns')
+				USE IN tmpSqlAns
+			ENDIF
+		ENDIF
+		
+		*******************
+		
+		IF NOT lReturnApprove 
+			*State Not Apporved
+			
+			IF USED('tmpSOsp')
+				USE IN tmpSOsp
+			ENDIF
+			SELECT 0
+
+			cSQL = "SELECT SalesRep FROM dbo.Sales_No WITH(NOLOCK)"
+			cSQL = cSQL + " WHERE Salesnum = "+ALLTRIM(STR(nSalesNum))			
+				
+			nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSOsp' )
+			DO WHILE nSQLEXEC = 0
+				WAIT WINDOW 'SQL' TIMEOUT 1
+				nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSOsp' )
+			ENDDO
+			IF nSQLEXEC < 0 &&Try again!
+				nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSOsp")
+				DO WHILE nSQLEXEC = 0
+					WAIT WINDOW 'SQL 2' TIMEOUT 1
+					nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSOsp")
+
+					IF nSQLEXEC < 0
+						IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+							nSQLEXEC = 0
+						ENDIF
+					ENDIF
+				ENDDO
+			ENDIF
+			IF nSQLEXEC < 0
+				SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSOsp')
+				RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+			ENDIF
+			
+			PRIVATE cSalesRep
+			cSalesRep = ""
+			
+			IF USED('tmpSOsp')
+				IF VARTYPE(tmpSOsp.SalesRep)="C"
+					cSalesRep = ALLTRIM(tmpSOsp.SalesRep)
+				ENDIF
+				USE IN tmpSOsp
+			ENDIF
+		**			
+			WAIT WINDOW "User:"+cUserName+" is not allowed to Change this SO: "+ALLTRIM(STR(nSalesNum))+" as it belongs to another SalesP."
+			TrackError(cUserName+" tried to Change another SalesP '"+cSalesRep+"' SO: "+ALLTRIM(STR(nSalesNum)),"Deny SO Delete ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+
+		ENDIF
+		*******		
+	ENDIF
+	
+ENDIF
+
+SQLDISCONNECT( nConn )
+	
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnApprove
+ENDPROC
+
+******************************************************
+******************************************************
+
+PROCEDURE RedundantServer
+*RedundantServer()
+
+PRIVATE cWindfallServer, cTiptonServer,cWindfallServer2, cTiptonServer2
+cWindfallServer	=""
+cTiptonServer	=""
+cWindfallServer2=""
+cTiptonServer2	=""
+
+WAIT WINDOW "Proc_Setup:RedundantServer() Type any key." 
+
+*********************
+* Read XML
+*********************
+PRIVATE lFoundWindfall, lFoundTipton
+lFoundWindfall	= .F.
+lFoundTipton	= .F.
+
+IF USED('HPAdata')
+	USE IN HPAdata
+ENDIF
+
+IF FILE( "\\Windfall.HPA.local\SQL\HPAdata.xml" )
+	*READ file
+	TRY
+		XMLTOCURSOR( "\\Windfall.HPA.local\SQL\HPAdata.xml", 'HPAdata', 512)
+		
+		IF USED('HPAdata')
+			IF VARTYPE( HPAdata.WindfallServer ) = "C"
+				cWindfallServer = RTRIM(HPAdata.WindfallServer)
+				lFoundWindfall = .T.
+			ENDIF
+			IF VARTYPE( HPAdata.TiptonServer ) = "C"
+				cTiptonServer = RTRIM(HPAdata.TiptonServer)
+			ENDIF
+			IF VARTYPE( HPAdata.BackUpServer ) = "C"
+			ENDIF
+			USE IN HPAdata
+		ENDIF
+	CATCH
+		MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\Windfall.HPA.local\SQL\HPAdata.xml"]+CHR(13)+[, 'HPAdata', 512)],16,"Could not get DFS file")
+	ENDTRY
+ENDIF
+	
+
+*******************	
+
+
+**********************************
+* Create XML
+**********************************
+IF !FILE( "\\Windfall.HPA.local\SQL\HPAdata.xml" )
+	IF DIRECTORY( "\\Windfall.HPA.local\SQL\")
+		IF MESSAGEBOX("Are you ready to Create HPAdata.xml on \\Windfall.HPA.local\SQL\?",4+64+256,"New Server") = 6
+
+			cWindfallServer	= "PEREGRINE"
+			cTiptonServer	= "PEREGRINE"
+			cBackupserver	= "SQLdev"
+
+			*Create file
+			CREATE CURSOR HPAdata (WindfallServer C(20), TiptonServer C(20), BackUpServer C(20) )
+			
+			INSERT INTO HPAdata (WindfallServer,TiptonServer,BackupServer) VALUES (cWindfallServer, cTiptonServer, cBackupserver)
+			
+			PRIVATE nBytes 
+			nBytes = 0
+			nBytes = CURSORTOXML( 'HPAdata', "\\Windfall.HPA.local\SQL\HPAdata.xml", 1, 512, 0, "1" )
+			IF VARTYPE( nBytes ) = 'N'
+				MESSAGEBOX( "Saved \\Windfall.HPA.local\SQL\HPAdata.xml"+CHR(13)+STR(nBytes)+" bytes written.",0+64,"Saved")
+			ENDIF
+			
+			USE IN HPAdata
+		ENDIF
+	ENDIF
+ENDIF
+
+****
+
+**Not Programed servers!!!
+IF NOT lFoundWindfall
+	IF NOT ( EMPTY(cWindfallServer2) )
+	
+	ENDIF
+ENDIf 
+IF NOT lFoundTipton 
+	IF NOT ( EMPTY(cTiptonServer) )
+	
+	ENDIF
+ENDIF
+
+************************
+*Where Am I
+************************
+PRIVATE oAdapters, oWMI
+PRIVATE lInWindfall,lInTipton
+lInWindfall = .F.
+lInTipton = .F.
+
+oWMI = getobject("winmgmts:")
+oAdapters = oWMI.ExecQuery("Select * from Win32_NetworkAdapterConfiguration where IPEnabled=True")
+
+FOR EACH oAdapter in oAdapters
+	IF NOT isnull(oAdapter.ipaddress)
+		FOR EACH cAddress in oAdapter.ipaddress
+			IF "192.168.1." $ cAddress
+				lInWindfall= .T.
+			ENDIF
+		NEXT 
+	ENDIF 
+NEXT 
+
+RELEASE oAdapters 
+RELEASE oWMI
+
+***********************
+*Choose Server
+************************
+PRIVATE cServer
+cServer = ""
+
+IF VARTYPE(gGlobalServer) = "C"
+	IF NOT ( EMPTY(gGlobalServer) )
+		*USE the gGlobalServer
+		cServer = gGlobalServer
+		lInWindfall = .F.
+		lInTipton	= .F.
+	ENDIF
+ENDIF
+
+IF lInWindfall
+	*Try to use the Windfall Server
+	IF lFoundWindfall
+		cServer = cWindfallServer
+	ELSE
+		cServer = cWindfallServer2
+	ENDIF
+ENDIF
+IF lInTipton
+	*Try to use the Tipton Server
+	IF lFoundTipton
+		cServer = cTiptonServer
+	ELSE
+		cServer = cTiptonServer2
+	ENDIF
+	
+ENDIF
+*WAIT WINDOW "Choose SQL Server "+cServer NOWAIT
+
+*******************
+IF MESSAGEBOX("Do you want to test the Server?",4+64+256,"SQL Server") = 6
+	*Test SQL Server
+	*!*	WAIT WINDOW "Trying SQL Connection" NOWAIT
+	PRIVATE lWindfallServer,lWindfallServer2,lTiptonServer,lTiptonServer2
+	lWindfallServer	= .F.
+	lWindfallServer2= .F.
+	lTiptonServer	= .F.
+	lTiptonServer2	= .F.
+
+	PRIVATE nHandle
+	WAIT WINDOW "Testing SQL Server "+cWindfallServer+". Possible Server Problem!  Please cancel the next 2 prompts." NOWAIT
+	nHandle = SQLStringConnect("Driver={SQL Server};Server="+cWindfallServer+";Database=HPAlloy;Trusted_Connection=yes;")
+	*nHandle = SQLStringConnect("Driver={SQL Server};Server="+cWindfallServer+";Trusted_Connection=yes;")
+	IF nHandle <= 0
+		? 'Fail '+cWindfallServer
+	ELSE
+		? 'Pass '+cWindfallServer
+		SQLDISCONNECT(nHandle)
+		lWindfallServer = .T.
+	ENDIF
+	*
+	IF cWindfallServer != cWindfallServer2
+		WAIT WINDOW "Testing SQL Server "+cWindfallServer2+". Possible Server Problem!  Please cancel the next 2 prompts." NOWAIT
+		nHandle = SQLStringConnect("Driver={SQL Server};Server="+cWindfallServer2+";Database=HPAlloy;Trusted_Connection=yes;")
+		*nHandle = SQLStringConnect("Driver={SQL Server};Server="+cWindfallServer2+";Trusted_Connection=yes;")
+		IF nHandle <= 0
+			? 'Fail '+cWindfallServer2
+		ELSE
+			? 'Pass '+cWindfallServer2
+			SQLDISCONNECT(nHandle)
+			lWindfallServer2 = .T.
+		ENDIF
+	ENDIF
+
+	IF EMPTY(cServer)
+		MESSAGEBOX("Could not locate the SQL Server"+CHR(13)+"cServer is Empty.",16,"Error")
+		nReturn = -1
+	ELSE
+		WAIT WINDOW "Testing SQL Server "+cTiptonServer+". Possible Server Problem!  Please cancel the next 2 prompts." NOWAIT
+		nHandle = SQLStringConnect("Driver={SQL Server};Server="+cTiptonServer+";Database=HPAlloy;Trusted_Connection=yes;")
+		*nHandle = SQLStringConnect("Driver={SQL Server};Server="+cTiptonServer+";Trusted_Connection=yes;")
+		IF nHandle <= 0
+			? 'Fail '+cTiptonServer
+		ELSE
+			? 'Pass '+cTiptonServer
+			SQLDISCONNECT(nHandle)
+			lTiptonServer = .T.
+		ENDIF
+	ENDIF
+ENDIF
+
+*!*	IF cTiptonServer != cTiptonServer2
+*!*		WAIT WINDOW "Testing SQL Server "+cTiptonServer2+". Possible Server Problem!  Please cancel the next 2 prompts." NOWAIT
+*!*		nHandle = SQLStringConnect("Driver={SQL Server};Server="+cTiptonServer2+";Database=HPAlloy;Trusted_Connection=yes;")
+*!*		IF nHandle <= 0
+*!*			? 'Fail '+cTiptonServer2
+*!*		ELSE
+*!*			? 'Pass '+cTiptonServer2
+*!*			SQLDISCONNECT(nHandle)
+*!*			lTiptonServer2 = .T.
+*!*		ENDIF
+*!*	ENDIF
+
+WAIT CLEAR
+
+ENDPROC
+*********************************
+
+PROCEDURE getSOitemfromInvoiceDescription 
+PARAMETERS cDesc
+*getSOitemfromInvoiceDescription(cDesc)
+*returns cSOitem
+
+IF VARTYPE(cDesc) != "C"
+	RETURN ' '
+ENDIF
+
+PRIVATE cSOitem 
+cSOitem = '' 
+
+PRIVATE cDesc2, cDescL, cDescLR
+cDesc2	= ""
+cDescL = ""
+cDescLR = ""
+
+cDesc = STRTRAN(cDesc,'"','')
+cDesc = STRTRAN(cDesc,"'",'')
+
+IF "[" $ cDesc
+	cDescL = RIGHT( cDesc, LEN(cDesc)-AT("[",cDesc) )
+	IF "]" $ cDescL
+		cDescLR = LEFT( cDescL, AT("]",cDescL)-1 )
+	ENDIF
+ENDIF
+
+IF VAL(LEFT(cDescLR,6)) > 0
+	*Use the first set of []
+	IF "-" $ cDescLR
+		*has the dash for Items
+		cSOitem = Proper_SO_Item(cDescLR)
+		RETURN cSOitem 
+	ENDIF
+ENDIF
+
+cDesc2 = RIGHT(cDesc,LEN(cDesc)-AT(cDescLR,cDesc)-LEN(cDescLR)-1)  &&Do again if 2 [] where used!
+
+IF "[" $ cDesc2
+	cDescL2 = RIGHT( cDesc2, LEN(cDesc2)-AT("[",cDesc2) )
+	IF VAL(LEFT(cDescL2,6)) > 0
+		*Use the second set of []
+		cDescLR2 = LEFT( cDescL2, AT("]",cDescL2)-1 )
+		IF "-" $ cDescLR2
+			*has the dash for Items
+			cSOitem = Proper_SO_Item(cDescLR2)
+			RETURN cSOitem 
+		ENDIF
+	ENDIF
+ELSE
+	cDescLR2 = ''
+ENDIF
+
+
+
+RETURN cSOitem 
+ENDPROC
+*********************************
+
+PROCEDURE getHeatfromInvoiceDescription
+PARAMETERS cDesc
+*getHeatfromInvoiceDescription(cDesc)
+*returns cSOitem
+
+IF VARTYPE(cDesc) != "C"
+	RETURN ' '
+ENDIF
+
+PRIVATE cHeat
+cHeat = '' 
+
+PRIVATE cDesc2,cDescL, cDescLR
+cDesc2	= ""
+cDescL = ""
+cDescLR = ""
+
+cDesc = STRTRAN(cDesc,'"','')
+cDesc = STRTRAN(cDesc,"'",'')
+
+IF "[" $ cDesc
+	cDescL = RIGHT( cDesc, LEN(cDesc)-AT("[",cDesc) )
+	IF "]" $ cDescL
+		cDescLR = LEFT( cDescL, AT("]",cDescL)-1 )
+		
+		IF LEFT(cDescLR ,3) = "HT#" 
+			cHeat = RIGHT(cDescLR,LEN(cDescLR)-3)
+		ELSE 
+			IF LEFT(cDescLR ,5) = "HEAT#"
+				cHeat = RIGHT(cDescLR,LEN(cDescLR)-5)
+			ENDIF
+		ENDIF
+		RETURN cHeat
+	ENDIF
+ENDIF
+
+IF LEFT(cDesc,3) = "HT#" OR LEFT(cDesc,5) = "HEAT#"
+	cDescLR = LEFT( cDesc, AT("]",cDesc)-1 )
+ENDIF
+		
+cDesc2 = RIGHT(cDesc,LEN(cDesc)-AT(cDescLR,cDesc)-LEN(cDescLR)-1)  &&Do again if 2 [] where used!
+
+IF "[" $ cDesc2
+	IF LEFT(cDesc2,3) = "HT#" OR LEFT(cDesc2,5) = "HEAT#"
+		*Use the second set of []
+		cDescLR2 = LEFT( cDesc2, AT("]",cDesc2)-1 )
+	ENDIF
+ELSE
+	cDescLR2 = ''
+ENDIF
+
+IF NOT ( EMPTY(cDescLR2) )
+	IF LEFT(cDescLR2,3) = "HT#" 
+		cHeat = RIGHT(cDescLR2,LEN(cDescLR2)-3)
+	ELSE 
+		IF LEFT(cDescLR2,5) = "HEAT#"
+			cHeat = RIGHT(cDescLR2,LEN(cDescLR2)-5)
+		ENDIF
+	ENDIF
+ELSE
+	cHeat=''
+ENDIF
+
+RETURN cHeat
+ENDPROC
+****************************************************
+
+PROCEDURE CollectErrors 
+PARAMETERS lSkipPackDB,lQuite
+*CollectErrors()
+*moves local Errors.dbf records to SQL which also triggers an email
+*  DO NOT USE THE Errors.DBF!!!
+*use a temp file!
+
+*MESSAGEBOX("ERROR COLLECTION will NOT be recorded.",0,"Proc_Setup:CollectErrors")
+return
+
+IF VARTYPE(lSkipPackDB) != "L"
+	lSkipPackDB = .F.
+ENDIF
+
+IF VARTYPE(lQuite) != "L"
+	lQuite = .F.
+ENDIF
+*WAIT WINDOW "Proc_Setup:CollectErrors() a"
+
+PRIVATE lNewConn, nConn
+nConn = get_SQLSTRINGCONNECT()
+lNewConn = .T.
+
+*WAIT WINDOW "Proc_Setup:CollectErrors() b"
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cErrorsFile,cfnLegal
+cfnLegal = SYS(3)
+IF "\MEM" $ SYS(2003)
+	cErrorsFile =  SYS(5)+SYS(2003)+"\"+cfnLegal+".DBF"
+ELSE
+	cErrorsFile =  SYS(5)+SYS(2003)+"\MEM\"+cfnLegal+".DBF"
+ENDIF
+
+*IF NOT USED('Errors')
+	*IF NOT FILE(cErrorsFile)
+		SELECT 0
+		CREATE TABLE (cErrorsFile) FREE ( nerror INT, mess1 C(254), cprogram c(254), nlineno Int, errordate DateTime, MACHINE c(254), Revision c(254), Memo1 MEMO)
+		USE (cErrorsFile) ALIAS fnERROR
+		*USE (cErrorsFile) SHARED IN 0 ALIAS fnERROR
+	*ENDIF
+*ENDIF
+
+
+*WAIT WINDOW "Proc_Setup:CollectErrors() c"
+*****************
+*IF USED('Errors')
+*	SELECT Errors
+	
+*	IF AFIELDS(aTableFields) > 0
+*		IF ASCAN(aTableFields,"MESS3") = 0
+*			*Not the latest version
+*			
+*			USE IN Errors
+*			CREATE TABLE (cErrorsFile) FREE ( nerror INT, mess1 C(254), cprogram c(254), nlineno int, errordate DateTime, MACHINE c(254), Revision c(254), Memo1 MEMO)
+*			USE (cErrorsFile) SHARED IN 0 ALIAS Errors			
+*			
+*		ENDIF
+*	ENDIF
+
+*ENDIF
+
+*****************
+*IF USED('tmpLocalErrorsTable')
+*	USE IN tmpLocalErrorsTable
+*ENDIF
+
+*IF USED('Errors')
+*	USE IN Errors
+*ENDIF
+
+PRIVATE cSQL, nSQLEXEC
+PRIVATE n1nerror,c1mess1,c1cprogram,n1nlineno,d1errordate,c1MACHINE,c1Revision,c1Memo1
+*WAIT WINDOW "Collect Errors" NOWAIT
+
+*WAIT WINDOW "Proc_Setup:CollectErrors() d"
+IF nConn > 0
+	IF FILE(cErrorsFile)
+		IF NOT lQuite
+			WAIT WINDOW "Collecting Errors to Email" NOWAIT
+		ENDIF
+		
+		SELECT 0
+		
+		TRY
+			PRIVATE mem
+*			WAIT WINDOW "Proc_Setup:CollectErrors() e"
+			*USE (cErrorsFile) SHARED IN 0 ALIAS Errors
+			**SHARED ALIAS Errors
+			
+		CATCH TO oErr1
+			?[  Error: ] + STR(oErr1.ErrorNo)
+			?[  LineNo: ] + STR(oErr1.LineNo) 
+			?[  Message: ] + oErr1.Message 
+			?[  Procedure: ] + oErr1.Procedure 
+			?[  Details: ] + oErr1.Details 
+			?[  StackLevel: ] + STR(oErr1.StackLevel) 
+			?[  LineContents: ] + oErr1.LineContents 		
+			
+			*Record Error of Screen
+*!*				TRY
+*!*				*	RUN ["]+SYS(5)+SYS(2003)+[\ErrorCapture.EXE" "RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ] /N 
+*!*					cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
+*!*					RUN /N &cRun
+*!*				CATCH
+*!*				*	MESSAGEBOX("Error Capture was not run",16,"Could not run Error Capture.")
+*!*				ENDTRY
+
+		ENDTRY
+
+*		IF !USED('Errors')
+		IF NOT USED('fnERROR')
+			PRIVATE cLocation
+			cLocation = LOCFILE( "Errors","DBF","Find the Errors table in \MEM")
+			
+*!*				IF "ERRORS.DBF" $ UPPER(cLocation) 
+*!*					IF FILE(cLocation)
+*!*						MESSAGEBOX("The 'CollectErrors' Function has been called."+CHR(13)+"The file '"+cLocation+"' was not able to be written to."+CHR(13)+"Why is this file not accessible?",0+16,"Cannot write the error to disk.")
+*!*						USE (cLocation) IN 0 ALIAS Errors
+*!*						
+*!*						IF !USED('Errors')
+*!*							TRY
+*!*								*put Delete in a TRY block so user is not bothered with Yet Another Error message
+*!*								*DELETE FILE (tmpLocalErrorsTable)
+*!*								USE (cLocation) IN 0 ALIAS Errors
+*!*							CATCH
+*!*								*Tried to Delete before USE							
+*!*							ENDTRY
+*!*						ENDIF
+*!*						
+*!*						
+*!*					ELSE
+*!*						SELECT 0
+*!*						WAIT WINDOW "Proc_Setup:CollectErrors() CREATE TABLE "+cErrorsFile
+*!*						
+*!*						CREATE TABLE (cErrorsFile) FREE ( nerror INT, mess1 C(254), cprogram c(254), nlineno Int, errordate DateTime, MACHINE c(254), Revision c(254), Memo1 MEMO)
+*!*						*CREATE TABLE (cErrorsFile) ( nerror INT, mess1 C(254), cprogram c(254), nlineno int, errordate DateTime, MACHINE c(254), Revision c(254), Memo1 MEMO)
+*!*						USE (cErrorsFile) IN 0 ALIAS Errors
+*!*					ENDIF
+*!*					
+*!*				ELSE
+*!*					SELECT 0
+*!*					WAIT WINDOW "Proc_Setup:CollectErrors() CREATE TABLE "+cErrorsFile
+*!*					
+*!*					CREATE TABLE (cErrorsFile) FREE ( nerror INT, mess1 C(254), cprogram c(254), nlineno Int, errordate DateTime, MACHINE c(254), Revision c(254), Memo1 MEMO)
+*!*					*CREATE TABLE (cErrorsFile) ( nerror INT, mess1 C(254), cprogram c(254), nlineno int, errordate DateTime, MACHINE c(254), Revision c(254), Memo1 MEMO)
+*!*					USE (cErrorsFile) IN 0 ALIAS Errors
+*!*				ENDIF
+		ENDIF
+		
+		*WAIT WINDOW "Proc_Setup:CollectErrors() f"
+		
+		PRIVATE cNewMess
+		*IF USED('Errors')
+		IF USED('fnERROR')
+			SELECT fnERROR
+			SCAN
+				IF NOT DELETED()
+				
+					*Errors Insert trigger sends out SubjectEmail = 'New Error entry.'
+					cSQL = "INSERT INTO dbo.Errors ([nerror],[mess1],[cprogram],[nlineno],[errordate],[MACHINE],[Revision],[Memo1]) VALUES ("
+					cSQL = cSQL  + ""+STR(PrepareSQLnum(fnERROR.nerror,'nError',-3))+""
+					cSQL = cSQL  + ",'"+PrepareSQLtxt(fnERROR.mess1,'Mess1',254,.F.,.T.)+"'"
+					cSQL = cSQL  + ",'"+PrepareSQLtxt(fnERROR.cprogram,'cProgram',254,.F.,.T.)+"'"
+					cSQL = cSQL  + ","+STR(PrepareSQLnum(fnERROR.nlineno,'nLineo',-3))
+					cSQL = cSQL  + ",'"+TTOC(PrepareSQLdateTime(fnERROR.errordate,'ErrorDate'))+"'"
+					cSQL = cSQL  + ",'"+PrepareSQLtxt(fnERROR.MACHINE,'Machine',254,.F.,.T.)+"'"
+					cSQL = cSQL  + ",'"+PrepareSQLtxt(fnERROR.Revision,'Revision',254,.F.,.T.)+"'"
+					cSQL = cSQL  + ",'"+PrepareSQLtxt(fnERROR.Memo1,'Memo',-1,.F.,.T.)+"'"
+					cSQL = cSQL  + ")"
+					
+					*PrepareSQLtxt(Text,'Name',nLEN, lPad, lQuite
+					*TRIGGER HPAlloy.dbo.Errors_INSERT Mess1: Memo1: 
+					
+					*WAIT WINDOW "Proc_Setup:CollectErrors() "+SUBSTR(cSQL,110,100)
+					
+					*MESSAGEBOX(cSQL,0,"SQL Error")
+					
+*!*						nSQLEXEC = SQLEXEC(nConn, cSQL )
+*!*						DO WHILE nSQLEXEC = 0
+*!*							WAIT WINDOW 'SQL' TIMEOUT 1
+*!*							nSQLEXEC = SQLEXEC(nConn, cSQL )
+*!*						ENDDO
+*!*	IF nSQLEXEC < 0 &&Try again!
+*!*					nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSOsp")
+*!*					DO WHILE nSQLEXEC = 0
+*!*						WAIT WINDOW 'SQL 2' TIMEOUT 1
+*!*						nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSOsp")
+
+*!*						IF nSQLEXEC < 0
+*!*							IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+*!*								nSQLEXEC = 0
+*!*							ENDIF
+*!*						ENDIF
+*!*					ENDDO
+*!*				ENDIF
+*!*						IF nSQLEXEC < 0
+*!*							*SQLEXECError(cSQL, nConn, nSQLEXEC)
+*!*							*RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+*!*						ELSE
+*!*							*DELETE IN Errors
+*!*						ENDIF
+				ENDIF				
+
+			ENDSCAN
+			*USE IN Errors
+			USE IN fnERROR
+			
+			*WAIT WINDOW "Proc_Setup:CollectErrors() g"	
+			IF NOT lSkipPackDB 
+				TRY
+					*USE (cErrorsFile) EXCL ALIAS Errors
+					
+					
+					IF FILE(cErrorsFile)
+						IF NOT "ERRORS.DBF" $ cErrorsFile
+							DELETE FILE cErrorsFile
+						ENDIF
+					ENDIF
+					
+				CATCH
+					*c:\program files (x86)\hpa\mem\errors.dbf was not packed!
+				ENDTRY
+			ENDIF
+
+
+			WAIT CLEAR
+
+		ENDIF
+	ELSE
+		MESSAGEBOX("Could not write Error file! "+cErrorsFile,16,"Error")
+	ENDIF
+	
+	IF lNewConn 
+		SQLDISCONNECT(nConn )
+	ENDIF
+ELSE
+	*Error on Connection String
+ENDIF
+
+
+IF NOT EMPTY(cAlias) 
+	IF UPPER(cAlias) != 'ERRORS'
+		IF USED(cAlias)
+			SELECT (cAlias)
+		ELSE
+			** can create LOOP
+			*RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+		ENDIF
+	ENDIF
+ENDIF
+*WAIT WINDOW "Proc_Setup:CollectErrors() EndProc"
+*
+ENDPROC
+
+**************************************************** 
+
+PROCEDURE ShortSalesP 
+PARAMETERS cUserName
+*ShortSalesP()
+*
+
+PRIVATE lNewConn, nConn
+nConn= get_SQLSTRINGCONNECT()
+lNewConn = .T.
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+PRIVATE cShortUserName
+cShortUserName = ''
+
+IF USED('tmpShortUserName')
+	USE IN tmpShortUserName
+ENDIF
+
+SELECT 0
+cSQL = "SELECT TOP 1 A1.UN FROM dbo.AppSetup A1 WITH(NOLOCK) "
+cSQL = cSQL + " INNER JOIN dbo.AppSetup A2 WITH(NOLOCK) ON A1.Ans = A2.ans "
+cSQL = cSQL + " WHERE A2.PRP = 'SalesP' "
+cSQL = cSQL + " AND A2.UN = '"+ALLTRIM(cUserName)+"'"
+cSQL = cSQL + " AND LEN(A1.UN) > 0 "
+cSQL = cSQL + " ORDER BY LEN(A1.UN) "
+
+
+nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpShortUserName')
+DO WHILE nSQLEXEC = 0
+	WAIT WINDOW 'SQL' TIMEOUT 1
+	nSQLEXEC = SQLEXEC( nConn, cSQL, 'tmpShortUserName' )
+ENDDO
+IF nSQLEXEC < 0 &&Try again!
+	nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpShortUserName")
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL 2' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpShortUserName")
+
+		IF nSQLEXEC < 0
+			IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+				nSQLEXEC = 0
+			ENDIF
+		ENDIF
+	ENDDO
+ENDIF
+IF nSQLEXEC < 0
+	SQLEXECError(cSQL, nConn, nSQLEXEC, 'tmpSOshipped' )
+	RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+ENDIF
+
+IF USED('tmpShortUserName')
+	IF RECCOUNT('tmpShortUserName') > 0
+		cShortUserName = tmpShortUserName.UN
+	ENDIF
+	USE IN tmpShortUserName
+ENDIF
+
+IF lNewConn 
+	SQLDISCONNECT(nConn )
+ENDIF
+
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+
+RETURN cShortUserName
+ENDPROC
+
+********************************** 
+ 
+PROCEDURE UN_from_PRP_ANS 
+PARAMETERS cPRP,cANS
+*cProfile_Name = UN_from_PRP_ANS('Profile_Name','David.Kirchner@hpalloys.com')
+*Profile is needed to match SQL email profile settings
+
+IF VARTYPE(cPRP)!="C"
+	RETURN ''
+ENDIF
+IF VARTYPE(cANS)!="C"
+	RETURN ''
+ENDIF
+
+PRIVATE lReturnUN
+lReturnUN = ''
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	cSQL = "SELECT [UN] FROM dbo.AppSetup WITH(NOLOCK) WHERE [PRP] = '"+cPRP+"' AND [ANS] = '"+cANS+"'"
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.UN) = "C"
+				lReturnUN = ALLTRIM(tmpSqlAns.UN)
+			ENDIF
+		ELSE
+			TrackError("No Records returned ",cUserName +" tried to get UN with  PRP= '"+cPRP+"' AND ANS='"+cANS+"'","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+		ENDIF
+		USE IN tmpSqlAns
+	ELSE
+		TrackError("No Records returned ",cUserName +" tried to get UN with  PRP= '"+cPRP+"' AND ANS='"+cANS+"'","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnUN 
+ENDPROC
+
+********************************** 
+
+PROCEDURE ANS_from_UN_PRP 
+PARAMETERS cUN,cPRP
+*cEmail = ANS_from_UN_PRP('Derek Boruff','E-mail')
+
+IF VARTYPE(cUN)!="C"
+	RETURN ''
+ENDIF
+IF VARTYPE(cPRP)!="C"
+	RETURN ''
+ENDIF
+
+PRIVATE lReturnANS
+lReturnANS= ''
+
+PRIVATE nConn
+nConn = get_SQLSTRINGCONNECT()
+
+PRIVATE cAlias 
+cAlias = ALIAS()
+
+PRIVATE cMach_User, cUserName, cMach
+cMach_User = SYS(0)
+cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 )  )
+cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
+
+PRIVATE cSQL, nSQLEXEC
+
+IF USED('tmpSqlAns')
+	USE IN tmpSqlAns
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	cSQL = "SELECT [ANS] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+cUN+"' AND [PRP] = '"+cPRP+"'" 
+	
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpSqlAns' )
+	ENDDO
+	IF nSQLEXEC < 0 &&Try again!
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL 2' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpSqlAns")
+
+			IF nSQLEXEC < 0
+				IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+					nSQLEXEC = 0
+				ENDIF
+			ENDIF
+		ENDDO
+	ENDIF
+	IF nSQLEXEC < 0
+		SQLEXECError(cSQL ,nConn,nSQLEXEC, 'tmpSqlAns')
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO(),cSQL )
+	ENDIF
+	
+	IF USED('tmpSqlAns')
+		IF RECCOUNT('tmpSqlAns') > 0
+			IF VARTYPE(tmpSqlAns.ANS) = "C"
+				lReturnANS = ALLTRIM(tmpSqlAns.ANS)
+			ENDIF
+		ELSE
+			TrackError("No Records returned ",cUserName +" tried to get ANS with UN = '"+cUN+"' AND PRP = '"+cPRP+"'","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+		ENDIF
+		
+		USE IN tmpSqlAns
+	ELSE
+		TrackError("No Records returned ",cUserName +" tried to get ANS with UN = '"+cUN+"' AND PRP = '"+cPRP+"'","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+	ENDIF
+	
+	SQLDISCONNECT( nConn )
+ELSE
+	*Error on Connection String
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ELSE
+		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"'")
+	ENDIF
+ENDIF
+
+RETURN lReturnANS
+ENDPROC
+
+********************************** 
