@@ -1,19 +1,52 @@
-# ignore objects and archives, anywhere in the tree.
-#
-!README.txt
-!*.mem
-# MEM/
-Test/
-solution/
-samples/
-*.PDF
-*.CVS
-*.DBF
-*.DBT
-*.IDX
-*.XLS
-*.zip
-#
-# ignore generated html files,
-*.html
-/.vs
+# Visual FoxPro compiled files
+*.fxp
+*.app
+*.exe
+*.dll
+
+# Visual FoxPro backup files
+*.bak
+*.bk?
+*.old
+
+# Visual FoxPro temporary files
+*.tmp
+*.err
+*.log
+
+# Visual FoxPro table files (compiled/generated)
+*.cdx
+*.fpt
+*.memo
+
+# Visual FoxPro debug and error files
+*.dbg
+*.pjx.bak
+*.pjt.bak
+
+# Windows system files
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Visual FoxPro project backup
+*.pj?.bak
+
+# Temporary query files
+*.qpr
+
+# FoxPro resource files
+foxuser.dbf
+foxuser.fpt
+
+# IDE and editor files
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Build output directories
+/build/
+/dist/
+/bin/
+/obj/
