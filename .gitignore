@@ -1,8 +1,8 @@
 # Visual FoxPro compiled files
 *.fxp
-*.app
-*.exe
-*.dll
+#*.app
+#*.exe
+#*.dll
 
 # Visual FoxPro backup files
 *.bak
