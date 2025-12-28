@@ -1,4 +1,4 @@
-# HPA-App - Work Order & Production Management System
+# ERP - Work Order & Production Management System
 
 A Visual FoxPro application for managing quotes, orders, inventory, shop floor operations with integrated RMA processing and comprehensive work order module for metal processing operations including centerless grinding, forging, and wire drawing.
 
