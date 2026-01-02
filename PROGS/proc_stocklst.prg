@@ -224,11 +224,11 @@ IF cUnit = ''
 	cSQL="SELECT TOP 1 Form FROM "
 	DO CASE
 	CASE cTBL = "S"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.StockLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.StockLst_Master_History] "
 	CASE cTBL = "B"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.BrokerLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.BrokerLst_Master_History] "
 	CASE cTBL = "W"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.WIPLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.WIPLst_Master_History] "
 	ENDCASE
 	cSQL = cSQL + " WHERE ID="+ALLTRIM(STR(nID))
 	cSQL = cSQL + " AND LEN(Form)>1"
@@ -381,11 +381,11 @@ IF LEN(cHeat)=0
 	cSQL="SELECT Heat FROM "
 	DO CASE
 	CASE cTBL = "S"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.StockLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.StockLst_Master_History] "
 	CASE cTBL = "B"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.BrokerLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.BrokerLst_Master_History] "
 	CASE cTBL = "W"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.WIPLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.WIPLst_Master_History] "
 	OTHERWISE 
 		TrackError("Bad Parameter nConn","Bad Parameter","Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())	
 		RETURN ''
@@ -535,11 +535,11 @@ IF LEN(cLot)=0
 	cSQL="SELECT Lot FROM "
 	DO CASE
 	CASE cTBL = "S"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.StockLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.StockLst_Master_History] "
 	CASE cTBL = "B"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.BrokerLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.BrokerLst_Master_History] "
 	CASE cTBL = "W"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.WIPLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.WIPLst_Master_History] "
 	OTHERWISE 
 		TrackError("Bad Parameter nConn","Bad Parameter","Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())	
 		RETURN ''
@@ -690,11 +690,11 @@ IF LEN(cHeat) = 0
 	cSQL="SELECT Heat FROM "
 	DO CASE
 	CASE cTBL = "S"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.StockLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.StockLst_Master_History] "
 	CASE cTBL = "B"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.BrokerLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.BrokerLst_Master_History] "
 	CASE cTBL = "W"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.WIPLst_Master_History "
+		cSQL = cSQL + " dbo.[AR.WIPLst_Master_History] "
 	OTHERWISE 
 		TrackError("Bad Parameter nConn","Bad Parameter","Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())	
 		RETURN ''
@@ -1377,15 +1377,15 @@ IF USED('tmpPSTK_MasterForm')
 ENDIF
 
 SELECT 0
-*use HPAlloy_Archive incase Detail is gone
+*use Ar. incase Detail is gone
 cSQL="SELECT DISTINCT ID FROM "
 DO CASE
 CASE cTBL = "S"
-	cSQL = cSQL + " HPAlloy_Archive.dbo.Stocklst_Detail_History "
+	cSQL = cSQL + " dbo.[AR.Stocklst_Detail_History] "
 CASE cTBL = "B"
-	cSQL = cSQL + " HPAlloy_Archive.dbo.Brokerlst_Detail_History "
+	cSQL = cSQL + " dbo.[AR.Brokerlst_Detail_History] "
 CASE cTBL = "W"
-	cSQL = cSQL + " HPAlloy_Archive.dbo.WIPlst_Detail_History "
+	cSQL = cSQL + " dbo.[AR.WIPlst_Detail_History] "
 OTHERWISE 
 	TrackError("Bad Parameter nConn","Bad Parameter","Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())	
 	RETURN 0
@@ -1631,11 +1631,11 @@ IF lOK AND nID_Detail =0
 	cSQL="SELECT TOP 1 ID_Detail FROM "
 	DO CASE
 	CASE cTBL = "S"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.StockLst_Detail_History "
+		cSQL = cSQL + " dbo.[AR.StockLst_Detail_History] "
 	CASE cTBL = "B"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.BrokerLst_Detail_History "
+		cSQL = cSQL + " dbo.[AR.BrokerLst_Detail_History] "
 	CASE cTBL = "W"
-		cSQL = cSQL + " HPAlloy_Archive.dbo.WIPLst_Detail_History "
+		cSQL = cSQL + " dbo.[AR.WIPLst_Detail_History] "
 	OTHERWISE 
 		TrackError("Bad Parameter","Bad Parameter nConn","Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())	
 		RETURN 0
@@ -1732,7 +1732,7 @@ ENDIF
 
 SELECT 0
 
-cSQL="SELECT ID FROM [HPAlloy_Archive].[dbo].[Stocklst_Master_History]"
+cSQL="SELECT ID FROM [dbo].[Ar.Stocklst_Master_History]"
 cSQL = cSQL + " WHERE ID_History="+ALLTRIM(STR(m.nID_History))
 
 nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSTK_MasterDeletedID')
@@ -1854,7 +1854,7 @@ CASE cTBL = "S"
 	cSQL = cSQL + "		AND LEN(PO_Item)>1 "
 	cSQL = cSQL + "UNION ALL "
 	cSQL = cSQL + "SELECT PO_Item "
-	cSQL = cSQL + "	FROM HPAlloy_Archive.dbo.StockLst_Master_History "
+	cSQL = cSQL + "	FROM dbo.[AR.StockLst_Master_History] "
 	cSQL = cSQL + "	WHERE ID="+ALLTRIM(STR( pnID ))
 	cSQL = cSQL + "		 AND LEN(PO_Item)>1"
 	cSQL = cSQL + " )"
@@ -1872,7 +1872,7 @@ CASE cTBL = "B"
 	cSQL = cSQL + "		AND LEN(PO_Item)>1 "
 	cSQL = cSQL + "UNION ALL "
 	cSQL = cSQL + "SELECT PO_Item "
-	cSQL = cSQL + "	FROM HPAlloy_Archive.dbo.BrokerLst_Master_History "
+	cSQL = cSQL + "	FROM dbo.[AR.BrokerLst_Master_History] "
 	cSQL = cSQL + "	WHERE ID="+ALLTRIM(STR( pnID ))
 	cSQL = cSQL + "		 AND LEN(PO_Item)>1"
 	cSQL = cSQL + " )"
@@ -1890,7 +1890,7 @@ CASE cTBL = "W"
 	cSQL = cSQL + "		AND LEN(PO_Item)>1 "
 	cSQL = cSQL + "UNION ALL "
 	cSQL = cSQL + "SELECT PO_Item "
-	cSQL = cSQL + "	FROM HPAlloy_Archive.dbo.WIPLst_Master_History "
+	cSQL = cSQL + "	FROM dbo.[AR.WIPLst_Master_History] "
 	cSQL = cSQL + "	WHERE ID="+ALLTRIM(STR( pnID ))
 	cSQL = cSQL + "		 AND LEN(PO_Item)>1"
 	cSQL = cSQL + " )"
@@ -2949,13 +2949,13 @@ IF nConn > 0
 	ELSE
 		*history	
 		cSQL = cSQL + " UNION "
-		cSQL = cSQL + " SELECT TOP 1 'SH' AS TBL FROM HPAlloy_Archive.dbo.StockLst_Detail_History "
+		cSQL = cSQL + " SELECT TOP 1 'SH' AS TBL FROM dbo.[AR.StockLst_Detail_History] "
 		cSQL = cSQL + " WHERE ID = "+STR(nID)+" AND ID_Detail ="+STR(nID_Detail)+" AND [What] = 'DELETE'"
 		cSQL = cSQL + " UNION "
-		cSQL = cSQL + " SELECT TOP 1 'BH' AS TBL FROM HPAlloy_Archive.dbo.BrokerLst_Detail_History "
+		cSQL = cSQL + " SELECT TOP 1 'BH' AS TBL FROM dbo.[AR.BrokerLst_Detail_History] "
 		cSQL = cSQL + " WHERE ID = "+STR(nID)+" AND ID_Detail ="+STR(nID_Detail)+" AND [What] = 'DELETE'"
 		cSQL = cSQL + " UNION "
-		cSQL = cSQL + " SELECT TOP 1 'WH' AS TBL FROM HPAlloy_Archive.dbo.WIPLst_Detail_History "
+		cSQL = cSQL + " SELECT TOP 1 'WH' AS TBL FROM dbo.[AR.WIPLst_Detail_History] "
 		cSQL = cSQL + " WHERE ID = "+STR(nID)+" AND ID_Detail ="+STR(nID_Detail)+" AND [What] = 'DELETE'"
 		
 	ENDIF
@@ -3872,7 +3872,7 @@ SELECT 0
 
 IF nConn > 0
 	cSQL = "SELECT TOP 1 ReceivingID "
-	cSQL = cSQL + " FROM HPAlloy_Archive.dbo.StockLst_Detail_History "
+	cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History] "
 	cSQL = cSQL + " WHERE ID_Detail = "+STR(nID_Detail)
 	cSQL = cSQL + " AND ReceivingID IS NOT NULL "
 	
@@ -4366,17 +4366,17 @@ CASE cTBL == "W"
 	cSQL = cSQL+" WHERE ID = "+ STR(nID)
 
 CASE cTBL == "SH"
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.StockLst_Detail_History "
+	cSQL = cSQL+" FROM dbo.[AR.StockLst_Detail_History] "
 	cSQL = cSQL+" WITH(NOLOCK) " &&could be in transaction lock
 	cSQL = cSQL+" WHERE ID = "+ STR(nID)
 	cSQL = cSQL+" AND [What]='DELETE'"
 CASE cTBL == "BH"
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.BrokerLst_Detail_History "
+	cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Detail_History] "
 	cSQL = cSQL+" WITH(NOLOCK) " &&could be in transaction lock
 	cSQL = cSQL+" WHERE ID = "+ STR(nID)
 	cSQL = cSQL+" AND [What]='DELETE'"
 CASE cTBL == "WH"
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.WIPLst_Detail_History "
+	cSQL = cSQL+" FROM dbo.[AR.WIPLst_Detail_History] "
 	cSQL = cSQL+" WITH(NOLOCK) " &&could be in transaction lock
 	cSQL = cSQL+" WHERE ID = "+ STR(nID)
 	cSQL = cSQL+" AND [What]='DELETE'"
@@ -4508,17 +4508,17 @@ CASE cTBL == "W"
 	cSQL = cSQL+" WHERE ID_Detail = "+ STR(nID_Detail)
 
 CASE cTBL == "SH"
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.StockLst_Detail_History "
+	cSQL = cSQL+" FROM dbo.[AR.StockLst_Detail_History] "
 	cSQL = cSQL+" WITH(NOLOCK) " &&could be in transaction lock
 	cSQL = cSQL+" WHERE ID_Detail = "+ STR(nID_Detail)
 	cSQL = cSQL+" AND [What]='DELETE'"
 CASE cTBL == "BH"
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.BrokerLst_Detail_History "
+	cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Detail_History] "
 	cSQL = cSQL+" WITH(NOLOCK) " &&could be in transaction lock
 	cSQL = cSQL+" WHERE ID_Detail = "+ STR(nID_Detail)
 	cSQL = cSQL+" AND [What]='DELETE'"
 CASE cTBL == "WH"
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.WIPLst_Detail_History "
+	cSQL = cSQL+" FROM dbo.[AR.WIPLst_Detail_History] "
 	cSQL = cSQL+" WITH(NOLOCK) " &&could be in transaction lock
 	cSQL = cSQL+" WHERE ID_Detail = "+ STR(nID_Detail)
 	cSQL = cSQL+" AND [What]='DELETE'"
@@ -4780,17 +4780,17 @@ CASE cTBL == "W"
 	cSQL = cSQL+" WHERE ID_Detail = "+ STR(nID_Detail)
 
 CASE cTBL == "SH"
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.StockLst_Process_History "
+	cSQL = cSQL+" FROM dbo.[AR.StockLst_Process_History] "
 	cSQL = cSQL+" WITH(NOLOCK) " &&could be in transaction lock
 	cSQL = cSQL+" WHERE ID_Detail = "+ STR(nID_Detail)
 	cSQL = cSQL+" AND [What]='DELETE'"
 CASE cTBL == "BH"
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.BrokerLst_Process_History "
+	cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Process_History] "
 	cSQL = cSQL+" WITH(NOLOCK) " &&could be in transaction lock
 	cSQL = cSQL+" WHERE ID_Detail = "+ STR(nID_Detail)
 	cSQL = cSQL+" AND [What]='DELETE'"
 CASE cTBL == "WH"
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.WIPLst_Process_History "
+	cSQL = cSQL+" FROM dbo.[AR.WIPLst_Process_History] "
 	cSQL = cSQL+" WITH(NOLOCK) " &&could be in transaction lock
 	cSQL = cSQL+" WHERE ID_Detail = "+ STR(nID_Detail)
 	cSQL = cSQL+" AND [What]='DELETE'"
@@ -5965,7 +5965,7 @@ ENDPROC
 *!*					TrackMess("Remove_StockLst_Detail_by_ID_Detail: "+cSQL_Delete)
 *!*					
 *!*	*!*					IF pFrom = "Edit PO"
-*!*	*!*						cSQL_Delete="DELETE FROM HPAlloy_Archive.dbo.StockLst_Detail_History WHERE ID_Detail = "+STR(pID_Detail)
+*!*	*!*						cSQL_Delete="DELETE FROM dbo.[AR.StockLst_Detail_History] WHERE ID_Detail = "+STR(pID_Detail)
 *!*	*!*						nSQLEXEC = SQLEXEC(pConnHandle, cSQL_Delete )
 *!*	*!*						DO WHILE nSQLEXEC = 0
 *!*	*!*							WAIT WINDOW 'SQL' TIMEOUT 1
@@ -6300,7 +6300,7 @@ ENDPROC
 *!*					TrackMess("Remove_BrokerLst_Detail_by_ID_Detail: "+cSQL_Delete)
 *!*					
 *!*	*!*					IF pFrom = "Edit PO"
-*!*	*!*						cSQL_Delete="DELETE FROM HPAlloy_Archive.dbo.BrokerLst_Detail_History WHERE ID_Detail = "+STR(pID_Detail)
+*!*	*!*						cSQL_Delete="DELETE FROM dbo.[AR.BrokerLst_Detail_History] WHERE ID_Detail = "+STR(pID_Detail)
 *!*	*!*						nSQLEXEC = SQLEXEC(pConnHandle, cSQL_Delete )
 *!*	*!*						DO WHILE nSQLEXEC = 0
 *!*	*!*							WAIT WINDOW 'SQL' TIMEOUT 1
@@ -6685,7 +6685,7 @@ ENDPROC
 *!*					TrackMess("Remove_WIPLst_Detail_by_ID_Detail: "+cSQL_Delete)
 *!*					
 *!*	*!*					IF pFrom = "Edit PO"
-*!*	*!*						cSQL_Delete="DELETE FROM HPAlloy_Archive.dbo.WIPLst_Detail_History WHERE ID_Detail = "+STR(pID_Detail)
+*!*	*!*						cSQL_Delete="DELETE FROM dbo.[AR.WIPLst_Detail_History] WHERE ID_Detail = "+STR(pID_Detail)
 *!*	*!*						nSQLEXEC = SQLEXEC(pConnHandle, cSQL_Delete )
 *!*	*!*						DO WHILE nSQLEXEC = 0
 *!*	*!*							WAIT WINDOW 'SQL' TIMEOUT 1
@@ -11556,16 +11556,16 @@ DO CASE
 CASE cTBL = "S"
 	cSQL = "SELECT TOP 1 "
 	cSQL = cSQL+" P.ID_Detail_Process "
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.StockLst_Process_History P "
-	cSQL = cSQL+" INNER JOIN HPAlloy_Archive.dbo.StockLst_Detail_History D ON P.ID_Detail = D.ID_Detail "
+	cSQL = cSQL+" FROM dbo.[AR.StockLst_Process_History] P "
+	cSQL = cSQL+" INNER JOIN dbo.[AR.StockLst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
 	cSQL = cSQL+" WHERE P.Process_ID='INCOMING  '"
 	cSQL = cSQL+" AND P.[what] = 'ADD' "
 	cSQL = cSQL+" AND D.ReceivingID = "+ALLTRIM(STR( pnReceiveID ))
 CASE cTBL = "B"
 	cSQL = "SELECT TOP 1 "
 	cSQL = cSQL+" P.ID_Detail_Process "
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.BrokerLst_Process_History P "
-	cSQL = cSQL+" INNER JOIN HPAlloy_Archive.dbo.BrokerLst_Detail_History D ON P.ID_Detail = D.ID_Detail "
+	cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Process_History] P "
+	cSQL = cSQL+" INNER JOIN dbo.[AR.BrokerLst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
 	cSQL = cSQL+" WHERE P.Process_ID='INCOMING  '"
 	cSQL = cSQL+" AND P.[what] = 'ADD' "
 	cSQL = cSQL+" AND D.ReceivingID = "+ALLTRIM(STR( pnReceiveID ))
@@ -11573,8 +11573,8 @@ CASE cTBL = "B"
 CASE cTBL = "W"
 	cSQL = "SELECT TOP 1 "
 	cSQL = cSQL+" P.ID_Detail_Process "
-	cSQL = cSQL+" FROM HPAlloy_Archive.dbo.WIPLst_Process_History P "
-	cSQL = cSQL+" INNER JOIN HPAlloy_Archive.dbo.WIPLst_Detail_History D ON P.ID_Detail = D.ID_Detail "
+	cSQL = cSQL+" FROM dbo.[AR.WIPLst_Process_History] P "
+	cSQL = cSQL+" INNER JOIN dbo.[AR.WIPLst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
 	cSQL = cSQL+" WHERE P.Process_ID='INCOMING  '"
 	cSQL = cSQL+" AND P.[what] = 'ADD' "
 	cSQL = cSQL+" AND D.ReceivingID = "+ALLTRIM(STR( pnReceiveID ))
@@ -11824,11 +11824,11 @@ PRIVATE cSQL, nSQLEXEC
 cSQL = "SELECT ID_Detail_Process FROM "
 DO CASE
 CASE cTBL = "S"
-	cSQL=cSQL+" HPAlloy_Archive.dbo.Stocklst_Detail_History "
+	cSQL=cSQL+" dbo.[AR.Stocklst_Detail_History] "
 CASE cTBL = "B"
-	cSQL=cSQL+" HPAlloy_Archive.dbo.BrokerLst_Detail_History "
+	cSQL=cSQL+" dbo.[AR.BrokerLst_Detail_History] "
 CASE cTBL = "W"
-	cSQL=cSQL+" HPAlloy_Archive.dbo.WIPLst_Detail_History "
+	cSQL=cSQL+" dbo.[AR.WIPLst_Detail_History] "
 ENDCASE
 cSQL=cSQL+" WHERE ID_Detail ="+STR(pnID_Detail)
 cSQL=cSQL+" AND ISNULL(ID_Detail_Process,0) >0 "
@@ -12957,11 +12957,11 @@ ENDIF
 **Check Process History
 
 
-cSQL =        " SELECT 'S' AS TBL FROM HPAlloy_Archive.dbo.StockLst_Process_History WHERE ReceivingID = "+STR(nReceivingID)
+cSQL =        " SELECT 'S' AS TBL FROM dbo.[AR.StockLst_Process_History] WHERE ReceivingID = "+STR(nReceivingID)
 cSQL = cSQL + " UNION "
-cSQL = cSQL + " SELECT 'B' AS TBL FROM HPAlloy_Archive.dbo.BrokerLst_Process_History WHERE ReceivingID = "+STR(nReceivingID)
+cSQL = cSQL + " SELECT 'B' AS TBL FROM dbo.[AR.BrokerLst_Process_History] WHERE ReceivingID = "+STR(nReceivingID)
 cSQL = cSQL + " UNION "
-cSQL = cSQL + " SELECT 'W' AS TBL FROM HPAlloy_Archive.dbo.WIPLst_Process_History WHERE ReceivingID = "+STR(nReceivingID)
+cSQL = cSQL + " SELECT 'W' AS TBL FROM dbo.[AR.WIPLst_Process_History] WHERE ReceivingID = "+STR(nReceivingID)
 
 
 SELECT 0
@@ -12995,8 +12995,8 @@ IF USED('tmpPSTK_TBL_POi')
 		cTBL = PrepareSQLtxt(tmpPSTK_TBL_POi.TBL,'TBL',1)
 		
 		IF RECCOUNT('tmpPSTK_TBL_POi') > 1
-			TrackError("Extra Tables","Found ReceiveID "+ALLTRIM(STR(nReceivingID))+" in HPAlloy_Archive in more than 1 table!"+CHR(13)+"Be carefull."+CHR(13)+"Function is returning Table '"+cTBL+"'.","Proc_StockLst:getTBL_ReceivingID()",LINENO())
-			MESSAGEBOX( "Found ReceiveID "+ALLTRIM(STR(nReceivingID))+" in HPAlloy_Archive in more than 1 table!"+CHR(13)+"Be carefull. getTBL_ReceivingID()"+CHR(13)+"Function is returning Table '"+cTBL+"'.",0+48,"Warning")
+			TrackError("Extra Tables","Found ReceiveID "+ALLTRIM(STR(nReceivingID))+" in Ar. in more than 1 table!"+CHR(13)+"Be carefull."+CHR(13)+"Function is returning Table '"+cTBL+"'.","Proc_StockLst:getTBL_ReceivingID()",LINENO())
+			MESSAGEBOX( "Found ReceiveID "+ALLTRIM(STR(nReceivingID))+" in Ar. in more than 1 table!"+CHR(13)+"Be carefull. getTBL_ReceivingID()"+CHR(13)+"Function is returning Table '"+cTBL+"'.",0+48,"Warning")
 		ENDIF
 
 	ENDIF
@@ -18201,21 +18201,21 @@ cSQL = cSQL + " UNION "
 DO CASE
 CASE cTBL = "S"
 cSQL = cSQL + " SELECT DISTINCT 'S' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-cSQL = cSQL + " FROM HPAlloy_Archive.dbo.StockLst_Process_History P "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Master_History M ON D.ID = M.ID "
+cSQL = cSQL + " FROM dbo.[AR.StockLst_Process_History] P "
+cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
+cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Master_History] M ON D.ID = M.ID "
 
 CASE cTBL = "B"
 cSQL = cSQL + " SELECT DISTINCT 'B' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-cSQL = cSQL + " FROM HPAlloy_Archive.dbo.BrokerLst_Process_History P "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Brokerlst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Brokerlst_Master_History M ON D.ID = M.ID "
+cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Process_History] P "
+cSQL = cSQL + " INNER JOIN dbo.[AR.Brokerlst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
+cSQL = cSQL + " INNER JOIN dbo.[AR.Brokerlst_Master_History] M ON D.ID = M.ID "
 
 CASE cTBL = "W"
 cSQL = cSQL + " SELECT DISTINCT 'W' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-cSQL = cSQL + " FROM HPAlloy_Archive.dbo.WIPLst_Process_History P "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.WIPlst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.WIPlst_Master_History M ON D.ID = M.ID "
+cSQL = cSQL + " FROM dbo.[AR.WIPLst_Process_History] P "
+cSQL = cSQL + " INNER JOIN dbo.[AR.WIPlst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
+cSQL = cSQL + " INNER JOIN dbo.[AR.WIPlst_Master_History] M ON D.ID = M.ID "
 ENDCASE
 
 cSQL = cSQL + " WHERE ( P.Process_ID = 'INCOMING' OR P.Process_ID = 'NOT2HPA' OR P.Process_ID = 'PARTRECV' )"
@@ -18348,21 +18348,21 @@ cSQL = cSQL + " UNION "
 DO CASE
 CASE cTBL = "S"
 cSQL = cSQL + " SELECT DISTINCT 'S' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-cSQL = cSQL + " FROM HPAlloy_Archive.dbo.StockLst_Process_History P "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Master_History M ON D.ID = M.ID "
+cSQL = cSQL + " FROM dbo.[AR.StockLst_Process_History] P "
+cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
+cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Master_History] M ON D.ID = M.ID "
 
 CASE cTBL = "B"
 cSQL = cSQL + " SELECT DISTINCT 'B' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-cSQL = cSQL + " FROM HPAlloy_Archive.dbo.BrokerLst_Process_History P "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Brokerlst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Brokerlst_Master_History M ON D.ID = M.ID "
+cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Process_History] P "
+cSQL = cSQL + " INNER JOIN dbo.[AR.Brokerlst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
+cSQL = cSQL + " INNER JOIN dbo.[AR.Brokerlst_Master_History] M ON D.ID = M.ID "
 
 CASE cTBL = "W"
 cSQL = cSQL + " SELECT DISTINCT 'W' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-cSQL = cSQL + " FROM HPAlloy_Archive.dbo.WIPLst_Process_History P "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.WIPlst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.WIPlst_Master_History M ON D.ID = M.ID "
+cSQL = cSQL + " FROM dbo.[AR.WIPLst_Process_History] P "
+cSQL = cSQL + " INNER JOIN dbo.[AR.WIPlst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
+cSQL = cSQL + " INNER JOIN dbo.[AR.WIPlst_Master_History] M ON D.ID = M.ID "
 ENDCASE
 
 cSQL = cSQL + " WHERE ( P.Process_ID = 'INCOMING' OR P.Process_ID = 'NOT2HPA' OR P.Process_ID = 'PARTRECV' )"
@@ -18476,11 +18476,11 @@ cSQL = cSQL + " UNION "
 
 DO CASE
 CASE cTBL = "S"
-cSQL = cSQL + " SELECT 'S' AS TBL, ID_Detail FROM HPAlloy_Archive.dbo.StockLst_Process_History "
+cSQL = cSQL + " SELECT 'S' AS TBL, ID_Detail FROM dbo.[AR.StockLst_Process_History] "
 CASE cTBL = "B"
-cSQL = cSQL + " SELECT 'B' AS TBL, ID_Detail FROM HPAlloy_Archive.dbo.BrokerLst_Process_History "
+cSQL = cSQL + " SELECT 'B' AS TBL, ID_Detail FROM dbo.[AR.BrokerLst_Process_History] "
 CASE cTBL = "W"
-cSQL = cSQL + " SELECT 'W' AS TBL, ID_Detail FROM HPAlloy_Archive.dbo.WIPLst_Process_History "
+cSQL = cSQL + " SELECT 'W' AS TBL, ID_Detail FROM dbo.[AR.WIPLst_Process_History] "
 ENDCASE
 cSQL = cSQL + " WHERE ID_Detail_Process = "+STR(nID_Detail_Process)+" AND WHAT = 'DELETE'"
 
@@ -18573,11 +18573,11 @@ SELECT 0
 cSQL = " SELECT COUNT(*) AS CNT FROM "
 DO CASE
 CASE cTBL = "S"
-	cSQL = cSQL + " HPAlloy_Archive.dbo.StockLst_Detail_History WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) "
 CASE cTBL = "B"
-	cSQL = cSQL + " HPAlloy_Archive.dbo.BrokerLst_Detail_History WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.[AR.BrokerLst_Detail_History] WITH(NOLOCK) "
 CASE cTBL = "W"
-	cSQL = cSQL + " HPAlloy_Archive.dbo.WIPLst_Detail_History WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.[AR.WIPLst_Detail_History] WITH(NOLOCK) "
 OTHERWISE 
 	TrackError("Bad Parameter","Bad Parameter cTBL="+cTBL,"Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())	
 	RETURN .F.
@@ -23667,11 +23667,11 @@ IF nConn > 0
 	cSQL = "SELECT COUNT(*) AS CNTD "
 	DO CASE
 	CASE cTBL = "S"
-		cSQL=cSQL+" FROM HPAlloy_Archive.dbo.StockLst_Master_History WITH(NOLOCK) "
+		cSQL=cSQL+" FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) "
 	CASE cTBL = "B"
-		cSQL=cSQL+" FROM HPAlloy_Archive.dbo.BrokerLst_Master_History WITH(NOLOCK) "
+		cSQL=cSQL+" FROM dbo.[AR.BrokerLst_Master_History] WITH(NOLOCK) "
 	CASE cTBL = "W"
-		cSQL=cSQL+" FROM HPAlloy_Archive.dbo.WIPLst_Master_History WITH(NOLOCK) "
+		cSQL=cSQL+" FROM dbo.[AR.WIPLst_Master_History] WITH(NOLOCK) "
 	OTHERWISE 
 		TrackError("Bad Parameter","Bad Parameter nConn","Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())	
 		RETURN .F.
@@ -23727,11 +23727,11 @@ IF nConn > 0
 		cSQL = "SELECT TOP 1 ID_History "
 		DO CASE
 		CASE cTBL = "S"
-			cSQL=cSQL+" FROM HPAlloy_Archive.dbo.StockLst_Master_History WITH(NOLOCK) "
+			cSQL=cSQL+" FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) "
 		CASE cTBL = "B"
-			cSQL=cSQL+" FROM HPAlloy_Archive.dbo.BrokerLst_Master_History WITH(NOLOCK) "
+			cSQL=cSQL+" FROM dbo.[AR.BrokerLst_Master_History] WITH(NOLOCK) "
 		CASE cTBL = "W"
-			cSQL=cSQL+" FROM HPAlloy_Archive.dbo.WIPLst_Master_History WITH(NOLOCK) "
+			cSQL=cSQL+" FROM dbo.[AR.WIPLst_Master_History] WITH(NOLOCK) "
 		ENDCASE
 		cSQL=cSQL+" WHERE ID = "+STR(nID) 
 		cSQL=cSQL+" AND [WHAT]='DELETE'"
@@ -23859,13 +23859,13 @@ IF nConn > 0
 		
 		DO CASE 
 		CASE cTBL = "S"
-			cSQL = cSQL + " FROM HPAlloy_Archive.dbo.StockLst_Master_History SM4 "
+			cSQL = cSQL + " FROM dbo.[AR.StockLst_Master_History] SM4 "
 			cSQL = cSQL + " WHERE StockLst_Master.ID = "+STR(nID)
 		CASE cTBL = "B"
-			cSQL = cSQL + " FROM HPAlloy_Archive.dbo.BrokerLst_Master_History SM4 "
+			cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Master_History] SM4 "
 			cSQL = cSQL + " WHERE BrokerLst_Master.ID = "+STR(nID)
 		CASE cTBL = "B"
-			cSQL = cSQL + " FROM HPAlloy_Archive.dbo.WIPLst_Master_History SM4 "
+			cSQL = cSQL + " FROM dbo.[AR.WIPLst_Master_History] SM4 "
 			cSQL = cSQL + " WHERE BrokerLst_Master.ID = "+STR(nID)
 		ENDCASE	
 		cSQL =  cSQL + " AND SM4.ID_History = "+STR(nID_History)

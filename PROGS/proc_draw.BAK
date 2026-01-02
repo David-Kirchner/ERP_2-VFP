@@ -4,11 +4,36 @@
 
 ************************************************************************
 
+*Metals Handbook V14 Forming ang Forging
+
+*Wire, Rod, and Tube Drawing
+
 ***********************************
-*PROCEDURE ( ,  )
-*PRIVATE
-*RETURN 
-*ENDPROC
+PROCEDURE DeltaTilda(nApproach_Semiangle_Rad, nRA )
+
+*Delta ~ ( approach_semiangle_rad / draw_redution)[1 + (1-draw_redution_^.5]^2
+*approach_semiangle in radians
+*draw_redution = 1 - (Af/Ao) = 1 - (Df^2/Do^2).   Do=3, Df=2, then 1- (2*2/3*3) = 1-(4/9) = 1-.44 = .55 
+*Reduction of Area =  (Do*Do - Df*Df) / (Do*Do).                        (9-4)/9 = 5/9 = .55
+*A is area = 3.14 * (D^2)/4
+PRIVATE nDelta
+nDelta = (nApproach_Semiangle_Rad / nRA)*( 1+ (nRA^.5)^2)
+*SemiAngles in the range 6 to 10deg and draw reductions of about 20% have a Delta of 2 - 3.
+*nAlphaRad = AlphaRad(nDegAngle)  *Returns the degree angle to Radian. nAlphaRad = AlphaRad(6) to nAlphaRad = AlphaRad(10) 
+
+*nAlphaRad6 = AlphaRad(6)  = .104718667
+*nAlphaRad10 = AlphaRad(10) = .174531111
+*nDelta6 = DeltaTilda(.104718667,.20) = .57842333109
+*nDelta10 = DeltaTilda(.174531111,.20) = 1.024961098
+
+RETURN nDelta
+ENDPROC
+
+************************************************************************
+*Wire Technology
+*Process Engineering and Metallurgy
+*by Roger N. Wright
+
 
 *What is nStress
 
@@ -299,8 +324,8 @@ ENDPROC
 
 ***********************************
 PROCEDURE redundant_work_factor_Delta(nDeformationZone)
-*!*	 redundant work factor	Phi
-*!*	Phi = 0.8+  ( Delta*4.4)
+*!*	 redundant work factor,	Phi, the Ratio of total deformation work / deformation work implied by diminsional change
+*!*	Phi = 0.8+  ( Delta*4.4)									5.8
 PRIVATE nPhi
 nPhi = 0.88 + ( nDeformationZone * 4.4 )
 RETURN nPhi
@@ -665,6 +690,8 @@ ENDPROC
 *!*		Frictional stresses with solid soap lubrication most directly reflect the shear strengths of the lubricants
 *!*		 increases in temperature during drawing may be beneficial as well as detrimental
 
+
+
 *!*			Drawing Speed Ch7				
 *!*	Drawing Speed		Practical drawing speeds range from 10 to 5000 m/min.				
 
@@ -705,26 +732,65 @@ nAreaIn = ( nVelocityIn/nVelocityOut) * nAreaOut
 RETURN nAreaIn
 ENDPROC
 
-
-					
-*!*	pulling speed	V1	3.14 * D * rpm 				7.3
+***********************************
+PROCEDURE pulling_speed(nVelocityOut, nDiameter, nRPM)
+*!*	pulling speed	V1 = 3.14 * D * rpm 				7.3
 *!*	diameter	D	diameter of bar, rod or wire				
 *!*	rpm	block speed in revolution per unit time				
-*!*							
-*!*	 power	F * V1	 drawing force times the exit speed				
-*!*	power		newton meter per second = joules persecond = watts				
-*!*		F	force in Newtons				
+PRIVATE nPullingSpeed
+nPullingSpeed = nVelocityOut *3.14 * nDiameter * nRPM
+RETURN nPullingSpeed
+ENDPROC
 
 ***********************************
-*PROCEDURE ( ,  )
+PROCEDURE power(nDrawForce,  nVelocityOut)
+*!*	 power = F * V1	 drawing force times the exit speed	
+*!*	power		newton meter per second = joules persecond = watts				
+*!*		F	force in Newtons				
+			
+PRIVATE nPower
+nPower = nDrawForce * nVelocityOut
+RETURN nPower
+ENDPROC
+					
+
+*!*							
+
+
+***********************************
+PROCEDURE true_strain_rate(nD_Epsilon_t, ndt)
+*!*	 true strain rate	 d_epsilon_t/dt	 since strain is dimensionless, the units of strain rate are s? 1		
+PRIVATE nTrue_Strain_Rate
+nTrue_Strain_Rate = (nD_Epsilon_t / ndt )
+RETURN nTrue_Strain_Rate
+ENDPROC
+
+
+***********************************
+PROCEDURE average_strain_rate_V(nEpsilon_t, nV0, nV1, nLd)
+*!*	average strain rate	 d_epsilon_t/dt	= epsilon_t *(V0+V1) / (2Ld)				7.4
+*!*		Ld	length of the deformation zone				
+PRIVATE nAverage_Strain_Rate
+nAverage_Strain_Rate = nEpsilon_t * (nV0 + nV1) / (2*nLd)
+RETURN nAverage_Strain_Rate
+ENDPROC
+		
+***********************************
+PROCEDURE frictional_heating(nCoF, nDelta, nSigma_a, nv, nLd, nC, nrho, nK)
+*!*	 frictional heating		 (1.25)CoF * Delta * sigma_a *[(v * Ld)/(C * rho * K)]^.5	
+*!*		v drawing speed	
+*!*		Ld	length of the deformation zone	
+PRIVATE nFrictional_Heating
+nFrictional_Heating = (1.25) * nCoF * nDelta * nSigma_a * ((nv * nLd)/(nC * nrho * nK))^.5				
+RETURN nFrictional_Heating
+ENDPROC
+
+
+***********************************
+*PROCEDURE ()
 *PRIVATE
 *RETURN 
 *ENDPROC
-
-*!*	 true strain rate	 d_epsilon_t/dt	 since strain is dimensionless, the units of strain rate are s? 1				
-*!*	average strain rate	 d_epsilon_t/dt	= epsilon_t *(V0+V1) / (2Ld)				7.4
-*!*		Ld	length of the deformation zone				
-*!*	 frictional heating		 (1.25)CoF * Delta * sigma_a *[(v * Ld)/(C * rho * K)]^.5				
 
 *!*	  equilibration temperature
 *!*	Leq	= (v C*rho d^2) /(24K)
@@ -739,11 +805,7 @@ ENDPROC
 *!*	die pressure	P	
 
 ***********************************
-*PROCEDURE ( ,  )
-*PRIVATE
-*RETURN 
-*ENDPROC
-
+PROCEDURE redundant_work_factor_1(nDelta)
 *!*	redundant work factor is Theta
 *!*	Theta = ratio of total deformation work to the deformation work implied by dimensional change
 *!*	Theta = 0.8 + ( Delta /4.4)
@@ -752,6 +814,27 @@ ENDPROC
 *!*		 A blend likely exposes the last stages of the drawing pass to the conditions of a lower die angle and thus a lower ?
 *!*		This should reduce redundant work, die pressure, and centerline tension at the end of the pass.
 *!*		This can be a big factor in the case of light passes, where the nominal, overall ? may be uncomfortably large
+
+PRIVATE nRedundant_Work_Factor
+nRedundant_Work_Factor = 0.8 + ( nDelta /4.4)
+RETURN 
+ENDPROC
+
+***********************************
+PROCEDURE redundant_work_factor_2(nDelta)
+*!*	redundant work factor is Theta
+*!*	Theta = ratio of total deformation work to the deformation work implied by dimensional change
+*!*	Theta = 0.8 + ( Delta /4.4)
+*!*	Theta = (Delta/6) + 1
+*!*		 Relatively sharp blends are recommended for the drawing of high carbon steel and stainless steel
+*!*		 A blend likely exposes the last stages of the drawing pass to the conditions of a lower die angle and thus a lower ?
+*!*		This should reduce redundant work, die pressure, and centerline tension at the end of the pass.
+*!*		This can be a big factor in the case of light passes, where the nominal, overall ? may be uncomfortably large
+
+PRIVATE nRedundant_Work_Factor
+nRedundant_Work_Factor = (nDelta/6) + 1
+RETURN 
+ENDPROC
 ***********************************
 *PROCEDURE ( ,  )
 *PRIVATE

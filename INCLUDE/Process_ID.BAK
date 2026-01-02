@@ -8,33 +8,34 @@ Shipped		-Trigger to Delete
 Receiving	-Trigger to Delete
 
 Main Process: 
-INCOMING Material is incoming, from PO or WO_Detail 
-SELECTED Material has been selected for a SO or WO
+INCOMING 	-Material is incoming, from PO or WO_Detail 
+SELECTED 	-Material has been selected for a SO or WO
 
-CANCELLED- a way to remove the process when the PO SO WO or WO_Detail is cancelled
-CORRECTION Shop StockLst Edit-Inventory Correction, Bring back deleted StockLst records.
+CANCELLED	-a way to remove the process when the PO SO WO or WO_Detail is cancelled. -Trigger to Delete
+CORRECTION 	-Shop StockLst Edit-Inventory Correction, Bring back deleted StockLst records.
 
-PARTSELECT a partial Select, may not need to use. Just use SELECTED
+depricate PARTSELECT -a partial Select, may not need to use. Just use SELECTED
 
-NOT2HPA material is incoming but not to HPA, Simulate a Packing slip data
-Receiving-	Receive_Edit:Create_Receive_Process()
-PARTRECV Just use INCOMING 
+NOT2HPA  	-material is incoming but not to HPA, Simulate a Packing slip data
+Receiving	-Receive_Edit:Create_Receive_Process()  -Trigger to Delete
+depricate PARTRECV -Just use INCOMING 
 
-RECEIVED- did not find as Process_ID
-Sell Stock-	did not find as Process_ID
-Shipped- did not find as Process_ID
-SUBED	 did not find as Process_ID
+RECEIVED	-did not find as Process_ID -Trigger to Delete
+Sell Stock	-did not find as Process_ID -Trigger to Delete
+Shipped		-did not find as Process_ID	-Trigger to Delete
+SUBED	 	-did not find as Process_ID
 
 
 Process_After Trigger to Delete: 'RECEIVED' 'Sell Stock' 'Shipped' 'Receiving' 'CORRECTION' 'CANCELLED'
 QTY		-Process QTY Selected
-O_QTY	-total for SO, PO or WO_Detail Ordered
+Ordered_QTY -Complete QTY needed for Ordered
+Ordered_P	-Price Sold or Purchased at
 
 *******************************************
 
 SELECT DISTINCT H.Process_ID 
-,( SELECT COUNT(Process_ID) FROM HPAlloy_Archive.dbo.StockLst_Process_History WHERE Process_ID = H.Process_ID ) AS CNTD
-FROM HPAlloy_Archive.dbo.StockLst_Process_History  H WHERE YEAR(H.[when] ) = 2018  ORDER BY CNTD
+,( SELECT COUNT(Process_ID) FROM dbo.[AR.StockLst_Process_History WHERE Process_ID = H.Process_ID ) AS CNTD
+FROM dbo.[AR.StockLst_Process_History  H WHERE YEAR(H.[when] ) = 2018  ORDER BY CNTD
 
 Process_ID	CNTD
 CANCELLED 	194

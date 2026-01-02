@@ -1,4 +1,4 @@
-Proc_ERP:TrackMess 				:1 Parameter, INSERT INTO HPAlloyNR.dbo.UserTrack
+Proc_ERP:TrackMess 				:1 Parameter, INSERT INTO dbo.NR_UserTrack
 --TrackMess(cMess) &&only C1024
 
 Proc_ERP:TrackError 			:4 Parameter, Sends to RecordError()

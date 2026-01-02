@@ -22,7 +22,7 @@ IF USED('tmpMissingID')
 ENDIF
 SELECT 0
 
-cSQL = "SELECT ID_Detail FROM HPAlloy_Archive.dbo.StockLst_Process_History WITH(NOLOCK) WHERE [When] > '2008-05-22' AND [Who] = 'WINDFALL\David Kirchner' AND [WHAT]='DELETE' AND Process_ID = 'CORRECTION'"
+cSQL = "SELECT ID_Detail FROM dbo.[AR.StockLst_Process_History] WITH(NOLOCK) WHERE [When] > '2008-05-22' AND [Who] = 'WINDFALL\David Kirchner' AND [WHAT]='DELETE' AND Process_ID = 'CORRECTION'"
 
 nSQLEXEC = SQLEXEC(pConn, cSQL, 'tmpMissingID' )
 DO WHILE nSQLEXEC = 0
@@ -355,7 +355,7 @@ IF USED('tmpMissingID')
 					** Add Detail	
 					cSQLi = "SET IDENTITY_INSERT HPAlloy.dbo.StockLst_Detail ON "
 					cSQLi = cSQLi + CHR(10)+CHR(13)
-					cSQLi = cSQLi + " INSERT INTO HPAlloy.dbo.StockLst_Detail ([DIM1],[Weight],[CostValue],[ID],[ID_Detail]) VALUES (0,0,0,"+STR(nMasterID)+","+STR(nID_Detail)+")"
+					cSQLi = cSQLi + " INSERT INTO HPAlloy.dbo.StockLst_Detail ([DIM1],[Weight],[S_P],[ID],[ID_Detail]) VALUES (0,0,0,"+STR(nMasterID)+","+STR(nID_Detail)+")"
 					nSQLEXEC = SQLEXEC(pConn, cSQLi )
 					DO WHILE nSQLEXEC = 0
 						WAIT WINDOW 'SQL' TIMEOUT 1
@@ -383,7 +383,7 @@ IF USED('tmpMissingID')
 					cSQL =  cSQL + ",[dim3]=SD.[dim3]"
 					cSQL =  cSQL + ",[length]=SD.[length]"
 					cSQL =  cSQL + ",[weight]=SD.[weight]"
-					cSQL =  cSQL + ",[costvalue]=SD.[costvalue]"
+					*cSQL =  cSQL + ",[costvalue]=SD.[costvalue]"
 					cSQL =  cSQL + ",[descript]=SD.[descript]"
 					cSQL =  cSQL + ",[location]=SD.[location]"
 					cSQL =  cSQL + ",[floorstatus]=SD.[floorstatus]"
@@ -393,6 +393,12 @@ IF USED('tmpMissingID')
 					cSQL =  cSQL + ",[InvCheck]=SD.[InvCheck]"
 					cSQL =  cSQL + ",[id]=SD.[id]"
 					cSQL =  cSQL + ",[ReceivingID]=SD.[ReceivingID]"
+					
+					cSQL =  cSQL + ",S_QTY=SD.S_QTY"
+					cSQL =  cSQL + ",S_P= ISNULL(SD.S_P,SD.CostValue) "
+					cSQL =  cSQL + ",S_Total= ISNULL(SD.S_Total,(SD.S_QTY*ISNULL(SD.S_P,SD.CostValue)))"
+					cSQL =  cSQL + ",S_PU=SD.S_PU"
+					
 					cSQL =  cSQL + " FROM HPALLOY4.dbo.StockLst_Detail_History SD WITH(NOLOCK) "
 					cSQL =  cSQL + " WHERE StockLst_Detail.ID_Detail = SD.ID_Detail"
 					cSQL =  cSQL + " AND SD.[WHAT] = 'DELETE    '"

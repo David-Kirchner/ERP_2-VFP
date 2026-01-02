@@ -3233,7 +3233,7 @@ PARAMETER pTXT
 *TrackMess(cTxt)
 **Also Edit Proc_Quotes.prg
 **Also Edit Proc_SQL.prg
-**Also Edit Proc_HPA.prg
+**Also Edit Proc_ERP.prg
 
 IF TYPE('pTXT') != "C"
 	pTXT = "No Parameter"
@@ -3432,10 +3432,20 @@ DO WHILE nSQLEXEC = 0
 	WAIT WINDOW 'SQL' TIMEOUT 1
 	nSQLEXEC = SQLEXEC( nConn, cSQL )
 ENDDO
+***
 IF nSQLEXEC < 0 &&Try again!
 	nSQLEXEC = SQLEXEC(nConn, cSQL, "")
 	DO WHILE nSQLEXEC = 0
-		WAIT WINDOW 'SQL 2' TIMEOUT 1
+		WAIT WINDOW 'SQL 2' TIMEOUT 2
+		nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+
+	ENDDO
+ENDIF
+***
+IF nSQLEXEC < 0 &&Try again!
+	nSQLEXEC = SQLEXEC(nConn, cSQL, "")
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL 3' TIMEOUT 3
 		nSQLEXEC = SQLEXEC(nConn, cSQL, "")
 
 		IF nSQLEXEC < 0
@@ -3445,6 +3455,7 @@ IF nSQLEXEC < 0 &&Try again!
 		ENDIF
 	ENDDO
 ENDIF
+***
 IF nSQLEXEC < 0
 	SQLExecError(cSQL,nConn, nSQLEXEC, '')
 	RecordError(nSQLEXEC,"SQL Error","Proc_Quotes:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
@@ -7102,7 +7113,7 @@ IF USED("cntTemp")
 	USE IN cntTemp
 ENDIF
 PRIVATE cSQL, nSQLEXEC 
-cSQL = "EXEC HPAlloyNR.dbo.p_Is_Holiday @date='"+DTOC(dDate)+"'"
+cSQL = "EXEC dbo.p_Is_Holiday @date='"+DTOC(dDate)+"'"
 
 SELECT 0
 nSQLEXEC = SQLEXEC( nConn, cSQL, 'cntTemp')
@@ -7158,7 +7169,7 @@ ENDPROC
 ****************************************	
 PROCEDURE CreateHTML_PS_Conf 
 PARAMETERS pPackingSlipNo, pEmailAddress, pEmailHPA, pShipAddr, cSalesRep, pBillAddr
-*Proc_HPA has basic Create HPA_HTML_Header 
+*Proc_ERP has basic Create HPA_HTML_Header 
 
 IF VARTYPE(pPackingSlipNo) !="N"
 	RETURN .F.

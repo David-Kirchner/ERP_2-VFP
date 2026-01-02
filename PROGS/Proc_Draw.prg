@@ -4,11 +4,218 @@
 
 ************************************************************************
 
+*Metals Handbook V14 Forming ang Forging
+
+*Wire, Rod, and Tube Drawing
+
 ***********************************
-*PROCEDURE ( ,  )
-*PRIVATE
-*RETURN 
-*ENDPROC
+PROCEDURE Delta_Tilda(nApproach_Semiangle_Rad, nRA )
+
+*Delta ~ ( approach_semiangle_rad / draw_redution)[1 + (1-draw_redution_^.5]^2
+*approach_semiangle in radians greek symbol is alpha
+*draw_redution = 1 - (Af/Ao) = 1 - (Df^2/Do^2).   Do=3, Df=2, then 1- (2*2/3*3) = 1-(4/9) = 1-.44 = .55 
+*Reduction of Area =  (Do*Do - Df*Df) / (Do*Do).                        (9-4)/9 = 5/9 = .55
+*A is area = 3.14 * (D^2)/4
+PRIVATE nDelta
+nDelta = (nApproach_Semiangle_Rad / nRA)*( 1+ (nRA^.5) )^2
+*SemiAngles in the range 6 to 10deg and draw reductions of nRA about 20% have a Delta of 2 - 3.
+*nAlphaRad = AlphaRad(nDegAngle)  *Returns the degree angle to Radian. nAlphaRad = AlphaRad(6) to nAlphaRad = AlphaRad(10) 
+
+*nAlphaRad6 = AlphaRad(6)  = .104718667
+*nAlphaRad10 = AlphaRad(10) = .174531111
+*nDelta6 = (.104718667/ .20)*( 1+ (.2^.5) )^2 = 1.0966
+*nDelta10= (.174531111/ .20)*( 1+ (.2^.5) )^2 = 1.8277
+
+RETURN nDelta
+ENDPROC
+
+*low Delta values may involvle excessive frictinal work.
+*High Delta values involve redundant work,  
+***********************************
+PROCEDURE Min_DrawStress_Tilda( nCoF, nRA )
+*nCoF coefficent of friction
+*nRA = Reduction of Area
+PRIVATE nMin_DrawStress
+nMin_DrawStress = 4.9 *( nCoF / LOG(1/1-nRA) )^.5
+RETURN nMin_DrawStress
+ENDPROC
+
+***********************************
+PROCEDURE DrawStress_Tilda( nAve_Strength, nDelta, nApproach_Semiangle_Rad, nCoF )
+*nAve_Strength of wire = flow stress of wire during the draw pass.
+*nCoF coefficent of friction greek sybmol is mu
+*nApproach_Semiangle_Rad greek symbal is alpha
+*nDrawStress greek symbal is sigma_d
+PRIVATE nDrawStress
+nDrawStress = nAve_Strength*(3.2 /(nDelta +0.9)) * (nApproach_Semiangle_Rad +  nCoF )
+RETURN nDrawStress
+ENDPROC
+
+***********************************
+PROCEDURE Redundant_Work_Factor_Tilda( nDelta)
+*nDelta
+*nRedundant_Work_Factor greek symbal is Phi
+PRIVATE nRedundant_Work_Factor
+nRedundant_Work_Factor = (nDelta/6) +1
+RETURN nRedundant_Work_Factor
+ENDPROC
+
+*Additional heat generation is associated with frictional work
+*Heat can lead to lubriction breakdown.
+*If the coefficient of friction is not influenced by Delta, frictional heating is aagravated by low Delta processing.
+*Low approach angles (thus low Delta), foster hydrodynamic lubrication and a reduced Coefficint of Friction.
+***********************************
+PROCEDURE Heat_Generation( nRedundant_Work_Factor, nAve_Strength, nRA, nCapactity ,nDensity )
+*nRedundant_Work_Factor greek symbal is Phi
+*nAve_Strength of wire = flow stress of wire during the draw pass.
+*nCapactity is Heat Capacity
+*nDensity greek symbal is rho
+PRIVATE nAdiabatic
+nAdiabatic =  nRedundant_Work_Factor * nAve_Strength * LOG(1/1-nRA) / (nCapactity * nDensity)
+RETURN nAdiabatic
+ENDPROC
+
+************************************************************************
+*Volume = A*L and Ao*Lo = Af*Lf		pg367
+*Engineering Strain is the greek symbol ?e?
+*The strain produced in the deformation process is described by the engineering strain.
+PROCEDURE Engineering_Strain_A(Ao, Af)
+*Ao is Area orig
+*Af is Area final
+PRIVATE nEngineering_Strain
+nEngineering_Strain = (Ao - Af) /Af
+RETURN nEngineering_Strain
+ENDPROC
+
+************************************************************************
+PROCEDURE Engineering_Strain_L(Lo, Lf)
+*The strain produced in the deformation process is described by the engineering strain.
+*Lo is Length orig
+*Lf is Length final
+PRIVATE nEngineering_Strain
+nEngineering_Strain = (Lf - Lo) /Lo
+RETURN nEngineering_Strain
+ENDPROC
+
+************************************************************************
+*True Strain is the Greek symbol epsilon
+PROCEDURE True_Strain_L(Lo, Lf)
+*The strain produced in the deformation process is described by the engineering strain.
+*Lo is Length orig
+*Lf is Length final
+PRIVATE nTrue_Strain
+nTrue_Strain = LOG(Lf/Lo)
+RETURN nTrue_Strain
+ENDPROC
+
+************************************************************************
+PROCEDURE True_Strain_A(Ao, Af)
+*True Strain is the greek symbol epsilon
+*Ao is Area orig
+*Af is Area final
+PRIVATE nTrue_Strain
+nTrue_Strain = LOG(Ao/Af)
+RETURN nTrue_Strain
+ENDPROC
+
+************************************************************************
+PROCEDURE True_Strain_e(nEngineering_Strain)
+*The strain produced in the deformation process is described by the engineering strain.
+*True Strain is the greek symbol epsilon
+PRIVATE nTrue_Strain
+nTrue_Strain = LOG(nEngineering_Strain + 1)
+RETURN nTrue_Strain
+ENDPROC
+
+************************************************************************
+PROCEDURE True_Strain_RA(nRA)
+*True Strain is the greek symbol epsilon
+PRIVATE nTrue_Strain
+nTrue_Strain = LOG( 1/(1 - nRA) )
+RETURN nTrue_Strain
+ENDPROC
+
+************************************************************************
+PROCEDURE Strain_Rate(nVelocity, nCylinderHeight)
+*Strain Rate is the greek symbol epsilon with a dot on top
+*Strain Rate is the time rate of change of strain, the rate at which deformation proceeds.
+*nVelocity in Time
+*nCylinderHeight Upset in compression
+PRIVATE nStrain_Rate
+nStrain_Rate = nVelocity / nCylinderHeight
+RETURN nStrain_Rate
+ENDPROC
+
+************************************************************************
+PROCEDURE Strain_Rate_E(nTrue_Strain, nTime)
+*Strain Rate is the greek symbol epsilon with a dot on top
+*Strain Rate is the time rate of change of strain, the rate at which deformation proceeds. 
+
+*True Strain is the greek symbol epsilon
+*nVelocity in Time
+PRIVATE nStrain_Rate
+nStrain_Rate = ( nTrue_Strain / nTime)
+RETURN nStrain_Rate
+ENDPROC
+
+** In most hot working, the strain hardening and the distorted grain structure 
+* produced by deformation are eliminated rapidly by the formation of new strain-free grains 
+* as a result of recrystallization durein or immediately after deformatin.
+************************************************************************
+
+** Friction makes the deformation more inhomeogenous, increaseing the perpensity for fracture. pg368
+************************************************************************
+PROCEDURE Coulomb_CoF(nShear_Stress, nStressPressure)
+*Shear Stress at the interface greek symbol tau i
+*nStress Pressure normal to the interface
+PRIVATE nCoF
+nCoF = nShear_Stress / nStressPressure
+RETURN nCoF
+ENDPROC
+
+************************************************************************
+PROCEDURE Shear_Stress_Interface(nConstantofProportionanality,nFlow_Stress)
+*Shear Stress at the interface greek symbol tau i
+*nConstantofProportionanalitycondition of lubrication and temperature, given die and material  pg368
+* 0 is perfect sliding, 1 no slide
+* nFlow_Stress is greek symbol sigma
+PRIVATE nShear_Stress_Interface
+nShear_Stress_Interface = nConstantofProportionanality * ( nFlow_Stress / SQRT(3) )
+RETURN nShear_Stress_Interface
+ENDPROC
+
+***********************************
+PROCEDURE Uniaxial_Compressive_Stress(nPForce, nArea)
+*Uniaxial_Compressive_Stress is flow stress, only true if there is no friction   pg 376
+*nForce
+*nArea
+PRIVATE nFlow_Stress
+nFlow_Stress = (nPForce / nArea)
+RETURN nFlow_Stress
+ENDPROC
+
+***********************************
+PROCEDURE True_Compresive_Strain(nHeight_o, nHeight_f)
+*True_Compresive_Strain is greek symbol epsilon
+*Buckeling will occure if nHeight/Diameter > 2
+PRIVATE nTrue_Compresive_Strain
+nTrue_Compresive_Strain = LOG( nHeight_o / nHeight_f )
+RETURN nTrue_Compresive_Strain
+ENDPROC
+
+***********************************
+PROCEDURE True_Compressive_Stress(nPForce, nHeight_o, nHeight_f, nDia
+*True_Compressive_Stress
+PRIVATE nTrue_Compressive_Stress
+nTrue_Compressive_Stress = (4* nPForce * nHeight_f) / (3.14156 * nDia * nDia * nHeight_o )
+RETURN nTrue_Compressive_Stress
+ENDPROC
+
+************************************************************************
+*Wire Technology
+*Process Engineering and Metallurgy
+*by Roger N. Wright
+
 
 *What is nStress
 
@@ -299,8 +506,8 @@ ENDPROC
 
 ***********************************
 PROCEDURE redundant_work_factor_Delta(nDeformationZone)
-*!*	 redundant work factor	Phi
-*!*	Phi = 0.8+  ( Delta*4.4)
+*!*	 redundant work factor,	Phi, the Ratio of total deformation work / deformation work implied by diminsional change
+*!*	Phi = 0.8+  ( Delta*4.4)									5.8
 PRIVATE nPhi
 nPhi = 0.88 + ( nDeformationZone * 4.4 )
 RETURN nPhi

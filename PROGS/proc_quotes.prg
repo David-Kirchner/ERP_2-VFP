@@ -3254,8 +3254,8 @@ pTXT		= ShowSQLtxt(pTXT,'TrackMess',-1)
 Pmess1q = PrepareSQLtxt(LEFT(pTXT,1024),'pTXT',1024,.F.,.T.)
 Pcprogram = "HPA:Proc_Quotes:TrackMess"
 PRIVATE cSQL, nSQLEXEC
-*Do not INSERT into HPAlloyNR.dbo.UserTrack Direct, let trigger add ServerName!
-cSQL = "INSERT INTO HPAlloyNR.dbo.UserTrack (mess1,cprogram,errordate,MACHINE)"
+*Do not INSERT into dbo.UserTrack Direct, let trigger add ServerName!
+cSQL = "INSERT INTO dbo.NR_UserTrack (mess1,cprogram,errordate,MACHINE)"
 cSQL = cSQL + " VALUES ('"+Pmess1q+"','"+Pcprogram+"','"+TTOC( DATETIME())+"','"+SYS(0)+"')"
 
 nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpPQ_SQLAns" )
@@ -7113,7 +7113,7 @@ IF USED("cntTemp")
 	USE IN cntTemp
 ENDIF
 PRIVATE cSQL, nSQLEXEC 
-cSQL = "EXEC HPAlloyNR.dbo.p_Is_Holiday @date='"+DTOC(dDate)+"'"
+cSQL = "EXEC dbo.p_Is_Holiday @date='"+DTOC(dDate)+"'"
 
 SELECT 0
 nSQLEXEC = SQLEXEC( nConn, cSQL, 'cntTemp')

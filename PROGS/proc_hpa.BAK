@@ -1,5 +1,5 @@
-*IF NOT "PROC_HPA" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
-*	SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+*IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 *ENDIF
 
 ***********************************************************************************************
@@ -127,7 +127,7 @@ PROCEDURE NewID(tcAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 		
 	ENDIF
   ENDIF
@@ -173,7 +173,7 @@ PROCEDURE SO_get_next
 		ENDDO
 	ENDIF
 	IF nSQLEXEC < 0
-		MESSAGEBOX('Data Error with SQL'+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), 16, 'SQL Error')
+		MESSAGEBOX('Data Error with SQL'+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), 16, 'SQL Error')
 		nSOmaxNew = 1000
 	ELSE
 		nSOmaxNew = tmpPH_SOMax.CNT
@@ -206,7 +206,7 @@ PROCEDURE SO_get_next
 		ENDDO
 	ENDIF
 	IF nSQLEXEC < 0
-		MESSAGEBOX('Data Error with SQL'+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), 16, 'SQL Error')
+		MESSAGEBOX('Data Error with SQL'+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), 16, 'SQL Error')
 	ENDIF
 	
 	IF USED('tmpPH_SOMax')
@@ -274,7 +274,7 @@ ENDPROC
 *!*		IF USED(cAlias)
 *!*			SELECT (cAlias)
 *!*		ELSE
-*!*			RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+*!*			RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 *!*		ENDIF
 *!*	ENDIF
 
@@ -364,7 +364,7 @@ IF nSQLEXEC < 0 &&Try again!
 	ENDDO
 ENDIF
 IF nSQLEXEC < 0
-	MESSAGEBOX('Data Error with SQL'+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), 16, 'SQL Error')
+	MESSAGEBOX('Data Error with SQL'+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), 16, 'SQL Error')
 	=SQLDISCONNECT(nConnHandle)
 	RETURN .T.
 ENDIF
@@ -386,7 +386,7 @@ IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 
@@ -397,7 +397,7 @@ ENDPROC
 PROCEDURE TrackMess 
 PARAMETER pTXT
 *TrackMess(cTxt)
-**Also Edit Proc_HPA.prg
+**Also Edit Proc_ERP.prg
 **Also Edit Proc_Quotes.prg
 **Also Edit Proc_SQL.prg
 
@@ -412,12 +412,12 @@ PRIVATE nConnection
 nConnection = get_SQLstringCONNECT()
 
 IF nConnection < 0
-	MESSAGEBOX("Could not connect to SQL Server"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"No Tracking")
+	MESSAGEBOX("Could not connect to SQL Server"+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"No Tracking")
 	RETURN .F.
 ENDIF
 
 IF LEN(pTXT) > 1024
-	RecordTest("Record Test Data.", "Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"TrackMess is too long. "+ALLTRIM(STR(LEN(pTXT)))+"."+CHR(13)+pTXT )
+	RecordTest("Record Test Data.", "Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"TrackMess is too long. "+ALLTRIM(STR(LEN(pTXT)))+"."+CHR(13)+pTXT )
 ENDIF
 
 PRIVATE pMess1HPA, Pcprogram
@@ -426,7 +426,7 @@ PRIVATE pMess1HPA, Pcprogram
 *pTXT		= STRTRAN(pTXT,['],["],1)
 pTXT		= ShowSQLtxt(pTXT,'TrackMess',-1)
 pMess1HPA = PrepareSQLtxt(LEFT(pTXT,1024),'pTXT',1024,.F.,.T.)
-Pcprogram = "HPA:Proc_HPA:TrackMess"
+Pcprogram = "HPA:Proc_ERP:TrackMess"
 
 PRIVATE cSQL, nSQLEXEC  
 *Do not INSERT into HPAlloyNR.dbo.UserTrack Direct, let trigger add ServerName!
@@ -454,7 +454,7 @@ IF nSQLEXEC < 0 &&Try again!
 ENDIF
 IF nSQLEXEC < 0
 	SQLEXECError(cSQL, nConnection, nSQLEXEC, '')
-	RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+	RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 ENDIF
 
 SQLDISCONNECT( nConnection )
@@ -466,7 +466,7 @@ PROCEDURE TrackError
 PARAMETER pProblem, pMess_Title, Pcprogram, Pnlineno
 *         (   MEMO, C(254),    C(254),      INT)
 *TrackError("Problem","Title","Program",nLineNum)
-*TrackError("Problem","Title","Proc_HPA"+PROGRAM(),LINENO())
+*TrackError("Problem","Title","Proc_ERP"+PROGRAM(),LINENO())
 *TrackMess is one Parameter!
 
 IF TYPE('pProblem') != "C"
@@ -501,7 +501,7 @@ IF NOT EMPTY(cAlias)
 		SELECT (cAlias)
 	ELSE
 		IF UPPER(cAlias) != 'ERRORS'
-			*RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+			*RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 		ENDIF
 	ENDIF
 ENDIF
@@ -523,10 +523,10 @@ ENDPROC
 PROCEDURE RecordError 
 PARAMETERS Pnerror, Pmess1h2, Pcprogram, Pnlineno, pcMessMemo
 *         (    INT, C(254),    C(254),      INT,      MEMO)
-* RecordError( nerror INT, mess1 C254,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(1), MessMemo)
-*Found in RecordError.prg and Proc_HPA
+* RecordError( nerror INT, mess1 C254,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(1), MessMemo)
+*Found in RecordError.prg and Proc_ERP
 * RecordError(1, 'Title', 'program', LINENO(1),'Long Message')
-* Called from TrackError of Proc_HPA
+* Called from TrackError of Proc_ERP
 
 IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
@@ -575,14 +575,14 @@ SELECT 0
 IF m.cMess<>'Record Test Data.'
 	*Record Error of Screen
 	TRY
-	*	cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" David.Kirchner@HPAlloys.com ]
-	*	cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
-		cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" VFP@Whpalloys.com ]
+	*	cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" David.Kirchner@HPAlloys.com ]
+	*	cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
+		cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@Whpalloys.com ]
 
 		RUN /N &cRun
 		
 	CATCH
-		MESSAGEBOX("Error Capture was not run"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"Could not run Error Capture.")
+		MESSAGEBOX("Error Capture was not run"+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"Could not run Error Capture.")
 	ENDTRY
 ENDIF
 
@@ -643,7 +643,7 @@ IF nConn > 0
 	
 	*WAIT WINDOW "Proc_Setup:CollectErrors() "+SUBSTR(cSQL,110,100)
 	
-	*MESSAGEBOX(cSQL+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),0,"SQL Error")
+	*MESSAGEBOX(cSQL+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),0,"SQL Error")
 	
 	nSQLEXEC = SQLEXEC(nConn, cSQL )
 	DO WHILE nSQLEXEC = 0
@@ -677,9 +677,9 @@ ENDPROC
 
 PROCEDURE RecordTest 
 PARAMETERS Pmess1RecordTest, Pcprogram, Pnlineno, pMessMemo
-* RecordTest("Record Test Data.","Proc_HPA:",1,"Long Message")
+* RecordTest("Record Test Data.","Proc_ERP:",1,"Long Message")
 * RecordTest( mess1 C254, cprogram C254, LINENO(1), MessMemo VarChar(MAX) )
-* RecordTest( "Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(1),"Long Message")
+* RecordTest( "Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(1),"Long Message")
 
 IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
@@ -730,7 +730,7 @@ SELECT 0
 *!*	*Record Error of Screen
 *!*	TRY
 *!*	*	RUN ["]+SYS(5)+SYS(2003)+[\ErrorCapture.EXE" "RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ] /N 
-*!*		cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
+*!*		cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
 *!*		RUN /N &cRun
 *!*	ENDTRY
 
@@ -802,7 +802,7 @@ IF NOT EMPTY(cAlias)
 			SELECT (cAlias)
 		ELSE
 			*-Makes LOOP !!! 
-			*RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+			*RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 		ENDIF
 	ENDIF
 ENDIF
@@ -842,7 +842,7 @@ PRIVATE nConnection
 nConnection = get_SQLstringCONNECT()
 
 IF nConnection < 0
-	MESSAGEBOX("Could not connect to SQL Server"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"No Tracking")
+	MESSAGEBOX("Could not connect to SQL Server"+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"No Tracking")
 	RecordError( 0, 'Could not connect to SQL Server', "Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"VFP message: Could not connect to SQL Server" )
 	RETURN .F.
 ENDIF
@@ -879,7 +879,7 @@ IF nSQLEXEC < 0 &&Try again!
 ENDIF
 IF nSQLEXEC < 0
 	SQLEXECError(cSQL, nConnection, nSQLEXEC, '')
-	RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+	RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 ENDIF
 
 SQLDISCONNECT( nConnection )
@@ -921,7 +921,7 @@ PRIVATE nConnection
 nConnection = get_SQLstringCONNECT()
 
 IF nConnection < 0
-	MESSAGEBOX("Could not connect to SQL Server"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"No Tracking")
+	MESSAGEBOX("Could not connect to SQL Server"+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"No Tracking")
 	RecordError( 0, 'Could not connect to SQL Server', "Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"VFP message: Could not connect to SQL Server" )
 	RETURN .F.
 ENDIF
@@ -951,7 +951,7 @@ IF nSQLEXEC < 0 &&Try again!
 ENDIF
 IF nSQLEXEC < 0
 	SQLEXECError(cSQL, nConnection, nSQLEXEC, '')
-	RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+	RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 ENDIF
 
 SQLDISCONNECT( nConnection )
@@ -1060,7 +1060,7 @@ PARAMETER pPOitem
 PRIVATE cPO,nPO,cItem,nItem,crPOitem
 crPOitem = ""
 IF TYPE("pPOitem")="L"
-	*TrackError("No POitem was sent to Proper_PO_Item (). ","Proc_HPA:Proper_PO_Item() has no Field","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+	*TrackError("No POitem was sent to Proper_PO_Item (). ","Proc_ERP:Proper_PO_Item() has no Field","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 	RETURN '        0-00'
 ENDIF
 
@@ -1189,7 +1189,7 @@ PRIVATE cSO,nSO,cItem,nItem,crSOitem
 crSOitem = ""
 
 IF TYPE("pSOitem")="L"
-	TrackError("No SOitem was sent to Proper_SO_Item (). ","Proc_HPA:Proper_SO_Item() has no Field","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+	TrackError("No SOitem was sent to Proper_SO_Item (). ","Proc_ERP:Proper_SO_Item() has no Field","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 ENDIF
 IF TYPE("pSOitem")="C"
 	pSOitem= ALLTRIM(pSOitem)
@@ -1769,7 +1769,7 @@ IF NOT FOUND("UpsShipRoute")
 	  CHR(13)+"UPS WORDLWIDE EXPRES"+;
 	  CHR(13)+"UPS WRLD EXPRESS NA1"+;
 	  CHR(13)+"UPS WORLDWIDE EXPEDI";
-	  +CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1);
+	  +CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1);
 	  ,0+32,"Retry using these, or do not start with UPS" )
 	  
 	IF lCloseUpsShipRoute
@@ -2073,7 +2073,7 @@ IF lFoundPrinter
 		SET PRINTER TO NAME 'doPDF v6'
 *	ENDIF
 ELSE
-	TrackError("No PDF printer found! Install doPDF.","No PDF printer found","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+	TrackError("No PDF printer found! Install doPDF.","No PDF printer found","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
 ENDIF
 
 RETURN lFoundPrinter 
@@ -2090,7 +2090,7 @@ cMachineInit = ''
 
 IF VARTYPE(nMachineNo) != "N"
 	*Runs from a printed report, just ignore here.
-	*TrackError("getCertMachineInitial - nMachine number not a number","getCertMachineInitial Failed","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+	*TrackError("getCertMachineInitial - nMachine number not a number","getCertMachineInitial Failed","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
 	RETURN ''
 ENDIF
 
@@ -2148,7 +2148,7 @@ IF TYPE("m.salesp") !="C"
 	IF FILE(SYS(5)+SYS(2003)+"\SalesP.MEM")
 		RESTORE FROM (SYS(5)+SYS(2003)+"\SalesP.MEM") ADDITIVE
 		cHomeSalesp = ALLTRIM(m.Salesp)
-		*MESSAGEBOX("Using SalesP:"+cHomeSalesp+CHR(13)+"Proc_HPA:"+PROGRAM(),64,"cHomeSalesP")
+		*MESSAGEBOX("Using SalesP:"+cHomeSalesp+CHR(13)+"Proc_ERP:"+PROGRAM(),64,"cHomeSalesP")
 	ELSE
 		IF FILE(SYS(5)+SYS(2003)+"\MEM\SalesP.MEM")
 			RESTORE FROM (SYS(5)+SYS(2003)+"MEM\SalesP.MEM") ADDITIVE
@@ -2161,7 +2161,7 @@ ENDIF
 IF EMPTY("cHomeSalesp")
 	cHomeSalesp = "A"
 	WAIT WINDOW "Enter the your SalesP initial." TO cHomeSalesp
-	RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"No SalesP initial. Now set to: '"+cHomeSalesp+"'." )
+	RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"No SalesP initial. Now set to: '"+cHomeSalesp+"'." )
 ENDIF
 
 SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
@@ -2169,12 +2169,12 @@ cReturnFileName = get_SQL_SendPDF_Path()+cHomeSalesp+"\"
 *--"\SendPDF\"+cHomeSalesp+"\"
 
 IF EMPTY(cHomeSalesp)
-	MESSAGEBOX("Bad SalesP Home!"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"EmailFileName")
-	TrackError("Send Email Error","Bad SalesP Home!","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+	MESSAGEBOX("Bad SalesP Home!"+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"EmailFileName")
+	TrackError("Send Email Error","Bad SalesP Home!","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
 ENDIF
 IF EMPTY(cReturnFileName)
-	MESSAGEBOX("File Name on Server Failed!"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"EmailFileName")
-	TrackError("Send Email Error","File Name on Server Failed!"+CHR(13)+"cReturnFileName ","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
+	MESSAGEBOX("File Name on Server Failed!"+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"EmailFileName")
+	TrackError("Send Email Error","File Name on Server Failed!"+CHR(13)+"cReturnFileName ","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
 ENDIF
 
 
@@ -3731,11 +3731,11 @@ IF lReturnURL
 *https://raptor/ReportServer/Pages/ReportViewer.aspx?%2fReceiving%2fPOitem+Receiving+SELECTED+SOitem&rs:Command=Render]+"&"+[cPOitem=+++510444-01
 *https://raptor/ReportServer/Pages/ReportViewer.aspx?/Receiving/Receiving%20SELECTED%20SOitem&rs:Command=Render&ID_Detail=13175
 
-	cReturnString = get_Report_Server()+[/Receiving]+[/Receiving%20SELECTED%20SOitem&rs:Command=Render]+"&"+[ID_Detail=]
+	cReturnString = get_Report_Server()+[/Receiving]+[/Receiving%20SELECTED%20Stock&rs:Command=Render]+"&"+[ID_Detail=]
 	cReturnString = cReturnString + ALLTRIM(STR(nID_Detail))
 ELSE
 	*Return HTML Code
-	cReturnString = [<a href=]+get_Report_Server()+[/Receiving]+[/Receiving%20SELECTED%20SOitem&rs:Command=Render]+"&"+[ID_Detail=]
+	cReturnString = [<a href=]+get_Report_Server()+[/Receiving]+[/Receiving%20SELECTED%20Stock&rs:Command=Render]+"&"+[ID_Detail=]
 	cReturnString = cReturnString + ALLTRIM(STR(nID_Detail))
 	cReturnString = cReturnString + [>]+ALLTRIM(STR(nID_Detail)) +"</a>"+"<br />"
 ENDIF
@@ -4625,7 +4625,7 @@ IF nSQLEXEC < 0 &&Try again!
 ENDIF
 IF nSQLEXEC < 0
 	SQLEXECError(cSQL,nConn, nSQLEXEC, 'tmpF_Descript')
-	RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+	RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 ENDIF
 
 IF USED('tmpPH_tmpF_Descript')
@@ -4649,7 +4649,7 @@ IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 
@@ -4673,7 +4673,7 @@ cInput = ALLTRIM(cInput)
 
 IF VARTYPE(cInput) != "C"
 	WAIT WINDOW "Encode2D Parameter error"
-	RecordError(0,"Encode2D Parameter error","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "Encode2D Parameter error")
+	RecordError(0,"Encode2D Parameter error","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "Encode2D Parameter error")
 
 	RETURN ""
 ENDIF
@@ -4682,14 +4682,14 @@ ENDIF
 PRIVATE o2D, cReturn
 cReturn = ''
 TRY 
-*	RecordError(0,0,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT(DataMatrix.net.BarCode)")
+*	RecordError(0,0,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT(DataMatrix.net.BarCode)")
 	o2D = CREATEOBJECT("DataMatrix.net.BarCode")
 *	o2D = CREATEOBJECT("DataMatrix.net")
 	cReturn = o2D.CodeString(cInput)
 CATCH
-	RecordError(0,0,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT('DataMatrix.net.BarCode')")
+	RecordError(0,0,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT('DataMatrix.net.BarCode')")
 	*TrackError("Problem Memo","Title C254", PROGRAM(), LINENO(1))
-	MESSAGEBOX([CREATEOBJECT("DataMatrix.net.BarCode")]+CHR(13)+"has failed!"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),0+16,"Will not print right.")
+	MESSAGEBOX([CREATEOBJECT("DataMatrix.net.BarCode")]+CHR(13)+"has failed!"+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),0+16,"Will not print right.")
 ENDTRY
 *
 RELEASE o2D
@@ -4714,7 +4714,7 @@ cInput = ALLTRIM(cInput)
 
 IF VARTYPE(cInput) != "C"
 	WAIT WINDOW "EncodeToDataMatrixString Parameter error"
-	RecordError(0,"EncodeToDataMatrixString Parameter error","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "EncodeToDataMatrixString Parameter error")
+	RecordError(0,"EncodeToDataMatrixString Parameter error","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "EncodeToDataMatrixString Parameter error")
 
 	RETURN ""
 ENDIF
@@ -4723,7 +4723,7 @@ ENDIF
 PRIVATE o2D, cReturn
 cReturn = ''
 TRY 
-*	RecordError(0,0,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT(DataMatrix.net.BarCode)")
+*	RecordError(0,0,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT(DataMatrix.net.BarCode)")
 	o2D = CREATEOBJECT("DataMatrix.Net.BarCode")
 
 	cReturn = o2D.EncodeToDataMatrixString(cInput)
@@ -4731,8 +4731,8 @@ CATCH
 	*Brandon wrote the DataMatrix.net.dll " --uses .NetFramework 3.5
 	*cmd prompt as Administrator! "C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm" "C:\Program Files (x86)\HPA\INCLUDE\DataMatrix.net.dll" /codebase
 	
-	RecordError(0,0,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT('DataMatrix.Net.BarCode')"+CHR(13)+"DataMatrix.net.dll"+CHR(13)+[Source: "C:\Program Files (x86)\HPA\INCLUDE\DataMatrix.net.dll"; DestDir: "{sys}"; ]+CHR(13)+[Filename: "C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm"; Parameters: "C:\Program Files (x86)\HPA\INCLUDE\DataMatrix.net.dll /codebase";   Description: "to run DataMatrix"; Flags: postinstall shellexec skipifsilent]+CHR(13)+CHR(13)+[cmd prompt as Administrator! "C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm" "C:\Program Files (x86)\HPA\INCLUDE\DataMatrix.net.dll" /codebase] )
-	MESSAGEBOX([CREATEOBJECT("DataMatrix.Net.BarCode")]+CHR(13)+"has failed!"+CHR(13)+"Proc_HPA:"+PROGRAM(),0+16,"Will not print right.")
+	RecordError(0,0,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT('DataMatrix.Net.BarCode')"+CHR(13)+"DataMatrix.net.dll"+CHR(13)+[Source: "C:\Program Files (x86)\HPA\INCLUDE\DataMatrix.net.dll"; DestDir: "{sys}"; ]+CHR(13)+[Filename: "C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm"; Parameters: "C:\Program Files (x86)\HPA\INCLUDE\DataMatrix.net.dll /codebase";   Description: "to run DataMatrix"; Flags: postinstall shellexec skipifsilent]+CHR(13)+CHR(13)+[cmd prompt as Administrator! "C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm" "C:\Program Files (x86)\HPA\INCLUDE\DataMatrix.net.dll" /codebase] )
+	MESSAGEBOX([CREATEOBJECT("DataMatrix.Net.BarCode")]+CHR(13)+"has failed!"+CHR(13)+"Proc_ERP:"+PROGRAM(),0+16,"Will not print right.")
 ENDTRY
 *
 RELEASE o2D
@@ -4757,7 +4757,7 @@ cInput = ALLTRIM(cInput)
 
 IF VARTYPE(cInput) != "C"
 	WAIT WINDOW "EncDM Parameter error"
-	RecordError(0,"EncDM Parameter error","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "EncDM Parameter error")
+	RecordError(0,"EncDM Parameter error","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "EncDM Parameter error")
 
 	RETURN ""
 ENDIF
@@ -4769,8 +4769,8 @@ TRY
 	o2D = CREATEOBJECT("DMATRIXLib.Datamatrix")
 	cReturn = o2D.FontEncode(cInput)
 CATCH
-	RecordError(0,0,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT(DMATRIXLib.Datamatrix)")
-	MESSAGEBOX([CREATEOBJECT("DMATRIXLib.Datamatrix")]+CHR(13)+"has failed!"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),0+16,"Will not print right.")
+	RecordError(0,0,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "o2D = CREATEOBJECT(DMATRIXLib.Datamatrix)")
+	MESSAGEBOX([CREATEOBJECT("DMATRIXLib.Datamatrix")]+CHR(13)+"has failed!"+CHR(13)+"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),0+16,"Will not print right.")
 ENDTRY
 
 RELEASE o2D
@@ -4795,7 +4795,7 @@ cInput = ALLTRIM(cInput)
 
 IF VARTYPE(cInput) != "C"
 	WAIT WINDOW "Convert_Fractions_to_Numeric Parameter error"
-	RecordError(0,"Convert_Fractions_to_Numeric Parameter error","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "Convert_Fractions_to_Numeric Parameter error")
+	RecordError(0,"Convert_Fractions_to_Numeric Parameter error","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(), "Convert_Fractions_to_Numeric Parameter error")
 	*RecordError(Pnerror, Pmess1, Pcprogram, Pnlineno, pMess)
 	RETURN 0
 ENDIF
@@ -4925,7 +4925,7 @@ IF NOT EMPTY(cCustID)
 	ENDIF
 	IF nSQLEXEC < 0
 		SQLEXECError(cSQL,nConn, nSQLEXEC, 'tmpPH_tmpStreetAddr')
-		RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 	ENDIF
 
 	IF USED('tmpPH_tmpStreetAddr')
@@ -4975,7 +4975,7 @@ IF NOT EMPTY(cCompany) AND EMPTY(cReturn)
 	ENDIF
 	IF nSQLEXEC < 0
 		SQLEXECError(cSQL,nConn, nSQLEXEC, 'tmpPH_tmpStreetAddr')
-		RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 	ENDIF
 
 	IF USED('tmpPH_tmpStreetAddr')
@@ -5006,7 +5006,7 @@ IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 
@@ -5105,7 +5105,7 @@ IF NOT EMPTY(cSQL)
 	ENDIF
 	IF nSQLEXEC < 0
 		SQLEXECError(cSQL,nConn, nSQLEXEC, 'tmpPH_tmpStreetAddr')
-		RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 	ENDIF
 
 	IF USED('tmpPH_tmpStreetAddr')
@@ -5131,7 +5131,7 @@ IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 
@@ -5145,7 +5145,7 @@ PARAMETERS cCustID, pConnHandle
 
 
 IF VARTYPE(cCustID) != "C"
-	RecordError( 0, 'PARAMETERS ', "Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"VFP message: No cCustID Parameter" )
+	RecordError( 0, 'PARAMETERS ', "Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"VFP message: No cCustID Parameter" )
 	RETURN .F.
 ENDIF
 
@@ -5204,7 +5204,7 @@ IF nSQLEXEC < 0 &&Try again!
 ENDIF
 IF nSQLEXEC < 0
 	SQLEXECError(cSQL,nConn, nSQLEXEC, 'tmpPH_tmpCustID')
-	RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+	RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 ENDIF
 
 IF USED('tmpPH_tmpCustID')
@@ -5225,7 +5225,7 @@ IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 
@@ -5322,7 +5322,7 @@ IF NOT EMPTY(cSQL)
 	ENDIF
 	IF nSQLEXEC < 0
 		SQLEXECError(cSQL,nConn, nSQLEXEC, 'tmpPH_tmpStreetAddr')
-		RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 	ENDIF
 
 	IF USED('tmpPH_tmpStreetAddr')
@@ -5348,7 +5348,7 @@ IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 
@@ -5419,7 +5419,7 @@ IF pConn > 0
 	ENDIF
 	IF nSQLEXEC < 0
 		SQLEXECError(cSQL,pConn,nSQLEXEC, 'tmpPH_tmpSqlAns')
-		RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(), cSQL )
+		RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(), cSQL )
 	ENDIF
 	
 	IF lNewConn 
@@ -5434,14 +5434,14 @@ IF pConn > 0
 	ENDIF
 ELSE
 	*Error on Connection String
-	TrackError("Could not Connect to SQL","Error on Connection String","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 ENDIF
 
 IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 
@@ -5586,7 +5586,7 @@ IF pConn > 0
 			IF USED(cAlias)
 				SELECT (cAlias)
 			ELSE
-				RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+				RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 			ENDIF
 		ENDIF
 
@@ -5614,7 +5614,7 @@ IF pConn > 0
 		ENDIF
 		IF nSQLEXEC < 0
 			SQLEXECError(cSQL, pConn, nSQLEXEC, 'tmpPH_tmpSqlAns2')
-			RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+			RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 		ENDIF
 		
 		IF lNewConn 
@@ -5643,14 +5643,14 @@ IF pConn > 0
 	
 ELSE
 	*Error on Connection String
-	TrackError("Could not Connect to SQL","Error on Connection String","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 ENDIF
 
 IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 
@@ -5719,7 +5719,7 @@ IF pConn > 0
 			IF USED(cAlias)
 				SELECT (cAlias)
 			ELSE
-				RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+				RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 			ENDIF
 		ENDIF
 
@@ -5747,7 +5747,7 @@ IF pConn > 0
 		ENDIF
 		IF nSQLEXEC < 0
 			SQLEXECError(cSQL, pConn, nSQLEXEC )
-			RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+			RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 		ELSE
 			lSentEmailMarked = .T.
 		ENDIF
@@ -5758,7 +5758,7 @@ IF pConn > 0
 	ENDIF	
 ELSE
 	*Error on Connection String
-	TrackError("Could not Connect to SQL","Error on Connection String","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 ENDIF
 
 RETURN lSentEmailMarked
@@ -6009,7 +6009,7 @@ IF nSQLEXEC < 0 &&Try again!
 ENDIF
 IF nSQLEXEC < 0
 	SQLEXECError(cSQL,nConn,nSQLEXEC, 'tmpPH_tmpSqlAns3')
-	RecordError(nSQLEXEC,"SQL Error" ,"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(), cSQL )
+	RecordError(nSQLEXEC,"SQL Error" ,"Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(), cSQL )
 ENDIF
 
 IF USED('tmpPH_tmpSqlAns3')
@@ -6045,7 +6045,7 @@ IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 
@@ -6098,7 +6098,7 @@ IF pConn > 0
 	ENDIF
 	IF nSQLEXEC < 0
 		IF NOT SQLEXECError(cSQL,pConn,nSQLEXEC, 'tmpPH_tmpSqlAns4')
-			RecordError(nSQLEXEC,"SQL Error","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
+			RecordError(nSQLEXEC,"SQL Error","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 		ENDIF
 	ENDIF
 		
@@ -6115,14 +6115,14 @@ IF pConn > 0
 
 ELSE
 	*Error on Connection String
-	TrackError("Could not Connect to SQL","Error on Connection String","Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+	TrackError("Could not Connect to SQL","Error on Connection String","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 ENDIF
 
 IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
 	ELSE
-		RecordTest("Record Test Data.", "Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
+		RecordTest("Record Test Data.", "Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"Lost Alias '"+cAlias+"'")
 	ENDIF
 ENDIF
 

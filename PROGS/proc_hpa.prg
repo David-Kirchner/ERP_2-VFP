@@ -5,7 +5,7 @@
 ***********************************************************************************************
 *NewID(tcAlias) 
 *PurchasedWriteOff 
-*TrackMess 				:1 Parameter, INSERT INTO HPAlloyNR.dbo.UserTrack
+*TrackMess 				:1 Parameter, INSERT INTO dbo.NR_UserTrack
 *TrackError 			:4 Parameter, Sends to RecordError()
 *SQLExecError 			:4 Parameter, Retries Query, Sends to RecordError()
 *RecordError 	.prg	:5 Parameter, cRun = "ErrorCapture.EXE ", INSERT INTO Errors 
@@ -429,8 +429,8 @@ pMess1HPA = PrepareSQLtxt(LEFT(pTXT,1024),'pTXT',1024,.F.,.T.)
 Pcprogram = "HPA:Proc_ERP:TrackMess"
 
 PRIVATE cSQL, nSQLEXEC  
-*Do not INSERT into HPAlloyNR.dbo.UserTrack Direct, let trigger add ServerName!
-cSQL = "INSERT INTO HPAlloyNR.dbo.UserTrack (mess1,cprogram,MACHINE)"
+*Do not INSERT into dbo.NR_UserTrack Direct, let trigger add ServerName!
+cSQL = "INSERT INTO dbo.NR_UserTrack (mess1,cprogram,MACHINE)"
 cSQL = cSQL + " VALUES ('"+pMess1HPA+"','"+Pcprogram+"','"+SYS(0)+"')"
 
 nSQLEXEC = SQLEXEC(nConnection, cSQL )

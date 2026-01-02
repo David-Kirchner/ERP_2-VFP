@@ -34,8 +34,8 @@ Ordered_P	-Price Sold or Purchased at
 *******************************************
 
 SELECT DISTINCT H.Process_ID 
-,( SELECT COUNT(Process_ID) FROM HPAlloy_Archive.dbo.StockLst_Process_History WHERE Process_ID = H.Process_ID ) AS CNTD
-FROM HPAlloy_Archive.dbo.StockLst_Process_History  H WHERE YEAR(H.[when] ) = 2018  ORDER BY CNTD
+,( SELECT COUNT(Process_ID) FROM dbo.[AR.StockLst_Process_History] WHERE Process_ID = H.Process_ID ) AS CNTD
+FROM dbo.[AR.StockLst_Process_History]  H WHERE YEAR(H.[when] ) = 2018  ORDER BY CNTD
 
 Process_ID	CNTD
 CANCELLED 	194
