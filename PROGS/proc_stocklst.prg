@@ -1849,7 +1849,7 @@ CASE cTBL = "S"
 	cSQL = cSQL + " FROM "
 	cSQL = cSQL + "("
 	cSQL = cSQL + "SELECT PO_Item "
-	cSQL = cSQL + "	FROM HPAlloy.dbo.StockLst_Master "
+	cSQL = cSQL + "	FROM dbo.StockLst_Master "
 	cSQL = cSQL + "	WHERE ID="+ALLTRIM(STR( pnID ))
 	cSQL = cSQL + "		AND LEN(PO_Item)>1 "
 	cSQL = cSQL + "UNION ALL "
@@ -1867,7 +1867,7 @@ CASE cTBL = "B"
 	cSQL = cSQL + "	FROM "
 	cSQL = cSQL + "("
 	cSQL = cSQL + "SELECT PO_Item "
-	cSQL = cSQL + "	FROM HPAlloy.dbo.BrokerLst_Master "
+	cSQL = cSQL + "	FROM dbo.BrokerLst_Master "
 	cSQL = cSQL + "	WHERE ID="+ALLTRIM(STR( pnID ))
 	cSQL = cSQL + "		AND LEN(PO_Item)>1 "
 	cSQL = cSQL + "UNION ALL "
@@ -1885,7 +1885,7 @@ CASE cTBL = "W"
 	cSQL = cSQL + "	FROM "
 	cSQL = cSQL + "("
 	cSQL = cSQL + "SELECT PO_Item "
-	cSQL = cSQL + "	FROM HPAlloy.dbo.WIPLst_Master "
+	cSQL = cSQL + "	FROM dbo.WIPLst_Master "
 	cSQL = cSQL + "	WHERE ID="+ALLTRIM(STR( pnID ))
 	cSQL = cSQL + "		AND LEN(PO_Item)>1 "
 	cSQL = cSQL + "UNION ALL "
@@ -1979,7 +1979,7 @@ IF nConn > 0
 				cBody = cBody+"<br/>"+"Machin-User = "+SYS(0)
 				cBody = cBody+"<br/>"+ "Proc_StockLst:get_POitem_StockLstID()."
 
-				Send_HTML_Email( 'VFP_Alert@hpalloys.com','David.Kirchner@hpalloy.scom','Too Many PO_items when trying to find the PO that Bought the Stock.',cBody,nConn,.T.,.F.)
+				Send_HTML_Email( 'VFP_Alert@SpaceAlloysUSA.com','David.Kirchner@hpalloy.scom','Too Many PO_items when trying to find the PO that Bought the Stock.',cBody,nConn,.T.,.F.)
 			ENDIF
 		ENDIF
 		USE IN tmpPSTK_ID_POitem
@@ -11022,7 +11022,7 @@ IF nSQLEXEC < 0
 		cMess=cMess+CHR(13)+cSQLid+CHR(13)+ALLTRIM(SYS(0))+"." +CHR(13)+"Proc_StockLst:Remove_ID_Detail_Process()"
 		
 		*Do not hold up the Transaction with an Email send!
-		*Send_HTML_Email( 'Admin@hpalloy.com',get_Server_Email(),'HPA App Alert', cMess, nConn,.T.,.F.)
+		*Send_HTML_Email( 'Admin@SpaceAlloysUSA.com',get_Server_Email(),'HPA App Alert', cMess, nConn,.T.,.F.)
 		lOK =.F.
 	ELSE
 		nSQLEXEC = 1
@@ -11232,7 +11232,7 @@ IF lOK
 		IF NOT lTranAlreadySet
 			= SQLCOMMIT(nConn)
 		ENDIF
-*		Send_HTML_Email( 'Admin@hpalloy.com',get_Server_Email(),'HPA App Alert', cMess, nConn,.T.,.F.)
+*		Send_HTML_Email( 'Admin@SpaceAlloysUSA.com',get_Server_Email(),'HPA App Alert', cMess, nConn,.T.,.F.)
 		RecordTest("Record Test Data.","Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(1),cSQL )
 	ENDIF
 ENDIF
@@ -18191,7 +18191,7 @@ ENDCASE
 
 *cSQL = cSQL + " WHERE Process_ID = 'INCOMING  ' "
 cSQL = cSQL + " WHERE ( P.Process_ID = 'INCOMING' OR P.Process_ID = 'NOT2HPA' OR P.Process_ID = 'PARTRECV' )"
-cSQL = cSQL + " AND P.PO_Item = HPAlloy.dbo.f_ProperPOitem('"+pPOitem+"')"
+cSQL = cSQL + " AND P.PO_Item = dbo.f_ProperPOitem('"+pPOitem+"')"
 IF LEN(cHeat) > 0
 	cSQL = cSQL + " AND M.Heat = '"+cHeat+"'"
 ENDIF
@@ -18219,7 +18219,7 @@ cSQL = cSQL + " INNER JOIN dbo.[AR.WIPlst_Master_History] M ON D.ID = M.ID "
 ENDCASE
 
 cSQL = cSQL + " WHERE ( P.Process_ID = 'INCOMING' OR P.Process_ID = 'NOT2HPA' OR P.Process_ID = 'PARTRECV' )"
-cSQL = cSQL + " AND P.WHAT = 'DELETE' AND P.PO_Item = HPAlloy.dbo.f_ProperPOitem('"+pPOitem+"')"
+cSQL = cSQL + " AND P.WHAT = 'DELETE' AND P.PO_Item = dbo.f_ProperPOitem('"+pPOitem+"')"
 IF LEN(cHeat) > 0
 	cSQL = cSQL + " AND M.Heat = '"+cHeat+"'"
 ENDIF
@@ -18367,7 +18367,7 @@ ENDCASE
 
 cSQL = cSQL + " WHERE ( P.Process_ID = 'INCOMING' OR P.Process_ID = 'NOT2HPA' OR P.Process_ID = 'PARTRECV' )"
 cSQL = cSQL + " AND P.WHAT = 'DELETE' "
-*cSQL = cSQL + " AND AND P.PO_Item = HPAlloy.dbo.f_ProperPOitem('"+pPOitem+"')"
+*cSQL = cSQL + " AND AND P.PO_Item = dbo.f_ProperPOitem('"+pPOitem+"')"
 cSQL = cSQL + " AND P.WO_Detail = "+STR(pWO_Detail)
 IF LEN(cHeat) > 0
 	cSQL = cSQL + " AND M.Heat = '"+cHeat+"'"

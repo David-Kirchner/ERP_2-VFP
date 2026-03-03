@@ -1,0 +1,10 @@
+#!/bin/bash
+# Convert PRG → BIN after pulling changes
+
+# Find all PRG files changed in the merge
+changed=$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD | grep -Ei '\.prg$')
+
+for f in $changed; do
+    echo "Regenerating binary for $f"
+    cscript //nologo tools/foxbin2prg/Convert_VFP9_PRG_2_BIN.vbs "$f"
+done

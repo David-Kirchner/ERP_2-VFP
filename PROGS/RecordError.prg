@@ -43,9 +43,9 @@ SELECT 0
 IF Pmess1<>'Record Test Data.'
 	*Record Error on Screen
 	TRY
-	*	cRun = "ErrorCapture.EXE " +["Progs\RecordError.PRG: ]+SYS(0)+[" VFP@HPAlloys.com ]
+	*	cRun = "ErrorCapture.EXE " +["Progs\RecordError.PRG: ]+SYS(0)+[" VFP@SpaceAlloysUSA.com ]
 	*	cRun = "ErrorCapture.EXE " +[""Progs\RecordError.PRG: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
-		cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@hpalloys.com ]
+		cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@SpaceAlloysUSA.com ]
 		
 		RUN /N &cRun
 		
@@ -177,14 +177,14 @@ IF USED('Errors')
 *!*			--+'sUser_sName: '+RTRIM(suser_sname())+CHAR(13)
 *!*			+'Revision: '+RTRIM(inserted.Revision)+'.'+CHAR(13)+CHAR(13)
 *!*			+'Memo1: '+RTRIM(inserted.Memo1)+'.'+CHAR(13)
-*!*			+@@SERVERNAME+' TRIGGER HPAlloy.dbo.Errors_INSERT ' )
+*!*			+@@SERVERNAME+' TRIGGER dbo.Errors_INSERT ' )
 *!*			FROM inserted 
 *!*	
-*!*		DECLARE @cEmailFrom VARCHAR(30) = HPAlloy.dbo.f_GetSQL_Server_Email()
+*!*		DECLARE @cEmailFrom VARCHAR(30) = dbo.f_GetSQL_Server_Email()
 *!*	
 *!*		EXEC dbo.p_eMail_Send
 *!*			@FromEmail = @cEmailFrom, 
-*!*			@ToEmail = 'David.Kirchner@hpalloys.com', 
+*!*			@ToEmail = 'David.Kirchner@SpaceAlloysUSA.com', 
 *!*			@SubjectEmail = 'New dbo.Errors entry.',
 *!*			@BodyEmail = @Body,
 *!*			@BodyType = 'TEXT'
@@ -233,7 +233,7 @@ IF USED('Errors')
 				cSQL = cSQL  + ")"
 				
 				*PrepareSQLtxt(Text,'Name',nLEN, lPad, lQuite
-				*TRIGGER HPAlloy.dbo.Errors_INSERT Mess1: Memo1: 
+				*TRIGGER dbo.Errors_INSERT Mess1: Memo1: 
 				
 				*WAIT WINDOW "Proc_Setup:CollectErrors() "+SUBSTR(cSQL,110,100)
 				

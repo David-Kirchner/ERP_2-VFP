@@ -575,9 +575,9 @@ SELECT 0
 IF m.cMess<>'Record Test Data.'
 	*Record Error of Screen
 	TRY
-	*	cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" David.Kirchner@HPAlloys.com ]
+	*	cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" David.Kirchner@SpaceAlloysUSA.com ]
 	*	cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
-		cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@Whpalloys.com ]
+		cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@WSpaceAlloysUSA.com ]
 
 		RUN /N &cRun
 		
@@ -639,7 +639,7 @@ IF nConn > 0
 	ENDIF
 	
 	*PrepareSQLtxt(Text,'Name',nLEN, lPad, lQuite
-	*TRIGGER HPAlloy.dbo.Errors_INSERT Mess1: Memo1: 
+	*TRIGGER dbo.Errors_INSERT Mess1: Memo1: 
 	
 	*WAIT WINDOW "Proc_Setup:CollectErrors() "+SUBSTR(cSQL,110,100)
 	
@@ -742,11 +742,11 @@ Pmess1RecordTest = LEFT(Pmess1RecordTest,254)
 Pcprogram = LEFT(Pcprogram,60)
 
 	PRIVATE pcEmailTo, pcEmailFrom, pcEmailSubject, pcEmailText, lQuiet, lNoHeadder
-	*pcEmailTo	= "David.Kirchner@HPAlloys.com"
-	*pcEmailFrom	= "David.Kirchner@HPAlloys.com"
-	pcEmailTo	= "RecordTestData@HPAlloys.com"
+	*pcEmailTo	= "David.Kirchner@SpaceAlloysUSA.com"
+	*pcEmailFrom	= "David.Kirchner@SpaceAlloysUSA.com"
+	pcEmailTo	= "RecordTestData@SpaceAlloysUSA.com"
 
-	pcEmailFrom	= get_SQL_ServerName()+"@HPAlloys.com"
+	pcEmailFrom	= get_SQL_ServerName()+"@SpaceAlloysUSA.com"
 	pcEmailSubject = Pmess1RecordTest 
 	
 
@@ -1496,7 +1496,7 @@ PROCEDURE Proper_Email
 PARAMETER pEmail
 *checks Email address for @ and .
 *Returns list if parsed with ;
-cEmail = Proper_Email('David.Kirchner@HPAlloys.com; DavidKirchner@yahoo.com')
+cEmail = Proper_Email('David.Kirchner@SpaceAlloysUSA.com; DavidKirchner@yahoo.com')
 
 PRIVATE cEmail
 IF VARTYPE(pEmail) # "C"
@@ -2315,8 +2315,8 @@ m.MsgHeader = m.MsgHeader +"<header>"
 m.MsgHeader = m.MsgHeader +[<table style="border: thin none #000000; width: 480pt; ">]
 m.MsgHeader = m.MsgHeader +"<tr>"
 m.MsgHeader = m.MsgHeader +[<td style="width: 165pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<img alt="High Performance Alloys Logo"]
-m.MsgHeader = m.MsgHeader +[src="https://images.hpalloys.com/v1/images/HPALogo.png" height="69"/>]
+m.MsgHeader = m.MsgHeader +[<img alt="Space Alloys USA Logo"]
+m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/HPALogo.png" height="69"/>]
 m.MsgHeader = m.MsgHeader +[</td>]
 
 m.MsgHeader = m.MsgHeader +[<td style="width: 192pt; vertical-align: top;">]
@@ -2361,7 +2361,7 @@ m.MsgHeader = m.MsgHeader +[<td style="width: 72pt; text-align: left; vertical-a
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[<td style="width: 150pt; vertical-align: top;">]
 *m.MsgHeader = m.MsgHeader +ALLTRIM(cSalesRep)+[<br />]
-m.MsgHeader = m.MsgHeader +[High Performance Alloys Inc.<br />]
+m.MsgHeader = m.MsgHeader +[Space Alloys USA Inc.<br />]
 m.MsgHeader = m.MsgHeader +[<br />]
 m.MsgHeader = m.MsgHeader +[<br />]
 m.MsgHeader = m.MsgHeader +[United States of America<br />]

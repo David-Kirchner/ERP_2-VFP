@@ -2566,7 +2566,7 @@ IF NOT EMPTY(cAlias)
 ENDIF
 
 IF EMPTY(cReturn) 
-	cReturn = "Sales@HPAlloys.com"
+	cReturn = "Sales@SpaceAlloysUSA.com"
 *	PRIVATE cMess
 *	cMess = "INSERT dbo.AppSetup ([Prp],[UN],[ANS])  VALUES ('E-mail','"+cUserName+"','"+cReturn+"' ). "
 *	cMess = cMess +CHR(13)+"Also add person to Database Mail!"
@@ -3076,7 +3076,7 @@ ELSE
 	*cSQLServer = "PEREGRINE"
 ENDIF
 
-RETURN cSQLServer+"@HPAlloys.com"
+RETURN cSQLServer+"@SpaceAlloysUSA.com"
 ENDPROC
 
 ********************************* 
@@ -6927,7 +6927,7 @@ ENDPROC
  
 PROCEDURE UN_from_PRP_ANS 
 PARAMETERS cPRP,cANS
-*cProfile_Name = UN_from_PRP_ANS('Profile_Name','David.Kirchner@hpalloys.com')
+*cProfile_Name = UN_from_PRP_ANS('Profile_Name','David.Kirchner@SpaceAlloysUSA.com')
 *Profile is needed to match SQL email profile settings
 
 IF VARTYPE(cPRP)!="C"

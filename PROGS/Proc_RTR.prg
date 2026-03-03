@@ -296,7 +296,7 @@ IF nConn > 0
 			* Set_rtr_Detail_Oper ('SOi',cSOitem,10,0,'Created Order',.T.,nConn)
 			* Set_rtr_Detail_Oper ('SOi',cSOitem, 90,0,'Print Order',.F.,nConn)
 			
-			*See table HPAlloy.dbo.rtr_Operation
+			*See table dbo.rtr_Operation
 			*enter by TYP?
 			
 			PRIVATE nOper_ID, cOper_Note, nDetail

@@ -5417,7 +5417,7 @@ m.MsgNoteHTML = m.MsgNoteHTML +[This insurance fee of .2% (of the invoice amount
 m.MsgNoteHTML = m.MsgNoteHTML +[<strong>If you do not want full coverage please state your decline of coverage on your purchase order.  </strong></p>]
 m.MsgNoteHTML = m.MsgNoteHTML +[<p><b>* The customer will assume full ownership/responsibility for material leaving our dock if this fee is waived. </b></p>]
 m.MsgNoteHTML = m.MsgNoteHTML +[<p>* We require a resale certificate on file for all domestic customers; ]
-m.MsgNoteHTML = m.MsgNoteHTML +[please email your resale certificate to RESALECERTS@hpalloys.com </p>]
+m.MsgNoteHTML = m.MsgNoteHTML +[please email your resale certificate to RESALECERTS@SpaceAlloysUSA.com </p>]
 m.MsgNoteHTML = m.MsgNoteHTML +[<p><strong>* You must tell us at the time of purchase if any communications or documents contain ]
 m.MsgNoteHTML = m.MsgNoteHTML +[Federal Contract Information (FCI) as defined by the United States Govt ]
 m.MsgNoteHTML = m.MsgNoteHTML +[(https://www.acquisition.gov/far/52.204-21).</strong></p>]
@@ -5435,7 +5435,7 @@ m.MsgNoteHTML = m.MsgNoteHTML +[<p></p><p><b>Thank you for the opportunity to qu
 
 *QuoteTerms.Survey 	&&11
 IF QuoteTerms.Survey 
-	*m.MsgNoteHTML = m.MsgNoteHTML +[<p><a href="https://www.hpalloys.com/contact/quote_survey.html">Survey</a> Please leave an anonymous comment.</p>]
+	*m.MsgNoteHTML = m.MsgNoteHTML +[<p><a href="https://www.SpaceAlloysUSA.com/contact/quote_survey.html">Survey</a> Please leave an anonymous comment.</p>]
 	m.MsgNoteHTML = m.MsgNoteHTML +Create_Survey_Quote_Assignment(cInqNumP,nConn)
 ENDIF
 *QuoteTerms.AdvWJet &&12 *forms\quoteterms.scx --Match changes here
@@ -5452,7 +5452,7 @@ IF NOT EMPTY(QuoteTerms.RFQ)
 ENDIF
 
 *********************************************************
-m.MsgNoteHTML = m.MsgNoteHTML  +[<p> Online Documentation: <a href="https://www.hpalloys.com/docs/FM-74-21%20Sales%20Terms%20and%20Conditions.pdf">Sales Terms & Conditions</a></p>]
+m.MsgNoteHTML = m.MsgNoteHTML  +[<p> Online Documentation: <a href="https://www.SpaceAlloysUSA.com/docs/FM-74-21%20Sales%20Terms%20and%20Conditions.pdf">Sales Terms & Conditions</a></p>]
 m.MsgNoteHTML = m.MsgNoteHTML  +[<br />]
 *********************************************************
 m.MsgNoteHTML = m.MsgNoteHTML + [<br />]+"Report Form: CreateHTML_Quote()"+[<br />]
@@ -5600,9 +5600,9 @@ m.MsgHeader = m.MsgHeader +"<header>"
 m.MsgHeader = m.MsgHeader +[<table style="border: thin none #000000; width: 480pt; ">]
 m.MsgHeader = m.MsgHeader +"<tr>"
 m.MsgHeader = m.MsgHeader +[<td style="width: 165pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<img alt="High Performance Alloys Logo" ]
-*m.MsgHeader = m.MsgHeader +[src="https://images.hpalloys.com/v1/images/HPALogo.png"  ]
-m.MsgHeader = m.MsgHeader +[src="https://images.hpalloys.com/v1/images/Purchase/]+ALLTRIM(STR(nHPAPO))+[/]+ALLTRIM(cPOEmail)+[/HPALogo.png" ]
+m.MsgHeader = m.MsgHeader +[<img alt="Space Alloys USA Logo" ]
+*m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/HPALogo.png"  ]
+m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/Purchase/]+ALLTRIM(STR(nHPAPO))+[/]+ALLTRIM(cPOEmail)+[/HPALogo.png" ]
 m.MsgHeader = m.MsgHeader +[height="69"/>]
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[<td style="width: 192pt; vertical-align: top;">]
@@ -5881,12 +5881,12 @@ PRIVATE m.cT
 m.cT = [ ]+[<br />]
 m.cT = m.cT + [SHEET PACKING POLICY]+[<br />]
 m.cT = m.cT + [Sheet Material .125" thick or less. ]+[<br />]
-m.cT = m.cT + [High Performance Alloys, Inc. has established this purchase specification to ensure product delivered meets specified requirements.]+[<br />]
+m.cT = m.cT + [Space Alloys USA has established this purchase specification to ensure product delivered meets specified requirements.]+[<br />]
 m.cT = m.cT + [a)  Sheet .125" (3mm) thick and under must be fully protected on top and bottom by 1/2" thick or heavier plywood or Oriented Strand Board (OSB).]+[<br />]
 m.cT = m.cT + [ Bottom protection can be substituted by using skids with no open spaces between slats.  Cardboard must separate the bottom side of the sheet(s) to prevent any fasteners from scratching the product.]+[<br />]
 m.cT = m.cT + [b)  Skid boards must have spacing no greater than 8" to prevent sagging of product. ]+[<br />]
 m.cT = m.cT + [ ]+[<br />]
-m.cT = m.cT + [High Performance Alloys, Inc. has implemented this packing policy to prevent damage of sheets during transportation.  When properly packaged, damage due to loading, skid breakage and side loads can be reduced, and in most cases, eliminated.]+[<br />]
+m.cT = m.cT + [Space Alloys USA has implemented this packing policy to prevent damage of sheets during transportation.  When properly packaged, damage due to loading, skid breakage and side loads can be reduced, and in most cases, eliminated.]+[<br />]
 m.cT = m.cT + [ ]+[<br />]
 m.cT = m.cT + [Skids or pallets received without this level of protection may be rejected whether damage is evident or not.]+[<br />]
 m.cT = m.cT + [ ]+[<br />]
@@ -5898,7 +5898,7 @@ ENDPROC
 PROCEDURE HTML_PO_Acknow
 PRIVATE m.cT
 m.cT = [ ]+[<br />]
-m.cT = m.cT+ [1. Alloy material supplied to High Performance Alloys, Inc. MUST conform to the following:]+[<br />]
+m.cT = m.cT+ [1. Alloy material supplied to Space Alloys USA MUST conform to the following:]+[<br />]
 m.cT = m.cT+ [- Mercury Free:  The material shall not have come in contact with or have been contaminated by mercury or other low melting point metals.]+[<br />]
 m.cT = m.cT+ [- No Weld:  The material shall not have been subjected to welding or weld repair.]+[<br />]
 m.cT = m.cT+ [ Material test reports/certifications MUST include both "Mercury Free" and "No Weld" statements of conformance.]+[<br />]
@@ -5960,7 +5960,7 @@ nCustDisc = PrepareSQLnum(Quotes.CustDisc,'CustDisc',3,2)
 
 m.MsgHeader = CreateHTML_Header (cEmailTO, nQuotesID, cSalesRep, cInqnumP, cRFQ, cName, cCompany, cEmail, cPhone, cFax )
 
-*m.MsgHeader = m.MsgHeader +[src="https://images.hpalloys.com/v1/images/Quote/]+ALLTRIM(STR(nQuotesID))+[/]+ALLTRIM(cEmailTO)+[/HPALogo.png" ]
+*m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/Quote/]+ALLTRIM(STR(nQuotesID))+[/]+ALLTRIM(cEmailTO)+[/HPALogo.png" ]
 *m.MsgHeader = m.MsgHeader +[<strong>Quote Date</strong> ]+DTOC(DATE())+[<br />]
 *m.MsgHeader = m.MsgHeader +[<strong>Quote # ]+ALLTRIM(QDBsendTo.InqnumP)+[</strong>]
 *m.MsgHeader = m.MsgHeader +[<br /><strong><font color="red">RFQ: ]+ALLTRIM(ShowSQLtxt(QuoteTerms.RFQ,'RFQ',254))+[</font></strong>]
@@ -5982,8 +5982,8 @@ PARAMETERS cEmailTo
 PRIVATE m.MsgFooter
 m.MsgFooter = ""
 *m.MsgFooter = CreateHTML_Quote_Banner(cEmailTo) \\web2\inetpub\images\images (2021)
-m.MsgFooter = m.MsgFooter +[<a href=" https://www.hpalloys.com" target="_blank">]
-m.MsgFooter = m.MsgFooter +[<img src="https://images.hpalloys.com/v1/images/hpaad/1/]+cEmailTo+[/HPAimage.png" ]
+m.MsgFooter = m.MsgFooter +[<a href=" https://www.SpaceAlloysUSA.com" target="_blank">]
+m.MsgFooter = m.MsgFooter +[<img src="https://images.SpaceAlloysUSA.com/v1/images/hpaad/1/]+cEmailTo+[/HPAimage.png" ]
 m.MsgFooter = m.MsgFooter +[ title="HPA Banner" alt="HPA Banner" width="650" height="197" />]
 m.MsgFooter = m.MsgFooter +[</a>]
 
@@ -6027,21 +6027,21 @@ m.MsgFooter = m.MsgFooter +[</td>]
 m.MsgFooter = m.MsgFooter +[</tr>]
 m.MsgFooter = m.MsgFooter +[<tr>]
 m.MsgFooter = m.MsgFooter +[<td class="styleTextAlignCenter" colspan="2">]
-m.MsgFooter = m.MsgFooter +[<a href="https://www.hpalloys.com">www.hpalloys.com</a>]
+m.MsgFooter = m.MsgFooter +[<a href="https://www.SpaceAlloysUSA.com">www.SpaceAlloysUSA.com</a>]
 m.MsgFooter = m.MsgFooter +[</td>]
 m.MsgFooter = m.MsgFooter +[</tr>]
 
 *m.MsgFooter = m.MsgFooter +[<tr>]
 *m.MsgFooter = m.MsgFooter +[<td class="styleTextAlignCenter" colspan="2"> ]
 *m.MsgFooter = m.MsgFooter +[<a href=" http://www.facebook.com/HighPerformanceAlloys" target="_blank">]
-*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/Facebook-Buttons/Facebook-Buttons-51-88-.png" title=" High Performance Alloys’ Facebook Page" alt="High Performance Alloys’ Facebook Page" width="34" /></a> ]
+*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/Facebook-Buttons/Facebook-Buttons-51-88-.png" title=" Space Alloys USA’ Facebook Page" alt="Space Alloys USA’ Facebook Page" width="34" /></a> ]
 *m.MsgFooter = m.MsgFooter +[<a href=" https://twitter.com/#!/HPAlloy" target="_blank">]
-*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/Twitter-Buttons/Twitter-Buttons-69-72-.png" title=" High Performance Alloys’ Twitter Page" alt=" High Performance Alloys’ Twitter Page" width="34" /></a>]
+*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/Twitter-Buttons/Twitter-Buttons-69-72-.png" title=" Space Alloys USA’ Twitter Page" alt=" Space Alloys USA’ Twitter Page" width="34" /></a>]
 *m.MsgFooter = m.MsgFooter +[<a href=" http://www.linkedin.com/company/2335867?trk=tyah" target="_blank">]
-*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/LinkedIn-Buttons/linkedin-tiny-square2.png" title=" High Performance Alloys’ LinkedIn Page" alt=" High Performance Alloys’ LinkedIn Page" width="32" /></a>]
-*m.MsgFooter = m.MsgFooter +[<a href=" http://highperformancealloy.blogspot.com/" target="_blank"><img src="https://www.blogger.com/img/start/icon.png" title=" High Performance Alloys’ Blog Page" alt=" High Performance Alloys’ Blog Page" width="32" /></a>]
+*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/LinkedIn-Buttons/linkedin-tiny-square2.png" title=" Space Alloys USA’ LinkedIn Page" alt=" Space Alloys USA’ LinkedIn Page" width="32" /></a>]
+*m.MsgFooter = m.MsgFooter +[<a href=" http://highperformancealloy.blogspot.com/" target="_blank"><img src="https://www.blogger.com/img/start/icon.png" title=" Space Alloys USA’ Blog Page" alt=" Space Alloys USA’ Blog Page" width="32" /></a>]
 *m.MsgFooter = m.MsgFooter +[<a href=" http://www.youtube.com/user/HPAlloy" target="_blank">]
-*m.MsgFooter = m.MsgFooter +[<img src="http://s.ytimg.com/yt/img/creators_corner/YouTube/youtube_32x32.png" title=" High Performance Alloys’ YouTube Channel" alt=" High Performance Alloys’ YouTube Channel" width="32" /></a>]
+*m.MsgFooter = m.MsgFooter +[<img src="http://s.ytimg.com/yt/img/creators_corner/YouTube/youtube_32x32.png" title=" Space Alloys USA’ YouTube Channel" alt=" Space Alloys USA’ YouTube Channel" width="32" /></a>]
 *m.MsgFooter = m.MsgFooter +[</td>]
 *m.MsgFooter = m.MsgFooter +[</tr>]
 
@@ -6061,8 +6061,8 @@ PARAMETERS cEmailTo
 PRIVATE m.MsgBanner
 m.MsgBanner = "" 
 m.MsgBanner = m.MsgBanner +[<br />]
-m.MsgBanner = m.MsgBanner +[<a href=" https://www.hpalloys.com" target="_blank">]
-m.MsgBanner = m.MsgBanner +[<img src="https://images.hpalloys.com/v1/images/hpaad/1/]+cEmailTo+[/HPAimage.png" ]
+m.MsgBanner = m.MsgBanner +[<a href=" https://www.SpaceAlloysUSA.com" target="_blank">]
+m.MsgBanner = m.MsgBanner +[<img src="https://images.SpaceAlloysUSA.com/v1/images/hpaad/1/]+cEmailTo+[/HPAimage.png" ]
 m.MsgBanner = m.MsgBanner +[ title="HPA Banner" alt="HPA Banner" width="650" height="197" />]
 m.MsgBanner = m.MsgBanner +[</a>]
 
@@ -7393,9 +7393,9 @@ m.MsgHeader = m.MsgHeader +"<header>"
 m.MsgHeader = m.MsgHeader +[<table style="border: thin none #000000; width: 480pt; ">]
 m.MsgHeader = m.MsgHeader +"<tr>"
 m.MsgHeader = m.MsgHeader +[<td style="width: 165pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<img alt="High Performance Alloys Logo"]
-*m.MsgHeader = m.MsgHeader +[src="https://images.hpalloys.com/v1/images/HPALogo.png" height="69"/>]
-m.MsgHeader = m.MsgHeader +[src="https://images.hpalloys.com/v1/images/HPALogo.png" height="69"/>]
+m.MsgHeader = m.MsgHeader +[<img alt="Space Alloys USA Logo"]
+*m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/HPALogo.png" height="69"/>]
+m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/HPALogo.png" height="69"/>]
 m.MsgHeader = m.MsgHeader +[</td>]
 
 m.MsgHeader = m.MsgHeader +[<td style="width: 192pt; vertical-align: top;">]
@@ -7457,7 +7457,7 @@ m.MsgHeader = m.MsgHeader +[<td style="width: 100pt; text-align: left; vertical-
 m.MsgHeader = m.MsgHeader +[<strong>Sales Rep:</strong>]+[<br />]
 
 m.MsgHeader = m.MsgHeader +ALLTRIM(cSalesRep)+[<br />]
-m.MsgHeader = m.MsgHeader +[High Performance Alloys Inc.<br />]
+m.MsgHeader = m.MsgHeader +[Space Alloys USA Inc.<br />]
 m.MsgHeader = m.MsgHeader +[<br />]
 m.MsgHeader = m.MsgHeader +[<br />]
 m.MsgHeader = m.MsgHeader +[United States of America<br />]
@@ -7613,18 +7613,18 @@ m.MsgNoteHTML = m.MsgNoteHTML +	[<p></p>]
 m.MsgNoteHTML = m.MsgNoteHTML +	[<p></p>]
 **
 
-*m.MsgNoteHTML = m.MsgNoteHTML +[<p> <a href="https://www.hpalloys.com/contact/quote_survey.html">Survey</a> Please leave an anonymous comment.</p>]
+*m.MsgNoteHTML = m.MsgNoteHTML +[<p> <a href="https://www.SpaceAlloysUSA.com/contact/quote_survey.html">Survey</a> Please leave an anonymous comment.</p>]
 *m.MsgNoteHTML = m.MsgNoteHTML +[<p><strong><em> Ask us to quote your close tolerance dynamic water jet cuts. </em></strong></p>]
 
 *********************************************************
-m.MsgNoteHTML = m.MsgNoteHTML  +[<p> Online Documentation: <a href="https://www.hpalloys.com/docs/FM-74-21%20Sales%20Terms%20and%20Conditions.pdf">Sales Terms & Conditions</a></p>]
+m.MsgNoteHTML = m.MsgNoteHTML  +[<p> Online Documentation: <a href="https://www.SpaceAlloysUSA.com/docs/FM-74-21%20Sales%20Terms%20and%20Conditions.pdf">Sales Terms & Conditions</a></p>]
 m.MsgNoteHTML = m.MsgNoteHTML  +[<br />]
 
 m.MsgNoteHTML = m.MsgNoteHTML  +[<p style="font-size:11px"> Report Form Proc_Quotes:CreateHTML_PS_Conf() </p>]
 *********************************************************
 m.MsgNoteHTML = m.MsgNoteHTML +[<br />]
 m.MsgNoteHTML = m.MsgNoteHTML +[<footer>]
-m.MsgNoteHTML = m.MsgNoteHTML +[<div id="Footer" style="bottom:0; height: 12pt; width: 480pt; margin-left: 0pt;">High Performance Alloy's Inc.</div>]
+m.MsgNoteHTML = m.MsgNoteHTML +[<div id="Footer" style="bottom:0; height: 12pt; width: 480pt; margin-left: 0pt;">Space Alloys USA Inc.</div>]
 m.MsgNoteHTML = m.MsgNoteHTML +[</footer>]
 *********************************************************
 m.MsgNoteHTML = m.MsgNoteHTML+[</body>]
@@ -7716,11 +7716,11 @@ m.MsgHeader = m.MsgHeader +"<header>"
 m.MsgHeader = m.MsgHeader +[<table style="border: thin none #000000; width: 480pt; ">]
 m.MsgHeader = m.MsgHeader +"<tr>"
 m.MsgHeader = m.MsgHeader +[<td style="width: 165pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<img alt="High Performance Alloys Logo" ]
+m.MsgHeader = m.MsgHeader +[<img alt="Space Alloys USA Logo" ]
 
-m.MsgHeader = m.MsgHeader +[src="https://images.hpalloys.com/v1/images/HPALogo.png" height="69"/>]
-*m.MsgHeader = m.MsgHeader +[src="https://images.hpalloys.com/v1/images/Quote/]+ALLTRIM(STR(nQuotesID))+[/]+ALLTRIM(cEmailTO)+[/HPALogo.png" height="69"/>]
-*m.MsgHeader = m.MsgHeader +[src="https://images.hpalloys.com/v1/images/Quote/]+ALLTRIM(STR(nQuotesID))+[/]+ALLTRIM(cEmailTO)+[/HPALogo.png" height="69"/>]
+m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/HPALogo.png" height="69"/>]
+*m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/Quote/]+ALLTRIM(STR(nQuotesID))+[/]+ALLTRIM(cEmailTO)+[/HPALogo.png" height="69"/>]
+*m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/Quote/]+ALLTRIM(STR(nQuotesID))+[/]+ALLTRIM(cEmailTO)+[/HPALogo.png" height="69"/>]
 m.MsgHeader = m.MsgHeader +[</td>]
 
 m.MsgHeader = m.MsgHeader +[<td style="width: 192pt; vertical-align: top;">]
@@ -7790,10 +7790,10 @@ PROCEDURE CreateHTML_Inquire_Header
 
 PRIVATE cMessage
 cMessage = '' 
-cMessage = cMessage +"High Performance Alloys "+CHR(10)+CHR(13)
+cMessage = cMessage +"Space Alloys USA "+CHR(10)+CHR(13)
 cMessage = cMessage +"Sales: 1985 E 500 N, Windfall, IN 46076 USA"+CHR(10)+CHR(13)
 cMessage = cMessage +"Shop: 444 Wilson Street, PO Box 40,Tipton, IN 46072 USA"+CHR(10)+CHR(13)
-cMessage = cMessage +"Phone (765)945-8230         (800)472-5569         www.HPAlloys.com"+CHR(10)+CHR(13)
+cMessage = cMessage +"Phone (765)945-8230         (800)472-5569         www.SpaceAlloysUSA.com"+CHR(10)+CHR(13)
 *cMessage = cMessage +"      (800) HPALLOY "+CHR(10)+CHR(13)
 *cMessage = cMessage +"      (800) 4725569 "+CHR(10)+CHR(13)
 cMessage = cMessage +"  Fax (765)945-8294  " +CHR(10)+CHR(13)

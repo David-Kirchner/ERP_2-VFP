@@ -26,8 +26,8 @@ INSERT INTO dbo.Errors ([nerror],[mess1],[cprogram],[nlineno],[errordate],[MACHI
 Proc_ERP:RecordTest         	:4 Parameter, Sends to RecordError()  
 --RecordTest("Record Test Data.", PROGRAM(), LINENO(1),"Long Message") 
 *uses a local Errors VFP table, then Send_HTML_Email() and PACK
-*Email to David.Kirchner@hpalloy.com (The Raptor@HPAlloys.com was getting over GoDaddy limit per hour)
-*Does not get stored in HPAlloy.dbo.Errors.
+*Email to David.Kirchner@SpaceAlloysUSA.com (The Raptor@SpaceAlloysUSA.com was getting over GoDaddy limit per hour)
+*Does not get stored in dbo.Errors.
 
 **************************************************************************
 *Record Error of Screen

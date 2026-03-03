@@ -51,7 +51,7 @@ get_Email_ServerDir()
 cFullSQLPath = "\\"+cSQLServer+"\Email\"
 
 get_Server_Email()
-cSQLServer+"@HPAlloys.com"
+cSQLServer+"@SpaceAlloysUSA.com"
 
  get_Report_Server()+"
 cURL = "https://"+cSQLServer+"/ReportServer/Pages/ReportViewer.aspx?"

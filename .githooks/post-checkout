@@ -1,0 +1,6 @@
+#!/bin/bash
+# Convert PRG back to binary after checkout
+for f in $(git diff --name-only HEAD@{1} HEAD | grep -Ei '\.prg$'); do
+    echo "Converting $f → BIN"
+    cscript //nologo tools/foxbin2prg/Convert_VFP9_PRG_2_BIN.vbs "$f"
+done

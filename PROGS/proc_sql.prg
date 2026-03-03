@@ -131,7 +131,7 @@ PARAMETER cEmailTo, cEmailFrom, cLocalFileName, cSubject, cMessage, pnConn, cNew
 **
 ****
 *SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
-*? SendPDFEmail("David.Kirchner@HPAlloy.com", "David@hpalloy.com", "E:\SendPDF\D\Visual_FoxPro.pdf","","",0,"NewName.pdf",lCheckEmailStatus )
+*? SendPDFEmail("David.Kirchner@SpaceAlloysUSA.com", "David@SpaceAlloysUSA.com", "E:\SendPDF\D\Visual_FoxPro.pdf","","",0,"NewName.pdf",lCheckEmailStatus )
 
 IF VARTYPE(cEmailTo) != "C"
 	RETURN "VFP message: No TO address parameter"
@@ -251,14 +251,14 @@ IF VARTYPE(cSubject) != "C"
 	cSubject = ""
 ENDIF
 IF EMPTY(cSubject)
-	cSubject = "From High Performance Alloys"
+	cSubject = "From Space Alloys USA"
 ENDIF
 
 IF VARTYPE(cMessage) != "C"
 	cMessage = ""
 ENDIF
 IF EMPTY(cMessage)
-	cMessage = "See the Attached document."+CHR(13)+"From High Performance Alloys, Inc."+CHR(13)+CHR(13)+"Headquarters:"+CHR(13)+"1985 E 500 N Windfall, IN 46076"+CHR(13)+"1-800-472-5569    (765)945-8230"+CHR(13)+CHR(13)
+	cMessage = "See the Attached document."+CHR(13)+"From Space Alloys USA"+CHR(13)+CHR(13)+"Headquarters:"+CHR(13)+"1985 E 500 N Windfall, IN 46076"+CHR(13)+"1-800-472-5569    (765)945-8230"+CHR(13)+CHR(13)
 	cMessage = cMessage + "Production and Sales:"+CHR(13)+"444 Wilson St, Tipton, IN 46072"+CHR(13)+"765-675-8871"
 	
 ENDIF
@@ -502,7 +502,7 @@ PARAMETER cEmailTo, cEmailFrom, cPassedFileNames, cSubject, cMessage, pnConn, cN
 **
 ****
 
-*? Send_Email_Attach("David.Kirchner@HPAlloy.com", "David@hpalloy.com", "C:\Program Files (x86)\HPA\Graphics\email_icon_small.gif;C:\Program Files (x86)\HPA\Graphics\TRASH02B.ico","Subject","Message",0,"",.F. )
+*? Send_Email_Attach("David.Kirchner@SpaceAlloysUSA.com", "David@SpaceAlloysUSA.com", "C:\Program Files (x86)\HPA\Graphics\email_icon_small.gif;C:\Program Files (x86)\HPA\Graphics\TRASH02B.ico","Subject","Message",0,"",.F. )
 
 IF VARTYPE(cEmailTo) != "C"
 	*RecordError( nError INT, mess1 C254, cprogram C254, LINENO(), MessMemo VarChar(MAX) )
@@ -530,14 +530,14 @@ IF VARTYPE(cSubject) != "C"
 	cSubject = ""
 ENDIF
 IF EMPTY(cSubject)
-	cSubject = "From High Performance Alloys"
+	cSubject = "From Space Alloys USA"
 ENDIF
 
 IF VARTYPE(cMessage) != "C"
 	cMessage = ""
 ENDIF
 IF EMPTY(cMessage)
-	cMessage = "See the Attached document."+CHR(13)+"From High Performance Alloys, Inc."+CHR(13)+CHR(13)+"Headquarters:"+CHR(13)+"1985 E 500 N Windfall, IN 46076"+CHR(13)+"1-800-472-5569    (765)945-8230"+CHR(13)+CHR(13)
+	cMessage = "See the Attached document."+CHR(13)+"From Space Alloys USA"+CHR(13)+CHR(13)+"Headquarters:"+CHR(13)+"1985 E 500 N Windfall, IN 46076"+CHR(13)+"1-800-472-5569    (765)945-8230"+CHR(13)+CHR(13)
 	cMessage = cMessage + "Sales and Production:"+CHR(13)+"444 Wilson St, Tipton, IN 46072"+CHR(13)+"765-675-8871"
 	
 ENDIF
@@ -894,7 +894,7 @@ ENDPROC
 ******************     
 PROCEDURE Send_HTML_Email  
 PARAMETERS pcEmailTo, pcEmailFrom, pcEmailSubject, pcEmailText, pConn, lQuiet, lNoHeadder
-*lOK = Send_HTML_Email( 'DavidKirchner@yahoo.com','David.Kirchner@hpalloy.com','Header',cHTMLMess,0,.T.,.T.)
+*lOK = Send_HTML_Email( 'DavidKirchner@yahoo.com','David.Kirchner@SpaceAlloysUSA.com','Header',cHTMLMess,0,.T.,.T.)
 *lOK = Send_HTML_Email(pcEmailTo, pcEmailFrom, pcEmailSubject, pcEmailText, pConn, lQuiet, lNoHeadder)
 *Returns Success
 
@@ -950,9 +950,9 @@ ELSE
 	cEmailHeader = cEmailHeader +[<table cellpadding="0" cellspacing="0" border="0" width="500">]
 	cEmailHeader = cEmailHeader +[<tr valign="top"><td>]
 	cEmailHeader = cEmailHeader +[<a name="top"></a><font size="4" face="Verdana,Geneva,Arial,Helvetica,sans-serif">]
-	cEmailHeader = cEmailHeader +[High Performance Alloys <br></font>]
+	cEmailHeader = cEmailHeader +[Space Alloys USA <br></font>]
 	cEmailHeader = cEmailHeader +[<font size="2" face="Verdana,Geneva,Arial,Helvetica,sans-serif">]
-	cEmailHeader = cEmailHeader +[<a href="https://www.hpalloys.com">www.HPAlloys.com</a><br>]
+	cEmailHeader = cEmailHeader +[<a href="https://www.SpaceAlloysUSA.com">www.SpaceAlloysUSA.com</a><br>]
 	*cEmailHeader = cEmailHeader +[<br>]
 	cEmailHeader = cEmailHeader +[<p>]
 	cEmailHeader = cEmailHeader + "1985 E 500 N, Windfall, IN 46076 USA <br>"
@@ -1098,7 +1098,7 @@ ENDPROC
 
 PROCEDURE Send_HTML_Email_Attach 
 PARAMETERS pcEmailTo, pcEmailFrom, pcEmailSubject, pcEmailBody, pcLocalFileName, pcNewPDFName, pConn, lQuiet, lNoHeadder
-*Send_HTML_Email_Attach( 'DavidKirchner@yahoo.com','David.Kirchner@hpalloy.com','Subject','Body text','pcLocalFileName','pcNewPDFName',0,.T.,.T.)
+*Send_HTML_Email_Attach( 'DavidKirchner@yahoo.com','David.Kirchner@SpaceAlloysUSA.com','Subject','Body text','pcLocalFileName','pcNewPDFName',0,.T.,.T.)
 *cLocalFileName, cSubject, cMessage, pnConn, cNewPDFName, lCheckEmailStatus
 
 IF VARTYPE( pcEmailTo ) != "C"
@@ -1167,9 +1167,9 @@ ELSE
 	cEmailHeader = cEmailHeader +[<table cellpadding="0" cellspacing="0" border="0" width="500">]
 	cEmailHeader = cEmailHeader +[<tr valign="top"><td>]
 	cEmailHeader = cEmailHeader +[<a name="top"></a><font size="4" face="Verdana,Geneva,Arial,Helvetica,sans-serif">]
-	cEmailHeader = cEmailHeader +[High Performance Alloys <br></font>]
+	cEmailHeader = cEmailHeader +[Space Alloys USA <br></font>]
 	cEmailHeader = cEmailHeader +[<font size="2" face="Verdana,Geneva,Arial,Helvetica,sans-serif">]
-	cEmailHeader = cEmailHeader +[<a href="https://www.hpalloys.com">www.HPAlloys.com</a><br>]
+	cEmailHeader = cEmailHeader +[<a href="https://www.SpaceAlloysUSA.com">www.SpaceAlloysUSA.com</a><br>]
 	*cEmailHeader = cEmailHeader +[<br>]
 	cEmailHeader = cEmailHeader +[<p>]
 	cEmailHeader = cEmailHeader + "1985 E 500 N, Windfall, IN 46076 USA <br>"
@@ -1295,7 +1295,7 @@ IF VARTYPE(pcEmailSubject) != "C"
 	pcEmailSubject= ""
 ENDIF
 IF EMPTY(pcEmailSubject)
-	pcEmailSubject= "From High Performance Alloys"
+	pcEmailSubject= "From Space Alloys USA"
 ENDIF
 *IF LEN(pcEmailBody) >= 8000
 *	TrackError(pcEmailBody,"pcEmailBody String TOO big","Proc_SQL:Send_HTML_Email_Attach",LINENO() )
@@ -8646,7 +8646,7 @@ IF USED('CUSTOMER_TERMS_and_List')
 	IF nSQLEXEC < 0
 		IF NOT SQLEXECError(cSQL ,nConn, nSQLEXEC)
 			RecordError(nSQLEXEC,"SQL Error","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
-			MESSAGEBOX("The table HPAlloy.dbo.[CUSTOMER TERMS and List] could not be emptied."+CHR(13)+"Emptied to show the import worked!"+CHR(13)+"Alert David.",0+48,"Not an fatal error!")
+			MESSAGEBOX("The table dbo.[CUSTOMER TERMS and List] could not be emptied."+CHR(13)+"Emptied to show the import worked!"+CHR(13)+"Alert David.",0+48,"Not an fatal error!")
 		ENDIF
 	ENDIF	
 ENDIF
@@ -15984,7 +15984,7 @@ ENDIF
 PRIVATE cSendTo, cSendersEmail
 cSendersEmail = AppSetup_Get_Email( SalesRepfromSO(pnSO))
 
-cSendTo = 'Accounting@HPAlloys.com'
+cSendTo = 'Accounting@SpaceAlloysUSA.com'
 
 IF NOT EMPTY(cSendersEmail)
 	cSendTo = cSendTo +";"+ ALLTRIM(cSendersEmail)
@@ -21322,7 +21322,7 @@ IF USED('tmpPQSL_Sales')
 									TrackError(cMess,"dHPA_Due_Max > dShipDueDate","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 								ENDIF
 								cSendersEmail = AppSetup_Get_Email( SalesRepfromSO(nSO))
-								Send_HTML_Email( 'QA@hpalloys.com',cSendersEmail ,'Warning! SO could ship late.',cMess,nConn,.T.,.T.)
+								Send_HTML_Email( 'QA@SpaceAlloysUSA.com',cSendersEmail ,'Warning! SO could ship late.',cMess,nConn,.T.,.T.)
 								lPassDueMax = .F.
 							ENDIF	
 						ENDIF
@@ -21335,7 +21335,7 @@ IF USED('tmpPQSL_Sales')
 									*cMess = cMess + " SO-Item could ship late! Salesman:"+SalesRepfromSO(nSO)+"."
 									*cMess = cMess +CHR(10)+CHR(13)+ cDescript
 									*TrackMess(cMess+" "+CHR(13)+SYS(16,1))
-									*Send_HTML_Email( 'QA@HPAlloys.com','David@HPAlloys.com','Bad SO Ship Due Date.',cMess,nConn,.T.,.T.)
+									*Send_HTML_Email( 'QA@SpaceAlloysUSA.com','David@SpaceAlloysUSA.com','Bad SO Ship Due Date.',cMess,nConn,.T.,.T.)
 								ENDIF					
 							ENDIF		
 						ENDIF
@@ -21362,7 +21362,7 @@ IF USED('tmpPQSL_Sales')
 									TrackError(cMess,"dDue_Max > dShipDueDate","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 									
 									cSendersEmail = AppSetup_Get_Email( SalesRepfromSO(nSO))
-									Send_HTML_Email( 'QA@hpalloys.com',cSendersEmail ,'Warning! SO could ship late.',cMess,nConn,.T.,.T.)
+									Send_HTML_Email( 'QA@SpaceAlloysUSA.com',cSendersEmail ,'Warning! SO could ship late.',cMess,nConn,.T.,.T.)
 									lPassDueMax = .F.
 								ENDIF
 							ELSE
@@ -21388,7 +21388,7 @@ IF USED('tmpPQSL_Sales')
 									TrackError(cMess,"dDue_Min > dShipDueDate","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 									
 									cSendersEmail = AppSetup_Get_Email( SalesRepfromSO(nSO))
-									Send_HTML_Email( 'QA@hpalloys.com',cSendersEmail ,'Bad SO Ship Due Date.',cMess,nConn,.T.,.T.)
+									Send_HTML_Email( 'QA@SpaceAlloysUSA.com',cSendersEmail ,'Bad SO Ship Due Date.',cMess,nConn,.T.,.T.)
 								ENDIF					
 							ENDIF							
 						ENDIF
@@ -23858,7 +23858,7 @@ TRY
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_PO')
 
 CATCH
-	Send_HTML_Email( "David.Kircvhner@HPAlloys.com","DoNotReply@HPAlloys.com","Could not Query Field in dbo.PurchaseOrder"+CHR(13)+ HTML_POitem(cPOItem,.T.)+CHR(13)+ HTML_POitem(cPOItem,.F.),cSQL ,nConn,.T.,.F.)
+	Send_HTML_Email( "David.Kircvhner@SpaceAlloysUSA.com","DoNotReply@SpaceAlloysUSA.com","Could not Query Field in dbo.PurchaseOrder"+CHR(13)+ HTML_POitem(cPOItem,.T.)+CHR(13)+ HTML_POitem(cPOItem,.F.),cSQL ,nConn,.T.,.F.)
 	*STORE NULL TO cReturn 
 ENDTRY
 
@@ -23939,7 +23939,7 @@ TRY
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_RCV')
 
 CATCH
-	Send_HTML_Email( "David.Kirchner@HPAlloys.com","DoNotReply@HPAlloys.com","Could not Query Field in dbo.PurchaseOrder"+CHR(13)+ HTML_POitem(cPOItem,.T.)+CHR(13)+ HTML_POitem(cPOItem,.F.),cSQL ,nConn,.T.,.F.)
+	Send_HTML_Email( "David.Kirchner@SpaceAlloysUSA.com","DoNotReply@SpaceAlloysUSA.com","Could not Query Field in dbo.PurchaseOrder"+CHR(13)+ HTML_POitem(cPOItem,.T.)+CHR(13)+ HTML_POitem(cPOItem,.F.),cSQL ,nConn,.T.,.F.)
 	*STORE NULL TO cReturn 
 ENDTRY
 
@@ -26437,7 +26437,7 @@ IF NOT lFoundAlloy
 	cBody = cBody+CHR(13)+'Machin-User = '+SYS(0)
 	cBody = cBody +CHR(13)+ "ProcSQL:Is_Alloy_New()."
 
-	Send_HTML_Email( "VFP_Alert@HPAlloys.com","DoNotReply@HPAlloys.com","New Alloy in PO",cBody,nConn,.T.,.F.)
+	Send_HTML_Email( "VFP_Alert@SpaceAlloysUSA.com","DoNotReply@SpaceAlloysUSA.com","New Alloy in PO",cBody,nConn,.T.,.F.)
 ENDIF
 
 IF lNewConn 
@@ -27277,7 +27277,7 @@ ENDIF
 
 IF lOK 
 	*Update Alloy_Spec
-	cSQL = "UPDATE HPAlloy.dbo.Alloy_Spec SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Alloy_Spec SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27293,7 +27293,7 @@ ENDIF
 
 IF lOK 
 	*Update Spec_Check
-	cSQL = "UPDATE HPAlloy.dbo.Spec_Check SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Spec_Check SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27309,7 +27309,7 @@ ENDIF
 
 IF lOK 
 	*Update SO_BoilerPlate 
-	cSQL = "UPDATE HPAlloy.dbo.SO_BoilerPlate SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.SO_BoilerPlate SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27325,7 +27325,7 @@ ENDIF
 
 IF lOK 
 	*Update SupplierQuotes
-	cSQL = "UPDATE HPAlloy.dbo.SupplierQuotes SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.SupplierQuotes SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27341,7 +27341,7 @@ ENDIF
 
 IF lOK 
 	*Update WorkOrder
-	cSQL = "UPDATE HPAlloy.dbo.WorkOrder SET sAlloy = '"+cNewAlloyName+"' WHERE sAlloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.WorkOrder SET sAlloy = '"+cNewAlloyName+"' WHERE sAlloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27357,7 +27357,7 @@ ENDIF
 
 IF lOK 
 	*Update WorkOrder_Detail
-	cSQL = "UPDATE HPAlloy.dbo.WorkOrder_Detail SET fAlloy = '"+cNewAlloyName+"' WHERE fAlloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.WorkOrder_Detail SET fAlloy = '"+cNewAlloyName+"' WHERE fAlloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27373,7 +27373,7 @@ ENDIF
 
 IF lOK 
 	*Update StockLst_Wants
-	cSQL = "UPDATE HPAlloy.dbo.StockLst_Wants SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.StockLst_Wants SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27389,7 +27389,7 @@ ENDIF
 
 IF lOK 
 	*Update StockLst_Vendor
-	cSQL = "UPDATE HPAlloy.dbo.StockLst_Vendor SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.StockLst_Vendor SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27405,7 +27405,7 @@ ENDIF
 
 IF lOK 
 	*Update QuoteSheet
-	cSQL = "UPDATE HPAlloy.dbo.QuoteSheet SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.QuoteSheet SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27446,15 +27446,15 @@ ENDIF
 *!*	dbo.[AR.PriceTable_hist
 *!*	dbo.[AR.PurchaseOrder_hist
 *!*	dbo.[AR.AllQuotes_History]
-*!*	HPAlloy.dbo.Alloy_Spec
-*!*	HPAlloy.dbo.Spec_Check
-*!*	HPAlloy.dbo.SO_BoilerPlate
-*!*	HPAlloy.dbo.SupplierQuotes
-*!*	HPAlloy.dbo.WorkOrder
-*!*	HPAlloy.dbo.WorkOrder_Detail
-*!*	HPAlloy.dbo.StockLst_Wants
-*!*	HPAlloy.dbo.StockLst_Vendor
-*!*	HPAlloy.dbo.QuoteSheet
+*!*	dbo.Alloy_Spec
+*!*	dbo.Spec_Check
+*!*	dbo.SO_BoilerPlate
+*!*	dbo.SupplierQuotes
+*!*	dbo.WorkOrder
+*!*	dbo.WorkOrder_Detail
+*!*	dbo.StockLst_Wants
+*!*	dbo.StockLst_Vendor
+*!*	dbo.QuoteSheet
 *****************
 
 IF lOK
@@ -28811,7 +28811,7 @@ ENDPROC
 ********************************** 
 PROC PrepareSQLtxt 
 PARAMETER cData, cField, nLen, pPad, lQuite
-*PrepareSQLtxt("High Performance Alloy's'",'Company',25,.F.,.T.)
+*PrepareSQLtxt("Space Alloys USA'",'Company',25,.F.,.T.)
 ** Pad .T. to add spaces at end, False Pad to ignore
 * -1 is unlimited text *you must add function ALLTRIM() when len is -1 
 * Use ShowSQLtxt to just show!!!!
@@ -29024,7 +29024,7 @@ ENDPROC
 ********************************** 
 PROC ShowSQLtxt 
 PARAMETER cData, cField, nLen, pPad, lQuite
-*ShowSQLtxt("High Performance Alloy's'",'Company',25,.F.,.F.)
+*ShowSQLtxt("Space Alloys USA'",'Company',25,.F.,.F.)
 ** Pad .T. to add spaces at end, Pad empty to ignore
 * (-1) unlimited text 
 
@@ -29061,14 +29061,14 @@ IF VARTYPE(cData) != "C"
 ENDIF
 
 IF VARTYPE(cField) != "C"
-	WAIT WINDOW [PARAMETERS: ShowSQLtxt("High Performance Alloy's'",'Company',25,.F.)] NOWAIT
+	WAIT WINDOW [PARAMETERS: ShowSQLtxt("Space Alloys USA'",'Company',25,.F.)] NOWAIT
 	cField = "Field"
 	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 	TrackError("cData="+LEFT(cData,30) +", Field="+LEFT(cField,30)+". ","Proc_Sql:ShowSQLtxt() has no Field","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 *	RETURN ""
 ENDIF
 *!*	IF VARTYPE(nLen) != "N"
-*!*		WAIT WINDOW [PARAMETERS: ShowSQLtxt("High Performance Alloy's'",'Company',25,.F.)] NOWAIT
+*!*		WAIT WINDOW [PARAMETERS: ShowSQLtxt("Space Alloys USA'",'Company',25,.F.)] NOWAIT
 
 *!*		RETURN ""
 *!*	ENDIF
@@ -30349,12 +30349,12 @@ ENDPROC
 **********************************
 PROC PrepareSQLemail 
 PARAMETER cData,cField, nOption
-*PrepareSQLemail("David@HPAlloys.com",'Email' )
+*PrepareSQLemail("David@SpaceAlloysUSA.com",'Email' )
 PRIVATE cMess
 cMess = ''
 
 IF VARTYPE(cData) != "C"
-	RETURN "VFP_Alert@HPAlloys.com"
+	RETURN "VFP_Alert@SpaceAlloysUSA.com"
 ENDIF
 IF VARTYPE(cField) != "C"
 	TrackError("Proc_Sql:PrepareSQLemail() has no Email Field Name"+", Data="+LEFT(cData,30)+". ","Error","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
@@ -30376,14 +30376,14 @@ IF LEN(cData) < 3
 	cMess = "The Email too short!"+CHR(13)+"Email is:"+cData
 	MESSAGEBOX(cMess,32,"Bad Email address.")
 	*TrackError(cMess ,"Bad Email address.","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
-	RETURN "VFP_Alert@HPAlloys.com"
+	RETURN "VFP_Alert@SpaceAlloysUSA.com"
 ENDIF
 
 IF OCCURS("@",cData) = 0
 	cMess = "The Email should have an '@' symbol!"+CHR(13)+"Email is:"+cData
 	MESSAGEBOX(cMess,32,"Bad Email address.")
 	*TrackError(cMess ,"Bad Email address.","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
-	RETURN "VFP_Alert@HPAlloys.com"
+	RETURN "VFP_Alert@SpaceAlloysUSA.com"
 ENDIF
 
 IF RIGHT(cData,1) = ";"
@@ -30404,7 +30404,7 @@ IF AT(",",cData) > 0
 	MESSAGEBOX(cMess,32,"Bad Email address.")
 	*TrackMess( "Proc_Sql:PrepareSQLemail() "+cMess +" "+CHR(13)+SYS(16,1))
 *	TrackError(,cMess ,"Bad Email address.","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
-	RETURN "VFP_Alert@HPAlloys.com"
+	RETURN "VFP_Alert@SpaceAlloysUSA.com"
 ENDIF
 
 IF OCCURS(";",cData) > 0
@@ -34731,13 +34731,13 @@ IF nConn > 0
 			PRIVATE cShopEmail
 			DO CASE
 			CASE lUseWindfall AND lUseTipton
-				cShopEmail = "TiptonShop@HPAlloys.com,WindfallShop@HPAlloys.com"
+				cShopEmail = "TiptonShop@SpaceAlloysUSA.com,WindfallShop@SpaceAlloysUSA.com"
 			CASE lUseWindfall
-				cShopEmail = "TiptonShop@HPAlloys.com"
+				cShopEmail = "TiptonShop@SpaceAlloysUSA.com"
 			CASE lUseTipton	
-				cShopEmail = "TiptonShop@HPAlloys.com"
+				cShopEmail = "TiptonShop@SpaceAlloysUSA.com"
 			OTHERWISE
-				cShopEmail = "David.Kirchner@HPAlloys.com"
+				cShopEmail = "David.Kirchner@SpaceAlloysUSA.com"
 			ENDCASE	
 			
 			
@@ -34921,13 +34921,13 @@ IF nConn > 0
 		PRIVATE cShopEmail
 		DO CASE
 		CASE lUseWindfall AND lUseTipton
-			cShopEmail = "TiptonShop@hpalloys.com,WindfallShop@hpalloys.com"
+			cShopEmail = "TiptonShop@SpaceAlloysUSA.com,WindfallShop@SpaceAlloysUSA.com"
 		CASE lUseWindfall
-			cShopEmail = "TiptonShop@hpalloys.com"
+			cShopEmail = "TiptonShop@SpaceAlloysUSA.com"
 		CASE lUseTipton	
-			cShopEmail = "TiptonShop@hpalloys.com"
+			cShopEmail = "TiptonShop@SpaceAlloysUSA.com"
 		OTHERWISE
-			cShopEmail = "David.Kirchner@hpalloys.com"
+			cShopEmail = "David.Kirchner@SpaceAlloysUSA.com"
 		ENDCASE	
 		
 		PRIVATE cHeader,cBody,cVendor,cCustomer,cSalesRep
@@ -40918,8 +40918,8 @@ IF nConn > 0
 		cBody = cBody+CHR(13)+"Proc_SQL:Email_PSprint_SO_NoCheck()."
 		
 		cEmail	= AppSetup_Get_Email( SalesRepfromSO(pnSO))
-		cEmail	= ALLTRIM(cEmail)+";QA@hpalloys.com"
-		Send_HTML_Email( cEmail,'plant.manager@hpalloys.com',cTitle,cBody,nConn,.T.,.T.)	
+		cEmail	= ALLTRIM(cEmail)+";QA@SpaceAlloysUSA.com"
+		Send_HTML_Email( cEmail,'plant.manager@SpaceAlloysUSA.com',cTitle,cBody,nConn,.T.,.T.)	
 	ELSE
 		IF !lPrintedSO
 			PRIVATE cTitle,cBody,cEmail
@@ -40936,8 +40936,8 @@ IF nConn > 0
 			cBody = cBody+CHR(13)+"Proc_SQL:Email_PSprint_SO_NoCheck()."
 			
 			cEmail	= AppSetup_Get_Email( SalesRepfromSO(pnSO))
-			cEmail	= ALLTRIM(cEmail)+";QA@hpalloys.com"
-			Send_HTML_Email( cEmail,'plant.manager@hpalloys.com',cTitle,cBody,nConn,.T.,.T.)
+			cEmail	= ALLTRIM(cEmail)+";QA@SpaceAlloysUSA.com"
+			Send_HTML_Email( cEmail,'plant.manager@SpaceAlloysUSA.com',cTitle,cBody,nConn,.T.,.T.)
 		ENDIF
 		IF !lShopRecv 
 			PRIVATE cTitle,cBody,cEmail
@@ -40953,8 +40953,8 @@ IF nConn > 0
 			cBody = cBody+CHR(13)+"Proc_SQL:Email_PSprint_SO_NoCheck()."
 			
 			cEmail	= AppSetup_Get_Email( SalesRepfromSO(pnSO))
-			cEmail	= ALLTRIM(cEmail)+";QA@hpalloys.com"
-			Send_HTML_Email(cEmail,'plant.manager@HPAlloys.com',cTitle,cBody,nConn,.T.,.T.)	
+			cEmail	= ALLTRIM(cEmail)+";QA@SpaceAlloysUSA.com"
+			Send_HTML_Email(cEmail,'plant.manager@SpaceAlloysUSA.com',cTitle,cBody,nConn,.T.,.T.)	
 		ENDIF
 	ENDIF
 ENDIF
@@ -41045,7 +41045,7 @@ IF nConn > 0
 			SET PROCEDURE TO Progs\Proc_Setup ADDITIVE  &&Needed for AppSetup_Get_Email
 		ENDIF 	
 		cEmail	= AppSetup_Get_Email( SalesRepfromSO(cSOitem))
-		Send_HTML_Email( cEmail,'VFP_Alert@HPAlloys.com',cTitle,cBody,nConn,.T.,.T.)	
+		Send_HTML_Email( cEmail,'VFP_Alert@SpaceAlloysUSA.com',cTitle,cBody,nConn,.T.,.T.)	
 		
 		PRIVATE cTxt
 		cTxt = "PackingSlip did not complete shipment for SOitem:'"+cSOitem+"'"
@@ -42807,9 +42807,9 @@ pSQLorig = pSQL
 
 *!*	*Record Error of Screen
 *!*	TRY
-*!*	*	cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@HPAlloys.com ]
+*!*	*	cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@SpaceAlloysUSA.com ]
 *!*	*	cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
-*!*		cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@hpalloys.com ]
+*!*		cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@SpaceAlloysUSA.com ]
 *!*		RUN /N &cRun
 
 *!*	CATCH
@@ -45998,7 +45998,7 @@ TRY
 	ENDIF
 
 CATCH
-	Send_HTML_Email( "David.Kirchner@hpalloys.com","David.Kirchner@hpalloys.com","Could not Query Field in dbo.Sales "+CHR(13)+ HTML_SOitem(cSOitem,.T.)+CHR(13)+ HTML_SOitem(cSOitem,.F.),cSQL ,nConn,.T.,.F.)
+	Send_HTML_Email( "David.Kirchner@SpaceAlloysUSA.com","David.Kirchner@SpaceAlloysUSA.com","Could not Query Field in dbo.Sales "+CHR(13)+ HTML_SOitem(cSOitem,.T.)+CHR(13)+ HTML_SOitem(cSOitem,.F.),cSQL ,nConn,.T.,.F.)
 	*STORE NULL TO cReturn 
 ENDTRY
 
@@ -46080,7 +46080,7 @@ TRY
 	ENDIF
 
 CATCH
-	Send_HTML_Email( "David.Kirchner@hpalloys.com","David.Kirchner@hpalloys.com","Could not Query Field in dbo.AllQuotes "+CHR(13)+ HTML_SOitem(cSOitem,.T.)+CHR(13)+ HTML_SOitem(cSOitem,.F.),cSQL ,nConn,.T.,.F.)
+	Send_HTML_Email( "David.Kirchner@SpaceAlloysUSA.com","David.Kirchner@SpaceAlloysUSA.com","Could not Query Field in dbo.AllQuotes "+CHR(13)+ HTML_SOitem(cSOitem,.T.)+CHR(13)+ HTML_SOitem(cSOitem,.F.),cSQL ,nConn,.T.,.F.)
 	*STORE NULL TO cReturn 
 ENDTRY
 
@@ -46158,7 +46158,7 @@ TRY
 	ENDIF
 
 CATCH
-	Send_HTML_Email( "David.Kirchner@hpalloys.com","David.Kirchner@hpalloys.com","Could not Query Field in dbo.WorkOrder "+CHR(13)+ HTML_WO(nWO,.T.)+CHR(13)+ HTML_WO(nWO,.F.),cSQL ,nConn,.T.,.F.)
+	Send_HTML_Email( "David.Kirchner@SpaceAlloysUSA.com","David.Kirchner@SpaceAlloysUSA.com","Could not Query Field in dbo.WorkOrder "+CHR(13)+ HTML_WO(nWO,.T.)+CHR(13)+ HTML_WO(nWO,.F.),cSQL ,nConn,.T.,.F.)
 	*STORE NULL TO cReturn 
 ENDTRY
 
@@ -46237,7 +46237,7 @@ TRY
 	ENDIF
 
 CATCH
-	Send_HTML_Email( "David.Kirchner@hpalloys.com","David.Kirchner@hpalloys.com","Could not Query Field in dbo.WorkOrder_Detail "+CHR(13)+ HTML_WO_Detail(nWO_Detail,.T.)+CHR(13)+ HTML_WO_Detail(nWO_Detail,.F.),cSQL ,nConn,.T.,.F.)
+	Send_HTML_Email( "David.Kirchner@SpaceAlloysUSA.com","David.Kirchner@SpaceAlloysUSA.com","Could not Query Field in dbo.WorkOrder_Detail "+CHR(13)+ HTML_WO_Detail(nWO_Detail,.T.)+CHR(13)+ HTML_WO_Detail(nWO_Detail,.F.),cSQL ,nConn,.T.,.F.)
 	*STORE NULL TO cReturn 
 ENDTRY
 
@@ -46317,7 +46317,7 @@ TRY
 	ENDIF
 
 CATCH
-	Send_HTML_Email( "David@HPAlloys.com","David@HPAlloys.com","Could not Query Field in dbo.Receiving ",cSQL ,nConn,.T.,.F.)
+	Send_HTML_Email( "David@SpaceAlloysUSA.com","David@SpaceAlloysUSA.com","Could not Query Field in dbo.Receiving ",cSQL ,nConn,.T.,.F.)
 	*+ HTML_WO_Detail(nWO_Detail,.T.)+CHR(13)+ HTML_WO_Detail(nWO_Detail,.F.)
 	*STORE NULL TO cReturn 
 ENDTRY
@@ -46400,7 +46400,7 @@ TRY
 	ENDIF
 
 CATCH
-	Send_HTML_Email( "David@HPAlloys.com","David@HPAlloys.com","Could not Query Field in dbo.PurchaseOrder "+CHR(13)+ HTML_POitem(cPOitem,.T.)+CHR(13)+ HTML_POitem(cPOitem,.F.),cSQL ,nConn,.T.,.F.)
+	Send_HTML_Email( "David@SpaceAlloysUSA.com","David@SpaceAlloysUSA.com","Could not Query Field in dbo.PurchaseOrder "+CHR(13)+ HTML_POitem(cPOitem,.T.)+CHR(13)+ HTML_POitem(cPOitem,.F.),cSQL ,nConn,.T.,.F.)
 	*STORE NULL TO cReturn 
 ENDTRY
 

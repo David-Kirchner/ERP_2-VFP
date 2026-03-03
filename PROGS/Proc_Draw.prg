@@ -1150,3 +1150,18 @@ ENDPROC
 *ENDPROC
 
 
+*********************************** PROCEDURE ()PRIVATE RETURN ENDPROC
+*********************************** 
+PROCEDURE Area_hollow (nOD, nID)
+PRIVATE nArea
+nArea = 3.14156/4 * ((nOD*nOD)-(nID*nID))
+RETURN nArea
+ENDPROC
+
+*********************************** 
+PROCEDURE Reduction_of_Area_hollow (nOrig_OD, nOrig_ID, nFinal_OD, nFinal_ID )
+PRIVATE nRA
+nRA = (((nOrig_OD*nOrig_OD)-(nOrig_ID*nOrig_ID)) - ((nFinal_OD*nFinal_OD)-(nFinal_ID*nFinal_ID ))) / ((nOrig_OD*nOrig_OD)-(nOrig_ID*nOrig_ID))
+RETURN nRA
+ENDPROC
+

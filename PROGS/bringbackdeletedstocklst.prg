@@ -93,7 +93,7 @@ IF USED('tmpMissingID')
 			SELECT 0
 		
 			*Get Master ID
-			cSQL =  "SELECT COUNT(*) AS CNTD FROM HPAlloy.dbo.StockLst_Master WHERE ID = "+STR(nMasterID)
+			cSQL =  "SELECT COUNT(*) AS CNTD FROM dbo.StockLst_Master WHERE ID = "+STR(nMasterID)
 			
 			nSQLEXEC = SQLEXEC(pConn, cSQL, 'tmpCntMasterID' )
 			DO WHILE nSQLEXEC = 0
@@ -129,8 +129,8 @@ IF USED('tmpMissingID')
 						nMasterID4 = tmpMasterID4.Cntd
 					ENDIF
 					IF nMasterID4 > 0
-						cSQLi = "SET IDENTITY_INSERT HPAlloy.dbo.StockLst_Master ON "
-						cSQLi = cSQLi + " INSERT INTO HPAlloy.dbo.StockLst_Master ([ID],[alloy],[form],[size],[heat]) VALUES ("+STR(nMasterID)+",'','',0,'')"
+						cSQLi = "SET IDENTITY_INSERT dbo.StockLst_Master ON "
+						cSQLi = cSQLi + " INSERT INTO dbo.StockLst_Master ([ID],[alloy],[form],[size],[heat]) VALUES ("+STR(nMasterID)+",'','',0,'')"
 						nSQLEXEC = SQLEXEC(pConn, cSQLi )
 						DO WHILE nSQLEXEC = 0
 							WAIT WINDOW 'SQL' TIMEOUT 1
@@ -143,14 +143,14 @@ IF USED('tmpMissingID')
 						ENDIF
 						
 						
-						cSQLi = "SET IDENTITY_INSERT HPAlloy.dbo.StockLst_Master OFF "
+						cSQLi = "SET IDENTITY_INSERT dbo.StockLst_Master OFF "
 						nSQLEXEC = SQLEXEC(pConn, cSQLi )
 						DO WHILE nSQLEXEC = 0
 							WAIT WINDOW 'SQL' TIMEOUT 1
 							nSQLEXEC = SQLEXEC(pConn,  cSQLi )
 						ENDDO
 						
-						cSQL = "UPDATE HPAlloy.dbo.StockLst_Master SET "
+						cSQL = "UPDATE dbo.StockLst_Master SET "
 						cSQL =  cSQL + " [Alloy] = SM4.[Alloy] "
 						cSQL =  cSQL + ",[form]=SM4.[form]"
 						cSQL =  cSQL + ",[cc]=SM4.[cc]"
@@ -209,8 +209,8 @@ IF USED('tmpMissingID')
 						ENDIF
 						
 						IF nMasterID4H > 0
-							cSQLi = "SET IDENTITY_INSERT HPAlloy.dbo.StockLst_Master ON "
-							cSQLi = cSQLi + " INSERT INTO HPAlloy.dbo.StockLst_Master ([ID],[alloy],[form],[size],[heat]) VALUES ("+STR(nMasterID)+",'','',0,'')"
+							cSQLi = "SET IDENTITY_INSERT dbo.StockLst_Master ON "
+							cSQLi = cSQLi + " INSERT INTO dbo.StockLst_Master ([ID],[alloy],[form],[size],[heat]) VALUES ("+STR(nMasterID)+",'','',0,'')"
 							nSQLEXEC = SQLEXEC(pConn, cSQLi )
 							DO WHILE nSQLEXEC = 0
 								WAIT WINDOW 'SQL' TIMEOUT 1
@@ -222,7 +222,7 @@ IF USED('tmpMissingID')
 								?? " Inserted Blank StockLst_Master. "
 							ENDIF
 							
-							cSQLi = "SET IDENTITY_INSERT HPAlloy.dbo.StockLst_Master OFF "
+							cSQLi = "SET IDENTITY_INSERT dbo.StockLst_Master OFF "
 							nSQLEXEC = SQLEXEC(pConn, cSQLi )
 							DO WHILE nSQLEXEC = 0
 								WAIT WINDOW 'SQL' TIMEOUT 1
@@ -235,7 +235,7 @@ IF USED('tmpMissingID')
 							**Use Hpalloy4.dbo.StockLst_Master over dbo.[AR.StockLst_MASTER_History] SMH WITH (NOLOCK) "
 							**  AND SMH.[WHAT] = 'DELETE    '
 							
-							cSQL = "UPDATE HPAlloy.dbo.StockLst_Master SET "
+							cSQL = "UPDATE dbo.StockLst_Master SET "
 							cSQL =  cSQL + " [Alloy]=SMH.[Alloy]"
 							cSQL =  cSQL + ",[form]=SMH.[form]"
 							cSQL =  cSQL + ",[cc]=SMH.[cc]"
@@ -282,7 +282,7 @@ IF USED('tmpMissingID')
 					
 					*Check Master ID Alloy, etc...
 				
-						cSQL = "UPDATE HPAlloy.dbo.StockLst_Master SET "
+						cSQL = "UPDATE dbo.StockLst_Master SET "
 						cSQL =  cSQL + " [Alloy]=SMH.[Alloy]"
 						cSQL =  cSQL + ",[form]=SMH.[form]"
 						cSQL =  cSQL + ",[cc]=SMH.[cc]"
@@ -337,7 +337,7 @@ IF USED('tmpMissingID')
 			ENDIF
 			SELECT 0
 			
-			cSQL =  "SELECT COUNT(*) AS CNTD FROM HPAlloy.dbo.StockLst_Detail WHERE ID_Detail = "+STR( nID_Detail )
+			cSQL =  "SELECT COUNT(*) AS CNTD FROM dbo.StockLst_Detail WHERE ID_Detail = "+STR( nID_Detail )
 			
 			nSQLEXEC = SQLEXEC(pConn, cSQL, 'tmpCntDetail' )
 			DO WHILE nSQLEXEC = 0
@@ -353,9 +353,9 @@ IF USED('tmpMissingID')
 					?? " Detail found for Detail ID:"+ALLTRIM(STR( nID_Detail ))
 				ELSE
 					** Add Detail	
-					cSQLi = "SET IDENTITY_INSERT HPAlloy.dbo.StockLst_Detail ON "
+					cSQLi = "SET IDENTITY_INSERT dbo.StockLst_Detail ON "
 					cSQLi = cSQLi + CHR(10)+CHR(13)
-					cSQLi = cSQLi + " INSERT INTO HPAlloy.dbo.StockLst_Detail ([DIM1],[Weight],[S_P],[ID],[ID_Detail]) VALUES (0,0,0,"+STR(nMasterID)+","+STR(nID_Detail)+")"
+					cSQLi = cSQLi + " INSERT INTO dbo.StockLst_Detail ([DIM1],[Weight],[S_P],[ID],[ID_Detail]) VALUES (0,0,0,"+STR(nMasterID)+","+STR(nID_Detail)+")"
 					nSQLEXEC = SQLEXEC(pConn, cSQLi )
 					DO WHILE nSQLEXEC = 0
 						WAIT WINDOW 'SQL' TIMEOUT 1
@@ -367,14 +367,14 @@ IF USED('tmpMissingID')
 						?? " Inserted Blank StockLst_Detail. "
 					ENDIF
 					
-					cSQLi = "SET IDENTITY_INSERT HPAlloy.dbo.StockLst_Detail OFF "
+					cSQLi = "SET IDENTITY_INSERT dbo.StockLst_Detail OFF "
 					nSQLEXEC = SQLEXEC(pConn, cSQLi )
 					DO WHILE nSQLEXEC = 0
 						WAIT WINDOW 'SQL' TIMEOUT 1
 						nSQLEXEC = SQLEXEC(pConn,  cSQLi )
 					ENDDO
 					
-					cSQL = "UPDATE HPAlloy.dbo.StockLst_Detail SET "
+					cSQL = "UPDATE dbo.StockLst_Detail SET "
 					cSQL =  cSQL + "[size_h]=SD.[size_h]"
 					cSQL =  cSQL + ",[size_l]=SD.[size_l]"
 					cSQL =  cSQL + ",[pc]=SD.[pc]"
