@@ -1,4 +1,4 @@
-*IF NOT "PROC_Test" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_Test" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_Test ADDITIVE
 *ENDIF
 
@@ -8,7 +8,7 @@
 FUNCTION SQLComms
 PARAMETERS xquery, xresult
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 

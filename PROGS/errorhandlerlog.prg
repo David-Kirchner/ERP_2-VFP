@@ -144,10 +144,10 @@ IF EMPTY(WhatDo)
 ENDIF
 
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF
-IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 ENDIF
 

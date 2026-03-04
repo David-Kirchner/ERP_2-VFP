@@ -1,4 +1,4 @@
-*IF NOT "PROC_DRAW" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_DRAW" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_Draw ADDITIVE
 *ENDIF
 

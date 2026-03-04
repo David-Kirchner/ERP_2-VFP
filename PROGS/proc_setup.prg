@@ -1,7 +1,7 @@
-*IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 *ENDIF 
-*IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 *ENDIF 
 
@@ -3466,7 +3466,7 @@ ENDPROC
 ********************************* 
 PROC HPAAppLoad 
 PARAMETER cVersion
-*Records Version, called in LOAD procedure of HPA menu.
+*Records Version, called in LOAD procedure of ERP menu.
 
 IF VARTYPE(cVersion) != "C"
 	cVersion = '0'
@@ -3641,7 +3641,7 @@ IF nLatestVersion < nYourVersion OR nYourVersion = 0
 			SQLEXECError(cSQL,nConn, nSQLEXEC, '')
 			RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 		ELSE
-			IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+			IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 				SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 			ENDIF
 			TrackMess( cSQL )
@@ -3665,7 +3665,7 @@ PARAMETERS lNotCaption, pWhat
 *WAIT WINDOW 'HPAVersion() Start' TIMEOUT 1
 *RETURN "Version 1.2.3"
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -3895,7 +3895,7 @@ IF lBuildAllow
 		*	RETURN .F.	&&Build is only bad if Minor is Same
 		*ENDIF
 		
-		IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 		ENDIF
 		
@@ -4495,7 +4495,7 @@ TRY
 					SQLEXECError(cSQL,nConn, nSQLEXEC, '')
 					RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 				ELSE
-					IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+					IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 						SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 					ENDIF
 					TrackMess( cSQL )
@@ -4677,7 +4677,7 @@ TRY
 					ENDDO
 				ENDIF
 				
-				IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+				IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 					SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 				ENDIF
 

@@ -3,7 +3,7 @@ PARAMETER pnNumberWithZero,pnNumberLength,pnNumberDecimals,plForcePennies,plAddC
 ***remove0(nNumber_With_Zero,nLength,nDecimals,.F.)
 *** Also Edit in Proc_Quotes.
 
-IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 ENDIF 
 

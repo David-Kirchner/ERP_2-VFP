@@ -1,4 +1,4 @@
-*IF NOT "PROC_STOCKLST" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_STOCKLST" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_StockLst ADDITIVE
 *ENDIF
 *SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
@@ -9878,7 +9878,7 @@ PRIVATE nQTY
 nQTY = 0
 
 *****
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -9995,7 +9995,7 @@ PRIVATE nLBS
 nLBS = 0
 
 *****
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -10118,7 +10118,7 @@ nConn = CheckSQLConnection(nConn)
 
 
 *****
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -10492,7 +10492,7 @@ PARAMETERS pPOitem, pConnHandle
 *Used in when cancelling a POitem
 
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -10733,7 +10733,7 @@ PARAMETERS pPOitem, pConnHandle
 *Removes Stock and Broker INCOMMING and SELECT Process
 *-* A PurchaseOrder Trigger should be deleting this, So do not expect to see data deleted here.
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -10863,7 +10863,7 @@ ENDIF
 
 PRIVATE nID_Detail_Process
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -19920,10 +19920,10 @@ IF VARTYPE(cCC) != "C"
 	RETURN ''
 ENDIF
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 ENDIF
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -22712,7 +22712,7 @@ PARAMETERS pPOitem, pConnHandle
 *Used in Receive_Edit
 
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -22836,7 +22836,7 @@ PARAMETERS pPOitem, pConnHandle
 *Used in Receive_Edit
 
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 

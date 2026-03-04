@@ -1,4 +1,4 @@
-*IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 *ENDIF
 
@@ -2648,7 +2648,7 @@ IF lCloseConn
 ENDIF
 
 IF lWriteOff 
-	IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 	ENDIF
 	TrackMess( "AccountingCosting: Wrote off Stock. ID:"+ALLTRIM(STR(pID))+" ID_Detail:"+ALLTRIM(STR(pID_Detail))+" CostValue was "+ALLTRIM(STR(nCostValue))+" Alloy:"+cAlloy+" Form:"+cForm+" Dim1:"+ALLTRIM(STR(nDim1))+" Dim2:"+ALLTRIM(STR(nDim2))+" Dim3:"+ALLTRIM(STR(nDim3))+" "+CHR(13)+SYS(16,1) )
@@ -3283,7 +3283,7 @@ IF NOT (VARTYPE(nSize3) = "N" OR VARTYPE(nSize3) = "Y")
 *	WAIT WINDOW 'nSize3 '  TIMEOUT 1
 ENDIF
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -3425,7 +3425,7 @@ IF NOT (VARTYPE(nSize3) = "N" OR VARTYPE(nSize3) = "Y")
 *	WAIT WINDOW 'nSize3 '  TIMEOUT 1
 ENDIF
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -3523,7 +3523,7 @@ ENDPROC
 PROCEDURE CalcWeight_SOitem 
 PARAMETERS cSOItem, nConn
 **CalcWeight_SOitem(pcSOitem,ThisForm.nConnHandle)
-*Returns HPA Acct MatlWt
+*Returns ERP Acct Standard MatlWt
 
 *If dbo.Sales does not have MatlWt,
 *	Call CalcWeight nPieces, cAlloy, cForm, nThickness, nSize2, nSize3, pConnHandle
@@ -6240,7 +6240,7 @@ ENDPROC
 PROCEDURE GetPUfrom_SOitem
 PARAMETERS cSOItem, nConn
 *nPU =GetPUfrom_SOitem(pcSOitem,ThisForm.nConnHandle)
-*Returns HPA Acct PU
+*Returns ERP Acct Standard PU
 
 *If dbo.Sales does not have PT_PU
 *	Call GetPUfromForm(cForm,nConn)
@@ -8286,7 +8286,7 @@ PARAMETERS pConnHandle
 *ImportPeachtreeCustomerTerms_SQL(ThisForm.ConnHandle)
 *SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -10101,7 +10101,7 @@ IF nSQLEXEC < 0
 ENDIF
 
 
-	IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 	ENDIF 
 	PRIVATE cDescript
@@ -11593,12 +11593,12 @@ ENDIF
 ***********************  -Cancel_SOitem
 IF lCommitSQL 
 				
-	IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 	ENDIF 
 	
 	IF Update_Ship_Cncld_SOitem( .T., cSOitem, nConn )
-		IF NOT "PROC_STOCKLST" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		IF NOT "PROC_STOCKLST" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_StockLst ADDITIVE
 		ENDIF
 		*lRemove_Process_for_Cancelled_SO_Item = Remove_Process_for_Cancelled_SOitem(cSOitem,nConn)
@@ -12128,7 +12128,7 @@ ENDIF
 *!*		*calls: GetCancelReason if "CANCEL or REMOVE"
 *!*		***********************
 *!*					
-*!*		IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*!*		IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *!*			SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 *!*		ENDIF 
 *!*		PRIVATE cDescript
@@ -17304,7 +17304,7 @@ IF VARTYPE(nConn) != "N"
 	nConn = 0 
 ENDIF
 IF nConn < 1
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT() 
@@ -17320,7 +17320,7 @@ IF Proper_SO_Item(cSOitem) = Proper_SO_Item('')
 	RETURN 0
 ENDIF
 
-IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 ENDIF
 IF Proper_SO_Item(cSOItem) = Proper_SO_Item("")
@@ -17409,7 +17409,7 @@ IF VARTYPE(nConn) != "N"
 	nConn = 0 
 ENDIF
 IF nConn < 1
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT() 
@@ -17425,7 +17425,7 @@ IF Proper_SO_Item(cSOitem) = Proper_SO_Item('')
 	RETURN 0
 ENDIF
 
-IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 ENDIF
 IF Proper_SO_Item(cSOItem) = Proper_SO_Item("")
@@ -19209,7 +19209,7 @@ ENDPROC
 PROCEDURE Calc_QTY  
 PARAMETERS  cAlloy,cForm,nPieces,nThck,nSz2,nSz3,cOtherFld,nConn
 *nQTY = Calc_QTY(Alloy,Form,Pieces,Thck,Sz2,Sz3,cOtherFld,ThisForm.nConnHandle)
-*HPA Acct stnd
+*ERP Acct Stnd
 
 PRIVATE nQTY
 nQTY = 0.0000
@@ -21293,7 +21293,7 @@ IF USED('tmpPQSL_Sales')
 						
 						
 					
-						IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+						IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 							SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 						ENDIF 
 						PRIVATE cDescript
@@ -21311,7 +21311,7 @@ IF USED('tmpPQSL_Sales')
 								MESSAGEBOX(cMess,0+48,"SO Could Ship Late!")
 								Send_Chatter('SOITEM_LATE',nHPApo,cSOitem,cMess,nConn)
 								cMess = cMess +CHR(13)+"SOitem: "+HTML_SOitem(cSOitem,.F.)+CHR(13)+"PO: "+HTML_PO(nHPApo,.F.)
-								cMess = cMess +"<br>"+CHR(10)+CHR(13)+ " SO-Item could ship late because of late HPA PO:"+ALLTRIM(STR(nHPAPO))
+								cMess = cMess +"<br>"+CHR(10)+CHR(13)+ " SO-Item could ship late because of late ERP PO:"+ALLTRIM(STR(nHPAPO))
 								
 								cMess = cMess +CHR(10)+CHR(13)+ " Salesman:"+SalesRepfromSO(nSO)+"."
 								cMess = cMess +CHR(10)+CHR(13)+ "Proc_SQL:validate_Sales_ShipDue()."
@@ -21353,7 +21353,7 @@ IF USED('tmpPQSL_Sales')
 									Send_Chatter('SOITEM_LATE',nHPApo,cSOitem,cMess,nConn)
 							
 									cMess = cMess +CHR(13)+"SOitem: "+HTML_SOitem(cSOitem,.F.)+CHR(13)+"PO: "+HTML_PO(nHPApo,.F.)		
-									cMess = cMess +"<br>"+CHR(10)+CHR(13)+ " SO-Item could ship late because of late HPA PO:"+ALLTRIM(STR(nHPAPO))
+									cMess = cMess +"<br>"+CHR(10)+CHR(13)+ " SO-Item could ship late because of late ERP PO:"+ALLTRIM(STR(nHPAPO))
 									cMess = cMess +CHR(10)+CHR(13)+ " Salesman:"+SalesRepfromSO(nSO)+"."
 									cMess = cMess +CHR(10)+CHR(13)+ cDescript
 									cMess = cMess +CHR(10)+CHR(13)+"Proc_SQL:Validate_Sales_ShipDue()."
@@ -21374,7 +21374,7 @@ IF USED('tmpPQSL_Sales')
 									cMess = "4. Ship Due for SO-Item:"+cSOItem+" is "+DTOC(dShipDueDate)+". "+CHR(10)+CHR(13)
 									cMess = cMess +IIF(lServices," -Services ","")+IIF(lConvServ," -Conversion Service ","")+IIF(lEquipment," -Equipment ","")
 									cMess = cMess +CHR(10)+CHR(13)+"PO is listed to ship to HPA by min of "+DTOC(dDue_Min)+"."
-									cMess = cMess +CHR(10)+CHR(13)+ " SO-Item could ship late because of late HPA PO:"+ALLTRIM(STR(nHPAPO))
+									cMess = cMess +CHR(10)+CHR(13)+ " SO-Item could ship late because of late ERP PO:"+ALLTRIM(STR(nHPAPO))
 									MESSAGEBOX(cMess,0+48,"SO-Item could be late")
 									
 									cMess = cMess +HTML_SOitem(cSOitem,.F.)+CHR(13)+HTML_PO(nHPApo,.F.)
@@ -23421,7 +23421,7 @@ ENDIF
 IF VARTYPE(nConn) != "N"
 	RETURN CTOD('')
 ENDIF
-IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 ENDIF
 IF Proper_PO_Item(cPOItem) = Proper_PO_Item("")
@@ -23513,7 +23513,7 @@ ENDIF
 IF VARTYPE(nConn) != "N"
 	RETURN CTOD('')
 ENDIF
-IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 ENDIF
 IF Proper_PO_Item(cPOItem) = Proper_PO_Item("")
@@ -25129,7 +25129,7 @@ ENDIF
 
 PRIVATE nConn
 IF VARTYPE(nConn) != "N"
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25205,7 +25205,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(nConn) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25285,7 +25285,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(nConn) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25375,7 +25375,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(nConn) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25453,7 +25453,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25531,7 +25531,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25608,7 +25608,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25686,7 +25686,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25766,7 +25766,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25834,7 +25834,7 @@ ENDPROC
 PROCEDURE getAcct_QTY_SOitem 
 PARAMETERS cSOitem, pConnHandle
 *nQTY = getQTY_SOitem(cSOitem,ThisFormSet.nConnHandle)
-*Returns HPA Acct QTY for SOitem. money
+*Returns ERP Acct Standard QTY for SOitem. money
 
 IF VARTYPE(cSOitem) != "C"
 	RETURN 0
@@ -25846,7 +25846,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -25956,7 +25956,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -26038,7 +26038,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -26120,7 +26120,7 @@ ENDIF
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
 *	RETURN 0
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -26217,7 +26217,7 @@ ENDIF
 
 PRIVATE nConn
 IF VARTYPE(pConnHandle) != "N"
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -26847,7 +26847,7 @@ IF cOldAlloy == cNewAlloyName
 	RETURN .F.
 ENDIF
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF
 
@@ -28773,7 +28773,7 @@ IF TYPE('pTXT') != "C"
 	pTXT = "No Parameter"
 ENDIF
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 PRIVATE nConnection
@@ -28977,7 +28977,7 @@ ELSE
 	ENDDO
 ENDIF
 
-IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 ENDIF
 
@@ -29158,17 +29158,17 @@ ENDIF
 ************
 DO CASE
 CASE UPPER(cField) = "SOITEM"
-	IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 	ENDIF
 	cData = Proper_SO_Item(cData)
 CASE UPPER(cField) = "POITEM"
-	IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 	ENDIF
 	cData = Proper_PO_Item(cData)
 CASE UPPER(cField) = "PO_ITEM"
-	IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 	ENDIF
 	cData = Proper_PO_Item(cData)
@@ -40889,7 +40889,7 @@ IF nConn > 0
 		USE IN procSales_No
 	ENDIF
 	
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVE  &&Needed for AppSetup_Get_Email
 	ENDIF 
 	
@@ -41016,7 +41016,7 @@ IF nConn > 0
 	nQTY_Sold = get_QTYbySOitem( cSOitem, nConn )
 	
 	IF nCountPCS > 0
-		IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 		ENDIF 
 		
@@ -41041,7 +41041,7 @@ IF nConn > 0
 		cBody = cBody+'Machin-User = '+SYS(0)+CHR(10)+CHR(13)
 		cBody = cBody+"Proc_SQL:Email_PS_SONotComplete()."
 		
-		IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_Setup ADDITIVE  &&Needed for AppSetup_Get_Email
 		ENDIF 	
 		cEmail	= AppSetup_Get_Email( SalesRepfromSO(cSOitem))
@@ -42872,7 +42872,7 @@ IF cWorkArea != "NORETRY"
 			*Start a new nConnection 
 			TRY
 				nConnection = 0
-				*IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+				*IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 				*	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 				*ENDIF
 				WAIT WINDOW 'SQL' TIMEOUT 2
@@ -45028,7 +45028,7 @@ PRIVATE cAlias
 cAlias = ALIAS()
 
 *********
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -45136,7 +45136,7 @@ PRIVATE cAlias
 cAlias = ALIAS()
 
 *********
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -45461,7 +45461,7 @@ OTHERWISE
 	RETURN .F.
 ENDCASE
 
-IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 ENDIF 
 
@@ -45865,7 +45865,7 @@ IF VARTYPE(cUserName) != "C"
 	RETURN .F.
 ENDIF
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -46733,7 +46733,7 @@ ELSE
 ENDIF
 nConn = CheckSQLConnection(nConn)
 
-IF NOT "PROC_WO" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_WO" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_WO ADDITIVE
 ENDIF
 

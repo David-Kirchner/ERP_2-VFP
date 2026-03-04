@@ -1,4 +1,4 @@
-*IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 *ENDIF
 
@@ -142,7 +142,7 @@ PROCEDURE SO_get_next
   
   lnOldArea = SELECT()
   SELECT 0
-  IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+  IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 	ENDIF
 
@@ -227,7 +227,7 @@ ENDPROC
 *!*	PRIVATE cAlias, nConnHandle, cSQL 
 *!*	cAlias = ALIAS()
 
-*!*	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*!*	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *!*		SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 *!*	ENDIF
 *!*	nConnHandle = get_SQLSTRINGCONNECT() 
@@ -328,7 +328,7 @@ cAlias = ALIAS()
 
 PRIVATE lPurchWriteOff
 lPurchWriteOff = .T.
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -404,7 +404,7 @@ PARAMETER pTXT
 IF TYPE('pTXT') != "C"
 	pTXT = "No Parameter"
 ENDIF
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -528,7 +528,7 @@ PARAMETERS Pnerror, Pmess1h2, Pcprogram, Pnlineno, pcMessMemo
 * RecordError(1, 'Title', 'program', LINENO(1),'Long Message')
 * Called from TrackError of Proc_ERP
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -681,7 +681,7 @@ PARAMETERS Pmess1RecordTest, Pcprogram, Pnlineno, pMessMemo
 * RecordTest( mess1 C254, cprogram C254, LINENO(1), MessMemo VarChar(MAX) )
 * RecordTest( "Record Test Data.","Proc_ERP:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(1),"Long Message")
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -708,10 +708,10 @@ IF UPPER(pMessMemo) = "LOST ALIAS 'ERRORS'"
 	RETURN
 ENDIF
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -834,7 +834,7 @@ IF VARTYPE(nVer) != "N"
 	nVer = 0
 ENDIF
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -913,7 +913,7 @@ ENDIF
 cBody = PrepareSQLtxt(cBody,'Comment',-1)
 
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -3402,7 +3402,7 @@ PROCEDURE HTML_PackingSli_DataMatrix
 PARAMETERS pPackingSli, cComapany, pReturnURL
 
 *m.cHyperLink = HTML_PackingSli_DataMatrix(pPackingSli,cComapany, pReturnURL)
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 PRIVATE cReturnString
@@ -4448,8 +4448,8 @@ ENDPROC
 PROCEDURE getShipWhereString 
 
 PRIVATE cReturnString
-*cReturnString = "HPA Tipton,Direct,Blind,Service,HPA Windfall"
-cReturnString = "HPA Tipton,Direct2Cust,Blind,Service_Conv,HPA Windfall,Remote Stock"
+*cReturnString = "ERP_Loc1,Direct,Blind,Service,ERP_Loc2"
+cReturnString = "ERP_Loc1,Direct2Cust,Blind,Service_Conv,ERP_Loc2,Remote Stock"
 RETURN cReturnString
 
 ENDPROC
@@ -5531,7 +5531,7 @@ IF VARTYPE(cNumber) != "C"
 	RETURN .F.
 ENDIF
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 ENDIF 
 
@@ -5670,7 +5670,7 @@ IF VARTYPE(cNumber) != "C"
 	RETURN .F.
 ENDIF
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVEF
 ENDIF 
 
@@ -6058,7 +6058,7 @@ PROCEDURE Get_SQL_DateTime
 PRIVATE dtReturn
 dtReturn = CTOT('')
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF
 

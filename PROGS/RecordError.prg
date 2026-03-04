@@ -3,7 +3,7 @@ PARAMETERS Pnerror, Pmess1, Pcprogram, Pnlineno, pMessMemo
 *? RecordError(1, 'mess1', 'program', 1, 'Long Message')
 * RecordError(Pnerror, Pmess1, Pcprogram, Pnlineno, pMessMemo)
 * Pmess1 is now 254+254+254 = 762max
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 

@@ -1,4 +1,4 @@
-*IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 *ENDIF 
 
@@ -119,10 +119,10 @@ ENDIF
 PRIVATE cSQL, nConnHandle,  CurrSelect
 
 CurrSelect = ALIAS()
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -200,10 +200,10 @@ ENDIF
 
 PRIVATE cSQL, nConnHandle, CurrSelect
 CurrSelect = ALIAS()
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -344,10 +344,10 @@ IF USED('ALLOYS')
 	ENDIF
 
 ELSE
-	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 	ENDIF
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 	ENDIF 
 	
@@ -503,10 +503,10 @@ PRIVATE cSQL, nConnHandle, CurrSelect, cBrandName
 CurrSelect = ALIAS()
 nConnHandle = 0
 cBrandName = ' '
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 nConnHandle = get_SQLSTRINGCONNECT()
@@ -636,10 +636,10 @@ PRIVATE cSQL, nConnHandle, CurrSelect, cBrandName
 CurrSelect = ALIAS()
 nConnHandle = 0
 cBrandName = ' '
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 nConnHandle = get_SQLSTRINGCONNECT()
@@ -715,10 +715,10 @@ PRIVATE cSQL, nConnHandle, CurrSelect, cUniversalName
 CurrSelect = ALIAS()
 nConnHandle = 0
 cUniversalName = ' '
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 nConnHandle = get_SQLSTRINGCONNECT()
@@ -827,10 +827,10 @@ PRIVATE cSQL, nConnHandle, CurrSelect, cCCtext
 CurrSelect = ALIAS()
 nConnHandle = 0
 cCCtext = ' '
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 nConnHandle = get_SQLSTRINGCONNECT()
@@ -1416,10 +1416,10 @@ IF VARTYPE(pcCover) = "C"
 	ENDIF
 ENDIF
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 PRIVATE nConn
@@ -1523,10 +1523,10 @@ IF VARTYPE(pCover) = "C"
 	ENDIF
 ENDIF
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 PRIVATE nConn
@@ -1713,10 +1713,10 @@ CASE pcFormNumber = "01"
    lcFormDescription = lcFormDescription + "99 INGOT     "+CHR(13)
 OTHERWISE
 	*use SQL table
-	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 	ENDIF
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 	ENDIF 
 	
@@ -1801,10 +1801,10 @@ IF VARTYPE(pcFormDescription) != "C"
 ENDIF
 
 *use SQL table
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -2783,7 +2783,7 @@ cProgram = ""
 
 DO CASE
 CASE nShipWhere = 1
-	cProgram = "HPA Tipton"
+	cProgram = "ERP_Loc1"
 CASE nShipWhere = 2
 	cProgram = "DIRECT"
 CASE nShipWhere = 3
@@ -2791,7 +2791,7 @@ CASE nShipWhere = 3
 CASE nShipWhere = 4
 	cProgram = "Service"
 CASE nShipWhere = 5
-	cProgram = "HPA Windfall"
+	cProgram = "ERP_Loc2"
 CASE nShipWhere = 6
 	cProgram = "RemoteStock"
 ENDCASE 
@@ -3238,10 +3238,10 @@ PARAMETER pTXT
 IF TYPE('pTXT') != "C"
 	pTXT = "No Parameter"
 ENDIF
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -3331,20 +3331,20 @@ IF VARTYPE(pConn) = "N"
 	IF pConn> 0
 		nConn = pConn
 	ELSE	
-		IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 		ENDIF
-		IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 		ENDIF 
 		nConn = get_SQLSTRINGCONNECT()
 		lNewConn = .T.
 	ENDIF
 ELSE
-	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 	ENDIF
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 	ENDIF 
 	nConn = get_SQLSTRINGCONNECT()
@@ -3588,10 +3588,10 @@ IF VARTYPE(pConnHandle) = "N"
 	IF pConnHandle > 0
 		nConn = pConnHandle
 	ELSE
-		IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 		ENDIF
-		IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 		ENDIF 
 		
@@ -3599,10 +3599,10 @@ IF VARTYPE(pConnHandle) = "N"
 		lNewConn = .T.
 	ENDIF
 ELSE
-	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 	ENDIF
-	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+	IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 		SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 	ENDIF 
 	
@@ -4968,10 +4968,10 @@ IF Proper_SO_item(cSOitem) =  Proper_SO_item('')
 	RETURN lcReturn
 ENDIF
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF
-IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 ENDIF 
 
@@ -5133,10 +5133,10 @@ PARAMETERS cInqnumP, cEmailTO
 
 PRIVATE nConn, lNewConn
 lNewConn = .F.
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 
@@ -6523,7 +6523,7 @@ ENDPROC
 PROCEDURE Calc_QTY_SOitem 
 PARAMETERS cSOItem, nConn
 **Calc_QTY_SOitem(pcSOitem,ThisForm.nConnHandle)
-*Returns HPA Acct QTY
+*Returns ERP Acct Standard QTY
 
 *If dbo.Sales does not have S_QTY, 
 *	call Calc_QTY(cAlloy,cForm,nPieces,nThck,nSz2,nSz3,nWeight,pPU, nConn)
@@ -6658,7 +6658,7 @@ ENDPROC
 PROCEDURE Calc_QTY_WO 
 PARAMETERS nWO, nConn
 **Calc_QTY_WO(nWO,ThisForm.nConnHandle)
-*Returns HPA Acct QTY
+*Returns ERP Acct Standard QTY
 
 PRIVATE nQTY
 nQTY = 0
@@ -7074,7 +7074,7 @@ IF dDate = CTOD('')
 ENDIF
 
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF 
 

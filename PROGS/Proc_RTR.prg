@@ -1,4 +1,4 @@
-*IF NOT "PROC_RTR" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_RTR" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_RTR ADDITIVE
 *ENDIF
 
@@ -1834,7 +1834,7 @@ PARAMETERS biRTR_ID, nDetail, nOper_ID, cOper_Note, pConnHandle
 * rtr_Detail table needs a record so inner join Query works!
 *use Add_rtr_Detail_Oper to create the first rtr_Detail record.
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 IF NOT "PROC_SETUP" $ SET("PROCEDURE")

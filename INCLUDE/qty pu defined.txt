@@ -1,6 +1,6 @@
 *************************
 nPU		= nPU_Acct_Form(cForm,conn)
-nS_QTY	= Calc_QTY(cAlloy,cForm,nPieces,nThck,nSz2,nSz3,cOtherFld,ThisFormSet.nConnHandle)  -HPA Acct dbo.f_Calc_Acct_QTY()
+nS_QTY	= Calc_QTY(cAlloy,cForm,nPieces,nThck,nSz2,nSz3,cOtherFld,ThisFormSet.nConnHandle)  -ERP Acct Standard dbo.f_Calc_Acct_QTY()
 
 cSQL = cSQL + ",ISNULL(StockLst_PU,dbo.f_GetFormPU(Form)) AS StockLst_PU "
 
@@ -44,8 +44,8 @@ nPU = nPU_Acct_Form( cForm, nConn ) uses SQL
 nPU = GetPUfromForm(pForm, pConnHandle) uses SQL
 nPU = GetPUfromFormSvc( cForm, lLabServices,lConvServ, lIntP, lEquipment) --Return a 4 'Lot' if Svc is True
 nPU = Get_PUfromText(cPUtext)  - hard coded, use SQL instead
-nPU = GetPUfrom_SOitem(pcSOitem,ThisForm.nConnHandle)   	-HPA Acct
-nPU = GetPUfrom_POitem(pcPOitem,ThisForm.nConnHandle)   	-HPA Acct (Services, ConvServ, Equipment is /Pc )
+nPU = GetPUfrom_SOitem(pcSOitem,ThisForm.nConnHandle)   	-ERP Acct Standard
+nPU = GetPUfrom_POitem(pcPOitem,ThisForm.nConnHandle)   	-ERP Acct Standard (Services, ConvServ, Equipment is /Pc )
 nPU = GetOrder_PUfrom_POitem(pcPOitem,ThisForm.nConnHandle)  -Vendor PU
 nPU = Get_PUinSales(cSOItem, ThisForm.nConnHandle)
 nPU = GetPUfromForm( cForm, nConn )
