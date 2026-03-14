@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 12/21/25             QUOTES.MPR               17:13:21  
+*       * 03/09/26             QUOTES.MPR               01:16:14  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * David Kirchner                                          
 *       *                                                         
-*       * Copyright (C) 2025 High Performance Alloys              
+*       * Copyright (C) 2026 High Performance Alloys              
 *       * 444 Wilson St                                           
 *       * Tipton, IN  46072                                       
 *       *                                                         
@@ -26,24 +26,24 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7cq10wwkt OF _MSYSMENU PROMPT "\<File" COLOR SCHEME 3 ;
+DEFINE PAD _7ey02q1cn OF _MSYSMENU PROMPT "\<File" COLOR SCHEME 3 ;
 	KEY ALT+F, ""
-DEFINE PAD _7cq10wwku OF _MSYSMENU PROMPT "\<Edit" COLOR SCHEME 3 ;
+DEFINE PAD _7ey02q1co OF _MSYSMENU PROMPT "\<Edit" COLOR SCHEME 3 ;
 	KEY ALT+E, ""
-DEFINE PAD _7cq10wwkv OF _MSYSMENU PROMPT "\<Applications" COLOR SCHEME 3 ;
+DEFINE PAD _7ey02q1cp OF _MSYSMENU PROMPT "\<Applications" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
 DEFINE PAD Maintainance OF _MSYSMENU PROMPT "\<Maintanence" COLOR SCHEME 3 ;
 	KEY ALT+M, ""
 DEFINE PAD Quotes OF _MSYSMENU PROMPT "\<Quotes" COLOR SCHEME 3 ;
 	KEY ALT+Q, ""
-DEFINE PAD _7cq10wwkw OF _MSYSMENU PROMPT "\<Help" COLOR SCHEME 3 ;
+DEFINE PAD _7ey02q1cq OF _MSYSMENU PROMPT "\<Help" COLOR SCHEME 3 ;
 	KEY ALT+H, ""
-ON PAD _7cq10wwkt OF _MSYSMENU ACTIVATE POPUP file
-ON PAD _7cq10wwku OF _MSYSMENU ACTIVATE POPUP edit
-ON PAD _7cq10wwkv OF _MSYSMENU ACTIVATE POPUP applicatio
+ON PAD _7ey02q1cn OF _MSYSMENU ACTIVATE POPUP file
+ON PAD _7ey02q1co OF _MSYSMENU ACTIVATE POPUP edit
+ON PAD _7ey02q1cp OF _MSYSMENU ACTIVATE POPUP applicatio
 ON PAD Maintainance OF _MSYSMENU ACTIVATE POPUP maintanenc
 ON PAD Quotes OF _MSYSMENU ACTIVATE POPUP quotes
-ON PAD _7cq10wwkw OF _MSYSMENU ACTIVATE POPUP help
+ON PAD _7ey02q1cq OF _MSYSMENU ACTIVATE POPUP help
 
 DEFINE POPUP file MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR _mfi_close OF file PROMPT "\<Close" ;
@@ -96,11 +96,11 @@ DEFINE BAR 2 OF applicatio PROMPT "Specs"
 DEFINE BAR 3 OF applicatio PROMPT "See Inventory"
 DEFINE BAR 4 OF applicatio PROMPT "---"
 ON SELECTION BAR 1 OF applicatio ;
-	DO _7cq10wwkx ;
-	IN LOCFILE("ERP\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
+	DO _7ey02q1cr ;
+	IN LOCFILE("ERP_1\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
 ON SELECTION BAR 2 OF applicatio ;
-	DO _7cq10wwky ;
-	IN LOCFILE("ERP\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
+	DO _7ey02q1cs ;
+	IN LOCFILE("ERP_1\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
 ON SELECTION BAR 3 OF applicatio DO FORM 'Forms\StockLst_SQL_Quotes.scx' WITH "Browse","S"
 
 DEFINE POPUP maintanenc MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -131,11 +131,11 @@ DEFINE BAR 1 OF quotes PROMPT "\-"
 DEFINE BAR 2 OF quotes PROMPT "Find"
 DEFINE BAR 3 OF quotes PROMPT "Jump"
 ON SELECTION BAR 2 OF quotes ;
-	DO _7cq10wwkz ;
-	IN LOCFILE("ERP\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
+	DO _7ey02q1ct ;
+	IN LOCFILE("ERP_1\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
 ON SELECTION BAR 3 OF quotes ;
-	DO _7cq10wwl0 ;
-	IN LOCFILE("ERP\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
+	DO _7ey02q1cu ;
+	IN LOCFILE("ERP_1\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
 
 DEFINE POPUP help MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR _mst_about OF help PROMPT "\<About Microsoft Visual FoxPro..." ;
@@ -163,7 +163,7 @@ DEFINE BAR _mwi_arran OF help PROMPT "\<Arrange All" ;
 
 *       *********************************************************
 *       *                                                         
-*       * _7CQ10WWKX  ON SELECTION BAR 1 OF POPUP applicatio      
+*       * _7EY02Q1CR  ON SELECTION BAR 1 OF POPUP applicatio      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -174,7 +174,7 @@ DEFINE BAR _mwi_arran OF help PROMPT "\<Arrange All" ;
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7cq10wwkx
+PROCEDURE _7ey02q1cr
 IF FILE('Forms\REDAREA.SCX')
 	DO FORM 'Forms\REDAREA.SCX'
 ELSE
@@ -187,7 +187,7 @@ ENDIF
 
 *       *********************************************************
 *       *                                                         
-*       * _7CQ10WWKY  ON SELECTION BAR 2 OF POPUP applicatio      
+*       * _7EY02Q1CS  ON SELECTION BAR 2 OF POPUP applicatio      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -198,7 +198,7 @@ ENDIF
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7cq10wwky
+PROCEDURE _7ey02q1cs
 IF FILE('forms\SPEC_EDIT.SCX')
 	DO FORM 'forms\SPEC_EDIT'
 ELSE
@@ -211,7 +211,7 @@ ENDIF
 
 *       *********************************************************
 *       *                                                         
-*       * _7CQ10WWKZ  ON SELECTION BAR 2 OF POPUP quotes          
+*       * _7EY02Q1CT  ON SELECTION BAR 2 OF POPUP quotes          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -222,14 +222,14 @@ ENDIF
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7cq10wwkz
+PROCEDURE _7ey02q1ct
 DO FORM forms\FindQuotes
 _VFP.ActiveForm.ReFresh
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7CQ10WWL0  ON SELECTION BAR 3 OF POPUP quotes          
+*       * _7EY02Q1CU  ON SELECTION BAR 3 OF POPUP quotes          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -240,7 +240,7 @@ _VFP.ActiveForm.ReFresh
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7cq10wwl0
+PROCEDURE _7ey02q1cu
 SELECT Quotes
 browse
 

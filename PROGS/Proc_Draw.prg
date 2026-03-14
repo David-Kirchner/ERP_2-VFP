@@ -3,7 +3,21 @@
 *ENDIF
 
 ************************************************************************
+*!*	Math Errors Found
+*!*	BUG 1 — Ld unit mismatch in frictional heating (line 1320)
+*!*	Ld is computed in user diameter units (inches or mm), but the frictional heating formula multiplies it with velocity_m_s (m/s). The formula v(v·Ld / (C·?·K)) requires all SI units — Ld must be in meters.
 
+*!*	This makes frictional heating and Tmax wrong by a factor of v(1/0.0254) ˜ 6.3× (if inches) or v(1/0.001) ˜ 31.6× (if mm).
+
+*!*	BUG 2 — Ld unit mismatch in strain rate (line 1237)
+*!*	Same issue: avg_strain_rate(eps_t, v_in, v_out, Ld) mixes m/s velocities with Ld in user units.
+
+*!*	BUG 3 — PA_TO_PSI constant (line 21)
+*!*	PA_TO_PSI = PSI_TO_MPA * 1e-6   # = 6.89e-9  ? WRONG
+
+*!*	Should be MPA_TO_PSI * 1e-6 = 1.4504e-4. Currently unused, so no downstream effect yet — but it's a trap.
+
+************************************************************************
 *Metals Handbook V14 Forming ang Forging
 
 *Wire, Rod, and Tube Drawing
@@ -17,7 +31,7 @@ PROCEDURE Delta_Tilda(nApproach_Semiangle_Rad, nRA )
 *Reduction of Area =  (Do*Do - Df*Df) / (Do*Do).                        (9-4)/9 = 5/9 = .55
 *A is area = 3.14 * (D^2)/4
 PRIVATE nDelta
-nDelta = (nApproach_Semiangle_Rad / nRA)*( 1+ (nRA^.5) )^2
+nDelta = (nApproach_Semiangle_Rad / nRA)*( 1+ ((1-nRA)^.5) )^2
 *SemiAngles in the range 6 to 10deg and draw reductions of nRA about 20% have a Delta of 2 - 3.
 *nAlphaRad = AlphaRad(nDegAngle)  *Returns the degree angle to Radian. nAlphaRad = AlphaRad(6) to nAlphaRad = AlphaRad(10) 
 
@@ -47,7 +61,7 @@ PROCEDURE DrawStress_Tilda( nAve_Strength, nDelta, nApproach_Semiangle_Rad, nCoF
 *nApproach_Semiangle_Rad greek symbal is alpha
 *nDrawStress greek symbal is sigma_d
 PRIVATE nDrawStress
-nDrawStress = nAve_Strength*(3.2 /(nDelta +0.9)) * (nApproach_Semiangle_Rad +  nCoF )
+nDrawStress = nAve_Strength*( 3.2/(nDelta +0.9) ) * (nApproach_Semiangle_Rad +  nCoF )
 RETURN nDrawStress
 ENDPROC
 
@@ -891,7 +905,7 @@ PROCEDURE velocity_out(nVelocityIn, nArea0, nArea1  )
 *!*	 volume does not change	V0 A0	= V1 A1				7.1
 *!*	 wire velocity	V 
 PRIVATE nVelocityOut
-nVelocityOut = nVelocityIn * nArea0/ nArea1
+nVelocityOut = nVelocityIn * (nArea1/ nArea0)
 RETURN nVelocityOut
 ENDPROC
 

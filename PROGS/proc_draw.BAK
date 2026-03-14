@@ -1,9 +1,23 @@
-*IF NOT "PROC_DRAW" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_DRAW" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_Draw ADDITIVE
 *ENDIF
 
 ************************************************************************
+*!*	Math Errors Found
+*!*	BUG 1 — Ld unit mismatch in frictional heating (line 1320)
+*!*	Ld is computed in user diameter units (inches or mm), but the frictional heating formula multiplies it with velocity_m_s (m/s). The formula v(v·Ld / (C·?·K)) requires all SI units — Ld must be in meters.
 
+*!*	This makes frictional heating and Tmax wrong by a factor of v(1/0.0254) ˜ 6.3× (if inches) or v(1/0.001) ˜ 31.6× (if mm).
+
+*!*	BUG 2 — Ld unit mismatch in strain rate (line 1237)
+*!*	Same issue: avg_strain_rate(eps_t, v_in, v_out, Ld) mixes m/s velocities with Ld in user units.
+
+*!*	BUG 3 — PA_TO_PSI constant (line 21)
+*!*	PA_TO_PSI = PSI_TO_MPA * 1e-6   # = 6.89e-9  ? WRONG
+
+*!*	Should be MPA_TO_PSI * 1e-6 = 1.4504e-4. Currently unused, so no downstream effect yet — but it's a trap.
+
+************************************************************************
 *Metals Handbook V14 Forming ang Forging
 
 *Wire, Rod, and Tube Drawing
@@ -1149,4 +1163,19 @@ ENDPROC
 *RETURN 
 *ENDPROC
 
+
+*********************************** PROCEDURE ()PRIVATE RETURN ENDPROC
+*********************************** 
+PROCEDURE Area_hollow (nOD, nID)
+PRIVATE nArea
+nArea = 3.14156/4 * ((nOD*nOD)-(nID*nID))
+RETURN nArea
+ENDPROC
+
+*********************************** 
+PROCEDURE Reduction_of_Area_hollow (nOrig_OD, nOrig_ID, nFinal_OD, nFinal_ID )
+PRIVATE nRA
+nRA = (((nOrig_OD*nOrig_OD)-(nOrig_ID*nOrig_ID)) - ((nFinal_OD*nFinal_OD)-(nFinal_ID*nFinal_ID ))) / ((nOrig_OD*nOrig_OD)-(nOrig_ID*nOrig_ID))
+RETURN nRA
+ENDPROC
 
