@@ -1,7 +1,7 @@
-*IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 *ENDIF 
-*IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+*IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 *	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 *ENDIF 
 
@@ -54,7 +54,7 @@ nReturn = 0
 
 PRIVATE cServer, cDatabaseTable
 cServer = "SUPERMICRO\SQLEXPRESS"
-cDatabaseTable = "HPAlloy"
+cDatabaseTable = "ERP_1"
 
 *David is allowed to test on different servers
 IF RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 ) = "David Kirchner"
@@ -521,66 +521,85 @@ IF VARTYPE(gGlobalServer) != "C"
 	gGlobalServer = "-"
 	
 	*Read XML files only once	
-	IF FILE( "\\RAPTOR\SQL\ERPdata.xml" )
+	IF FILE( "SQL_Server.xml" )
 		*READ file
 		TRY
-			XMLTOCURSOR( "\\RAPTOR\SQL\ERPdata.xml", 'ERPdata', 512)
+			XMLTOCURSOR( "SQL_Server.xml", 'ERPdata', 512)
 			
 			IF USED('ERPdata')
-				IF VARTYPE( ERPdata.WindfallServer ) = "C"
-					cWindfallServer1 = RTRIM(ERPdata.WindfallServer)
+				IF VARTYPE( ERPdata.Server ) = "C"
+					cWindfallServer1 = RTRIM(ERPdata.Server)
 					gGlobalServer = cWindfallServer1 
 					lFoundWindfall = .T.
 				ENDIF
-				
-				
-				IF VARTYPE( ERPdata.TiptonServer ) = "C"
-					cTiptonServer1 = RTRIM(ERPdata.TiptonServer)
-				ENDIF
-
-				IF VARTYPE( ERPdata.BackUpServer ) = "C"
-					cBackUpServer = RTRIM(ERPdata.BackUpServer)
-				ENDIF
-				
-				USE IN ERPdata
 			ENDIF
 		CATCH
 			CATCH
 			MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+"Cannot write error without database!"+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\RAPTOR\SQL\ERPdata.xml"]+CHR(13)+[, 'ERPdata', 512)],16,"Could not get DFS file")
-			*cannot write error witout database!
+			*cannot write error witout database
 		ENDTRY
-	ELSE
-		
-		IF FILE( "\\Vulcan\SQL\ERPdata.xml" )
-			*READ file
-			TRY
-				XMLTOCURSOR( "\\Vulcan\SQL\ERPdata.xml", 'ERPdata', 512)
-				
-				IF USED('ERPdata')
-					IF VARTYPE( ERPdata.WindfallServer ) = "C"
-						cWindfallServer1 = RTRIM(ERPdata.WindfallServer)
-						gGlobalServer = cWindfallServer1 
-						lFoundWindfall = .T.
-					ENDIF
-					
-					
-					IF VARTYPE( ERPdata.TiptonServer ) = "C"
-						cTiptonServer1 = RTRIM(ERPdata.TiptonServer)
-					ENDIF
-
-					IF VARTYPE( ERPdata.BackUpServer ) = "C"
-						cBackUpServer = RTRIM(ERPdata.BackUpServer)
-					ENDIF
-					
-					USE IN HPAdata
-				ENDIF
-			CATCH
-				MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+"Cannot write error without database!"+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\Vulcan\SQL\ERPdata.xml"]+CHR(13)+[, 'ERPdata', 512)],16,"Could not get DFS file")
-				*cannot write error witout database!
-			ENDTRY
-		ENDIF
 	ENDIF
-	
+
+				
+*!*		IF FILE( "\\RAPTOR\SQL\ERPdata.xml" )
+*!*			*READ file
+*!*			TRY
+*!*				XMLTOCURSOR( "\\RAPTOR\SQL\ERPdata.xml", 'ERPdata', 512)
+*!*				
+*!*				IF USED('ERPdata')
+*!*					IF VARTYPE( ERPdata.WindfallServer ) = "C"
+*!*						cWindfallServer1 = RTRIM(ERPdata.WindfallServer)
+*!*						gGlobalServer = cWindfallServer1 
+*!*						lFoundWindfall = .T.
+*!*					ENDIF
+*!*					
+*!*					IF VARTYPE( ERPdata.TiptonServer ) = "C"
+*!*						cTiptonServer1 = RTRIM(ERPdata.TiptonServer)
+*!*					ENDIF
+
+*!*					IF VARTYPE( ERPdata.BackUpServer ) = "C"
+*!*						cBackUpServer = RTRIM(ERPdata.BackUpServer)
+*!*					ENDIF
+*!*					
+*!*					USE IN ERPdata
+*!*				ENDIF
+*!*			CATCH
+*!*				CATCH
+*!*				MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+"Cannot write error without database!"+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\RAPTOR\SQL\ERPdata.xml"]+CHR(13)+[, 'ERPdata', 512)],16,"Could not get DFS file")
+*!*				*cannot write error witout database!
+*!*			ENDTRY
+*!*		ELSE
+*!*			
+*!*			IF FILE( "\\Vulcan\SQL\ERPdata.xml" )
+*!*				*READ file
+*!*				TRY
+*!*					XMLTOCURSOR( "\\Vulcan\SQL\ERPdata.xml", 'ERPdata', 512)
+*!*					
+*!*					IF USED('ERPdata')
+*!*						IF VARTYPE( ERPdata.WindfallServer ) = "C"
+*!*							cWindfallServer1 = RTRIM(ERPdata.WindfallServer)
+*!*							gGlobalServer = cWindfallServer1 
+*!*							lFoundWindfall = .T.
+*!*						ENDIF
+*!*						
+*!*						
+*!*						IF VARTYPE( ERPdata.TiptonServer ) = "C"
+*!*							cTiptonServer1 = RTRIM(ERPdata.TiptonServer)
+*!*						ENDIF
+
+*!*						IF VARTYPE( ERPdata.BackUpServer ) = "C"
+*!*							cBackUpServer = RTRIM(ERPdata.BackUpServer)
+*!*						ENDIF
+*!*						
+*!*						USE IN HPAdata
+*!*					ENDIF
+*!*				CATCH
+*!*					MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+"Cannot write error without database!"+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\Vulcan\SQL\ERPdata.xml"]+CHR(13)+[, 'ERPdata', 512)],16,"Could not get DFS file")
+*!*					*cannot write error witout database!
+*!*				ENDTRY
+*!*			ENDIF
+*!*		ENDIF
+*!*		
 	*Save to MEM
 	IF FILE(SYS(5)+SYS(2003) +"\SQLserver1.MEM")
 		IF NOT "\MEM" $ SYS(2003)
@@ -702,10 +721,11 @@ ENDIF
 
 
 
-IF RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 ) = "David Kirchner"
+IF RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 ) = "TalkT"  &&"David Kirchner"
 *	cServer = "SQLdev"
 *	cServer = "BOBWHITE"
 *	cServer = "PEREGRINE"
+*	cServer = "SUPERMICRO\SQLEXPRESS"	
 	WAIT WINDOW "Server="+cServer NOWAIT
 ENDIF
 
@@ -2546,7 +2566,7 @@ IF NOT EMPTY(cAlias)
 ENDIF
 
 IF EMPTY(cReturn) 
-	cReturn = "Sales@HPAlloys.com"
+	cReturn = "Sales@SpaceAlloysUSA.com"
 *	PRIVATE cMess
 *	cMess = "INSERT dbo.AppSetup ([Prp],[UN],[ANS])  VALUES ('E-mail','"+cUserName+"','"+cReturn+"' ). "
 *	cMess = cMess +CHR(13)+"Also add person to Database Mail!"
@@ -3056,7 +3076,7 @@ ELSE
 	*cSQLServer = "PEREGRINE"
 ENDIF
 
-RETURN cSQLServer+"@HPAlloys.com"
+RETURN cSQLServer+"@SpaceAlloysUSA.com"
 ENDPROC
 
 ********************************* 
@@ -3446,7 +3466,7 @@ ENDPROC
 ********************************* 
 PROC HPAAppLoad 
 PARAMETER cVersion
-*Records Version, called in LOAD procedure of HPA menu.
+*Records Version, called in LOAD procedure of ERP menu.
 
 IF VARTYPE(cVersion) != "C"
 	cVersion = '0'
@@ -3621,7 +3641,7 @@ IF nLatestVersion < nYourVersion OR nYourVersion = 0
 			SQLEXECError(cSQL,nConn, nSQLEXEC, '')
 			RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 		ELSE
-			IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+			IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 				SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 			ENDIF
 			TrackMess( cSQL )
@@ -3645,7 +3665,7 @@ PARAMETERS lNotCaption, pWhat
 *WAIT WINDOW 'HPAVersion() Start' TIMEOUT 1
 *RETURN "Version 1.2.3"
 
-IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 ENDIF
 
@@ -3875,7 +3895,7 @@ IF lBuildAllow
 		*	RETURN .F.	&&Build is only bad if Minor is Same
 		*ENDIF
 		
-		IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+		IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 		ENDIF
 		
@@ -4475,7 +4495,7 @@ TRY
 					SQLEXECError(cSQL,nConn, nSQLEXEC, '')
 					RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
 				ELSE
-					IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+					IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 						SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 					ENDIF
 					TrackMess( cSQL )
@@ -4657,7 +4677,7 @@ TRY
 					ENDDO
 				ENDIF
 				
-				IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+				IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 					SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 				ENDIF
 
@@ -6907,7 +6927,7 @@ ENDPROC
  
 PROCEDURE UN_from_PRP_ANS 
 PARAMETERS cPRP,cANS
-*cProfile_Name = UN_from_PRP_ANS('Profile_Name','David.Kirchner@hpalloys.com')
+*cProfile_Name = UN_from_PRP_ANS('Profile_Name','David.Kirchner@SpaceAlloysUSA.com')
 *Profile is needed to match SQL email profile settings
 
 IF VARTYPE(cPRP)!="C"

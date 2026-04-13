@@ -14,7 +14,7 @@ lcLastSetPath=SET("PATH")
 lcLastSetCentury=SET("CENTURY")	&&Century was not in QuotesSet untill 3-2009
 SET CENTURY ON
 
-SET DEFAULT TO "E:\VFP\ERP"
+SET DEFAULT TO "E:\VFP\ERP_1"
 
 *!*	*? "Save 'Last Set'" 
 *!*	IF "\MEM" $ SYS(2003)
@@ -56,11 +56,11 @@ ELSE
 			WAIT WINDOW "Running the ERP Setup to set defaults." TIMEOUT 1
 			
 			IF FILE("\Forms\SetupERP.SCX")
-				*DO FORM LOCFILE("C:\Program Files (x86)\ERP\Forms\SetupERP.SCX","SCX","Select the SetupERP.EXE")
-				*DO FORM "C:\Program Files (x86)\ERP\Forms\SetupERP.SCX"
+				*DO FORM LOCFILE("C:\Program Files (x86)\ERP_1\Forms\SetupERP.SCX","SCX","Select the SetupERP.EXE")
+				*DO FORM "C:\Program Files (x86)\ERP_1\Forms\SetupERP.SCX"
 			ELSE
-				IF FILE(SYS(5)+SYS(2003)+"\ERP\SetupERP.exe")
-					RUN SYS(5)+SYS(2003)+"\ERP\SetupERP.exe"
+				IF FILE(SYS(5)+SYS(2003)+"\ERP_1\SetupERP.exe")
+					RUN SYS(5)+SYS(2003)+"\ERP_1\SetupERP.exe"
 				ELSE
 					PRIVATE cLocFile
 					cLocFile = LOCFILE("SetupERP.SCX","SCX","Select the SetupERP")
@@ -97,8 +97,8 @@ IF TYPE("LoginAppHome") != "C"
 			SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM")
 		ENDIF
 	ELSE
-		IF FILE(SYS(5)+SYS(2003)+"\ERP\"+"ERP.EXE")
-			LoginAppHome = SYS(5)+SYS(2003)+"\ERP\"
+		IF FILE(SYS(5)+SYS(2003)+"\ERP_1\"+"ERP.EXE")
+			LoginAppHome = SYS(5)+SYS(2003)+"\ERP_1\"
 			IF NOT "\MEM" $ SYS(2003)
 				SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\ERPSetup.MEM")
 			ELSE
@@ -116,9 +116,9 @@ IF NOT (FILE(LoginAppHome+"ERP.EXE") OR FILE(LoginAppHome+"ERP.APP"))
 		LoginAppHome = SYS(5)+SYS(2003)
 		SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM")
 	ELSE
-		IF FILE("E:\VFP\ERP\"+"ERP.EXE")
+		IF FILE("E:\VFP\ERP_1\"+"ERP.EXE")
 
-			LoginAppHome = "E:\VFP\ERP\"
+			LoginAppHome = "E:\VFP\ERP_1\"
 
 			IF NOT "\MEM" $ SYS(2003)
 				SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\ERPSetup.MEM")
@@ -136,7 +136,7 @@ IF NOT ( FILE(LoginAppHome+"ERP.EXE") OR FILE(LoginAppHome+"ERP.APP")  )
 	ENDIF
 	MESSAGEBOX("Run the ERP Setup to set defaults."+CHR(13)+"Main.prg"+CHR(13)+CHR(13)+"SYS(5)="+SYS(5)+CHR(13)+"SYS(2003)="+SYS(2003)+CHR(13)+"Line B "+STR(LINENO(1))+CHR(13)+"LoginAppHome="+LoginAppHome,48,"Home Directory not found!")
 
-	DO FORM LOCFILE("E:\VFP\ERP\Forms\SetupERP.SCX","SCX","Select the SetupERP.SCX")
+	DO FORM LOCFILE("E:\VFP\ERP_1\Forms\SetupERP.SCX","SCX","Select the SetupERP.SCX")
 	*RESTORE FROM (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM") ADDITIVE
 ENDIF
 
@@ -312,7 +312,7 @@ ELSE
 		RESTORE FROM (SYS(5)+SYS(2003) +"\MEM\SalesP.MEM") ADDITIVE
 	ELSE
 		MESSAGEBOX("Run the ERP Setup to set defaults."+CHR(13)+"Main.prg"+CHR(13)+CHR(13)+"SYS(5)="+SYS(5)+" "+CHR(13)+"SYS(2003)="+SYS(2003)+" "+CHR(13)+"Line C "+STR(LINENO()) ,48,"Set Defaults")
-		DO FORM LOCFILE("E:\VFP\ERP\MEM\SetupERP.SCX","SCX","Select the SetupERP")
+		DO FORM LOCFILE("E:\VFP\ERP_1\MEM\SetupERP.SCX","SCX","Select the SetupERP")
 		*RESTORE FROM (SYS(5)+SYS(2003) +"\SalesP.MEM") ADDITIVE
 		
 *		IF NOT FILE(SYS(5)+SYS(2003) +"\MEM\SalesP.MEM")	&&Old Code

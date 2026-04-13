@@ -191,21 +191,21 @@ Each production type maintains detailed lot number tracking in dedicated log tab
 
 ### Database Schema
 
-#### Quotes Table (HPAlloy.dbo.AllQuotes)
+#### Quotes Table (dbo.AllQuotes)
 - QuoteID (C, 10) - Primary Key
 - CustomerID (C, 10) - Foreign Key
 - QuoteDate (D)
 - Status (C, 20) - Open, Converted, Cancelled
 - TotalAmount (N, 12, 2)
 
-#### Orders Table (HPAlloy.dbo.Sales)
+#### Orders Table (dbo.Sales)
 - OrderID (C, 10) - Primary Key
 - QuoteID (C, 10) - Foreign Key
 - OrderDate (D)
 - Status (C, 20) - New, In Shop, Boxed, Shipped
 - ShipDate (D)
 
-#### Work Orders Table (HPAlloy.dbo.WorkOrder)
+#### Work Orders Table (dbo.WorkOrder)
 - WorkOrderID (C, 10) - Primary Key
 - OrderID (C, 10) - Foreign Key
 - ProductionType (C, 20) - Grind, Forge, Draw, Wire, etc.
@@ -214,7 +214,7 @@ Each production type maintains detailed lot number tracking in dedicated log tab
 - StartDate (D)
 - CompletionDate (D)
 
-#### Router Table (HPAlloy.dbo.rtr)
+#### Router Table (dbo.rtr)
 - RouterID (C, 10) - Primary Key
 - SalesOrderID (C, 10) - Foreign Key to Orders
 - WorkOrderID (C, 10) - Foreign Key to Work Orders
@@ -222,7 +222,7 @@ Each production type maintains detailed lot number tracking in dedicated log tab
 - Sequence (N, 3) - Routing sequence
 - Status (C, 20)
 
-#### Certification Table (HPAlloy.dbo.HPAcert)
+#### Certification Table (dbo.HPAcert)
 - CertID (C, 10) - Primary Key
 - WorkOrderID (C, 10) - Foreign Key
 - LotNumber (C, 20)
@@ -233,49 +233,49 @@ Each production type maintains detailed lot number tracking in dedicated log tab
 
 #### Production Log Tables
 
-**Draw Bench Log (HPAlloy.dbo.Draw_log)**
+**Draw Bench Log (dbo.Draw_log)**
 - LogID (C, 10) - Primary Key
 - LotNumber (C, 20)
 - WorkOrderID (C, 10) - Foreign Key
 - ProcessDate (D)
 - [Process-specific fields]
 
-**GFM Log - Cold Radial Forge (HPAlloy.dbo.GFMlog)**
+**GFM Log - Cold Radial Forge (dbo.GFMlog)**
 - LogID (C, 10) - Primary Key
 - LotNumber (C, 20)
 - WorkOrderID (C, 10) - Foreign Key
 - ProcessDate (D)
 - [Process-specific fields]
 
-**Heat Treat Log (HPAlloy.dbo.HT_log)**
+**Heat Treat Log (dbo.HT_log)**
 - LogID (C, 10) - Primary Key
 - LotNumber (C, 20)
 - WorkOrderID (C, 10) - Foreign Key
 - ProcessDate (D)
 - [Process-specific fields]
 
-**Lake Erie Log - Open Die Forge (HPAlloy.dbo.LakeErie_log)**
+**Lake Erie Log - Open Die Forge (dbo.LakeErie_log)**
 - LogID (C, 10) - Primary Key
 - LotNumber (C, 20)
 - WorkOrderID (C, 10) - Foreign Key
 - ProcessDate (D)
 - [Process-specific fields]
 
-**Swag Log - Cold rotary Forge (HPAlloy.dbo.Swag_log)**
+**Swag Log - Cold rotary Forge (dbo.Swag_log)**
 - LogID (C, 10) - Primary Key
 - LotNumber (C, 20)
 - WorkOrderID (C, 10) - Foreign Key
 - ProcessDate (D)
 - [Process-specific fields]
 
-**Wire Drawing Log (HPAlloy.dbo.Wire_log)**
+**Wire Drawing Log (dbo.Wire_log)**
 - LogID (C, 10) - Primary Key
 - LotNumber (C, 20)
 - WorkOrderID (C, 10) - Foreign Key
 - ProcessDate (D)
 - [Process-specific fields]
 
-#### Inventory Table (HPAlloy.dbo.vStockLst)
+#### Inventory Table (dbo.vStockLst)
 - InventoryID (C, 10) - Primary Key
 - PartNumber (C, 20)
 - Description (C, 100)
@@ -283,7 +283,7 @@ Each production type maintains detailed lot number tracking in dedicated log tab
 - QtyAllocated (N, 10, 2)
 - QtyAvailable (N, 10, 2)
 
-#### Receiving Table (HPAlloy.dbo.receiving)
+#### Receiving Table (dbo.receiving)
 - ReceivingID (C, 10) - Primary Key
 - InventoryID (C, 10) - Foreign Key
 - ReceiveDate (D)
@@ -291,7 +291,7 @@ Each production type maintains detailed lot number tracking in dedicated log tab
 - HeatNumber (C, 20)
 - Pounds (N, 10, 2)
 
-#### RMA Table (HPAlloy.dbo.rma)
+#### RMA Table (dbo.rma)
 - RMAID (C, 10) - Primary Key
 - OrderID (C, 10) - Foreign Key
 - RMADate (D)

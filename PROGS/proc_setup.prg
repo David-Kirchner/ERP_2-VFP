@@ -54,7 +54,8 @@ nReturn = 0
 
 PRIVATE cServer, cDatabaseTable
 cServer = "SUPERMICRO\SQLEXPRESS"
-cDatabaseTable = "HPAlloy"
+cDatabaseTable = "ERP_1"
+
 
 *David is allowed to test on different servers
 IF RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 ) = "David Kirchner"
