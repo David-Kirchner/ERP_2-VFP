@@ -4,18 +4,7 @@
 
 ************************************************************************
 *!*	Math Errors Found
-*!*	BUG 1 — Ld unit mismatch in frictional heating (line 1320)
-*!*	Ld is computed in user diameter units (inches or mm), but the frictional heating formula multiplies it with velocity_m_s (m/s). The formula v(v·Ld / (C·?·K)) requires all SI units — Ld must be in meters.
 
-*!*	This makes frictional heating and Tmax wrong by a factor of v(1/0.0254) ˜ 6.3× (if inches) or v(1/0.001) ˜ 31.6× (if mm).
-
-*!*	BUG 2 — Ld unit mismatch in strain rate (line 1237)
-*!*	Same issue: avg_strain_rate(eps_t, v_in, v_out, Ld) mixes m/s velocities with Ld in user units.
-
-*!*	BUG 3 — PA_TO_PSI constant (line 21)
-*!*	PA_TO_PSI = PSI_TO_MPA * 1e-6   # = 6.89e-9  ? WRONG
-
-*!*	Should be MPA_TO_PSI * 1e-6 = 1.4504e-4. Currently unused, so no downstream effect yet — but it's a trap.
 
 ************************************************************************
 *Metals Handbook V14 Forming ang Forging
@@ -24,7 +13,7 @@
 
 ***********************************
 PROCEDURE Delta_Tilda(nApproach_Semiangle_Rad, nRA )
-
+*(a in radians, r = nRA) 4*tan(a)/ln(1/(1-r))
 *Delta ~ ( approach_semiangle_rad / draw_redution)[1 + (1-draw_redution_^.5]^2
 *approach_semiangle in radians greek symbol is alpha
 *draw_redution = 1 - (Af/Ao) = 1 - (Df^2/Do^2).   Do=3, Df=2, then 1- (2*2/3*3) = 1-(4/9) = 1-.44 = .55 
@@ -50,7 +39,7 @@ PROCEDURE Min_DrawStress_Tilda( nCoF, nRA )
 *nCoF coefficent of friction
 *nRA = Reduction of Area
 PRIVATE nMin_DrawStress
-nMin_DrawStress = 4.9 *( nCoF / LOG(1/1-nRA) )^.5
+nMin_DrawStress = 4.9 *( nCoF / LOG(1/(1-nRA)) )^.5
 RETURN nMin_DrawStress
 ENDPROC
 
@@ -218,7 +207,7 @@ RETURN nTrue_Compresive_Strain
 ENDPROC
 
 ***********************************
-PROCEDURE True_Compressive_Stress(nPForce, nHeight_o, nHeight_f, nDia
+PROCEDURE True_Compressive_Stress(nPForce, nHeight_o, nHeight_f, nDia)
 *True_Compressive_Stress
 PRIVATE nTrue_Compressive_Stress
 nTrue_Compressive_Stress = (4* nPForce * nHeight_f) / (3.14156 * nDia * nDia * nHeight_o )
@@ -310,7 +299,7 @@ ENDPROC
 ***********************************
 PROCEDURE deform_zone_length_Rad(do, d1, nRad )
 *length of deform zone	Ld	(do-d1)/(2 TAN( nRad ))
-PRIVATE nLd
+PRIVATE nLd &&same units as the diameters
 nLd = (do-d1)/(2 * TAN( nRad ))
 RETURN nLd
 ENDPROC
@@ -327,7 +316,7 @@ ENDPROC
 
 
 ***********************************
-PROCEDURE drawing_stress( nPull_force, nA1 )
+PROCEDURE drawing_stress_pull( nPull_force, nA1 )
 *sigma_d	Pulling force / A1
 PRIVATE sigma_d
 sigma_d = nPull_force * nA1
@@ -356,7 +345,7 @@ ENDPROC
 	 		
 
 ***********************************
-PROCEDURE draw_work(nForce, nLength)
+PROCEDURE draw_work_force(nForce, nLength)
 *Returns Work
 *Work=Force*length 		W = F * L
 PRIVATE nWork
@@ -379,7 +368,7 @@ ENDPROC
 
 
 ***********************************
-PROCEDURE draw_force(nDrawStress, nArea1)
+PROCEDURE draw_force_stress(nDrawStress, nArea1)
 *Return Force using Orig Area --Same as draw_work
 * F = draw stress * A1
 PRIVATE nDrawForce
@@ -544,7 +533,7 @@ PROCEDURE redundant_work_factor_RA(nCoF,nRad,nRA)
 *!*	 redundant work factor	Phi
 *!*	Wf	= mu * 1/TAN( nRad) * LN(1/(1-nRA))
 PRIVATE nWorkR
-nWorkR = nCoF * (1/TAN( nRad)) * LOG(1/(1-nRA) )
+nWorkR = nCoF * (1/TAN(nRad)) * LOG(1/(1-nRA)) 
 RETURN nWorkR
 ENDPROC
 
@@ -553,7 +542,7 @@ PROCEDURE redundant_work_factor_Stress(nCoF, nPhi, nAve_Stress, nDelta)
 *!*	 redundant work factor	Phi
 *!*	Wf	= 4 mu Phi sigma_a/ Delta
 PRIVATE nWorkR
-nWorkR = 4 *nCoF * nPhi * ( nAve_Stress / nDelta)
+nWorkR = 4 *nCoF * nPhi * (nAve_Stress / nDelta)
 RETURN nWorkR
 ENDPROC
 
@@ -583,7 +572,7 @@ ENDPROC
 
 
 ***********************************
-PROCEDURE work_friction(nCoF, nPhi, nSigma_a, nDelta, nRA )
+PROCEDURE work_friction(nCoF, nPhi, nSigma_a, nDelta )
 *!*		Wf	4*CoF*Phi * sigma_a / Delta		5.10
 *!*		friction on bearing or land does not count!
 *!*		
@@ -596,14 +585,14 @@ RETURN nWF
 ENDPROC
 
 ***********************************
-PROCEDURE drawing stress(nSigma_a, nRA, nPhi, nCOF, nRadian, nDelta )
-
+PROCEDURE drawing_stress(nSigma_a, nRA, nPhi, nCOF, nRadian, nDelta )
 *nSigma_a is
 *sigma_d is Drawing Stress
 *!*	sigma_d	= sigma_a * LN(1/(1-nRA)) + (Phi-1) mu COT(nRad) * sigma_a * LN(1/(1-nRA)) + 4 mu * Phi * sigma_a /Delta
 *!*		drawing stress must remain below the flow stress at the die exit
 PRIVATE nDrawStress
-nDrawStress = nSigma_a * ( LN(1/(1-nRA)) + (nPhi-1) * nCoF * COT(nRadian) * sigma_a * LN(1/(1-nRA)) )+ (4*nCoF * nPhi * nSigma_a / nDelta)
+nDrawStress = nSigma_a * ( Log(1/(1-nRA)) + (nPhi-1) * nCoF * (1/TAN(nRadian)) * Log(1/(1-nRA)) )+ (4*nCoF * nPhi * nSigma_a / nDelta)
+
 RETURN nDrawStress
 ENDPROC
 
@@ -611,7 +600,7 @@ ENDPROC
 PROCEDURE drawing_stress_ratio_Stress(nSigma_d, nSigma_a)
 *!*	drawing stress ratio	sigma_d/sigma_a	=(4Phi/Delta) (nRad+mu)
 PRIVATE nStressRatio
-nStressRatio = (nSigma_d / nSigma_a )
+nStressRatio = (nSigma_d / nSigma_a)
 RETURN nStressRatio
 ENDPROC
 
@@ -699,13 +688,13 @@ ENDPROC
 *!*	Centerline tension in drawing is of great concern because it promotes the development and growth of porosity and ductile fracture of the wire at the centerline
 *!*	The average stress at the centerline is less compressive than at the die wall and may evenbe tensile. This is particularly the case for higher values of ?.
 
-***********************************
-PROCEDURE Ratio_DieP_over_nSigma_a(nDelta)
-*!*	Ave press/Ave flow stress	= P/sigma_a	= Delta/4 + .06
-PRIVATE nRatio
-nRatio = ( nDelta/4 ) + .06
-RETURN nRatio
-ENDPROC
+*!*	***********************************
+*!*	PROCEDURE Ratio_DieP_over_nSigma_a(nDelta)
+*!*	*!*	Ave press/Ave flow stress	= P/sigma_a	= Delta/4 + .06
+*!*	PRIVATE nRatio
+*!*	nRatio = ( nDelta/4 ) + .06
+*!*	RETURN nRatio
+*!*	ENDPROC
 
 
 
@@ -719,7 +708,8 @@ PROCEDURE sigma_d(nSigma_a, nSigma_b, nDelta,nRad,nCoF, nRad, nRA)
 *!*					sigma_d	= sigma_a[ (3.2/Delta) + .09]( nRad+CoF ) + sigma_b[ 1- ( CoF*nRa / nRad )(1 - nRA)^-1 ]				5.20
 PRIVATE nSigma_d, nPreSigma, nPreSigma_b
 nPreSigma_a = ((3.2/nDelta) + .09)*( nRad+nCoF ) 
-nPreSigma_b = ( 1- ( nCoF*nRA / nRad ) * (1 - nRA)*SqRt(-1) )
+nPreSigma_b = ( 1- ( nCoF*nRA / nRad ) * SqRt(1 - nRA) )
+
 nSigma_d = (nSigma_a*nPreSigma) + ( nSigma_b*nPreSigma_b )
 RETURN nSigma_d
 ENDPROC
@@ -743,13 +733,6 @@ ENDPROC
 *!*		P /Po	= 1 - [2b/(2-Sigma)]	
 
 
-***********************************
-PROCEDURE drawing_stress_ratio(nSigma_d,nSigma_a)
-*!*	Sigma	= sigma_d/sigma_a	drawing stress ratio
-PRIVATE nDrawStressRatio
-nDrawStressRatio = nSigma_d/nSigma_a
-RETURN nDrawStressRatio
-ENDPROC
 
 *!*	***********************************
 *!*	PROCEDURE drawing_stress(nT0, nVolume  )
@@ -803,7 +786,7 @@ PROCEDURE uniform_work(nSigma_a, nRa, nSpecificHeat, nDensity))
 *!*	uniform work	Tuw	 adiabatic drawing temperature increase associated with uniform work				
 *!*		Tuw = sigma_a * LN( 1/(1-nRa) )/ (C*rho)				6.3
 PRIVATE nWu
-nWu = nSigma_a * LOG( 1/(1-nRa) ) / (nSpecificHeat * nDensity)
+nWu = nSigma_a * LOG( 1/(1-nRa)) / (nSpecificHeat * nDensity)
 RETURN nWu 
 ENDPROC
 
@@ -811,7 +794,7 @@ ENDPROC
 PROCEDURE redundant_work(nDelta, nSigma_a, nRA, nSpecificHeat, nDensity) )
 *!*	 redundant work	= Trw = (Delta-1) sigma_a * LN( 1/(1-nRa) )/ (C*rho)				6.4
 PRIVATE nRedundantWork
-nRedundantWork = (nDelta-1) * nSigma_a * LOG( 1/(1-nRa) ) / (nSpecificHeat * nDensity)
+nRedundantWork = (nDelta-1) * nSigma_a * LOG( 1/(1-nRa)) / (nSpecificHeat * nDensity)
 RETURN nRedundantWork
 ENDPROC
 
@@ -843,15 +826,16 @@ PROCEDURE friction_temperature(nCoF, nRad, nDelta, nSigma_a, nRA, nSpecificHeat,
 *!*	 adiabatic drawing temperature increase associated with friction work
 *!*	friction temperature	Tf = CoF* COT(nRad) Delta * sigma_a * LN( 1/(1-nRA) )/ (C*rho)
 PRIVATE nFrictionTemperature
-nFrictionTemperature = nCoF * ATAN(nRad) * nDelta * nSigma_a * LOG( 1/(1-nRA) ) / (nSpecificHeat * nDensity)
+nFrictionTemperature = nCoF * (1/TAN(nRad)) * nDelta * nSigma_a * LOG( 1/(1-nRA) ) / (nSpecificHeat * nDensity)
 RETURN nFrictionTemperature
 ENDPROC
 
 ***********************************
-PROCEDURE frictional_heating(nCoF, nDelta, nSigma_a, nVelocity, nLd, nSpecificHeat, nDensity, nK)
-*!*	 frictional heating		 (1.25) * CoF * Delta * sigma_a * [(velocity * Ld)/(C * rho * K)]^.5
+PROCEDURE frictional_heating(nCoF, nDelta, nSigma_a, nVelocity_ms, nLd_Meters, nSpecificHeat, nDensity, nK)
+*!*	 frictional heating		 (1.25) * CoF * Delta * sigma_a * [(velocity M/Sec * Ld)/(C * rho * K)]^.5
+* nVelocity should be in m/s for SI consistency
 PRIVATE nFrictionalHeating
-nFrictionalHeating = 1.25 * nCoF * nDelta * nSigma_a *  ((nVelocity * nLd) / (nSpecificHeat * nDensity * nK))^.5
+nFrictionalHeating = 1.25 * nCoF * nDelta * nSigma_a *  ((nVelocity_ms * nLd_Meters) / (nSpecificHeat * nDensity * nK))^.5
 RETURN nFrictionalHeating
 ENDPROC
 
@@ -863,19 +847,18 @@ nAdiabaticTempIncrease  = nDelta * nSigma_a * LOG(1/1-nRA) / (nSpecificHeat * nD
 RETURN nAdiabaticTempIncrease
 ENDPROC
 
-
-
 ***********************************
-PROCEDURE wire_surface_temperature_die_exit(nCoF, nDelta, nSigma_a, nv, nLd, nSpecificHeat, nDensity, nK, nT0)
+
+PROCEDURE wire_surface_temperature_die_exit(nCoF, nDelta, nSigma_a, nVelocity_ms, nRA, nLd_Meters, nSpecificHeat, nDensity, nK, nT0)
 *!*	Tmax	 wire surface temperature at the die exit
 *!*	Tmax	(1.25) CoF * Delta * sigma_a *((vLd)/(C rho K))^.5 + Delta *sigma_a * LN( 1/(1-nRa) )/ (C rho)  +T0
 *!*	v	 drawing speed
 
-PRIVATE nWireSurfaceTemperatureDieExit, nWireT1, nWireT2
-nWireT1 = 1.25 * nCoF * nDelta * nSigma_a *((nv * nLd) / (nSpecificHeat * nDensity * nK))^.5
+PRIVATE nWireSTDieExit, nWireT1, nWireT2
+nWireT1 = 1.25 * nCoF * nDelta * nSigma_a *((nVelocity_ms * nLd_Meters) / (nSpecificHeat * nDensity * nK))^.5
 nWireT2 = nDelta * nSigma_a * LOG(1/1-nRA) / (nSpecificHeat * nDensity )
-nWireSurfaceTemperatureDieExit = nWireT1 + nWireT2 + nT0
-RETURN nWireSurfaceTemperatureDieExit
+nWireSTDieExit = nWireT1 + nWireT2 + nT0
+RETURN nWireSTDieExit
 ENDPROC
 
 
@@ -963,23 +946,15 @@ ENDPROC
 
 
 ***********************************
-PROCEDURE average_strain_rate_V(nEpsilon_t, nV0, nV1, nLd)
+PROCEDURE average_strain_rate_V(nEpsilon_t, nV0_ms, nV1_ms, nLd_m)
 *!*	average strain rate	 d_epsilon_t/dt	= epsilon_t *(V0+V1) / (2Ld)				7.4
-*!*		Ld	length of the deformation zone				
+*!*		Ld	length of the deformation zone	nVelocity_ms			
 PRIVATE nAverage_Strain_Rate
-nAverage_Strain_Rate = nEpsilon_t * (nV0 + nV1) / (2*nLd)
+nAverage_Strain_Rate = nEpsilon_t * (nV0_ms + nV1_ms) / (2*nLd_m)
 RETURN nAverage_Strain_Rate
 ENDPROC
 		
-***********************************
-PROCEDURE frictional_heating(nCoF, nDelta, nSigma_a, nv, nLd, nC, nrho, nK)
-*!*	 frictional heating		 (1.25)CoF * Delta * sigma_a *[(v * Ld)/(C * rho * K)]^.5	
-*!*		v drawing speed	
-*!*		Ld	length of the deformation zone	
-PRIVATE nFrictional_Heating
-nFrictional_Heating = (1.25) * nCoF * nDelta * nSigma_a * ((nv * nLd)/(nC * nrho * nK))^.5				
-RETURN nFrictional_Heating
-ENDPROC
+
 
 
 ***********************************
@@ -1081,17 +1056,25 @@ ENDPROC
 *!*		 rn	1- EXP( - epslion * tn )				
 
 ***********************************
-PROCEDURE die_angle(nRA, nDelta)
+PROCEDURE die_angle_gamma(nRA, nGamma, nDelta)
 *!*	die angle	alpha = gamma(1+(1-gamma)^.5) ^-2  * Delta				9.7
-*nRA = Gamma
+
 PRIVATE nDie_Angle
-nDie_Angle = (nRA(1+(nRA)^.5) ^-2)  * nDelta
+nDie_Angle = nGamma * ((1+(nGamma)^.5) ^-2) * nDelta
+RETURN nDie_Angle
+ENDPROC
+
+***********************************
+PROCEDURE die_angle_delta(nRA, nDelta)
+*die angle alpha = delta * nRA / (1+ (1-nRA)^.5)^2
+PRIVATE nDie_Angle
+nDie_Angle = ((1+(nRA)^.5) ^-2) * nDelta
 RETURN nDie_Angle
 ENDPROC
 
 ***********************************
 PROCEDURE true_strain(nAo,nA1)
-*!*	True strain	= epsilon_t = LN(Ao/A1)				
+*!*	True strain	= epsilon_t = Log(Ao/A1)				
 PRIVATE nEpsilon_t
 nEpsilon_t = LOG(nAo/nA1)
 RETURN nEpsilon_t

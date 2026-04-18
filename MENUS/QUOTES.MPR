@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 03/09/26             QUOTES.MPR               01:16:14  
+*       * 04/15/26             QUOTES.MPR               20:24:31  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,24 +26,24 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7ey02q1cn OF _MSYSMENU PROMPT "\<File" COLOR SCHEME 3 ;
+DEFINE PAD _7fz17qqva OF _MSYSMENU PROMPT "\<File" COLOR SCHEME 3 ;
 	KEY ALT+F, ""
-DEFINE PAD _7ey02q1co OF _MSYSMENU PROMPT "\<Edit" COLOR SCHEME 3 ;
+DEFINE PAD _7fz17qqvb OF _MSYSMENU PROMPT "\<Edit" COLOR SCHEME 3 ;
 	KEY ALT+E, ""
-DEFINE PAD _7ey02q1cp OF _MSYSMENU PROMPT "\<Applications" COLOR SCHEME 3 ;
+DEFINE PAD _7fz17qqvc OF _MSYSMENU PROMPT "\<Applications" COLOR SCHEME 3 ;
 	KEY ALT+A, ""
 DEFINE PAD Maintainance OF _MSYSMENU PROMPT "\<Maintanence" COLOR SCHEME 3 ;
 	KEY ALT+M, ""
 DEFINE PAD Quotes OF _MSYSMENU PROMPT "\<Quotes" COLOR SCHEME 3 ;
 	KEY ALT+Q, ""
-DEFINE PAD _7ey02q1cq OF _MSYSMENU PROMPT "\<Help" COLOR SCHEME 3 ;
+DEFINE PAD _7fz17qqvd OF _MSYSMENU PROMPT "\<Help" COLOR SCHEME 3 ;
 	KEY ALT+H, ""
-ON PAD _7ey02q1cn OF _MSYSMENU ACTIVATE POPUP file
-ON PAD _7ey02q1co OF _MSYSMENU ACTIVATE POPUP edit
-ON PAD _7ey02q1cp OF _MSYSMENU ACTIVATE POPUP applicatio
+ON PAD _7fz17qqva OF _MSYSMENU ACTIVATE POPUP file
+ON PAD _7fz17qqvb OF _MSYSMENU ACTIVATE POPUP edit
+ON PAD _7fz17qqvc OF _MSYSMENU ACTIVATE POPUP applicatio
 ON PAD Maintainance OF _MSYSMENU ACTIVATE POPUP maintanenc
 ON PAD Quotes OF _MSYSMENU ACTIVATE POPUP quotes
-ON PAD _7ey02q1cq OF _MSYSMENU ACTIVATE POPUP help
+ON PAD _7fz17qqvd OF _MSYSMENU ACTIVATE POPUP help
 
 DEFINE POPUP file MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR _mfi_close OF file PROMPT "\<Close" ;
@@ -96,10 +96,10 @@ DEFINE BAR 2 OF applicatio PROMPT "Specs"
 DEFINE BAR 3 OF applicatio PROMPT "See Inventory"
 DEFINE BAR 4 OF applicatio PROMPT "---"
 ON SELECTION BAR 1 OF applicatio ;
-	DO _7ey02q1cr ;
+	DO _7fz17qqve ;
 	IN LOCFILE("ERP_1\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
 ON SELECTION BAR 2 OF applicatio ;
-	DO _7ey02q1cs ;
+	DO _7fz17qqvf ;
 	IN LOCFILE("ERP_1\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
 ON SELECTION BAR 3 OF applicatio DO FORM 'Forms\StockLst_SQL_Quotes.scx' WITH "Browse","S"
 
@@ -131,10 +131,10 @@ DEFINE BAR 1 OF quotes PROMPT "\-"
 DEFINE BAR 2 OF quotes PROMPT "Find"
 DEFINE BAR 3 OF quotes PROMPT "Jump"
 ON SELECTION BAR 2 OF quotes ;
-	DO _7ey02q1ct ;
+	DO _7fz17qqvg ;
 	IN LOCFILE("ERP_1\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
 ON SELECTION BAR 3 OF quotes ;
-	DO _7ey02q1cu ;
+	DO _7fz17qqvh ;
 	IN LOCFILE("ERP_1\MENUS\QUOTES" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTES?")
 
 DEFINE POPUP help MARGIN RELATIVE SHADOW COLOR SCHEME 4
@@ -163,7 +163,7 @@ DEFINE BAR _mwi_arran OF help PROMPT "\<Arrange All" ;
 
 *       *********************************************************
 *       *                                                         
-*       * _7EY02Q1CR  ON SELECTION BAR 1 OF POPUP applicatio      
+*       * _7FZ17QQVE  ON SELECTION BAR 1 OF POPUP applicatio      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -174,7 +174,7 @@ DEFINE BAR _mwi_arran OF help PROMPT "\<Arrange All" ;
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ey02q1cr
+PROCEDURE _7fz17qqve
 IF FILE('Forms\REDAREA.SCX')
 	DO FORM 'Forms\REDAREA.SCX'
 ELSE
@@ -187,7 +187,7 @@ ENDIF
 
 *       *********************************************************
 *       *                                                         
-*       * _7EY02Q1CS  ON SELECTION BAR 2 OF POPUP applicatio      
+*       * _7FZ17QQVF  ON SELECTION BAR 2 OF POPUP applicatio      
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -198,7 +198,7 @@ ENDIF
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ey02q1cs
+PROCEDURE _7fz17qqvf
 IF FILE('forms\SPEC_EDIT.SCX')
 	DO FORM 'forms\SPEC_EDIT'
 ELSE
@@ -211,7 +211,7 @@ ENDIF
 
 *       *********************************************************
 *       *                                                         
-*       * _7EY02Q1CT  ON SELECTION BAR 2 OF POPUP quotes          
+*       * _7FZ17QQVG  ON SELECTION BAR 2 OF POPUP quotes          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -222,14 +222,14 @@ ENDIF
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ey02q1ct
+PROCEDURE _7fz17qqvg
 DO FORM forms\FindQuotes
 _VFP.ActiveForm.ReFresh
 
 
 *       *********************************************************
 *       *                                                         
-*       * _7EY02Q1CU  ON SELECTION BAR 3 OF POPUP quotes          
+*       * _7FZ17QQVH  ON SELECTION BAR 3 OF POPUP quotes          
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -240,7 +240,7 @@ _VFP.ActiveForm.ReFresh
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7ey02q1cu
+PROCEDURE _7fz17qqvh
 SELECT Quotes
 browse
 

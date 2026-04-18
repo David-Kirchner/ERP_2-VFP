@@ -1,12 +1,12 @@
 *       *********************************************************
 *       *                                                         
-*       * 12/21/25            SETUPHPA.MPR              17:13:22  
+*       * 04/15/26            SETUPHPA.MPR              20:24:32  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
 *       * David Kirchner                                          
 *       *                                                         
-*       * Copyright (C) 2025 High Performance Alloys              
+*       * Copyright (C) 2026 High Performance Alloys              
 *       * 444 Wilson St                                           
 *       * Tipton, IN  46072                                       
 *       *                                                         
@@ -26,15 +26,15 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7cq10wx3f OF _MSYSMENU PROMPT "\<File" COLOR SCHEME 3 ;
+DEFINE PAD _7fz17qrxy OF _MSYSMENU PROMPT "\<File" COLOR SCHEME 3 ;
 	KEY ALT+F, ""
-DEFINE PAD _7cq10wx3g OF _MSYSMENU PROMPT "\<Edit" COLOR SCHEME 3 ;
+DEFINE PAD _7fz17qrxz OF _MSYSMENU PROMPT "\<Edit" COLOR SCHEME 3 ;
 	KEY ALT+E, ""
-DEFINE PAD _7cq10wx3h OF _MSYSMENU PROMPT "\<Help" COLOR SCHEME 3 ;
+DEFINE PAD _7fz17qry0 OF _MSYSMENU PROMPT "\<Help" COLOR SCHEME 3 ;
 	KEY ALT+H, ""
-ON PAD _7cq10wx3f OF _MSYSMENU ACTIVATE POPUP file
-ON PAD _7cq10wx3g OF _MSYSMENU ACTIVATE POPUP edit
-ON PAD _7cq10wx3h OF _MSYSMENU ACTIVATE POPUP help
+ON PAD _7fz17qrxy OF _MSYSMENU ACTIVATE POPUP file
+ON PAD _7fz17qrxz OF _MSYSMENU ACTIVATE POPUP edit
+ON PAD _7fz17qry0 OF _MSYSMENU ACTIVATE POPUP help
 
 DEFINE POPUP file MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR _mfi_close OF file PROMPT "\<Close" ;
