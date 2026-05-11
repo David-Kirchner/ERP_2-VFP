@@ -49,6 +49,8 @@ MODIFY PROJECT 'ERP.pjx' NOWAIT NOSHOW NOPROJECTHOOK
 loProject = _VFP.Projects('ERP.pjx')
 
 WITH loProject.FILES
+	.ADD('c:\program files (x86)\microsoft visual foxpro 9\fox.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('c:\program files (x86)\microsoft visual foxpro 9\fox.msk')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('forms\aaa test form1.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\accountid.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\accountingcosting.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -308,6 +310,7 @@ WITH loProject.FILES
 	.ADD('graphics\dragmove.cur')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\earth.ico')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\email_icon_small.gif')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('graphics\erp_logo_small.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\filter.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\find.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\frx2htm.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -360,6 +363,8 @@ WITH loProject.FILES
 	.ADD('graphics\smmail.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\sortasc.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\sortdes.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('graphics\spacealloysusa-logo-nb.jpg')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('graphics\spacealloysusa-logo-nbhrz.jpg')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\spell.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\terms.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\top.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -412,10 +417,11 @@ WITH loProject.FILES
 	.ADD('libs\wizshdow.vcx')		&& *< FileMetadata: Type="V" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('libs\wizstnd.vcx')		&& *< FileMetadata: Type="V" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('libs\wizstyle.vcx')		&& *< FileMetadata: Type="V" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('libs\workorder.vcx')		&& *< FileMetadata: Type="V" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('libs\workorder_lib.vcx')		&& *< FileMetadata: Type="V" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('menus\quotes.mnx')		&& *< FileMetadata: Type="M" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('menus\quotesc.mnx')		&& *< FileMetadata: Type="M" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('menus\setuphpa.mnx')		&& *< FileMetadata: Type="M" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('myshutdown.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\ad_user_password_check.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\bringbackdeletedstocklst.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\calculate.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -476,6 +482,7 @@ WITH loProject.FILES
 	.ADD('reports\faxsalesorder02.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\gfmlog.frx')		&& *< FileMetadata: Type="R" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\hardwood.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('reports\holiday.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\ht_log.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\lakeerie_log.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\line80.frx')		&& *< FileMetadata: Type="R" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />

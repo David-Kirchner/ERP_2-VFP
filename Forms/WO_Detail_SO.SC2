@@ -310,7 +310,7 @@ DEFINE CLASS formset AS formset
 		lblID.Left = 618, ;
 		lblID.Name = "lblID", ;
 		lblID.Top = 305
-		*< END OBJECT: ClassLib="..\libs\workorder.vcx" BaseClass="form" />
+		*< END OBJECT: ClassLib="..\libs\workorder_lib.vcx" BaseClass="form" />
 	
 	PROCEDURE getwod_po
 	ENDPROC

@@ -5141,7 +5141,7 @@ DEFINE CLASS workorder AS formset
 		cmdEditQTY.ZOrderSet = 83, ;
 		lblID.Name = "lblID", ;
 		lblID.ZOrderSet = 84
-		*< END OBJECT: ClassLib="..\libs\workorder.vcx" BaseClass="form" />
+		*< END OBJECT: ClassLib="..\libs\workorder_lib.vcx" BaseClass="form" />
 
 	ADD OBJECT 'frmWorkOrder' AS form WITH ;
 		AlwaysOnTop = .F., ;

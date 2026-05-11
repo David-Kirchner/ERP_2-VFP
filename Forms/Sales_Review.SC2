@@ -3323,7 +3323,7 @@ DEFINE CLASS fssales_review AS formset
 		lblSel_Tot.Name = "lblSel_Tot", ;
 		cmdEditQTY.Name = "cmdEditQTY", ;
 		lblID.Name = "lblID"
-		*< END OBJECT: ClassLib="..\libs\workorder.vcx" BaseClass="form" />
+		*< END OBJECT: ClassLib="..\libs\workorder_lib.vcx" BaseClass="form" />
 	
 	PROCEDURE check_prod_typ
 		PARAMETERS cField, pValue
