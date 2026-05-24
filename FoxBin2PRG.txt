@@ -1,2 +1,2 @@
 * Update all text versions in your entire project folder
-DO E:\VFP\ERP_1\tools\FoxBin2Prg.prg WITH "E:\VFP\ERP_1\ERP.Pjx" "*"
+DO (SYS(5)+SYS(2003))+"tools\FoxBin2Prg.prg" WITH (SYS(5)+SYS(2003))+"ERP.Pjx", "*"

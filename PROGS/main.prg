@@ -14,7 +14,7 @@ lcLastSetPath=SET("PATH")
 lcLastSetCentury=SET("CENTURY")	&&Century was not in QuotesSet untill 3-2009
 SET CENTURY ON
 
-SET DEFAULT TO "E:\VFP\ERP_1"
+SET DEFAULT TO "E:\VFP\ERP_2"
 
 *!*	*? "Save 'Last Set'" 
 *!*	IF "\MEM" $ SYS(2003)
@@ -116,9 +116,9 @@ IF NOT (FILE(LoginAppHome+"ERP.EXE") OR FILE(LoginAppHome+"ERP.APP"))
 		LoginAppHome = SYS(5)+SYS(2003)
 		SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM")
 	ELSE
-		IF FILE("E:\VFP\ERP_1\"+"ERP.EXE")
+		IF FILE("E:\VFP\ERP_2\"+"ERP.EXE")
 
-			LoginAppHome = "E:\VFP\ERP_1\"
+			LoginAppHome = "E:\VFP\ERP_2\"
 
 			IF NOT "\MEM" $ SYS(2003)
 				SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\ERPSetup.MEM")
@@ -136,7 +136,7 @@ IF NOT ( FILE(LoginAppHome+"ERP.EXE") OR FILE(LoginAppHome+"ERP.APP")  )
 	ENDIF
 	MESSAGEBOX("Run the ERP Setup to set defaults."+CHR(13)+"Main.prg"+CHR(13)+CHR(13)+"SYS(5)="+SYS(5)+CHR(13)+"SYS(2003)="+SYS(2003)+CHR(13)+"Line B "+STR(LINENO(1))+CHR(13)+"LoginAppHome="+LoginAppHome,48,"Home Directory not found!")
 
-	DO FORM LOCFILE("E:\VFP\ERP_1\Forms\SetupERP.SCX","SCX","Select the SetupERP.SCX")
+	DO FORM LOCFILE("E:\VFP\ERP_2\Forms\SetupERP.SCX","SCX","Select the SetupERP.SCX")
 	*RESTORE FROM (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM") ADDITIVE
 ENDIF
 
@@ -312,7 +312,7 @@ ELSE
 		RESTORE FROM (SYS(5)+SYS(2003) +"\MEM\SalesP.MEM") ADDITIVE
 	ELSE
 		MESSAGEBOX("Run the ERP Setup to set defaults."+CHR(13)+"Main.prg"+CHR(13)+CHR(13)+"SYS(5)="+SYS(5)+" "+CHR(13)+"SYS(2003)="+SYS(2003)+" "+CHR(13)+"Line C "+STR(LINENO()) ,48,"Set Defaults")
-		DO FORM LOCFILE("E:\VFP\ERP_1\MEM\SetupERP.SCX","SCX","Select the SetupERP")
+		DO FORM LOCFILE("E:\VFP\ERP_2\MEM\SetupERP.SCX","SCX","Select the SetupERP")
 		*RESTORE FROM (SYS(5)+SYS(2003) +"\SalesP.MEM") ADDITIVE
 		
 *		IF NOT FILE(SYS(5)+SYS(2003) +"\MEM\SalesP.MEM")	&&Old Code
@@ -333,7 +333,19 @@ gGlobalTable	= ""
 IF FILE(SYS(5)+SYS(2003)+"Progs\Proc_Setup.prg")
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
-	= get_SQLSTRINGCONNECT()		&&Sets gGlobalServer	
+	IF FILE(SYS(5)+SYS(2003)+"Progs\load_ERP_Environment.prg")
+		SET PROCEDURE TO Progs\load_ERP_Environment ADDITIVE
+	ENDIF
+	IF FILE(SYS(5)+SYS(2003)+"Progs\load_CompanyProfile.prg")
+		SET PROCEDURE TO Progs\load_CompanyProfile ADDITIVE
+	ENDIF
+	= get_SQLSTRINGCONNECT()		&&Sets gGlobalServer via ERP_Environment.xml
+	IF FILE(SYS(5)+SYS(2003)+"Progs\load_CompanyProfile.prg")
+		DO load_CompanyProfile
+	ENDIF
+	IF VARTYPE(gERPProfile)="C" AND !EMPTY(gERPProfile)
+		_SCREEN.Caption = "ERP ["+gERPProfile+"]"
+	ENDIF
 ELSE
 	IF "\MEM" $ SYS(2003)
 		PRIVATE cFileStruct

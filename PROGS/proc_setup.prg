@@ -41,406 +41,36 @@
 *********************************
 PROCEDURE get_SQLSTRINGCONNECT 
 * Found in Proc_Setup and Proc_SQL
-*? 'get_SQLSTRINGCONNECT()'
-*Return the Connection INT
-*Get NIC, Reads XML, Sets gGlobalServer
-*nConnHandle = get_SQLSTRINGCONNECT()
+* Return connection handle; sets gGlobalServer via load_ERP_Environment
 
-PRIVATE nReturn
+PRIVATE nReturn, cServer, cDatabaseTable, cAlias
 nReturn = 0
-**Creating DSN-less connections to SQL Server:
-*nReturn = SQLStringConnect("Driver={SQL Server};Server=BOBWhite;Database=HPAlloy;Trusted_Connection=True;")
-*;Uid=sa;Pwd=secret;
-
-PRIVATE cServer, cDatabaseTable
-cServer = "SUPERMICRO\SQLEXPRESS"
-cDatabaseTable = "ERP_1"
-
-
-*David is allowed to test on different servers
-IF RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 ) = "David Kirchner"
-*	cServer = "SQLdev"
-*	cServer = "BOBWHITE"
-*	cServer = "PEREGRINE"
-	cServer = "SUPERMICRO\SQLEXPRESS"
-	WAIT WINDOW "Server="+cServer NOWAIT
-ENDIF
-
-
-IF VARTYPE(GlobalTable) = "C"
-	IF NOT ( EMPTY(GlobalTable) )
-		*USE the GlobalTable
-		cDatabaseTable = GlobalTable
-	ENDIF
-ENDIF
-
-*get_SQLSTRINGCONNECT()
-
-	*WAIT WINDOW "Testing the SQL Server "+ALLTRIM(cServer) +" connection."+CHR(13)+"If you can read this message, you may have connection trouble." NOWAIT
-	nReturn = SQLStringConnect("Driver={SQL Server};Server="+cServer+";Database="+cDatabaseTable+";Trusted_Connection=yes;",.T.)
-	
-RETURN nReturn
-	
-		
-************************
-*Where Am I
-************************
-PRIVATE lInWindfall, lInTipton
-lInWindfall = .T.	&&Every user is in Windfall Domain 
-lInTipton	= .F.	&& there is no Tipton SQL Server
-
-PRIVATE lTestWindfall, lTestTipton
-lTestWindfall	= .T.	
-lTestTipton		= .T.
-
-PRIVATE oAdapters, oWMI
-
-oWMI = getobject("winmgmts:")  &&OLE error code 0x800401ea: Moniker cannot open file
-oAdapters = oWMI.ExecQuery("Select * from Win32_NetworkAdapterConfiguration where IPEnabled=True")
-
-FOR EACH oAdapter in oAdapters
-	IF NOT isnull(oAdapter.ipaddress)
-		FOR EACH cAddress in oAdapter.ipaddress
-			IF "192.168.1." $ cAddress
-				lInWindfall= .T.
-			ENDIF
-			IF "192.168.2." $ cAddress
-				lInTipton = .T.
-			ENDIF
-		NEXT 
-	ENDIF 
-NEXT 
-
-RELEASE oAdapters 
-RELEASE oWMI
-
-*****************
-
-PRIVATE lFoundWindfall, lFoundWindfall2, lFoundTipton
-lFoundWindfall	= .F.
-lFoundWindfall2 = .F.
-lFoundTipton	= .F.
-
-IF USED('ERPdata')
-	USE IN ERPdata
-ENDIF
-
-PRIVATE cAlias 
 cAlias = ALIAS()
-SELECT 0
 
-PRIVATE cWindfallServer1, cTiptonServer1, cWindfallServer2, cTiptonServer2, cBackUpServer 
-cWindfallServer1	= ""
-cTiptonServer1		= ""
-cWindfallServer2	= ""
-cTiptonServer2		= ""
-cBackUpServer 		= ""
+IF NOT FILE(SYS(5)+SYS(2003)+"PROGS\load_ERP_Environment.prg")
+	SET PROCEDURE TO PROGS\load_ERP_Environment ADDITIVE
+ENDIF
+DO load_ERP_Environment
 
-**********************
-*Populate SQL Server names
-**********************
-IF VARTYPE(gGlobalServer) != "C"
-	PUBLIC gGlobalServer
-	gGlobalServer = "-"
-	
-	*Read XML files only once	
-	IF FILE( "\\RAPTOR\SQL\ERPdata.xml" )
-		*READ file
-		TRY
-			XMLTOCURSOR( "\\RAPTOR\SQL\ERPdata.xml", 'ERPdata', 512)
-			
-			IF USED('ERPdata')
-				IF VARTYPE( ERPdata.WindfallServer ) = "C"
-					cWindfallServer1 = RTRIM(ERPdata.WindfallServer)
-					gGlobalServer = cWindfallServer1 
-					lFoundWindfall = .T.
-				ENDIF
-				
-				
-				IF VARTYPE( ERPdata.TiptonServer ) = "C"
-					cTiptonServer1 = RTRIM(ERPdata.TiptonServer)
-				ENDIF
+cServer = gGlobalServer
+cDatabaseTable = gGlobalDatabase
 
-				IF VARTYPE( ERPdata.BackUpServer ) = "C"
-					cBackUpServer = RTRIM(ERPdata.BackUpServer)
-				ENDIF
-				
-				USE IN ERPdata
-			ENDIF
-		CATCH
-			MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\RAPTOR\SQL\ERPdata.xml"]+CHR(13)+[, 'ERPdata', 512)],16,"Could not get DFS file")
-		ENDTRY
-	ELSE
-		
-		IF FILE( "\\Vulcan\SQL\ERPdata.xml" )
-			*READ file
-			TRY
-				XMLTOCURSOR( "\\Vulcan\SQL\ERPdata.xml", 'ERPdata', 512)
-				
-				IF USED('ERPdata')
-					IF VARTYPE( ERPdata.WindfallServer ) = "C"
-						cWindfallServer1 = RTRIM(ERPdata.WindfallServer)
-						gGlobalServer = cWindfallServer1 
-						lFoundWindfall = .T.
-					ENDIF
-					
-					
-					IF VARTYPE( ERPdata.TiptonServer ) = "C"
-						cTiptonServer1 = RTRIM(ERPdata.TiptonServer)
-					ENDIF
-
-					IF VARTYPE( ERPdata.BackUpServer ) = "C"
-						cBackUpServer = RTRIM(ERPdata.BackUpServer)
-					ENDIF
-					
-					USE IN ERPdata
-				ENDIF
-			CATCH
-				MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\Vulcan\SQL\ERPdata.xml"]+CHR(13)+[, 'ERPdata', 512)],16,"Could not get DFS file")
-			ENDTRY
-		ENDIF
-	
-	ENDIF
-	
-	*Save to MEM
-	IF FILE(SYS(5)+SYS(2003) +"\SQLserver1.MEM")
-		IF NOT "\MEM" $ SYS(2003)
-			*Keep only in \MEM\
-			DELETE FILE (SYS(5)+SYS(2003) +"\SQLserver1.MEM")
-			SAVE ALL LIKE cWindfallServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM" )
-		ENDIF
-	ENDIF
-	
-*!*		IF "\MEM" $ SYS(2003)
-*!*			SAVE ALL LIKE cWindfallServer? TO ( SYS(5)+SYS(2003) +"\SQLserver1.MEM" )
-*!*		ELSE 
-*!*			SAVE ALL LIKE cWindfallServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM" )
-*!*		ENDIF
-	
-	
-	*Save to MEM
-	IF FILE(SYS(5)+SYS(2003) +"\SQLserver2.MEM")
-		IF NOT "\MEM" $ SYS(2003)
-			*Keep only in \MEM\
-			DELETE FILE (SYS(5)+SYS(2003) +"\SQLserver2.MEM")
-			SAVE ALL LIKE cTiptonServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM" )
-		ENDIF
-	ENDIF
-	
-*!*		IF "\MEM" $ SYS(2003)
-*!*			SAVE ALL LIKE cTiptonServer? TO ( SYS(5)+SYS(2003) +"\SQLserver2.MEM" )
-*!*		ELSE 
-*!*			SAVE ALL LIKE cTiptonServer? TO ( SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM" )
-*!*		ENDIF
-		
-	
-ELSE
-	IF gGlobalServer = "-"
-		*Only do Disk MEM read if needed.
-		IF FILE( SYS(5)+SYS(2003) +"\SQLserver1.MEM" )
-			RESTORE FROM ( SYS(5)+SYS(2003) +"\SQLserver1.MEM" ) ADDITIVE
-		ELSE
-			IF FILE(SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM")
-				RESTORE FROM ( SYS(5)+SYS(2003) +"\MEM\SQLserver1.MEM" ) ADDITIVE
-			ENDIF
-		ENDIF
-		IF VARTYPE(cWindfallServer1) = "C"
-			lFoundWindfall = .T.
-		ENDIF
-		
-		IF FILE( SYS(5)+SYS(2003) +"\SQLserver2.MEM" )
-			RESTORE FROM ( SYS(5)+SYS(2003) +"\SQLserver2.MEM" ) ADDITIVE
-		ELSE
-			IF FILE(SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM")
-				RESTORE FROM ( SYS(5)+SYS(2003) +"\MEM\SQLserver2.MEM" ) ADDITIVE
-			ENDIF
-		ENDIF
-			
-		
-		IF VARTYPE(cTiptonServer1) = "C"
-			lFoundTipton= .T.
-		ENDIF
-	ENDIF
+IF VARTYPE(GlobalTable) = "C" AND NOT EMPTY(GlobalTable)
+	cDatabaseTable = GlobalTable
+	gGlobalDatabase = GlobalTable
 ENDIF
 
-*Choose Server
-************************
-PRIVATE cServer
-cServer = ""
-
-*gGlobalServer, gGlobalTable are init in Main.prg, Values are kept here, not in a MEM file
-IF VARTYPE(gGlobalServer) = "C"
-
-	*Main.prg makes gGlobalServer Public but does not fill
-	IF NOT ( EMPTY(gGlobalServer) )
-		*USE filled gGlobalServer - Skip the next 2 checks 
-*		lInWindfall = .F.
-*		lInTipton	= .F.
-		lTestWindfall	= .F.	&&Assume Windfall/Tipton has been set because gGlobalServer is 
-		lTestTipton		= .F.	&&make the code faster by bypassing this test.
-	ELSE
-		*SetServer screen can be used and not overwritten here!
-		*lInWindfall = .T.
-		*lInTipton	= .T.
-	ENDIF
-ENDIF
-
-IF lInWindfall AND lTestWindfall
-	*Try to use the Windfall Server
-	IF lFoundWindfall
-		IF VARTYPE(cWindfallServer1) = "C"
-			cServer = cWindfallServer1
-			gGlobalServer = cServer
-		ENDIF
-	ELSE
-		IF VARTYPE(cWindfallServer2) = "C"
-			cServer = cWindfallServer2
-			gGlobalServer = cServer
-		ELSE
-			cServer = cBackUpServer 
-			gGlobalServer = cServer
-		ENDIF
-	ENDIF
-ELSE
-	IF lInTipton AND lTestTipton
-		*Try to use the Tipton Server
-		IF lFoundTipton
-			IF VARTYPE(cTiptonServer1) = "C"
-				*cServer = cTiptonServer1 
-				cServer = cWindfallServer1  &&Use Windfall untill testing is done
-				gGlobalServer = cServer
-			ELSE
-				cServer = cBackUpServer 
-				gGlobalServer = cServer
-			ENDIF
-		ELSE
-			IF VARTYPE(cTiptonServer2) = "C"
-				*cServer = cTiptonServer2
-				cServer = cWindfallServer1 &&Use Windfall untill testing is done
-				gGlobalServer = cServer
-			ELSE
-				cServer = cBackUpServer 
-				gGlobalServer = cServer
-			ENDIF
-		ENDIF
-	ELSE
-		*Use the Global gGlobalServer create on first run.
-		IF gGlobalServer != "-"
-			cServer = gGlobalServer
-		ELSE
-			MESSAGEBOX("gGlobalServer exists, but has no data."+CHR(13)+"no SQL Server name."+CHR(13)+"\\RAPTOR -\\Vulcan\SQL\ERPdata.xml",0,"Error")
-			*TrackError("Did not get SQL Server name."+CHR(13)+"\\Vulcan\SQL\ERPdata.xml","Error.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
-			RecordError(nSQLEXEC,"SQL Error" ,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),"gGlobalServer exists, but has no data."+CHR(13)+"no SQL Server name."+CHR(13)+"\\RAPTOR --\\Vulcan\SQL\ERPdata.xml"+CHR(13)+cSQL )
-		ENDIF
-		**Redundant code!!!
-		IF VARTYPE(gGlobalServer) = "C"
-			IF NOT ( EMPTY(gGlobalServer) )
-				*USE the gGlobalServer - Skip the next 2 checks
-				cServer = gGlobalServer
-			ENDIF
-		ENDIF
-		
-	ENDIF
-ENDIF
-
-IF ( EMPTY(cServer) ) AND NOT EMPTY(gGlobalServer)
-	cServer = gGlobalServer
-ENDIF
-
-***************
-PRIVATE cDatabaseTable
-cDatabaseTable = "HPAlloy"
-
-IF VARTYPE(GlobalTable) = "C"
-	IF NOT EMPTY(GlobalTable)
-		*USE the GlobalTable
-		cDatabaseTable = GlobalTable
-	ENDIF
-ENDIF
-
-***************
-*Overwrite cServer for now
-
-*David is allowed to test on different servers
-IF RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 ) = "David Kirchner"
-*	cServer = "SQLdev"
-*	cServer = "BOBWHITE"
-*	cServer = "PEREGRINE"
-	WAIT WINDOW "Server="+cServer NOWAIT
-ENDIF
-
-
-
-IF VARTYPE(GlobalTable) = "C"
-	IF NOT ( EMPTY(GlobalTable) )
-		*USE the GlobalTable
-		cDatabaseTable = GlobalTable
-	ENDIF
-ENDIF
-
-*get_SQLSTRINGCONNECT()
-IF EMPTY(cServer) 
-	MESSAGEBOX("Could not locate the SQL Server."+CHR(13)+"cServer is Empty.",16,"SQL Error")
+IF EMPTY(cServer)
+	MESSAGEBOX("Could not locate the SQL Server."+CHR(13)+"Check ERP_Environment.xml.",16,"SQL Error")
 	TrackError("Could not locate the SQL Server.","Error.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1),LINENO())
 	nReturn = -1
 ELSE
-	*WAIT WINDOW "Testing the SQL Server "+ALLTRIM(cServer) +" connection."+CHR(13)+"If you can read this message, you may have connection trouble." NOWAIT
 	nReturn = SQLStringConnect("Driver={SQL Server};Server="+cServer+";Database="+cDatabaseTable+";Trusted_Connection=yes;",.T.)
-	*WAIT CLEAR
 ENDIF
-*nReturn = SQLSTRINGCONNECT('dsn=HPA',.T.)
-
-PRIVATE nCount
-nCount = 0
-
-*!*	*disabling 2nd server option 1/12/24
-*!*	IF nReturn < 1 AND LEN(cServer) > 1
-*!*		MESSAGEBOX("Could not talk to server:"+cServer+CHR(13)+"Next will try Alternative Server.",0+16,"Server Error - server not answering.")
-
-*!*		IF NOT lInWindfall
-*!*			*Try to use the Windfall Server
-*!*			IF lFoundWindfall
-*!*				IF VARTYPE(cWindfallServer1) = "C"
-*!*					cServer = cWindfallServer1
-*!*				ENDIF
-*!*			ELSE
-*!*				IF VARTYPE(cWindfallServer2) = "C"
-*!*					cServer = cWindfallServer2
-*!*				ENDIF
-*!*			ENDIF
-*!*		ELSE
-*!*			*Try to use the Tipton Server
-*!*			IF lFoundTipton
-*!*				IF VARTYPE(cTiptonServer1) = "C"
-*!*					cServer = cTiptonServer1
-*!*				ENDIF
-*!*			ELSE
-*!*				IF VARTYPE(cTiptonServer2) = "C"
-*!*					cServer = cTiptonServer2
-*!*				ENDIF
-*!*			ENDIF
-*!*		ENDIF
-*!*		
-*!*		IF EMPTY(cServer)
-*!*			cServer = " "
-*!*		ENDIF
-*!*		
-*!*		WAIT WINDOW "Trying the alternative SQL Server "+ALLTRIM(cServer) +" connection."+CHR(13)+"If you can read this message, you may have connection trouble." NOWAIT
-*!*		nReturn = SQLStringConnect("Driver={SQL Server};Server="+cServer+";Database=HPAlloy;Trusted_Connection=yes;",.T.)
-*!*		*nReturn = SQLStringConnect("Driver={SQL Server};Server="+cServer+";Trusted_Connection=yes;",.T.)
-*!*		WAIT CLEAR
-*!*		IF nReturn > 0
-*!*			MESSAGEBOX("Connected to alternative Server:"+cServer+CHR(13)+"This is not the standard connection"+CHR(13)+"Any key to continue",0+64,"Connected!")
-*!*			*RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Connected to alternative Server:"+cServer)
-*!*		ENDIF
-*!*	ENDIF
-*!*	*WAIT WINDOW 'End of get_SQLSTRINGCONNECT' TIMEOUT 1
 
 IF NOT EMPTY(cAlias)
 	IF USED(cAlias)
 		SELECT (cAlias)
-	ELSE
-		RecordTest("Record Test Data.","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(1), LINENO(),"Lost Alias '"+cAlias+"' Server="+cServer)
 	ENDIF
 ENDIF
 
@@ -448,7 +78,7 @@ IF nReturn < 0
 	QUIT
 ENDIF
 
-RETURN nReturn 
+RETURN nReturn
 ENDPROC
 
 *!*	*******

@@ -930,6 +930,8 @@ DEFINE CLASS hpa AS form
 			ELSE
 				DO FORM "Forms\SetupERP.SCX"
 			ENDIF
+		CASE tNodeText = "Company Profile"
+			DO (SYS(5)+SYS(2003)+"PROGS\CompanyProfile_maint.prg")
 		CASE tNodeText = "Set Server"
 			IF WEXIST("frmSetServer")	
 				ACTIVATE WINDOW frmSetServer
@@ -1123,6 +1125,7 @@ DEFINE CLASS hpa AS form
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Employee",4,,"Employee Maintanence")
 		******* other ********
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"Setup HPA","Setup HPA")
+		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Company Profile")
 		
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"ShowPermission","ShowPermission")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"Set Server","Set Server")

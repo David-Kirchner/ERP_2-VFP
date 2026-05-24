@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="Windows-1252" standalone="yes"?>
+<!-- Active profile and signatures can be overridden in ERP_Environment.local.xml (not in git). -->
+<ERPEnvironment>
+	<ActiveProfile>Development</ActiveProfile>
+	<Profiles>
+		<Profile name="Production" server="SuperMicro\SQLEXPRESS" database="ERP_1"/>
+		<Profile name="Development" server="Server26" database="ERP_1"/>
+		<Profile name="Windfall" server="RAPTOR" database="ERP_1"/>
+	</Profiles>
+	<Company>
+		<SignaturesRoot>\\SuperMicro\SQL\Company\Signatures</SignaturesRoot>
+	</Company>
+</ERPEnvironment>

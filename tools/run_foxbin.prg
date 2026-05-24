@@ -1,2 +1,3 @@
-DO E:\VFP\ERP_1\tools\FoxBin2Prg.prg WITH "E:\VFP\ERP_1\ERP.Pjx", "*"
-QUIT
+LOCAL lcRoot
+lcRoot = SYS(5) + SYS(2003)
+DO (lcRoot + "tools\FoxBin2Prg.prg") WITH lcRoot + "ERP.Pjx", "*"

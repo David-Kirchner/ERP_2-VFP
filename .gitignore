@@ -38,6 +38,21 @@ $RECYCLE.BIN/
 # FoxPro resource files
 foxuser.dbf
 foxuser.fpt
+foxuser.*
+
+# VFP memory / local setup (machine-specific)
+*.MEM
+*.mem
+HPASetup.MEM
+ERPSetup.MEM
+SQLserver*.MEM
+SalesP.MEM
+
+# Per-machine SQL / company path overrides
+ERP_Environment.local.xml
+
+# Git backup from ERP_1 copy
+.git.erp1-backup/
 
 # IDE and editor files
 .vscode/

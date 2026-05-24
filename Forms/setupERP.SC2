@@ -592,6 +592,11 @@ DEFINE CLASS hpasetup AS form
 			ThisForm.cmdRunScripts.Enabled = .T.
 		ENDIF
 		
+		IF FILE(SYS(5)+SYS(2003)+"PROGS\ERP_Environment_UI.prg")
+			SET PROCEDURE TO PROGS\load_ERP_Environment ADDITIVE
+			SET PROCEDURE TO PROGS\ERP_Environment_UI ADDITIVE
+			DO ERP_Environment_UI WITH "InitSetupERP", THISFORM
+		ENDIF
 		
 	ENDPROC
 
@@ -659,6 +664,17 @@ DEFINE CLASS hpasetup AS form
 	ENDPROC
 
 	PROCEDURE cmdChangeServer.Click
+		IF FILE(SYS(5)+SYS(2003)+"PROGS\ERP_Environment_UI.prg")
+			SET PROCEDURE TO PROGS\load_ERP_Environment ADDITIVE
+			SET PROCEDURE TO PROGS\ERP_Environment_UI ADDITIVE
+			DO ERP_Environment_UI WITH "PickProfile"
+			DO ERP_Environment_UI WITH "InitSetupERP", THISFORM
+			ThisForm.LoginServer = gGlobalServer
+			ThisForm.ServerDir.Value = gGlobalServer + "  [" + gERPProfile + " / " + gGlobalDatabase + "]"
+			AppSetup_Update_Ans( (ThisForm.LoginServer ),(ThisForm.LoginUN),"Server" )
+			ThisForm.Refresh
+			RETURN
+		ENDIF
 		IF VARTYPE(ThisForm.LoginServer)!="C"
 			ThisForm.LoginServer= ""
 		ENDIF

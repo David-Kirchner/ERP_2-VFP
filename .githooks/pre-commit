@@ -1,7 +1,0 @@
-#!/bin/bash
-# Convert VFP binaries to PRG before commit
-for f in $(git diff --cached --name-only | grep -Ei '\.(scx|vcx|frx|dbc)$'); do
-    echo "Converting $f → PRG"
-    cscript //nologo tools/foxbin2prg/Convert_VFP9_BIN_2_PRG.vbs "$f"
-    git add "${f%.*}.prg"
-done
