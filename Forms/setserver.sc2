@@ -121,12 +121,12 @@ DEFINE CLASS frmsetserver AS form
 
 	ADD OBJECT 'cmdTest' AS commandbutton WITH ;
 		BackColor = 128,255,128, ;
-		Caption = "Test SQL", ;
+		Caption = "Test", ;
 		Height = 27, ;
 		Left = 50, ;
 		Name = "cmdTest", ;
 		Top = 241, ;
-		Visible = .T., ;
+		Visible = .F., ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -338,7 +338,7 @@ DEFINE CLASS frmsetserver AS form
 			USE IN SQLdata
 		ENDIF
 		
-		SET DEFAULT TO (SYS(5)+SYS(2003))
+		SET DEFAULT TO "E:\VFP\ERP"
 		IF FILE(SYS(5)+SYS(2003) +"\MEM\SQLdata.xml")
 			*READ file
 			XMLTOCURSOR( SYS(5)+SYS(2003)+"\MEM\SQLdata.xml", 'SQLdata', 512)
@@ -459,40 +459,10 @@ DEFINE CLASS frmsetserver AS form
 		
 		************
 		
-		ThisForm.txtTable.Value = IIF(VARTYPE(gGlobalDatabase)="C", gGlobalDatabase, "ERP_1")
+		ThisForm.txtTable.Value = "HPAlloy"
 		
-		IF FILE(SYS(5)+SYS(2003)+"PROGS\load_ERP_Environment.prg")
-			SET PROCEDURE TO PROGS\load_ERP_Environment ADDITIVE
-		ENDIF
-		IF FILE(SYS(5)+SYS(2003)+"PROGS\ERP_Environment_UI.prg")
-			SET PROCEDURE TO PROGS\ERP_Environment_UI ADDITIVE
-			DO ERP_Environment_UI WITH "InitSetServer", THISFORM
-		ENDIF
 		
-	ENDPROC
-
-	PROCEDURE cmdTest.Click
-		IF FILE(SYS(5)+SYS(2003)+"PROGS\ERP_Environment_UI.prg")
-			SET PROCEDURE TO PROGS\ERP_Environment_UI ADDITIVE
-			DO ERP_Environment_UI WITH "TestConnection"
-		ELSE
-			test_ERP_SQL_Connection(ALLTRIM(ThisForm.txt1.Value), ALLTRIM(ThisForm.txtTable.Value))
-		ENDIF
-	ENDPROC
-
-	PROCEDURE cmd4.Click
-		LOCAL lcProf
-		lcProf = ERP_ShowProfilePicker()
-		IF !EMPTY(lcProf)
-			save_ERP_ActiveProfile(lcProf)
-			DO ERP_Environment_UI WITH "InitSetServer", THISFORM
-		ELSE
-			IF VARTYPE(gGlobalServer) = "U"
-				PUBLIC gGlobalServer
-			ENDIF
-			gGlobalServer = ALLTRIM(ThisForm.txt1.Value)
-			ThisForm.lblGlobalServer.Caption = gGlobalServer
-		ENDIF
+		
 	ENDPROC
 
 	PROCEDURE Load
@@ -502,6 +472,21 @@ DEFINE CLASS frmsetserver AS form
 		IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 		ENDIF 
+	ENDPROC
+
+	PROCEDURE cmd4.Click
+		IF VARTYPE(gGlobalServer) = "U"
+			PUBLIC gGlobalServer
+		ENDIF
+		gGlobalServer = ALLTRIM(ThisForm.txt1.Value)
+		ThisForm.lblGlobalServer.Caption = gGlobalServer
+		
+		*IF VARTYPE(gDefaultSQLserver)="C"
+		*	*This is set in get_SQLSTRINGCONNECT and get_SQL_ServerName 
+		*	IF gGlobalServer != gDefaultSQLserver 
+		*		gDefaultSQLserver = gGlobalServer 
+		*	ENDIF
+		*ENDIF
 	ENDPROC
 
 	PROCEDURE cmdExit.Click

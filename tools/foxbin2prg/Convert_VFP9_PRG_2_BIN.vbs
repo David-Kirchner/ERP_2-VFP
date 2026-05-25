@@ -7,7 +7,7 @@
 '		on user's "SendTo" folder
 '		- Now you can select files or directories, right click and "SendTo" FoxBin2prg for batch conversion
 '
-'	ESPAÑOL:
+'	ESPAï¿½OL:
 '		- Copie este archivo en el mismo directorio que FoxBin2prg y cree un acceso directo
 '		en la carpeta "SendTo" del usuario
 '		- Ahora puede seleccionar archivos o directorios, pulsar click derecho y "Enviar a" FoxBin2prg para conversiones batch
@@ -35,7 +35,7 @@ nDebug = 1+0+4+8+16
 '---------------------------------------------------------------------------------------------------
 
 If WScript.Arguments.Count = 0 Then
-	'SIN PARÁMETROS
+	'SIN PARï¿½METROS
 	nExitCode = 1
 	cErrMsg = "nDebug = " & nDebug
 	If GetBit(nDebug, 1) Then
@@ -55,8 +55,11 @@ If WScript.Arguments.Count = 0 Then
 	End If
 	MsgBox cErrMsg, 64, "No parameters - Debug Status"
 Else
-	'CON PARÁMETROS
-	cEXETool	= Replace(WScript.ScriptFullName, WScript.ScriptName, "foxbin2prg.exe")
+	'CON PARï¿½METROS
+	cEXETool	= Replace(WScript.ScriptFullName, WScript.ScriptName, "foxbin2prg.prg")
+	If Not FileSystemObject.FileExists(cEXETool) Then
+		cEXETool = Replace(WScript.ScriptFullName, WScript.ScriptName, "foxbin2prg.exe")
+	End If
 	nFile_Count = 0
 	oVFP9.DoCmd( "SET PROCEDURE TO '" & cEXETool & "'" )
 	oVFP9.DoCmd( "PUBLIC oFoxBin2prg" )
@@ -69,7 +72,7 @@ Else
 	Next
 
 	If WScript.Arguments.Count = 1 AND FileSystemObject.FolderExists( WScript.Arguments(0) ) Then
-		'-- Es un solo directorio. Lo tomo como origen de compilación
+		'-- Es un solo directorio. Lo tomo como origen de compilaciï¿½n
 		cFlagRecompile			= "'" & WScript.Arguments(0) & "'"
 	Else
 		cFlagRecompile			= "'1'"
@@ -179,7 +182,7 @@ Private Sub evaluateFile( tcFile )
 	'lcFileName = FileSystemObject.GetFileName( tcFile )
 	'laPoints = Split( lcFileName, "." )
 	'lnPoints = UBound(laPoints)
-	'-- No proceso los archivos con más de un punto (clases en archivos individuales) por performance
+	'-- No proceso los archivos con mï¿½s de un punto (clases en archivos individuales) por performance
 	'If lnPoints = 1 Then
 		'PROCEDURE evaluateConfiguration
 		'	LPARAMETERS tcDontShowProgress, tcDontShowErrors, tcFlagNoTimestamps, tcDebug, tcRecompile, tcExtraBackupLevels ;

@@ -572,19 +572,19 @@ PRIVATE cAlias
 cAlias = ALIAS()
 SELECT 0
 
-IF m.cMess<>'Record Test Data.'
-	*Record Error of Screen
-	TRY
-	*	cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" David.Kirchner@SpaceAlloysUSA.com ]
-	*	cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
-		cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" VFP@WSpaceAlloysUSA.com ]
+*!*	IF m.cMess<>'Record Test Data.'
+*!*		*Record Error of Screen
+*!*		TRY
+*!*		*	cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" David.Kirchner@SpaceAlloysUSA.com ]
+*!*		*	cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
+*!*			cRun = "ErrorCapture.EXE " +["Proc_HPA:RecordError: ]+SYS(0)+[" VFP@WSpaceAlloysUSA.com ]
 
-		RUN /N &cRun
-		
-	CATCH
-		MESSAGEBOX("Error Capture was not run"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"Could not run Error Capture.")
-	ENDTRY
-ENDIF
+*!*			RUN /N &cRun
+*!*			
+*!*		CATCH
+*!*			MESSAGEBOX("Error Capture was not run"+CHR(13)+"Proc_HPA:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),16,"Could not run Error Capture.")
+*!*		ENDTRY
+*!*	ENDIF
 
 *RecordError
 *PRIVATE lCloseErrors 

@@ -2715,15 +2715,19 @@ PROCEDURE get_Report_Server
 *get_Report_Server()
 
 PRIVATE cSQLServer 
-IF VARTYPE(gGlobalServer)="C"
-	cSQLServer = gGlobalServer 
+IF VARTYPE(gGlobalReportServer)="C" AND !EMPTY(gGlobalReportServer)
+	cSQLServer = gGlobalReportServer
 ELSE
-	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
-	RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),'gGlobalServer was not set!')
- 	*cSQLServer = "BOBWHITE"
- 	*cSQLServer = "PEREGRINE"
- 	*cSQLServer = "RAPTOR"
- 	cSQLServer = get_SQL_ServerName()
+	IF VARTYPE(gGlobalServer)="C"
+		cSQLServer = gGlobalServer 
+	ELSE
+		SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
+		RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),'gGlobalServer was not set!')
+	 	*cSQLServer = "BOBWHITE"
+	 	*cSQLServer = "PEREGRINE"
+	 	*cSQLServer = "RAPTOR"
+	 	cSQLServer = get_SQL_ServerName()
+	ENDIF
 ENDIF
 
 IF cSQLServer = ""
@@ -2743,15 +2747,19 @@ PROCEDURE get_Report_SServer
 *get_Report_SServer()
 
 PRIVATE cSQLServer 
-IF VARTYPE(gGlobalServer)="C"
-	cSQLServer = gGlobalServer 
+IF VARTYPE(gGlobalReportServer)="C" AND !EMPTY(gGlobalReportServer)
+	cSQLServer = gGlobalReportServer
 ELSE
-	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
-	RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),'gGlobalServer was not set!')
- 	*cSQLServer = "BOBWHITE"
- 	*cSQLServer = "PEREGRINE"
- 	*cSQLServer = "RAPTOR"
- 	cSQLServer = get_SQL_ServerName()
+	IF VARTYPE(gGlobalServer)="C"
+		cSQLServer = gGlobalServer 
+	ELSE
+		SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
+		RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),'gGlobalServer was not set!')
+	 	*cSQLServer = "BOBWHITE"
+	 	*cSQLServer = "PEREGRINE"
+	 	*cSQLServer = "RAPTOR"
+	 	cSQLServer = get_SQL_ServerName()
+	ENDIF
 ENDIF
 
 IF cSQLServer = ""
@@ -3203,7 +3211,10 @@ ELSE
 				IF FILE(cHPAFile)
 					nArraySize = aGETFILEVERSION(aArrayName, (cHPAFile))
 				ELSE
-					MESSAGEBOX("ERP.EXE file not Found!",16,"How did I get here?")
+					LoginAppHome = SYS(5)+SYS(2003)+"\ERP"
+					IF NOT FILE(LoginAppHome+"ERP Home.txt")
+						MESSAGEBOX("ERP.EXE file not Found!"+CHR(13)+""+CHR(13)+"This code must be not compiled!",16,"Could not get the EXE version!" )
+					ENDIF
 					nArraySize = 0
 				ENDIF
 			

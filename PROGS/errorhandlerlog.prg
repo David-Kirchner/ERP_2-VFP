@@ -152,6 +152,7 @@ IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP
 ENDIF
 
 *Proc_ERP:RecordError and RecordError.prg
+WAIT WINDOW PROGRAM(PROGRAM(-1)-1) TIMEOUT 2
 RecordError(Pnerror, pMess1EHL, Pcprogram, Pnlineno, pMess)
 *MESSAGEBOX("RecordError.prg will not be run to Email this message.",0,"Skipping Email!")
 	 

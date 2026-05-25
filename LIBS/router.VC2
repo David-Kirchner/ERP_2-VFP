@@ -1771,11 +1771,11 @@ DEFINE CLASS router AS form 		&& Router
 		SELECT 0
 		
 		*this.clear
-		cSQL="SELECT [OrderTypeName] "
-		cSQL = cSQL + " FROM [dbo].[NR_OrderTrackingOrderType] "
-		cSQL = cSQL + " WHERE [OrderTypeName] IS NOT NULL "
-		cSQL = cSQL + " AND NOT [OrderTypeName] = 'Maintenance'"		&&MAINTENANCE
-		cSQL = cSQL + " ORDER BY [OrderTypeName]"
+		cSQL="SELECT [TypeName] "
+		cSQL = cSQL + " FROM [dbo].[OT_OrderType] "
+		cSQL = cSQL + " WHERE [TypeName] IS NOT NULL "
+		cSQL = cSQL + " AND NOT [TypeName] = 'Maintenance'"		&&MAINTENANCE
+		cSQL = cSQL + " ORDER BY [TypeName]"
 		
 		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpOrderType')
 		DO WHILE nSQLEXEC = 0
@@ -1788,7 +1788,7 @@ DEFINE CLASS router AS form 		&& Router
 		ENDIF
 		
 		
-		***
+		***OrderTypeName
 		
 		DIMENSION aComboOT(1),aComboOT_A(1)
 		
@@ -1796,9 +1796,9 @@ DEFINE CLASS router AS form 		&& Router
 		
 		IF USED('tmpOrderType')
 			IF RECCOUNT('tmpOrderType') = 0
-				SELECT '' AS OrderTypeName FROM tmpOrderType INTO ARRAY aComboOT_A
+				SELECT '' AS TypeName FROM tmpOrderType INTO ARRAY aComboOT_A
 			ELSE
-				SELECT OrderTypeName FROM tmpOrderType INTO ARRAY aComboOT_A
+				SELECT TypeName FROM tmpOrderType INTO ARRAY aComboOT_A
 			ENDIF
 			
 			nArrayCount = ALEN(aComboOT_A,1)
@@ -1809,7 +1809,7 @@ DEFINE CLASS router AS form 		&& Router
 			USE IN tmpOrderType 
 		ELSE
 			DIMENSION aComboOT(7)
-			*OrderTypeName
+			*TypeName
 			aComboOT(1) = 'PO Item'
 			aComboOT(2) = 'Purchase Order'
 			aComboOT(3) = 'Sales Order'

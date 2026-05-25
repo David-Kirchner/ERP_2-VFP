@@ -57,7 +57,7 @@ CASE Pnerror = 1104
 	
 
 	PRIVATE cLastVersion, nLastVersion 
-	cLastVersion = HPAVersion(.F.,"STABLE")
+	cLastVersion = Get_HPAVersion(.F.,"STABLE")
 	IF VARTYPE(cLastVersion) = "C"
 		nLastVersion = VAL(RIGHT( LEFT(cLastVersion,AT(".",cLastVersion)-1), LEN(LEFT(cLastVersion,AT(".",cLastVersion)-1))-8))*10000000 +VAL(RIGHT(cLastVersion,LEN(cLastVersion)-AT(".",cLastVersion)))*10000
 	ELSE
@@ -144,14 +144,15 @@ IF EMPTY(WhatDo)
 ENDIF
 
 
-IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
+IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 ENDIF
-IF NOT "PROC_HPA" $ SET("PROCEDURE")  &&Added for when Quotes is run without HPA menu.
-	SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
+	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 ENDIF
 
-*PROC_HPA:RecordError and RecordError.prg
+*Proc_ERP:RecordError and RecordError.prg
+
 RecordError(Pnerror, pMess1EHL, Pcprogram, Pnlineno, pMess)
 *MESSAGEBOX("RecordError.prg will not be run to Email this message.",0,"Skipping Email!")
 	 

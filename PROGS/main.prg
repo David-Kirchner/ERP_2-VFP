@@ -14,7 +14,32 @@ lcLastSetPath=SET("PATH")
 lcLastSetCentury=SET("CENTURY")	&&Century was not in QuotesSet untill 3-2009
 SET CENTURY ON
 
-SET DEFAULT TO "E:\VFP\ERP_2"
+lcAppPath = JUSTPATH(SYS(16, 0))
+? lcAppPath 
+
+*Strip lcAppPath to ERP_2
+DO CASE
+    CASE LOWER(JUSTFNAME(lcAppPath)) == "forms"
+        lcAppPath = JUSTPATH(lcAppPath)
+    CASE LOWER(JUSTFNAME(lcAppPath)) == "libs"
+        lcAppPath = JUSTPATH(lcAppPath)
+    CASE LOWER(JUSTFNAME(lcAppPath)) == "mem"
+        lcAppPath = JUSTPATH(lcAppPath)
+    CASE LOWER(JUSTFNAME(lcAppPath)) == "menus"
+        lcAppPath = JUSTPATH(lcAppPath)
+    CASE LOWER(JUSTFNAME(lcAppPath)) == "progs"
+        lcAppPath = JUSTPATH(lcAppPath)
+    CASE LOWER(JUSTFNAME(lcAppPath)) == "reports"
+        lcAppPath = JUSTPATH(lcAppPath)
+    CASE LOWER(JUSTFNAME(lcAppPath)) == "tools"
+        lcAppPath = JUSTPATH(lcAppPath)
+ENDCASE
+
+? SET("DEFAULT")
+SET DEFAULT TO (lcAppPath)
+? SET("DEFAULT")
+
+*SET DEFAULT TO "E:\VFP\ERP_2"
 
 *!*	*? "Save 'Last Set'" 
 *!*	IF "\MEM" $ SYS(2003)
@@ -39,7 +64,7 @@ ENDIF
 
 *TMPFILES SYS(5)+SYS(2003)+"\MEM\"
 
-*? "Get 'ERPSetup.mem'"
+? "Get 'ERPSetup.mem'"
 IF FILE(SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM")
 	RESTORE FROM (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM") ADDITIVE
 ELSE
@@ -56,21 +81,9 @@ ELSE
 			WAIT WINDOW "Running the ERP Setup to set defaults." TIMEOUT 1
 			
 			IF FILE("\Forms\SetupERP.SCX")
-				*DO FORM LOCFILE("C:\Program Files (x86)\ERP_1\Forms\SetupERP.SCX","SCX","Select the SetupERP.EXE")
-				*DO FORM "C:\Program Files (x86)\ERP_1\Forms\SetupERP.SCX"
+				DO FORM (SYS(5)+SYS(2003) +"\Forms\SetupERP")
 			ELSE
-				IF FILE(SYS(5)+SYS(2003)+"\ERP_1\SetupERP.exe")
-					RUN SYS(5)+SYS(2003)+"\ERP_1\SetupERP.exe"
-				ELSE
-					PRIVATE cLocFile
-					cLocFile = LOCFILE("SetupERP.SCX","SCX","Select the SetupERP")
-					IF FILE(cLocFile)
-						DO FORM (cLocFile)
-					ELSE
-						MESSAGEBOX("Called from Main.prg"+CHR(13)+"Could not DO FORM '\Forms\SetupERP.SCX'"+CHR(13)+"Line "+STR(LINENO(1)),48,"Set Defaults")
-						RETURN .F.
-					ENDIF
-				ENDIF
+				*STOP
 			ENDIF
 			
 			**********************************************
@@ -90,15 +103,15 @@ ENDIF
  
 IF TYPE("LoginAppHome") != "C"
 	LoginAppHome = SYS(5)+SYS(2003)+"\ERP"
-	IF FILE(LoginAppHome+"ERP.EXE")
+	IF FILE(LoginAppHome+"ERP Home.txt")
 		IF NOT "\MEM" $ SYS(2003)
 			SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\ERPSetup.MEM")
 		ELSE
 			SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM")
 		ENDIF
 	ELSE
-		IF FILE(SYS(5)+SYS(2003)+"\ERP_1\"+"ERP.EXE")
-			LoginAppHome = SYS(5)+SYS(2003)+"\ERP_1\"
+		IF FILE(SYS(5)+SYS(2003)+"ERP Home.txt")
+			LoginAppHome = SYS(5)+SYS(2003)
 			IF NOT "\MEM" $ SYS(2003)
 				SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\ERPSetup.MEM")
 			ELSE
@@ -110,13 +123,13 @@ IF TYPE("LoginAppHome") != "C"
 	ENDIF
 ENDIF
 
-IF NOT (FILE(LoginAppHome+"ERP.EXE") OR FILE(LoginAppHome+"ERP.APP"))
+IF NOT (FILE(LoginAppHome+"ERP Home.txt") OR FILE(LoginAppHome+"ERP.APP"))
 	? "Retry for LoginAppHome"
-	IF ( FILE( SYS(5)+SYS(2003)+"ERP.EXE") OR FILE(SYS(5)+SYS(2003)+"ERP.APP")  )
+	IF ( FILE( SYS(5)+SYS(2003)+"ERP Home.txt") OR FILE(SYS(5)+SYS(2003)+"ERP.APP")  )
 		LoginAppHome = SYS(5)+SYS(2003)
 		SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM")
 	ELSE
-		IF FILE("E:\VFP\ERP_2\"+"ERP.EXE")
+		IF FILE("E:\VFP\ERP_2\"+"ERP Home.txt")
 
 			LoginAppHome = "E:\VFP\ERP_2\"
 
@@ -130,7 +143,7 @@ IF NOT (FILE(LoginAppHome+"ERP.EXE") OR FILE(LoginAppHome+"ERP.APP"))
 	ENDIF
 ENDIF
 
-IF NOT ( FILE(LoginAppHome+"ERP.EXE") OR FILE(LoginAppHome+"ERP.APP")  )
+IF NOT ( FILE(LoginAppHome+"ERP Home.txt") OR FILE(LoginAppHome+"ERP.APP")  )
 	IF VARTYPE(LoginAppHome) != "C"
 		LoginAppHome = ""
 	ENDIF
@@ -160,7 +173,7 @@ IF VARTYPE(LoginAppHome) = "C"
 *	ENDIF
 ENDIF
 
-IF FILE(LoginAppHome+"ERP.EXE") OR FILE(LoginAppHome+"ERP.APP")
+IF FILE(LoginAppHome+"ERP Home.txt") OR FILE(LoginAppHome+"ERP.APP")
 	*SET DEFAULT - Specifies the default drive and directory. 
 	*If you create a file and do not specify where to place it, the file is placed in the default Visual FoxPro directory.
 	

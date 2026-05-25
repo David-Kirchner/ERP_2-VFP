@@ -1,0 +1,8 @@
+﻿{
+    "SendTo":  [
+                   "FoxBin2Prg - Binary to Text.lnk",
+                   "FoxBin2Prg - Text to Binary.lnk"
+               ],
+    "InstalledAt":  "2026-05-24T23:48:24.1562961-04:00",
+    "ToolDir":  "E:\\VFP\\ERP_2\\tools\\foxbin2prg"
+}

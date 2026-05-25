@@ -26502,7 +26502,12 @@ DEFINE CLASS frmquotes AS formset
 			SKIP 1
 		ENDIF
 		
-		*GLOBAL gnQindex INIT=2
+		
+		IF NOT VARTYPE(gnQindex)="N"
+			PUBLIC gnQindex 
+			gnQindex=2
+		ENDIF
+		
 		DO CASE
 		CASE gnQindex = 1 &&"Record#"
 			SET ORDER TO

@@ -153,19 +153,19 @@ GO
    §3  Seed dbo.CompanyPlant  -- placeholders. Update addresses to real values.
    ============================================================================= */
 
-IF NOT EXISTS (SELECT 1 FROM dbo.CompanyPlant WHERE PlantCode = 'WINDFALL')
+IF NOT EXISTS (SELECT 1 FROM dbo.CompanyPlant WHERE PlantCode = 'PRODUCTION')
 INSERT INTO dbo.CompanyPlant (PlantCode, PlantName, Addr1, City, StateCode, PostalCode,
                               IpSubnet, ServerName, SortOrder, IsDefault, IsActive)
-VALUES ('WINDFALL', 'Windfall Plant',
-        '<FILL-IN street address>', '<FILL-IN city>', '<FILL-IN state>', '<FILL-IN ZIP>',
-        '192.168.1.0/24', 'RAPTOR', 10, 1, 1);
+VALUES ('PRODUCTION', 'David PROD',
+        '1985E 500N ', 'Windfall', 'IN', '46076',
+        '192.168.31.26/24', 'Server26', 10, 0, 1);
 
-IF NOT EXISTS (SELECT 1 FROM dbo.CompanyPlant WHERE PlantCode = 'TIPTON')
+IF NOT EXISTS (SELECT 1 FROM dbo.CompanyPlant WHERE PlantCode = 'DEVELOPMENT')
 INSERT INTO dbo.CompanyPlant (PlantCode, PlantName, Addr1, City, StateCode, PostalCode,
                               IpSubnet, ServerName, SortOrder, IsDefault, IsActive)
-VALUES ('TIPTON', 'Tipton Plant',
-        '<FILL-IN street address>', '<FILL-IN city>', '<FILL-IN state>', '<FILL-IN ZIP>',
-        '192.168.2.0/24', 'PEREGRINE', 20, 0, 1);
+VALUES ('DEVELOPMENT', 'David DEV',
+        '4301 N Meridian', 'Windfall', 'IN', '46076',
+        '192.168.31.172/24', 'SuperMicro', 20, 1, 1);
 GO
 
 /* =============================================================================
@@ -294,7 +294,7 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM dbo.AdminUser)
 INSERT INTO dbo.AdminUser (WindowsLogin, FullName, Notes)
-VALUES ('<FILL-IN your Windows login, e.g. SPACEALLOYS\DavidKirchner>',
+VALUES ('SuperMicro\talkt',
         'David Kirchner',
         'Sole admin per design decision 2026-05-11');
 GO

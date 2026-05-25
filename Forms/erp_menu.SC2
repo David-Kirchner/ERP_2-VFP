@@ -118,7 +118,7 @@ DEFINE CLASS hpa AS form
 		Name = "oleListViewHPA", ;
 		Top = 2, ;
 		Width = 200
-		*< END OBJECT: BaseClass="olecontrol" OLEObject="c:\windows\syswow64\comctl32.ocx" Value="0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAAEAAAAgAAAAEAAAD+////AAAAAAAAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9/////v////7////+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////1IAbwBvAHQAIABFAG4AdAByAHkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAUA//////////8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHDIfCVxy9wBAwAAAAACAAAAAAAAAwBPAGwAZQBPAGIAagBlAGMAdABEAGEAdABhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4AAgEDAAAAAgAAAP////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZgAAAAAAAAADAEEAYwBjAGUAcwBzAE8AYgBqAFMAaQB0AGUARABhAHQAYQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgACAP///////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABPAAAAAAAAAAMAQwBoAGEAbgBnAGUAZABQAHIAbwBwAHMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAIA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAANMAAAAAAAAABAAAAAIAAAD+////BQAAAP7///8GAAAABwAAAP7///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+i6BMHCoUbEK/AQhAQKo2nIUM0EggAAACsFAAA+R0AAI5+4eYCAAUAIgAAALkAAQDlAgAAAQAAAAHvzasAAAUATwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAABcAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcWhqIFp0dVFoYTtqZGZuW2lhZXRyIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACADgAAAEhpZGVTZWxlY3Rpb24ABQAAAEwBAAAADAAAAEluZGVudGF0aW9uABEAAABODQAAAAcAAAAAAAAACAAAAA8AAAAAAAAABQAAgNzpGgABAAAAXAAf3uy9AQAFADjsdQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPEANAAAATW91c2VQb2ludGVyAAkAAABJCgAAAAEAAAAOAAAAUGF0aFNlcGFyYXRvcgAKAAAASAAAAAABAAAAXAYAAABTdHlsZQAJAAAASQoAAAAGAAAADAAAAE9MRURyYWdNb2RlAAkAAABJCgAAAAAAAAAMAAAAT0xFRHJvcE1vZGUACQAAAEkKAAAAAAAAAABpAG4AdAAgAFAAcgBlAHMAZQBuAHQAYQB0AGkAbwBuAAkAewA2ADQAOAAxAA==" />
+		*< END OBJECT: BaseClass="olecontrol" OLEObject="c:\windows\syswow64\comctl32.ocx" Value="0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAAEAAAAgAAAAEAAAD+////AAAAAAAAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9/////v////7////+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////1IAbwBvAHQAIABFAG4AdAByAHkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAUA//////////8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMB4zU+Iz9wBAwAAAAACAAAAAAAAAwBPAGwAZQBPAGIAagBlAGMAdABEAGEAdABhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4AAgEDAAAAAgAAAP////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZgAAAAAAAAADAEEAYwBjAGUAcwBzAE8AYgBqAFMAaQB0AGUARABhAHQAYQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgACAP///////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABPAAAAAAAAAAMAQwBoAGEAbgBnAGUAZABQAHIAbwBwAHMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAIA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAANMAAAAAAAAABAAAAAIAAAD+////BQAAAP7///8GAAAABwAAAP7///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+i6BMHCoUbEK/AQhAQKo2nIUM0EggAAACsFAAA+R0AAI5+4eYCAAUAIgAAALkAAQDlAgAAAQAAAAHvzasAAAUATwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAABcAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcWhqIFp0dVFoYTtqZGZuW2lhZXRyIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACADgAAAEhpZGVTZWxlY3Rpb24ABQAAAEwBAAAADAAAAEluZGVudGF0aW9uABEAAABODQAAAAcAAAAAAAAACAAAAA8AAAAAAAAABQAAgNzpGgABAAAAXAAf3uy9AQAFAEiJzwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPEANAAAATW91c2VQb2ludGVyAAkAAABJCgAAAAEAAAAOAAAAUGF0aFNlcGFyYXRvcgAKAAAASAAAAAABAAAAXAYAAABTdHlsZQAJAAAASQoAAAAGAAAADAAAAE9MRURyYWdNb2RlAAkAAABJCgAAAAAAAAAMAAAAT0xFRHJvcE1vZGUACQAAAEkKAAAAAAAAAABpAG4AdAAgAFAAcgBlAHMAZQBuAHQAYQB0AGkAbwBuAAkAewA2ADQAOAAxAA==" />
 
 	ADD OBJECT 'Timer10' AS timer WITH ;
 		Height = 23, ;
@@ -293,12 +293,7 @@ DEFINE CLASS hpa AS form
 			ELSE
 				DO FORM "Forms\SourceQuotes.SCX"
 			ENDIF
-		CASE tNodeText = "Truck Rates"
-			IF WEXIST("frmTruckRoute")
-				ACTIVATE WINDOW frmTruckRoute
-			ELSE
-				DO FORM "Forms\TruckRate.SCX"
-			ENDIF
+		
 		CASE tNodeText = "QuickCompany"
 			IF WEXIST("frmQuickCompany")
 				ACTIVATE WINDOW frmQuickCompany
@@ -600,12 +595,12 @@ DEFINE CLASS hpa AS form
 			ELSE
 				DO FORM "Forms\Stocklst_SQL_Maint.SCX"
 			ENDIF
-		CASE tNodeText == "StockList GS"
-			IF WEXIST("frmStockLst_Report")
-				ACTIVATE WINDOW frmStockLst_Report
-			ELSE
-				DO FORM "Forms\StockLst_GS.SCX"
-			ENDIF
+		*!*	CASE tNodeText == "StockList GS"
+		*!*		IF WEXIST("frmStockLst_Report")
+		*!*			ACTIVATE WINDOW frmStockLst_Report
+		*!*		ELSE
+		*!*			DO FORM "Forms\StockLst_GS.SCX"
+		*!*		ENDIF
 		CASE tNodeText == "StockList Print"
 			IF WEXIST("frmStockLst_SQL_Print")
 				ACTIVATE WINDOW frmStockLst_SQL_Print
@@ -930,8 +925,6 @@ DEFINE CLASS hpa AS form
 			ELSE
 				DO FORM "Forms\SetupERP.SCX"
 			ENDIF
-		CASE tNodeText = "Company Profile"
-			DO (SYS(5)+SYS(2003)+"PROGS\CompanyProfile_maint.prg")
 		CASE tNodeText = "Set Server"
 			IF WEXIST("frmSetServer")	
 				ACTIVATE WINDOW frmSetServer
@@ -1000,7 +993,7 @@ DEFINE CLASS hpa AS form
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Quote",4,,"Sources")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Quote",4,,"SourcePhone")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Quote",4,,"SourceQuotes")
-		nodX = ThisForm.oleListViewHPA.Nodes.Add("Quote",4,,"Truck Rates")
+		
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Quote",4,,"QuickCompany")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Quote",4,,"Quotes")	&&Quote21
 		*nodX = ThisForm.oleListViewHPA.Nodes.Add("Quote",4,,"Quotes_OLD")
@@ -1125,7 +1118,6 @@ DEFINE CLASS hpa AS form
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Employee",4,,"Employee Maintanence")
 		******* other ********
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"Setup HPA","Setup HPA")
-		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Company Profile")
 		
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"ShowPermission","ShowPermission")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"Set Server","Set Server")
@@ -1357,10 +1349,6 @@ DEFINE CLASS hpa AS form
 			lQuit = .F.
 		ENDIF
 		
-		IF WEXIST("frmTruckRoute")
-			ACTIVATE WINDOW frmTruckRoute
-			lQuit = .F.
-		ENDIF
 		IF WEXIST("frmQuickCompany")
 			ACTIVATE WINDOW frmQuickCompany
 			lQuit = .F.
@@ -1708,6 +1696,11 @@ DEFINE CLASS hpa AS form
 	PROCEDURE lblServerData.DblClick
 		DO FORM FORMS\SetServer
 		ThisForm.ShowServerData()
+	ENDPROC
+
+	PROCEDURE oleListViewHPA.Click
+		*** ActiveX Control Event ***
+		
 	ENDPROC
 
 	PROCEDURE oleListViewHPA.NodeClick

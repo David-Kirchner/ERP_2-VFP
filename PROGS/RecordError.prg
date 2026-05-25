@@ -40,17 +40,17 @@ PRIVATE cAlias
 cAlias = ALIAS()
 SELECT 0
 
-IF Pmess1<>'Record Test Data.'
-	*Record Error on Screen
-	TRY
-	*	cRun = "ErrorCapture.EXE " +["Progs\RecordError.PRG: ]+SYS(0)+[" VFP@SpaceAlloysUSA.com ]
-	*	cRun = "ErrorCapture.EXE " +[""Progs\RecordError.PRG: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
-		cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@SpaceAlloysUSA.com ]
-		
-		RUN /N &cRun
-		
-	ENDTRY
-ENDIF
+*!*	IF Pmess1<>'Record Test Data.'
+*!*		*Record Error on Screen
+*!*		TRY
+*!*		*	cRun = "ErrorCapture.EXE " +["Progs\RecordError.PRG: ]+SYS(0)+[" VFP@SpaceAlloysUSA.com ]
+*!*		*	cRun = "ErrorCapture.EXE " +[""Progs\RecordError.PRG: ]+SYS(0)+[" David.Kirchner@Windfall.HPA.local ]
+*!*			cRun = "ErrorCapture.EXE " +["Proc_ERP:RecordError: ]+SYS(0)+[" VFP@SpaceAlloysUSA.com ]
+*!*			
+*!*			RUN /N &cRun
+*!*			
+*!*		ENDTRY
+*!*	ENDIF
 *RecordError
 PRIVATE lCloseErrors 
 lCloseErrors = .T.  &&Not sure why Errors should be open

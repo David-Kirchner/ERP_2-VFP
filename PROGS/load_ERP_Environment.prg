@@ -15,7 +15,7 @@ IF VARTYPE(gERPProfile) = "C" AND NOT tlForceReload AND NOT EMPTY(gGlobalServer)
 ENDIF
 
 LOCAL lcRoot, lcBaseFile, lcLocalFile, lcXml, lcProfile
-LOCAL lcServer, lcDatabase, lcSigs, i, nPos, lcChunk, lcName, lcAttr
+LOCAL lcServer, lcDatabase, lcReportServer, lcSigs, i, nPos, lcChunk, lcName, lcAttr
 
 lcRoot = ADDBS(SYS(5) + SYS(2003))
 lcBaseFile = lcRoot + "ERP_Environment.xml"
@@ -25,7 +25,7 @@ IF NOT FILE(lcBaseFile)
 	* Fallback: legacy DFS ERPdata.xml (Windfall server name only)
 	ERP_Environment_LoadLegacyDFS()
 	IF EMPTY(gGlobalServer)
-		gGlobalServer = "SuperMicro\SQLEXPRESS"
+		gGlobalServer = "SuperMicro"
 		gGlobalDatabase = "ERP_1"
 		gERPProfile = "Production"
 	ENDIF
@@ -52,10 +52,11 @@ ENDIF
 
 lcServer = ""
 lcDatabase = "ERP_1"
-ERP_Environment_ParseProfiles(lcBaseFile, lcProfile, @lcServer, @lcDatabase)
+lcReportServer = ""
+ERP_Environment_ParseProfiles(lcBaseFile, lcProfile, @lcServer, @lcDatabase, @lcReportServer)
 
 IF FILE(lcLocalFile)
-	ERP_Environment_ParseProfiles(lcLocalFile, lcProfile, @lcServer, @lcDatabase)
+	ERP_Environment_ParseProfiles(lcLocalFile, lcProfile, @lcServer, @lcDatabase, @lcReportServer)
 ENDIF
 
 IF EMPTY(lcServer)
@@ -63,14 +64,19 @@ IF EMPTY(lcServer)
 ENDIF
 
 IF EMPTY(lcServer)
-	lcServer = "SuperMicro\SQLEXPRESS"
+	lcServer = "SuperMicro"
 	lcDatabase = "ERP_1"
 ENDIF
 
-PUBLIC gERPProfile, gGlobalServer, gGlobalDatabase, gERPSignaturesRoot
+IF EMPTY(lcReportServer)
+	lcReportServer = lcServer
+ENDIF
+
+PUBLIC gERPProfile, gGlobalServer, gGlobalDatabase, gGlobalReportServer, gERPSignaturesRoot
 gERPProfile = lcProfile
 gGlobalServer = lcServer
 gGlobalDatabase = lcDatabase
+gGlobalReportServer = lcReportServer
 gERPSignaturesRoot = lcSigs
 
 * Alias used by SetServer and legacy code
@@ -97,8 +103,12 @@ RETURN SUBSTR(tcXml, n1 + LEN(lcOpen), n2 - n1 - LEN(lcOpen))
 
 *--------------------------------------------------------------------
 PROCEDURE ERP_Environment_ParseProfiles
-LPARAMETERS tcFile, tcProfile, tcServer, tcDatabase
-LOCAL lcXml, lcChunk, nStart, nEnd, lcName, lcSrv, lcDb
+LPARAMETERS tcFile, tcProfile, tcServer, tcDatabase, tcReportServer
+LOCAL lcXml, lcChunk, nStart, nEnd, lcName, lcSrv, lcDb, lcRpt
+
+IF VARTYPE(tcReportServer) # "C"
+	tcReportServer = ""
+ENDIF
 
 IF EMPTY(tcFile) OR NOT FILE(tcFile)
 	RETURN
@@ -124,9 +134,13 @@ DO WHILE .T.
 	lcName = ERP_XmlAttr(lcChunk, "name")
 	lcSrv = ERP_XmlAttr(lcChunk, "server")
 	lcDb = ERP_XmlAttr(lcChunk, "database")
+	lcRpt = ERP_XmlAttr(lcChunk, "reportServer")
 	IF UPPER(ALLTRIM(lcName)) == UPPER(ALLTRIM(tcProfile))
 		tcServer = lcSrv
 		tcDatabase = lcDb
+		IF !EMPTY(lcRpt)
+			tcReportServer = lcRpt
+		ENDIF
 		RETURN
 	ENDIF
 	nStart = nStart + LEN(lcChunk)
@@ -159,29 +173,7 @@ gGlobalServer = ""
 gGlobalDatabase = "ERP_1"
 gERPProfile = "Windfall"
 
-IF FILE("\\RAPTOR\SQL\ERPdata.xml")
-	lcDFS = "\\RAPTOR\SQL\ERPdata.xml"
-ELSE
-	IF FILE("\\Vulcan\SQL\ERPdata.xml")
-		lcDFS = "\\Vulcan\SQL\ERPdata.xml"
-	ELSE
-		RETURN
-	ENDIF
-ENDIF
-
-TRY
-	IF USED("ERPdata")
-		USE IN ERPdata
-	ENDIF
-	XMLTOCURSOR(lcDFS, "ERPdata", 512)
-	IF USED("ERPdata")
-		IF TYPE("ERPdata.windfallserver") = "C" AND !EMPTY(ERPdata.windfallserver)
-			gGlobalServer = ALLTRIM(ERPdata.windfallserver)
-		ENDIF
-		USE IN ERPdata
-	ENDIF
-CATCH
-ENDTRY
+RETURN
 
 *--------------------------------------------------------------------
 FUNCTION save_ERP_ActiveProfile

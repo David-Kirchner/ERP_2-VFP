@@ -1,3 +1,11 @@
+# Visual FoxPro project binaries (locked while Project Manager is open; track .pj2 / .sc2 text)
+*.PJT
+*.pjt
+ERP.pjx
+ERP.PJX
+SetupERP.pjx
+SetupERP.PJT
+
 # Visual FoxPro compiled files
 *.fxp
 #*.app

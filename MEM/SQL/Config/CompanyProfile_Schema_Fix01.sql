@@ -106,7 +106,7 @@ INSERT INTO dbo.CompanyPlant
 VALUES
     ('WINDFALL', 'Windfall Plant',
      'TBD - update with real street', 'TBD', 'XX', 'XXXXX',
-     '192.168.1.0/24', 'RAPTOR', 10, 1, 1);
+     '192.168.1.0/24', 'RAPTOR', 98, 0, 1);
 
 IF NOT EXISTS (SELECT 1 FROM dbo.CompanyPlant WHERE PlantCode = 'TIPTON')
 INSERT INTO dbo.CompanyPlant
@@ -115,7 +115,7 @@ INSERT INTO dbo.CompanyPlant
 VALUES
     ('TIPTON', 'Tipton Plant',
      'TBD - update with real street', 'TBD', 'XX', 'XXXXX',
-     '192.168.2.0/24', 'PEREGRINE', 20, 0, 1);
+     '192.168.2.0/24', 'PEREGRINE', 99, 0, 1);
 GO
 
 PRINT '--- §C  Recreate views & proc that failed against incomplete CompanyProfile ---';

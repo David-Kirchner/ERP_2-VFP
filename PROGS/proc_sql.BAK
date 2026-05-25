@@ -43010,7 +43010,8 @@ IF lWriteError
 			RecordError(Pnerror, "SQL - Bad data! SQLExecError() TRYing RecordError.prg "+" LINENO(1)="+ALLTRIM(STR(LINENO(1))), "Proc_SQL:"+PROGRAM()+" @"+cPastProg, LINENO(), pMessMemo)
 			WAIT WINDOW "Recorded Error!" + " Any key to continue..."+CHR(13)+"From: "+cPastProg+CHR(13)+cVerMess+CHR(13)+LEFT(pMessMemo,1000)
 		CATCH
-			MESSAGEBOX("Could not find 'RecordError.prg'",48,"Could not record the Error")
+			MESSAGEBOX("TRY RecordError() Failed!",48,"Could not record the Error")
+			SET STEP ON
 		ENDTRY
 	
 		
