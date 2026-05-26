@@ -395,7 +395,7 @@ DEFINE CLASS _application AS _container OF "..\ffc\_base.vcx" 		&& application o
 		*a: atoolbars[1,2]		&& Parallel to aForms[]
 	*</DefinedPropArrayMethod>
 
-	PROTECTED Destroy,Init,lrestoredenvironment,lsavedenvironment
+	PROTECTED destroy,Init,lrestoredenvironment,lsavedenvironment
 	*<PropValue>
 		BorderWidth = 0
 		caboutboxclass = 

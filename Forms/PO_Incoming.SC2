@@ -1981,7 +1981,7 @@ DEFINE CLASS frmpoincoming AS form
 		
 		
 				cSQL = "SELECT ID,Alloy,Form,CC,CL,Size,Cond,MWeight,Specs,Heat,Lot,Paid,PO_item,PoDueDate,Mill,StkDate,History,Num,POStatus,BrandName,FROM_ID,Melt"
-				cSQL = cSQL + " FROM HPAlloy_Archive.dbo.Stocklst_Master_History "
+				cSQL = cSQL + " FROM dbo.[Ar.Stocklst_Master_History] "
 				cSQL = cSQL + " WHERE ID = "+STR(nID_Master )
 				
 						
@@ -2119,8 +2119,8 @@ DEFINE CLASS frmpoincoming AS form
 		SELECT 0
 		
 		cSQL = "SELECT TOP 1 D.* "
-		cSQL = cSQL + " FROM HPAlloy_Archive.dbo.Stocklst_Process_History ph "
-		cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Detail_History D on D.ID_Detail = ph.ID_Detail "
+		cSQL = cSQL + " FROM dbo.[Ar.StockLst_Process_History] ph "
+		cSQL = cSQL + " INNER JOIN dbo.[Ar.Stocklst_Detail_History] D on D.ID_Detail = ph.ID_Detail "
 		cSQL = cSQL + " 	AND CONVERT (CHAR(17), D.[WHEN]) = CONVERT (CHAR(17), ph.[WHEN]) "
 		cSQL = cSQL + " WHERE ph.[What] = 'DELETE' "
 		cSQL = cSQL + " AND ( ph.Process_ID = 'SELECTED' OR ph.Process_ID='PartSelect' )"
@@ -2811,14 +2811,14 @@ DEFINE CLASS frmpoincoming AS form
 		cHeat = ALLTRIM(ThisForm.Heat)
 		
 		IF NOT EMPTY(cHeat)
-			cSQL = "SELECT * FROM HPAlloy_Archive.dbo.Stocklst_Master_History M "
-			cSQL  = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Detail_History D "
+			cSQL = "SELECT * FROM dbo.[Ar.Stocklst_Master_History] M "
+			cSQL  = cSQL + " INNER JOIN dbo.[Ar.Stocklst_Detail_History] D "
 			cSQL  = cSQL + " ON D.ID = M.ID "
 			cSQL  = cSQL + " WHERE m.Heat = '"+cHeat+"' AND M.What = 'DELETE'"
 			cSQL  = cSQL + " AND d.What = 'DELETE'"
 			cSQL  = cSQL + " UNION "
-			cSQL  = cSQL + " SELECT * FROM HPAlloy_Archive.dbo.Brokerlst_Master_History M "
-			cSQL  = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Detail_History D "
+			cSQL  = cSQL + " SELECT * FROM dbo.[Ar.BrokerLst_Master_history] M "
+			cSQL  = cSQL + " INNER JOIN dbo.[Ar.Stocklst_Detail_History] D "
 			cSQL  = cSQL + " ON D.ID = M.ID "
 			cSQL  = cSQL + " WHERE m.Heat = '"+cHeat+"' AND M.What = 'DELETE'"
 			cSQL  = cSQL + " AND d.What = 'DELETE'"
@@ -3286,12 +3286,12 @@ DEFINE CLASS frmpoincoming AS form
 									*Not found here either! - Revert to Orig
 									cMasterTbl = ThisForm.txtTableName1.Value
 									
-									*Check to see if in history *HPAlloy_Archive.dbo.StockLstLst_Detail_history HPAlloy_Archive.dbo.BrokerLst_Detail_history
+									*Check to see if in history (Ar.* archive tables in ERP_1)
 									cSQL = "SELECT COUNT(*) AS Cnt FROM "
 									IF UPPER(cMasterTbl) = "STOCKLST"
-										cSQL = cSQL + " HPAlloy_Archive.dbo.StockLst_Detail_History "
+										cSQL = cSQL + " dbo.[Ar.Stocklst_Detail_History] "
 									ELSE
-										cSQL = cSQL + " HPAlloy_Archive.dbo.BrokerLst_Detail_History "
+										cSQL = cSQL + " dbo.[Ar.BrokerLst_Detail_History] "
 									ENDIF
 									cSQL = cSQL + " WHERE ReceivingID = "+STR(pnReceivingID)
 									cSQL = cSQL + " AND [WHAT] = 'DELETE'"
@@ -4822,9 +4822,9 @@ DEFINE CLASS frmpoincoming AS form
 			
 			cSQL = "SELECT COUNT(*) AS CNTD FROM "
 			IF cStockTableInit = "S"
-				cSQL = cSQL + "HPAlloy_Archive.dbo.StockLst_Detail_History "
+				cSQL = cSQL + "dbo.[Ar.Stocklst_Detail_History] "
 			ELSE
-				cSQL = cSQL + "HPAlloy_Archive.dbo.BrokerLst_Detail_History "
+				cSQL = cSQL + "dbo.[Ar.BrokerLst_Detail_History] "
 			ENDIF
 			cSQL = cSQL + " WHERE ReceivingID = "+ALLTRIM(STR(nReceivingID))
 			*cSQL = cSQL + " AND [WHAT]='DELETE'"
@@ -5064,9 +5064,9 @@ DEFINE CLASS frmpoincoming AS form
 			cSQL = "SELECT COUNT(*) AS CNTD FROM ( "
 			cSQL = cSQL + " SELECT DISTINCT ProcessValue "
 			IF cStockTableInit = "S"
-				cSQL = cSQL +" FROM HPAlloy_Archive.dbo.StockLst_Detail_History "
+				cSQL = cSQL +" FROM dbo.[Ar.Stocklst_Detail_History] "
 			ELSE
-				cSQL = cSQL +" FROM HPAlloy_Archive.dbo.BrokerLst_Detail_History "
+				cSQL = cSQL +" FROM dbo.[Ar.BrokerLst_Detail_History] "
 			ENDIF	
 			cSQL = cSQL+ " WHERE ReceivingID = "+ALLTRIM(STR(nReceivingID))
 			cSQL = cSQL + " AND [WHAT]='BEFOREEDIT'"
@@ -5660,9 +5660,9 @@ DEFINE CLASS frmpoincoming AS form
 				ELSE
 					cSQLd = "UPDATE "
 					IF cStockTableInit = "S"
-						cSQLd = cSQLd + " HPAlloy_Archive.dbo.StockLst_Process_History "
+						cSQLd = cSQLd + " dbo.[Ar.StockLst_Process_History] "
 					ELSE
-						cSQLd = cSQLd + " HPAlloy_Archive.dbo.BrokerLst_Process_History "
+						cSQLd = cSQLd + " dbo.[Ar.BrokerLst_Process_History] "
 					ENDIF
 					cSQLd = cSQLd+" SET [WHAT]='RECEIVED', [ReceivingID]="+STR(nReceivingID)
 					cSQLd = cSQLd+" WHERE ID_Detail = "+ALLTRIM(STR(nID_Detail))
@@ -5737,12 +5737,12 @@ DEFINE CLASS frmpoincoming AS form
 					USE IN StockLst_Detail_Count
 				ENDIF	
 				
-				*HPAlloy_Archive.dbo.StockLst_Process_History HPAlloy_Archive.dbo.BrokerLst_Process_History		
+				*dbo.[Ar.StockLst_Process_History] dbo.[Ar.BrokerLst_Process_History]		
 				cSQLi = "INSERT INTO "
 				IF UPPER(ALLTRIM(ThisForm.txtTableName1.Value)) = "STOCKLST"
-					cSQLi = cSQLi + " HPAlloy_Archive.dbo.StockLst_Process_History "
+					cSQLi = cSQLi + " dbo.[Ar.StockLst_Process_History] "
 				ELSE
-					cSQLi = cSQLi + " HPAlloy_Archive.dbo.BrokerLst_Process_History "
+					cSQLi = cSQLi + " dbo.[Ar.BrokerLst_Process_History] "
 				ENDIF
 				cSQLi = cSQLi + "(What,SOitem,PO_Item,salesperson,startdate"
 				cSQLi = cSQLi + ",duedate,comment,process_id,processor,AllowSub,pWeight,pPc,ID_Detail,Validated,ReceivingID) VALUES ("

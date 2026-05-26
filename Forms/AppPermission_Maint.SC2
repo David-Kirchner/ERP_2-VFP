@@ -32,6 +32,7 @@ DEFINE CLASS frmapppermission_maint AS form
 	*< OBJECTDATA: ObjPath="grdPerm.clmCategory.Text1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="grdPerm.clmGranted.Header1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="grdPerm.clmGranted.Text1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="grdPerm.clmGranted.chkGranted" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdAll" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdNone" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdReload" UniqueID="" Timestamp="" />
@@ -134,17 +135,18 @@ DEFINE CLASS frmapppermission_maint AS form
 		ScrollBars = 3, ;
 		Top = 48, ;
 		Width = 652, ;
-		Column1.ControlSource = "csrPerm.display", ;
+		Column1.ControlSource = "", ;
 		Column1.Name = "clmDisplay", ;
 		Column1.ReadOnly = .T., ;
 		Column1.Width = 300, ;
-		Column2.ControlSource = "csrPerm.category", ;
+		Column2.ControlSource = "", ;
 		Column2.Name = "clmCategory", ;
 		Column2.ReadOnly = .T., ;
 		Column2.Width = 120, ;
-		Column3.ControlSource = "csrPerm.grantTxt", ;
+		Column3.ControlSource = "", ;
+		Column3.CurrentControl = "chkGranted", ;
 		Column3.Name = "clmGranted", ;
-		Column3.ReadOnly = .T., ;
+		Column3.ReadOnly = .F., ;
 		Column3.Sparse = .F., ;
 		Column3.Width = 70
 		*< END OBJECT: BaseClass="grid" />
@@ -171,6 +173,13 @@ DEFINE CLASS frmapppermission_maint AS form
 		ReadOnly = .T.
 		*< END OBJECT: BaseClass="textbox" />
 
+	ADD OBJECT 'grdPerm.clmGranted.chkGranted' AS checkbox WITH ;
+		Alignment = 0, ;
+		Caption = "", ;
+		Name = "chkGranted", ;
+		ReadOnly = .F.
+		*< END OBJECT: BaseClass="checkbox" />
+
 	ADD OBJECT 'grdPerm.clmGranted.Header1' AS header WITH ;
 		Caption = "Granted", ;
 		Name = "Header1"
@@ -179,7 +188,8 @@ DEFINE CLASS frmapppermission_maint AS form
 	ADD OBJECT 'grdPerm.clmGranted.Text1' AS textbox WITH ;
 		BorderStyle = 0, ;
 		Name = "Text1", ;
-		ReadOnly = .T.
+		ReadOnly = .T., ;
+		Visible = .F.
 		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'lblUser' AS label WITH ;
@@ -191,6 +201,21 @@ DEFINE CLASS frmapppermission_maint AS form
 		Width = 70
 		*< END OBJECT: BaseClass="label" />
 	
+	PROCEDURE ConfigureGrid
+		WITH This.grdPerm
+			.clmDisplay.ControlSource = "csrPerm.display"
+			.clmCategory.ControlSource = "csrPerm.category"
+			WITH .clmGranted
+				.ControlSource = "granted"
+				.Sparse = .F.
+				.ReadOnly = .F.
+				.CurrentControl = "chkGranted"
+				.Text1.Visible = .F.
+				.chkGranted.Caption = ""
+			ENDWITH
+		ENDWITH
+	ENDPROC
+
 	PROCEDURE Destroy
 		IF USED("csrPerm")
 			USE IN csrPerm
@@ -242,6 +267,7 @@ DEFINE CLASS frmapppermission_maint AS form
 		This.LoadUserList()
 		This.LoadPermissionCatalog()
 		This.grdPerm.RecordSource = "csrPerm"
+		This.ConfigureGrid()
 		IF This.cboUser.ListCount > 0
 			This.cboUser.ListIndex = 1
 			This.cSelectedUser = ALLTRIM(This.cboUser.Value)
@@ -254,6 +280,7 @@ DEFINE CLASS frmapppermission_maint AS form
 			SET PROCEDURE TO PROGS\proc_setup ADDITIVE
 		ENDIF
 		SET PROCEDURE TO PROGS\AppPermission_maint ADDITIVE
+		This.EnsurePermCursor()
 	ENDPROC
 
 	PROCEDURE LoadPermissionCatalog
@@ -359,6 +386,7 @@ DEFINE CLASS frmapppermission_maint AS form
 		GO TOP
 		This.grdPerm.RecordSource = ""
 		This.grdPerm.RecordSource = "csrPerm"
+		This.ConfigureGrid()
 		This.grdPerm.Refresh()
 	ENDPROC
 
@@ -542,17 +570,6 @@ DEFINE CLASS frmapppermission_maint AS form
 	PROCEDURE cmdSave.Click
 		IF MESSAGEBOX("Save permission changes for "+ALLTRIM(Thisform.cSelectedUser)+"?", 4+32, "App Permissions") = 6
 			Thisform.SaveUserGrants()
-		ENDIF
-	ENDPROC
-
-	PROCEDURE grdPerm.Click
-		LOCAL lnCol
-		lnCol = This.ActiveColumn
-		IF lnCol = 3 AND USED("csrPerm")
-			SELECT csrPerm
-			REPLACE granted WITH !granted
-			Thisform.SyncGrantTxt()
-			Thisform.grdPerm.Refresh()
 		ENDIF
 	ENDPROC
 

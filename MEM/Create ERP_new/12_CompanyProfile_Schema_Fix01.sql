@@ -3,7 +3,7 @@
    -----------------------------------------------------------------------------
    Target DB    : ERP_1
    Date         : 2026-05-11
-   Companion    : CompanyProfile_Schema.sql (main script, partially executed)
+   Companion    : 01_CompanyProfile_Schema.sql (main script, partially executed)
    -----------------------------------------------------------------------------
    What this fixes (from David's run on 2026-05-11):
      1. dbo.CompanyProfile pre-existed and is missing columns the views need.

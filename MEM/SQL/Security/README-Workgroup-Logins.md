@@ -28,9 +28,9 @@ SELECT name, type_desc FROM sys.server_principals WHERE type IN ('U','G') ORDER 
 | Person / machine | Script |
 |------------------|--------|
 | **You on SuperMicro** (built ERP_1) | Already **`dbo`** — skip grants; full access |
-| **You on Server26** (dev SQL) | Grant **`Server26\Admin`** — run `02b` as that login, or set `@login = N'Server26\Admin'` in `02c` |
-| **Same Windows user, standard access** | `02d_GrantCurrentUser_AppWrite.sql` on that server |
-| **Another Windows account** | Edit `@login` in `02c_GrantUser_AppWrite.sql` → e.g. `N'SuperMicro\ShopUser'` |
+| **You on Server26** (dev SQL) | Grant **`Server26\Admin`** — run `05` as that login, or set `@login = N'Server26\Admin'` in `06` |
+| **Same Windows user, standard access** | `07_GrantCurrentUser_AppWrite.sql` on that server |
+| **Another Windows account** | Edit `@login` in `06_GrantUser_AppWrite.sql` → e.g. `N'SuperMicro\ShopUser'` |
 
 Each SQL Server only knows **local** (or previously created) logins.  
 `Server26\Jane` must be created on **Server26’s** SQL; it is not automatic from SuperMicro.

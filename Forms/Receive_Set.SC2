@@ -4523,11 +4523,11 @@ DEFINE CLASS formset AS formset
 		cSQLi = "SELECT COUNT(*) AS CNTD FROM "
 		DO CASE
 		CASE cStockTable="B"
-			cSQLi = cSQLi + " HPAlloy_Archive.dbo.BrokerLst_Process_History "
+			cSQLi = cSQLi + " dbo.[Ar.BrokerLst_Process_History] "
 		CASE cStockTable="S"
-			cSQLi = cSQLi + " HPAlloy_Archive.dbo.StockLst_Process_History "
+			cSQLi = cSQLi + " dbo.[Ar.StockLst_Process_History] "
 		CASE cStockTable="W"
-			cSQLi = cSQLi + " HPAlloy_Archive.dbo.WIPLst_Process_History "
+			cSQLi = cSQLi + " dbo.[Ar.WIPLst_Process_History] "
 		ENDCASE
 		cSQLi = cSQLi + " WHERE Process_ID	= 'Receiving' "
 		cSQLi = cSQLi + " AND ID_Detail = "+STR(nID_Detail)
@@ -4600,7 +4600,7 @@ DEFINE CLASS formset AS formset
 		cSQLi = cSQLi + ",@Pounds= "+STR(nPounds,9,1)
 		cSQLi = cSQLi + ",@SOitem = '"+cSOitem+"'"
 		cSQLi = cSQLi + ",@PO_Item = '"+cPoItem+"'"
-		*cSQLi = cSQLi + ",@Process_ID = 'Receiving'"  &&Trigger will Archive this! HPAlloy_Archive.dbo.BrokerLst_Process_History
+		*cSQLi = cSQLi + ",@Process_ID = 'Receiving'"  &&Trigger will Archive this! dbo.[Ar.BrokerLst_Process_History]
 		cSQLi = cSQLi + ",@Process_ID = '"+cProcess_ID+"'"  
 		cSQLi = cSQLi + ",@Processor = '"+cProcessor+"'"
 		cSQLi = cSQLi + ",@Comment = '"+cComment+"'"
@@ -7022,12 +7022,12 @@ DEFINE CLASS formset AS formset
 			ENDIF
 			
 			cSQL =		  " SELECT COUNT(ID) AS Cntd "
-			cSQL = cSQL + " FROM HPAlloy_Archive.dbo.StockLst_Detail_History "
+			cSQL = cSQL + " FROM dbo.[Ar.Stocklst_Detail_History] "
 			cSQL = cSQL + " WHERE ReceivingID = "+ALLTRIM(STR( pnReceivingID ))
 			cSQL = cSQL + " AND [WHAT] = 'BEFOREEDIT' "
 			cSQL = cSQL + " UNION "
 			cSQL = cSQL + " SELECT COUNT(ID) AS Cntd "
-			cSQL = cSQL + " FROM HPAlloy_Archive.dbo.BrokerLst_Detail_History "
+			cSQL = cSQL + " FROM dbo.[Ar.BrokerLst_Detail_History] "
 			cSQL = cSQL + " WHERE ReceivingID = "+ALLTRIM(STR( pnReceivingID ))
 			cSQL = cSQL + " AND [WHAT] = 'BEFOREEDIT' "
 			
@@ -7519,9 +7519,9 @@ DEFINE CLASS formset AS formset
 					
 					SELECT 0
 					cSQL = "SELECT Distinct M.ID,D.ID_Detail,M.Heat "
-					cSQL = cSQL + " FROM HPAlloy_Archive.dbo.StockLst_Process_History P "
-					cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Detail_History D ON D.ID_Detail = P.ID_Detail "
-					cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Master_History M ON M.ID = D.ID "
+					cSQL = cSQL + " FROM dbo.[Ar.StockLst_Process_History] P "
+					cSQL = cSQL + " INNER JOIN dbo.[Ar.Stocklst_Detail_History] D ON D.ID_Detail = P.ID_Detail "
+					cSQL = cSQL + " INNER JOIN dbo.[Ar.Stocklst_Master_History] M ON M.ID = D.ID "
 					cSQL = cSQL + " WHERE P.SOitem = '"+cSOitem+"'"
 					cSQL = cSQL + " AND M.Heat = '"+ALLTRIM(cHeat)+"'"
 					*Broker does not record Heat
@@ -8554,12 +8554,12 @@ DEFINE CLASS formset AS formset
 		ENDIF
 		
 		PRIVATE nSQLEXEC, cSQL
-		cSQL = "SELECT ID_Detail FROM HPAlloy_Archive.dbo.StockLst_Process_History "
+		cSQL = "SELECT ID_Detail FROM dbo.[Ar.StockLst_Process_History] "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED     ' OR [WHAT] = 'DELETE    ')"
 		cSQL = cSQL + " ORDER BY [WHAT] DESC "
 		cSQL = cSQL + " UNION "
-		cSQL = cSQL + " SELECT ID_Detail FROM HPAlloy_Archive.dbo.BrokerLst_Process_History "
+		cSQL = cSQL + " SELECT ID_Detail FROM dbo.[Ar.BrokerLst_Process_History] "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED     ' OR [WHAT] = 'DELETE    ')"
 		cSQL = cSQL + " ORDER BY [WHAT] DESC "
@@ -8590,7 +8590,7 @@ DEFINE CLASS formset AS formset
 			cTBL = "S"
 		ELSE
 			*Check BrokerLst
-			cSQL = "SELECT ID_Detail FROM HPAlloy_Archive.dbo.BrokerLst_Process_History "
+			cSQL = "SELECT ID_Detail FROM dbo.[Ar.BrokerLst_Process_History] "
 			cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 			cSQL = cSQL + " AND [WHAT] = 'DELETE    '"
 			
@@ -8630,11 +8630,11 @@ DEFINE CLASS formset AS formset
 		IF cTBL = "S"
 			cSQL = "SELECT Alloy,Heat,Specs,Mill FROM dbo.StockLst_Master WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Specs,Mill FROM HPAlloy_Archive.dbo.StockLst_Master_History WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Specs,Mill FROM dbo.[Ar.Stocklst_Master_History] WHERE ID = "+STR(nStockLst_ID)
 		ELSE
 			cSQL = "SELECT Alloy,Heat,Specs,Mill FROM dbo.BrokerLst_Master WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Specs,Mill FROM HPAlloy_Archive.dbo.BrokerLst_Master_History WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Specs,Mill FROM dbo.[Ar.BrokerLst_Master_history] WHERE ID = "+STR(nStockLst_ID)
 		ENDIF
 		
 		SELECT 0
@@ -8686,11 +8686,11 @@ DEFINE CLASS formset AS formset
 		IF cTBL = "S"
 			cSQL = "SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.StockLst_Detail WHERE ID_Detail ="+STR(nID_Detail)
 			cSQL = cSQL + " Union "
-			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM HPAlloy_Archive.dbo.StockLst_Detail_History WHERE ID_Detail ="+STR(nID_Detail)
+			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.[Ar.Stocklst_Detail_History] WHERE ID_Detail ="+STR(nID_Detail)
 		ELSE
 			cSQL = "SELECT PC, dbo.f_ItemDescription(dbo.BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.BrokerLst_Detail WHERE ID_Detail ="+STR(nID_Detail)
 			cSQL = cSQL + " Union "
-			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM HPAlloy_Archive.dbo.BrokerLst_Detail_History WHERE ID_Detail ="+STR(nID_Detail)
+			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.[Ar.BrokerLst_Detail_History] WHERE ID_Detail ="+STR(nID_Detail)
 		ENDIF
 		*SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.StockLst_Detail WHERE ID_Detail = 5657
 		
@@ -9430,9 +9430,9 @@ DEFINE CLASS formset AS formset
 				ENDIF
 		
 				cSQL = "SELECT DISTINCT 'S' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-				cSQL = cSQL + " FROM HPAlloy_Archive.dbo.StockLst_Process_History P "
-				cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-				cSQL = cSQL + " INNER JOIN HPAlloy_Archive.dbo.Stocklst_Master_History M ON D.ID = M.ID "
+				cSQL = cSQL + " FROM dbo.[Ar.StockLst_Process_History] P "
+				cSQL = cSQL + " INNER JOIN dbo.[Ar.Stocklst_Detail_History] D ON P.ID_Detail = D.ID_Detail "
+				cSQL = cSQL + " INNER JOIN dbo.[Ar.Stocklst_Master_History] M ON D.ID = M.ID "
 				cSQL = cSQL + " WHERE ( P.Process_ID = 'INCOMING' OR P.Process_ID = 'NOT2HPA' OR P.Process_ID = 'PARTRECV' )"
 				cSQL = cSQL + " --AND P.WHAT = 'DELETE' "
 				IF cPOitem <> Proper_PO_item('')

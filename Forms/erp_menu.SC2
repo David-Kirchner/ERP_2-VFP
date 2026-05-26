@@ -878,6 +878,10 @@ DEFINE CLASS hpa AS form
 			ELSE
 				DO FORM "Forms\Stocklst_SQL_Maint.SCX"
 			ENDIF
+		CASE tNodeText = "SQL Database Roles"
+			DO FORM "Forms\AppSqlRole_Maint.scx"
+		CASE tNodeText = "App Permissions"
+			DO FORM "Forms\AppPermission_maint.scx"
 		
 		CASE tNodeText = "Shipping Address"
 			IF WEXIST("frmShipAddr")
@@ -1110,6 +1114,8 @@ DEFINE CLASS hpa AS form
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Inventory Search")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Pipe Weight")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"StockLst SQL Maint")
+		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"SQL Database Roles")
+		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"App Permissions")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Shipping Address")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Vendor ")
 		*nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Vendor11")

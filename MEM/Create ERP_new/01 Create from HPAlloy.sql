@@ -1,4 +1,4 @@
---01 Create from HPAlloy
+﻿--01 Create from HPAlloy
 USE [master]
 
 
@@ -311,7 +311,7 @@ SELECT @nCount = COUNT(*) FROM dbo.BrokerLst_Master WHERE ID = @ID
 IF @nCount > 0
 	SELECT @Form = Form FROM dbo.BrokerLst_Master WHERE ID = @ID
 ELSE
-	SELECT @Form = Form FROM dbo.Ar.BrokerLst_Master_History WHERE ID = @ID
+	SELECT @Form = Form FROM dbo.Ar_BrokerLst_Master_History WHERE ID = @ID
 
 RETURN @Form 
 END
@@ -8805,41 +8805,6 @@ GRANT EXECUTE ON [dbo].f_Get_Email_Profile_Name TO [WINDFALL\HPA] AS [dbo];
 */' 
 END
 GO
-/****** Object:  UserDefinedFunction [dbo].[f_Get_EmailService_User_ClockedIn]    Script Date: 12/26/2025 5:48:51 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_Get_EmailService_User_ClockedIn]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-BEGIN
-execute dbo.sp_executesql @statement = N'-- =============================================
--- Author:		Brandon van de Venter
--- Create date: 08/17/2020
--- Description:	Retreives ClockedIn Status from Messenger Users table
--- =============================================
-CREATE FUNCTION [dbo].[f_Get_EmailService_User_ClockedIn] 
-(
-	-- Add the parameters for the function here
-	@firstName varchar(25),
-	@lastName varchar(25)
-)
-RETURNS bit
-AS
-BEGIN
-	-- Declare the return variable here
-	DECLARE @Result bit
-
-	-- Add the T-SQL statements to compute the return value here
-	Select TOP (1) @Result = ClockedIn 
-	FROM [Messenger].[dbo].[Users] u 
-	where u.UserName = (RTRIM(@firstName) + '' '' + RTRIM(@lastName))
-
-	-- Return the result of the function
-	RETURN ISNULL(@Result, CONVERT(bit, 0))
-
-END
-' 
-END
 GO
 /****** Object:  UserDefinedFunction [dbo].[f_Get_GFM_DieHeight]    Script Date: 12/26/2025 5:48:51 PM ******/
 SET ANSI_NULLS ON
@@ -9395,21 +9360,21 @@ IF @cTBL = ''S''
 	begin
 	SELECT @nReturnPrice=ISNULL(S_P,0) FROM dbo.StockLst_Detail WHERE ID_Detail = @nID_Detail
 	IF @nReturnPrice=0
-		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar.StockLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
+		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar_StockLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
 	end
 ELSE
 IF @cTBL = ''B''
 	begin
 	SELECT @nReturnPrice=ISNULL(S_P,0) FROM dbo.BrokerLst_Detail WHERE ID_Detail = @nID_Detail
 	IF @nReturnPrice=0
-		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar.BrokerLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
+		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar_BrokerLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
 	end
 ELSE
 IF @cTBL = ''W''
 	begin
 	SELECT @nReturnPrice=ISNULL(S_P,0) FROM dbo.StockLst_Detail WHERE ID_Detail = @nID_Detail
 	IF @nReturnPrice=0
-		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar.StockLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
+		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar_StockLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
 	end
 
 
@@ -10981,7 +10946,7 @@ BEGIN
 		AND ISNULL(ID,0) > 0
 
 	IF ISNULL(@nID,0) = 0
-		SELECT TOP 1 @nID = ID FROM dbo.Ar.StockLst_Detail_History WHERE ID_Detail = @nID_Detail 
+		SELECT TOP 1 @nID = ID FROM dbo.Ar_StockLst_Detail_History WHERE ID_Detail = @nID_Detail 
 
 	RETURN ISNULL(@nID, 0)
 
@@ -20514,7 +20479,7 @@ BEGIN
 		AND ISNULL(ID,0) > 0
 
 	IF ISNULL(@nID,0) = 0
-		SELECT TOP 1 @nID = ID FROM dbo.Ar.StockLst_Detail_History WHERE ID_Detail = @nID_Detail 
+		SELECT TOP 1 @nID = ID FROM dbo.Ar_StockLst_Detail_History WHERE ID_Detail = @nID_Detail 
 
 	RETURN ISNULL(@nID, 0)
 
@@ -29490,7 +29455,7 @@ SELECT @nCount = COUNT(*) FROM dbo.StockLst_Master WHERE ID = @ID
 IF @nCount > 0
 	SELECT @Form = Form FROM dbo.StockLst_Master WHERE ID = @ID
 ELSE
-	SELECT @Form = Form FROM dbo.Ar.StockLst_Master_History WHERE ID = @ID
+	SELECT @Form = Form FROM dbo.Ar_StockLst_Master_History WHERE ID = @ID
 
 RETURN @Form 
 END
@@ -30396,7 +30361,7 @@ SELECT @nCount = COUNT(*) FROM dbo.WIPLst_Master WHERE ID = @ID
 IF @nCount > 0
 	SELECT @Form = Form FROM dbo.WIPLst_Master WHERE ID = @ID
 ELSE
-	SELECT @Form = Form FROM dbo.Ar.WIPLst_Master_History WHERE ID = @ID
+	SELECT @Form = Form FROM dbo.Ar_WIPLst_Master_History WHERE ID = @ID
 
 RETURN @Form 
 END
@@ -32735,7 +32700,7 @@ SELECT @nCount = COUNT(*) FROM dbo.StockLst_Master WHERE ID = @ID
 IF @nCount > 0
 	SELECT @Form = Form FROM dbo.StockLst_Master WHERE ID = @ID
 ELSE
-	SELECT @Form = Form FROM dbo.Ar.StockLst_Master_History WHERE ID = @ID
+	SELECT @Form = Form FROM dbo.Ar_StockLst_Master_History WHERE ID = @ID
 
 RETURN @Form 
 END
@@ -37420,44 +37385,6 @@ CREATE TABLE [dbo].[CreditCd](
 END
 GO
 
-/****** Object:  Table [dbo].[CUSTOMER TERMS and List]    Script Date: 12/26/2025 5:48:52 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CUSTOMER TERMS and List]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[CUSTOMER TERMS and List](
-	[Customer ID] [nvarchar](50) NULL,
-	[Customer Name] [nvarchar](50) NULL,
-	[Inactive] [nvarchar](50) NULL,
-	[Contact] [nvarchar](50) NULL,
-	[Bill to Address-Line One] [nvarchar](50) NULL,
-	[Bill to Address-Line Two] [nvarchar](50) NULL,
-	[Bill to City] [nvarchar](50) NULL,
-	[Bill to State] [nvarchar](50) NULL,
-	[Bill to Zip] [nvarchar](50) NULL,
-	[Bill to Country] [nvarchar](50) NULL,
-	[Customer Type] [nvarchar](50) NULL,
-	[Telephone 1] [nvarchar](50) NULL,
-	[Fax Number] [nvarchar](50) NULL,
-	[Pricing Level] [nvarchar](50) NULL,
-	[Use Standard Terms] [nvarchar](50) NULL,
-	[C O D  Terms] [nvarchar](50) NULL,
-	[Prepaid Terms] [nvarchar](50) NULL,
-	[Terms Type] [nvarchar](50) NULL,
-	[Due Days] [nvarchar](50) NULL,
-	[Credit Limit] [nvarchar](50) NULL,
-	[CREDIT INFO] [nvarchar](50) NULL,
-	[MISC  INFO] [nvarchar](50) NULL,
-	[Customer Since Date] [nvarchar](50) NULL,
-	[Last Invoice Date] [nvarchar](50) NULL,
-	[Current Balance] [nvarchar](50) NULL,
-	[Credit Status] [nvarchar](50) NULL,
-	[dtDate] [datetime] NOT NULL
-) ON [PRIMARY]
-END
-GO
 /****** Object:  Table [dbo].[Customer_Discount]    Script Date: 12/26/2025 5:48:52 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -37564,47 +37491,6 @@ CREATE TABLE [dbo].[Customer_List_Notes](
 (
 	[CustomerID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-END
-GO
-/****** Object:  Table [dbo].[David]    Script Date: 12/26/2025 5:48:52 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[David]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[David](
-	[Body] [varchar](max) NOT NULL,
-	[Number] [int] NOT NULL,
-	[ShopRecv] [bit] NOT NULL,
-	[Ver] [tinyint] NOT NULL,
-	[Server] [varchar](255) NOT NULL,
-	[UserName] [varchar](255) NOT NULL,
-	[When] [datetime] NOT NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-END
-GO
-/****** Object:  Table [dbo].[DDLEvents]    Script Date: 12/26/2025 5:48:52 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DDLEvents]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[DDLEvents](
-	[EventDate] [datetime] NOT NULL,
-	[EventType] [nvarchar](64) NULL,
-	[EventDDL] [nvarchar](max) NULL,
-	[EventXML] [xml] NULL,
-	[DatabaseName] [nvarchar](255) NULL,
-	[SchemaName] [nvarchar](255) NULL,
-	[ObjectName] [nvarchar](255) NULL,
-	[HostName] [varchar](64) NULL,
-	[IPAddress] [varchar](32) NULL,
-	[ProgramName] [nvarchar](255) NULL,
-	[LoginName] [nvarchar](255) NULL,
-	[ServerName] [nvarchar](255) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
@@ -37950,7 +37836,6 @@ CREATE TABLE [dbo].[EmailService_SalesUsers](
 	[EmailService_SalesUsers_Schedule] [int] NOT NULL,
 	[ManualSettings] [bit] NOT NULL,
 	[EmailWeight] [smallint] NOT NULL,
-	[ClockedIn]  AS ([dbo].[f_Get_EmailService_User_ClockedIn]([Firstname],[Lastname])),
  CONSTRAINT [PK_EmailService_SalesUsers] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -38106,29 +37991,6 @@ CREATE TABLE [dbo].[EquipmentPartSwapDates](
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
-END
-GO
-/****** Object:  Table [dbo].[ErrorLog]    Script Date: 12/26/2025 5:48:52 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ErrorLog]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[ErrorLog](
-	[ErrorNumber] [int] NULL,
-	[ErrorSeverity] [int] NULL,
-	[ErrorState] [int] NULL,
-	[ErrorProcedure] [nvarchar](128) NULL,
-	[ErrorLine] [int] NULL,
-	[ErrorMessage] [varchar](max) NULL,
-	[EventID] [bigint] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
-	[EventDate] [smalldatetime] NULL,
- CONSTRAINT [PK__ErrorLog__097532CF] PRIMARY KEY CLUSTERED 
-(
-	[EventID] DESC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
 /****** Object:  Table [dbo].[Errors]    Script Date: 12/26/2025 5:48:52 PM ******/
@@ -45536,11 +45398,6 @@ BEGIN
 ALTER TABLE [dbo].[CreditCd] ADD  CONSTRAINT [DF_CreditCd_WhoAdded]  DEFAULT (suser_sname()) FOR [WhoAdded]
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_CUSTOMER TERMS and List_dtDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[CUSTOMER TERMS and List] ADD  CONSTRAINT [DF_CUSTOMER TERMS and List_dtDate]  DEFAULT (getdate()) FOR [dtDate]
-END
-GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Customer_Discount_LastUpdate]') AND type = 'D')
 BEGIN
 ALTER TABLE [dbo].[Customer_Discount] ADD  CONSTRAINT [DF_Customer_Discount_LastUpdate]  DEFAULT (getdate()) FOR [LastUpdate]
@@ -45589,16 +45446,6 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_David_When]') AND type = 'D')
 BEGIN
 ALTER TABLE [dbo].[David] ADD  CONSTRAINT [DF_David_When]  DEFAULT (getdate()) FOR [When]
-END
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_DDLEvents]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[DDLEvents] ADD CONSTRAINT [DF_DDLEvents]  DEFAULT (getdate()) FOR [EventDate]
-END
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_DDLEvents_ServerName]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[DDLEvents] ADD  CONSTRAINT [DF_DDLEvents_ServerName]  DEFAULT (@@servername) FOR [ServerName]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Draw_Dies_active]') AND type = 'D')
@@ -46129,11 +45976,6 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_EquipmentPartSwapDates_StartDate]') AND type = 'D')
 BEGIN
 ALTER TABLE [dbo].[EquipmentPartSwapDates] ADD  CONSTRAINT [DF_EquipmentPartSwapDates_StartDate]  DEFAULT (getdate()) FOR [StartDate]
-END
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_ErrorLog_EventDate]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[ErrorLog] ADD  CONSTRAINT [DF_ErrorLog_EventDate]  DEFAULT (getdate()) FOR [EventDate]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Errors_errordate]') AND type = 'D')
@@ -54817,7 +54659,7 @@ DECLARE @nNewID_Detail INT = 0
 DECLARE @nNewID_Detail_Process INT = 0
 
 --Check INPUTS
-IF NOT EXISTS (SELECT [ID] FROM dbo.Ar.BrokerLst_Master_History WHERE [ID] = @ID AND [What] = 'DELETE')
+IF NOT EXISTS (SELECT [ID] FROM dbo.Ar_BrokerLst_Master_History WHERE [ID] = @ID AND [What] = 'DELETE')
 	BEGIN
 		SET @nReturnCode = -1
 		PRINT 'nReturnCode = '+CAST(@nReturnCode AS CHAR(10))
@@ -54836,7 +54678,7 @@ INSERT INTO dbo.StockLst_Master
 SELECT [Alloy],[Form],[cc],[CL],[Size],[Cond],[MWeight],[specs],[Heat],[Lot],[PAID],[PO_Item]
 	,[PODueDate],[Mill],GetDate(),[History],[Num],[POStatus],[BrandName],[MillTrace],[From_ID]
 	,Melt,mS_QTY,WO_Detail 
-   FROM dbo.Ar.BrokerLst_Master_History   WITH (NOLOCK)
+   FROM dbo.Ar_BrokerLst_Master_History   WITH (NOLOCK)
    WHERE [ID] = @ID AND [What] = 'DELETE'
  
 
@@ -57462,141 +57304,6 @@ BEGIN
 	SELECT * FROM [dbo].[TC_Replacement_Employees_Times] WHERE ID = @InsertedId
 END
 GO
-/****** Object:  StoredProcedure [dbo].[p_FileStream_ins]    Script Date: 12/26/2025 5:48:52 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[p_FileStream_ins]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[p_FileStream_ins] AS' 
-END
-GO
-
-
-ALTER PROCEDURE [dbo].[p_FileStream_ins]
-	@DocumentName VARCHAR(255), 
-	@DocumentExtension VARCHAR(255),
-	@App CHAR(10),
-	@FileLocationName VARCHAR(8000)
-AS
-
-SET NOCOUNT ON
-
-/*
-
-EXEC dbo.p_FileStream_ins 
-	@DocumentName ='LMA-M7060.bmp', 	
-	@DocumentExtension = 'BMP', 
-	@App = 'Test',	
-	@FileLocationName = '\\Peregrine\HPAData\Quotes\tmpFileStream\LMA-M7060.bmp';
-	
-SELECT * FROM FileStreamFTS.dbo.DocumentRepository WHERE DocumentName = 'LMA-M7060.bmp';
-
-*/
-
--- Declare a variable to store the image data
-DECLARE @img AS VARBINARY(MAX)
-DECLARE @cString AS VARCHAR(8000)
-DECLARE @cmd VARCHAR(2000)
-DECLARE @FileLocationNameQuote VARCHAR(8000)
-
-DECLARE @i INT
-EXEC master..xp_fileexist @FileLocationName, @i OUT
-IF @i = 1
-	BEGIN
-	--WAITFOR DELAY '00:00:01'
-	PRINT 'Found File '+@FileLocationName+'!'
-	-- Load the image data
---	SET @cString = 'SELECT @img = CAST(bulkcolumn AS VARBINARY(MAX)) FROM OPENROWSET( BULK "'+@FileLocationName+'", SINGLE_BLOB ) AS x '
---	SET @FileLocationNameQuote = ''''
---	SET @FileLocationNameQuote = @FileLocationNameQuote + @FileLocationName
---	SET @FileLocationNameQuote = @FileLocationNameQuote + ''''
-
-	SET @FileLocationNameQuote = '''' + @FileLocationName + ''''
-	PRINT @FileLocationNameQuote
-	
-	SET @cString = 'SELECT @img = CAST(bulkcolumn AS VARBINARY(MAX)) FROM OPENROWSET( BULK '+@FileLocationNameQuote+', SINGLE_BLOB ) AS x '
-	EXEC @cString
-
---	SET @cString = 'INSERT INTO FileStreamFTS.dbo.DocumentRepository ([DocumentName], [DocumentExtension], [App], [Document]) SELECT @DocumentName,@DocumentExtension,@App,@img'
---	EXEC @cString
-
-	IF @img IS NOT NULL
-		INSERT INTO FileStreamFTS.dbo.DocumentRepository ([DocumentName], [DocumentExtension], [App], [Document]) SELECT @DocumentName,@DocumentExtension,@App,@img
-	ELSE
-		PRINT 'No INSERT'
-	
-
---	SET @cString = 'INSERT INTO FileStreamFTS.dbo.DocumentRepository ([DocumentName], [DocumentExtension], [App], [Document]) SELECT @DocumentName,@DocumentExtension,@App, CAST(bulkcolumn AS VARBINARY(MAX)) FROM OPENROWSET( BULK "'+@FileLocationName+'", SINGLE_BLOB )'
---	EXEC @cString
-
-	-- Insert the data to the table
-	   --INSERT INTO FileStreamFTS.dbo.DocumentRepository ([DocumentName], [DocumentExtension], [App], [Document]) SELECT @DocumentName,@DocumentExtension,@App,@img
-	   
-	  IF EXISTS ( SELECT * FROM FileStreamFTS.dbo.DocumentRepository 
-			WHERE DocumentName = @DocumentName
-			AND DocumentExtension = @DocumentExtension
-			AND App = @App 
-			AND ID = @@IDENTITY
-			AND Document IS NOT NULL)
-	   		BEGIN
-				PRINT 'Delete file '+@FileLocationName+' after upload.'
-				WAITFOR DELAY '00:00:01'
-				SELECT @cmd = 'DEL "'+@FileLocationName +'"'
-				EXEC master..xp_cmdshell @cmd, NO_OUTPUT
-			END
-		ELSE
-			PRINT 'Upload failed.'
-			
-	END
-ELSE
-	PRINT 'File '+@FileLocationName+' not found!'
-	
-	
-/*
-DECLARE	@ID	UNIQUEIDENTIFIER
-
-SET @ID = NEWID()
-
-INSERT	INTO dbo.BLOB
-	(ID, BLOB)
-VALUES
-	(@ID, CAST('' AS VARBINARY(MAX)))
-	
-SELECT
-	ID,
-	BLOB.PathName(),
-	GET_FILESTREAM_TRANSACTION_CONTEXT()
-FROM
-	dbo.BLOB
-WHERE
-	ID = @ID
-END
- 
-
-Second stored procedure for getting BLOB from database: 
-CREATE PROCEDURE [dbo].[stp_GetBLOB]
-	@pID	UNIQUEIDENTIFIER
-AS
-BEGIN
-
-SELECT
-	BLOB.PathName(),
-	GET_FILESTREAM_TRANSACTION_CONTEXT()
-FROM
-	dbo.BLOB
-WHERE
-	ID = @pID
-*/
-/*
-     DECLARE @ID UNIQUEIDENTIFIER  
-     SET @ID = NEWID()  
-
-     INSERT INTO [dbo].[tbl_Files]  
-     ([Id],[SystemNumber],SystemFile,FileType)  
-     VALUES (@ID ,@SystemNumber,CAST('' AS VARBINARY(MAX)),@FileType)  
-       
      select @filepath = SystemFile.PathName() from tbl_Files where Id = @ID 
 */
 GO
@@ -63394,45 +63101,6 @@ INSERT INTO AuditDB.dbo.ErrorLog
 VALUES(ERROR_NUMBER(), ERROR_SEVERITY(), ERROR_STATE(), ERROR_PROCEDURE(), ERROR_LINE(),ERROR_MESSAGE(),GETDATE())
 
 
---dbo.p_LogError()
---USE [AuditDB]
---GO
-
---SET ANSI_NULLS ON
---GO
-
---SET QUOTED_IDENTIFIER ON
---GO
-
---CREATE TABLE [dbo].[ErrorLog](
---	[ErrorNumber] INT,
---    [ErrorSeverity] INT,
---    [ErrorState] INT,
---    [ErrorProcedure] nvarchar(128),
---    [ErrorLine] INT,
---    [ErrorMessage] VarChar(MAX),
-
---	[EventID] [bigint] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
---	[EventDate] [smalldatetime] NULL CONSTRAINT [DF_ErrorLog_EventDate]  DEFAULT (getdate()),
--- CONSTRAINT [PK__ErrorLog__097532CF] PRIMARY KEY CLUSTERED 
---(
---	[EventID] DESC
---)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
---) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
---GO
-
-GO
-/****** Object:  StoredProcedure [dbo].[p_LogFileSize]    Script Date: 12/26/2025 5:48:52 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[p_LogFileSize]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[p_LogFileSize] AS' 
-END
-GO
 -- =============================================
 -- Author:		Brandon
 -- Create date: 07/30/2015
@@ -63779,7 +63447,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.Stocklst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -63845,7 +63513,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.Brokerlst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_Brokerlst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -63911,7 +63579,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.WIPlst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_WIPlst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -64241,7 +63909,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.Stocklst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -64307,7 +63975,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.Brokerlst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_Brokerlst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -64373,7 +64041,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.WIPlst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_WIPlst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -67381,7 +67049,7 @@ ELSE
 		,0 AS [mS_QTY]
 		,[WO_Detail]
 		,[ProjID]
-		FROM dbo.Ar.Stocklst_Master_History WITH(NOLOCK) 
+		FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) 
 			WHERE ID = @ID
 			AND [WHAT] = 'DELETE'
 
@@ -67394,7 +67062,7 @@ ELSE
 			begin
 			SELECT SCOPE_IDENTITY()
 		
-			UPDATE dbo.Ar.Stocklst_Master_History SET [WHAT] = 'RECOVERED'
+			UPDATE dbo.Ar_Stocklst_Master_History SET [WHAT] = 'RECOVERED'
 				WHERE ID = @ID
 				AND [WHAT] = 'DELETE'
 			end
@@ -67462,7 +67130,7 @@ ELSE
 		, 0 AS [mS_QTY]
 		,[WO_Detail]
 		,[ProjID]
-		FROM dbo.Ar.BrokerLst_Master_history WITH(NOLOCK) 
+		FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) 
 			WHERE ID = @ID
 			AND [WHAT] = 'DELETE'
 
@@ -67477,7 +67145,7 @@ ELSE
 			begin
 			SELECT SCOPE_IDENTITY()
 
-			UPDATE dbo.Ar.BrokerLst_Master_history SET [WHAT] = 'RECOVERED'
+			UPDATE dbo.Ar_BrokerLst_Master_history SET [WHAT] = 'RECOVERED'
 				WHERE ID = @ID
 				AND [WHAT] = 'DELETE'
 			end
@@ -67545,7 +67213,7 @@ ELSE
 		,0 AS [mS_QTY]
 		,[WO_Detail]
 		,[ProjID]
-		FROM dbo.Ar.WIPLst_Master_History WITH(NOLOCK) 
+		FROM dbo.Ar_WIPLst_Master_History WITH(NOLOCK) 
 			WHERE ID = @ID
 			AND [WHAT] = 'DELETE'
 
@@ -67560,7 +67228,7 @@ ELSE
 			begin
 			SELECT SCOPE_IDENTITY()
 
-			UPDATE dbo.Ar.WIPLst_Master_History SET [WHAT] = 'RECOVERED'
+			UPDATE dbo.Ar_WIPLst_Master_History SET [WHAT] = 'RECOVERED'
 				WHERE ID = @ID
 				AND [WHAT] = 'DELETE'
 			end
@@ -71546,8 +71214,8 @@ IF @CntSO > 0
 	SET @Body=@Body+'				WHERE D.ID = M.ID AND ISNULL(ID_Detail,0)>0 ),0) = 0;'+CHAR(13)+CHAR(13);
 	SET @Body=@Body+'Top Master ID with no Detail: '+ CAST(ISNULL(@ID,0) AS CHAR(10))+'.'+CHAR(13)+CHAR(13);
 
-	SET @Body=@Body+' SELECT * FROM dbo.Ar.Stocklst_Detail_History DH 
-inner join dbo.Ar.StockLst_Process_History PH ON DH.ID_Detail_Process = PH.ID_Detail_Process AND PH.[What] = ''DELETE''
+	SET @Body=@Body+' SELECT * FROM dbo.Ar_Stocklst_Detail_History DH 
+inner join dbo.Ar_StockLst_Process_History PH ON DH.ID_Detail_Process = PH.ID_Detail_Process AND PH.[What] = ''DELETE''
 WHERE DH.ID='+CAST(ISNULL(@ID,0) AS CHAR(10))+' AND DH.[What] = ''DELETE'' '+CHAR(13)+CHAR(13);
 
 	SET @Body=@Body+' SELECT * FROM [dbo].[StockLst_Master_Inserted]
@@ -71938,7 +71606,7 @@ DECLARE @Count INT
 SELECT @Count = COUNT(*) FROM dbo.StockLst_Process WHERE SOitem = @SOitem
 IF @Count > 0
   BEGIN
-    INSERT dbo.Ar.StockLst_Process_History 
+    INSERT dbo.Ar_StockLst_Process_History 
 		([soitem],[po_item],[SalesPerson],[startdate],[duedate]
 		,[comment],[process_id],[processor],[AllowSub],[PWeight]
 		,[PPc],[id_detail],[id_detail_process],[ReceivingID],[WO])
@@ -75998,10 +75666,10 @@ IF @err <> 0
 	END
 
 ----------------------------------
-PRINT 'Insert dbo.Ar.BrokerLst_Process_History to show WHAT as MOVED'
+PRINT 'Insert dbo.Ar_BrokerLst_Process_History to show WHAT as MOVED'
 
 
-INSERT INTO dbo.Ar.BrokerLst_Process_History  
+INSERT INTO dbo.Ar_BrokerLst_Process_History  
 	([What], Comment, Process_ID, [ID_Detail], [Removed], ReceivingID, WO ) 
 	 SELECT 'MOVED', 'Moved to StockLst from BrokerLst', ISNULL(BP.Process_ID,'NULL'), BP.ID_Detail, GetDate()
 	 , ISNULL(BP.ReceivingID,0), ISNULL(BP.WO,0) 
@@ -76547,9 +76215,9 @@ IF @err <> 0
 
 
 ----------------------------------
-PRINT 'Insert dbo.Ar.StockLst_Process_History to show WHAT as MOVED'
+PRINT 'Insert dbo.Ar_StockLst_Process_History to show WHAT as MOVED'
 
-INSERT INTO dbo.Ar.StockLst_Process_History  
+INSERT INTO dbo.Ar_StockLst_Process_History  
 	([What], Comment, Process_ID, [ID_Detail], [Removed], ReceivingID, WO ) 
 	 SELECT 'MOVED', 'Moved to BrokerLst from StockLst', 'Moved', P.ID_Detail, GetDate(), P.ReceivingID, P.WO 
 	 FROM dbo.StockLst_Process P 
@@ -76993,9 +76661,9 @@ DELETE FROM dbo.WIPLst_Process WHERE [ID_Detail] = @ID_Detail
 	--AND Process_ID = 'SELECTED  '   --All Process need to go!
 
 ----------------------------------
-PRINT 'Update dbo.Ar.WIPlst_Process_History to show WHAT as MOVED'
+PRINT 'Update dbo.Ar_WIPlst_Process_History to show WHAT as MOVED'
 
-INSERT INTO dbo.Ar.WIPLst_Process_History  
+INSERT INTO dbo.Ar_WIPLst_Process_History  
 	([What], Comment, [Process_ID], [ID_Detail], [Removed], [Validated], ReceivingID, WO )
 	 VALUES ( 'MOVED', 'Moved to StockLst from WIPLst', 'MOVE', @ID_Detail, GetDate(), ' ', @ReceivingID, @WO )
 
@@ -77009,8 +76677,8 @@ IF @err <> 0
 	END
 
 ----------------------------------
-PRINT 'Update dbo.Ar.WIPlst_Master_History to show as MOVED'
-UPDATE dbo.Ar.WIPLst_Master_History  
+PRINT 'Update dbo.Ar_WIPlst_Master_History to show as MOVED'
+UPDATE dbo.Ar_WIPLst_Master_History  
 	SET [Specs] = 'Moved to StockLst ID:'+CAST(@nNewID AS CHAR(10))
 	WHERE [ID] = @ID
 	AND [What] = 'DELETE'
@@ -78548,7 +78216,7 @@ AS
 
 --** Recover Deleted PO **
 --select * from dbo.PurchaseOrder where HPApo = 510553
---SELECT * FROM dbo.Ar.PurchaseOrder_hist where HPApo = 510553 AND ItemPO = 1 AND [What] = 'Delete'
+--SELECT * FROM dbo.Ar_PurchaseOrder_hist where HPApo = 510553 AND ItemPO = 1 AND [What] = 'Delete'
 
 --EXEC dbo.[p_PurchaseOrder_ReStore] 510553, 1
 
@@ -78557,7 +78225,7 @@ SET @nItemPO = ISNULL(@nItemPO,1)
 SET @nItemPO = Case When @nItemPO < 1 Then 1 Else @nItemPO end
 
 PRINT 'Find existing PO'
-IF EXISTS( SELECT * FROM dbo.Ar.PurchaseOrder_hist where HPApo = @nHPAPO 
+IF EXISTS( SELECT * FROM dbo.Ar_PurchaseOrder_hist where HPApo = @nHPAPO 
 						and ItemPO = @nItemPO AND [What] = 'Delete' )
 	begin  
 	
@@ -78741,7 +78409,7 @@ IF EXISTS( SELECT * FROM dbo.Ar.PurchaseOrder_hist where HPApo = @nHPAPO
       --,[DescriptID]
       ,[Hold]
       ,(suser_sname()) AS [WhoInsert]
-	  FROM  dbo.Ar.PurchaseOrder_hist 
+	  FROM  dbo.Ar_PurchaseOrder_hist 
 	  WHERE HPApo = 510553
 		and ItemPO = @nItemPO
 		AND [What] = 'Delete'
@@ -82259,11 +81927,11 @@ IF @nCnt > 0
 	SELECT * FROM dbo.AllQuotes WHERE SalesNum = @nSalesNum;
 	end
 
-SELECT @nCnt=COUNT(*) FROM dbo.Ar.AllQuotes_History WHERE SalesNum = @nSalesNum;
+SELECT @nCnt=COUNT(*) FROM dbo.Ar_AllQuotes_History WHERE SalesNum = @nSalesNum;
 IF @nCnt > 0
 	begin
-	print 'DELETE FROM dbo.Ar.AllQuotes_History WHERE SalesNum = '+CAST(@nSalesNum AS CHAR(10))+';';
-	SELECT * FROM dbo.Ar.AllQuotes_History WHERE SalesNum = @nSalesNum;
+	print 'DELETE FROM dbo.Ar_AllQuotes_History WHERE SalesNum = '+CAST(@nSalesNum AS CHAR(10))+';';
+	SELECT * FROM dbo.Ar_AllQuotes_History WHERE SalesNum = @nSalesNum;
 	end
 
 SELECT @nCnt=COUNT(*) FROM dbo.Sales WHERE SalesNum = @nSalesNum;
@@ -82311,11 +81979,11 @@ IF @nCnt > 0
 
 ---------------------------------------------------
 
-SELECT @nCnt=COUNT(*) FROM dbo.Ar.AllQuotes_History WHERE SOitem = @cSoitem
+SELECT @nCnt=COUNT(*) FROM dbo.Ar_AllQuotes_History WHERE SOitem = @cSoitem
 IF @nCnt > 0
 	begin
-	print 'DELETE FROM dbo.Ar.AllQuotes_History WHERE SOitem = '''+@cSoitem+''';'
-	SELECT * FROM dbo.Ar.AllQuotes_History WHERE SOitem = @cSoitem
+	print 'DELETE FROM dbo.Ar_AllQuotes_History WHERE SOitem = '''+@cSoitem+''';'
+	SELECT * FROM dbo.Ar_AllQuotes_History WHERE SOitem = @cSoitem
 	end
 
 SELECT @nCnt=COUNT(*) FROM dbo.Sales WHERE SOitem = @cSoitem
@@ -82842,97 +82510,6 @@ BEGIN
 	ENABLE TRIGGER [DDLTrigger_AuditDB] ON DATABASE
 	
 	*/
-	/*
-	USE [AuditDB]
-	GO
-
-	
-	SET ANSI_NULLS ON
-	GO
-
-	SET QUOTED_IDENTIFIER ON
-	GO
-
-	CREATE TABLE [dbo].[DDLEvents](
-		[EventDate] [datetime] NOT NULL,
-		[EventType] [nvarchar](64) NULL,
-		[EventDDL] [nvarchar](max) NULL,
-		[EventXML] [xml] NULL,
-		[DatabaseName] [nvarchar](255) NULL,
-		[SchemaName] [nvarchar](255) NULL,
-		[ObjectName] [nvarchar](255) NULL,
-		[HostName] [varchar](64) NULL,
-		[IPAddress] [varchar](32) NULL,
-		[ProgramName] [nvarchar](255) NULL,
-		[LoginName] [nvarchar](255) NULL,
-		[ServerName] [nvarchar](255) NULL
-	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-	GO
-
-	ALTER TABLE [dbo].[DDLEvents] ADD  DEFAULT (getdate()) FOR [EventDate]
-	GO
-
-	ALTER TABLE [dbo].[DDLEvents] ADD  CONSTRAINT [DF_DDLEvents_ServerName]  DEFAULT (@@servername) FOR [ServerName]
-	GO
-
-	*/
-
-	/*
-	USE [master]
-	GO
-
-	--* Object:  Database [AuditDB]    Script Date: 10/8/2020 4:07:10 PM ****
-	CREATE DATABASE [AuditDB]
-	 CONTAINMENT = NONE
-	 ON  PRIMARY 
-	( NAME = N'AuditDB', FILENAME = N'D:\Program Files\Microsoft SQL Server\MSSQL\Data\AuditDB.mdf' , SIZE = 1116160KB , MAXSIZE = UNLIMITED, FILEGROWTH = 10240KB )
-	 LOG ON 
-	( NAME = N'AuditDB_log', FILENAME = N'D:\Program Files\Microsoft SQL Server\MSSQL\Data\AuditDB_log.LDF' , SIZE = 470144KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
-	GO
-
-	IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-	begin
-	EXEC [AuditDB].[dbo].[sp_fulltext_database] @action = 'enable'
-	end
-	GO
-
-	ALTER DATABASE [AuditDB] SET ANSI_NULL_DEFAULT OFF 
-	ALTER DATABASE [AuditDB] SET ANSI_NULLS ON 
-	ALTER DATABASE [AuditDB] SET ANSI_PADDING ON 
-	ALTER DATABASE [AuditDB] SET ANSI_WARNINGS OFF 
-	ALTER DATABASE [AuditDB] SET ARITHABORT OFF 
-	ALTER DATABASE [AuditDB] SET AUTO_CLOSE OFF 
-	ALTER DATABASE [AuditDB] SET AUTO_SHRINK OFF 
-	ALTER DATABASE [AuditDB] SET AUTO_UPDATE_STATISTICS ON 
-	ALTER DATABASE [AuditDB] SET CURSOR_CLOSE_ON_COMMIT OFF 
-	ALTER DATABASE [AuditDB] SET CURSOR_DEFAULT  GLOBAL 
-	ALTER DATABASE [AuditDB] SET CONCAT_NULL_YIELDS_NULL OFF 
-	ALTER DATABASE [AuditDB] SET NUMERIC_ROUNDABORT OFF 
-	ALTER DATABASE [AuditDB] SET QUOTED_IDENTIFIER OFF 
-	ALTER DATABASE [AuditDB] SET RECURSIVE_TRIGGERS OFF 
-	ALTER DATABASE [AuditDB] SET  DISABLE_BROKER 
-	ALTER DATABASE [AuditDB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
-	ALTER DATABASE [AuditDB] SET DATE_CORRELATION_OPTIMIZATION OFF 
-	ALTER DATABASE [AuditDB] SET TRUSTWORTHY OFF 
-	ALTER DATABASE [AuditDB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
-	ALTER DATABASE [AuditDB] SET PARAMETERIZATION SIMPLE 
-	ALTER DATABASE [AuditDB] SET READ_COMMITTED_SNAPSHOT OFF 
-	ALTER DATABASE [AuditDB] SET HONOR_BROKER_PRIORITY OFF 
-	ALTER DATABASE [AuditDB] SET RECOVERY FULL 
-	ALTER DATABASE [AuditDB] SET  MULTI_USER 
-	ALTER DATABASE [AuditDB] SET PAGE_VERIFY CHECKSUM  
-	ALTER DATABASE [AuditDB] SET DB_CHAINING OFF 
-	ALTER DATABASE [AuditDB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
-	ALTER DATABASE [AuditDB] SET TARGET_RECOVERY_TIME = 0 SECONDS 
-	ALTER DATABASE [AuditDB] SET DELAYED_DURABILITY = DISABLED 
-	ALTER DATABASE [AuditDB] SET QUERY_STORE = OFF
-	ALTER DATABASE [AuditDB] SET  READ_WRITE 
-
-	*/
-
-
-
-
 END
 GO
 /****** Object:  StoredProcedure [dbo].[P_Show_AllQuote_Sales]    Script Date: 12/26/2025 5:48:52 PM ******/
@@ -85675,7 +85252,7 @@ AS
 --and update the non null fields Alloy,Form,[Size],Cond,Heat, PAID,MWeight
 
 DECLARE @ID_Old INT
-SELECT @ID_Old = ID FROM dbo.Ar.StockLst_Master_History WHERE ID_History = @ID_History
+SELECT @ID_Old = ID FROM dbo.Ar_StockLst_Master_History WHERE ID_History = @ID_History
 DECLARE @ID_New INT
 
 IF EXISTS( SELECT * FROM dbo.StockLst_Master WHERE ID = @ID_Old )	
@@ -85700,7 +85277,7 @@ ELSE
 		, @Form = Form
 		, @Size = Size
 		, @Heat = Heat 
-		FROM dbo.Ar.StockLst_Master_History WHERE ID_History = @ID_History
+		FROM dbo.Ar_StockLst_Master_History WHERE ID_History = @ID_History
 
 	DECLARE @Cond VARCHAR(50)
 	DECLARE @Paid MONEY
@@ -89469,7 +89046,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [dbo].[AlloySurcharge2_Upda
 	NOT FOR REPLICATION
 AS
 
-	INSERT dbo.Ar.AlloySurcharge_History
+	INSERT dbo.Ar_AlloySurcharge_History
 	  ([Ni]
       ,[Co]
       ,[Cr]
@@ -89789,12 +89366,12 @@ IF EXISTS ( SELECT * FROM inserted WHERE Salesnum > 0 AND Salesnum = HPApo2 )
 IF EXISTS( SELECT COUNT(*) FROM inserted WHERE ISNULL(inserted.SalesNum,0)>0 )
 	BEGIN
 
-	PRINT ''INSERT dbo.Ar.AllQuotes_History WHERE SalesNum > 0'';
+	PRINT ''INSERT dbo.Ar_AllQuotes_History WHERE SalesNum > 0'';
 
 	----------------------------------------------------
 	--  Before Edit, see what it looks for in changes
 
-	INSERT dbo.Ar.AllQuotes_History 
+	INSERT dbo.Ar_AllQuotes_History 
 	  ([What]
 	  ,[When]
 	  ,[Company]
@@ -90004,7 +89581,7 @@ IF EXISTS( SELECT COUNT(*) FROM inserted WHERE ISNULL(inserted.SalesNum,0)>0 )
  	
 	-------------
 	-- After Edit, small list of changed field
-	INSERT dbo.Ar.AllQuotes_History 
+	INSERT dbo.Ar_AllQuotes_History 
 	  ([What]
 	  ,[When]
 	  ,[Company]
@@ -91231,9 +90808,9 @@ IF ( UPDATE(PC)
 	or UPDATE([Location]) )
 begin
 	
-	PRINT '' INSERT dbo.Ar.BrokerLst_Detail_History from Before Edit.  [BrokerLst_Detail_After_Update]'';
+	PRINT '' INSERT dbo.Ar_BrokerLst_Detail_History from Before Edit.  [BrokerLst_Detail_After_Update]'';
 
-	INSERT dbo.Ar.BrokerLst_Detail_History 
+	INSERT dbo.Ar_BrokerLst_Detail_History 
 		([ID_Detail_Process],[Who],[What],[When],
 		[ProcessValue],[size_h],[size_l],[pc],
 		[dim1],[dim2],[dim3],[length],[weight],
@@ -91252,9 +90829,9 @@ begin
 		deleted.[S_QTY],deleted.[S_P],deleted.[S_Total],deleted.[S_PU],deleted.[Prime],deleted.[WO]
 			FROM deleted
 
-	PRINT '' INSERT dbo.Ar.BrokerLst_Detail_History from deleted.  [BrokerLst_Detail_After_Update]'';
+	PRINT '' INSERT dbo.Ar_BrokerLst_Detail_History from deleted.  [BrokerLst_Detail_After_Update]'';
 
-	INSERT dbo.Ar.BrokerLst_Detail_History 
+	INSERT dbo.Ar_BrokerLst_Detail_History 
 		([ID_Detail_Process],[Who],[What],[When],
 		[ProcessValue],[size_h],[size_l],[pc],
 		[dim1],[dim2],[dim3],[length],[weight],
@@ -91273,7 +90850,7 @@ begin
 		inserted.[S_QTY],inserted.[S_P],inserted.[S_Total],inserted.[S_PU],inserted.[Prime],inserted.[WO]
 			FROM inserted
 			
-		PRINT '' INSERT dbo.Ar.BrokerLst_Detail_History from inserted.  [BrokerLst_Detail_After_Update]'';
+		PRINT '' INSERT dbo.Ar_BrokerLst_Detail_History from inserted.  [BrokerLst_Detail_After_Update]'';
 
 	--Update if Process detail is found
 	IF EXISTS(SELECT * FROM dbo.BrokerLst_Process_Detail WHERE Who = @cWho AND What = ''EDIT'' )
@@ -91286,11 +90863,11 @@ begin
 
 		PRINT ''nID_Detail_Process = ''+CAST(@nID_Detail_Process AS CHAR(10))+''  [BrokerLst_Detail_After_Update]'';
 		
-		PRINT '' UPDATE dbo.Ar.BrokerLst_Detail_History from deleted.  [BrokerLst_Detail_After_Update]'';
+		PRINT '' UPDATE dbo.Ar_BrokerLst_Detail_History from deleted.  [BrokerLst_Detail_After_Update]'';
 
-		UPDATE dbo.Ar.BrokerLst_Detail_History 
+		UPDATE dbo.Ar_BrokerLst_Detail_History 
 			SET ID_Detail_Process = SPD.ID_Detail_Process
-			FROM dbo.Ar.BrokerLst_Detail_History DH
+			FROM dbo.Ar_BrokerLst_Detail_History DH
 			INNER JOIN deleted ON DH.ID_Detail = deleted.ID_Detail
 			INNER JOIN dbo.BrokerLst_Process_Detail SPD ON deleted.ID_Detail = SPD.ID_Detail
 				WHERE SPD.Who = @cWho AND SPD.What = ''EDIT''
@@ -91300,11 +90877,11 @@ begin
 				AND DH.[When] = @dtWHEN 
 				
 		
-		PRINT '' UPDATE dbo.Ar.BrokerLst_Detail_History from inserted.   [BrokerLst_Detail_After_Update]'';
+		PRINT '' UPDATE dbo.Ar_BrokerLst_Detail_History from inserted.   [BrokerLst_Detail_After_Update]'';
 		
-		UPDATE dbo.Ar.BrokerLst_Detail_History 
+		UPDATE dbo.Ar_BrokerLst_Detail_History 
 			SET ID_Detail_Process = SPD.ID_Detail_Process
-			FROM dbo.Ar.BrokerLst_Detail_History DH
+			FROM dbo.Ar_BrokerLst_Detail_History DH
 			INNER JOIN inserted ON DH.ID_Detail = inserted.ID_Detail
 			INNER JOIN dbo.BrokerLst_Process_Detail SPD ON inserted.ID_Detail = SPD.ID_Detail
 				WHERE SPD.Who = @cWho AND SPD.What = ''EDIT''
@@ -91336,13 +90913,13 @@ begin
 		WHERE Brokerlst_Master.ID = inserted.ID
 
 	SELECT @SOitem = SOitem, @POitem = PO_Item 
-	   FROM dbo.Ar.BrokerLst_Process_History
+	   FROM dbo.Ar_BrokerLst_Process_History
 	   WHERE ID_Detail_Process = @nID_Detail_Process
 	
 	--PRINT '' get WeightChange,PcChange,SOitem  [BrokerLst_Detail_After_Update]''
 
 	/*
-	INSERT dbo.Ar.BrokerLst_Process_GS_History 
+	INSERT dbo.Ar_BrokerLst_Process_GS_History 
 		( [Who], [what] ,[When],	
 		[SOitem], [POitem],
 		[comment], [process_id], 
@@ -91361,7 +90938,7 @@ begin
 		INNER JOIN deleted ON deleted.ID_Detail = inserted.ID_Detail
 		
 
-	PRINT '' INSERT dbo.Ar.BrokerLst_Process_GS_History [BrokerLst_Detail_After_Update]''
+	PRINT '' INSERT dbo.Ar_BrokerLst_Process_GS_History [BrokerLst_Detail_After_Update]''
 
 	*/
 	--Lost Receiving ID  ?
@@ -91475,7 +91052,7 @@ begin
 	--	AND P.Process_ID = ''SELECTED''
 /*		AND NOT P.SOitem IN 
 		(SELECT DISTINCT SOitem 
-			FROM dbo.Ar.BrokerLst_Process_History
+			FROM dbo.Ar_BrokerLst_Process_History
 			WHERE ID_Detail_Process IN 
 			(SELECT DISTINCT ID_Detail_Process 
 				FROM dbo.BrokerLst_Process_Detail 
@@ -91551,7 +91128,7 @@ PRINT ''remove @nID_Detail_Process = ''+CAST( @nID_Detail_Process AS CHAR(10))
 
 ---
 PRINT '' INSERT dbo.BrokerLst_Detail_History FROM deleted  [BrokerLst_Detail_Delete]''
-INSERT dbo.Ar.BrokerLst_Detail_History 
+INSERT dbo.Ar_BrokerLst_Detail_History 
 	([ID_Detail_Process],
 	[What],
 	[When],
@@ -91614,14 +91191,14 @@ SELECT TOP 1
 	d.[S_PU],
 	d.[Prime]
  FROM deleted d
- 	INNER JOIN dbo.Ar.BrokerLst_Process_History BPH ON BPH.ID_Detail = d.ID_Detail 
+ 	INNER JOIN dbo.Ar_BrokerLst_Process_History BPH ON BPH.ID_Detail = d.ID_Detail 
 --	WHERE BPH.[WHAT] = ''DELETE''
 	ORDER BY BPH.[When] DESC
 
 ---************************************************************************************
 
-PRINT '' INSERT dbo.Ar.BrokerLst_Process_GS_History   [BrokerLst_Detail_Delete]''
-INSERT dbo.Ar.BrokerLst_Process_GS_History 
+PRINT '' INSERT dbo.Ar_BrokerLst_Process_GS_History   [BrokerLst_Detail_Delete]''
+INSERT dbo.Ar_BrokerLst_Process_GS_History 
 	(What,
 	[When],
 	[SOitem],
@@ -91649,7 +91226,7 @@ INSERT dbo.Ar.BrokerLst_Process_GS_History
 	BD.[S_P],
 	BD.[S_PU]
     FROM  dbo.BrokerLst_Process_Detail BPD 
-	INNER JOIN dbo.Ar.BrokerLst_Process_History BPH 
+	INNER JOIN dbo.Ar_BrokerLst_Process_History BPH 
 		ON BPH.ID_Detail_Process = BPD.ID_Detail_Process 
 	INNER JOIN BrokerLst_Detail BD 
 		ON BD.ID_Detail = BPD.ID_Detail
@@ -91749,7 +91326,7 @@ PRINT @nID_Detail_Process
 PRINT '' SELECT @SOitem = SOitem FROM dbo.BrokerLst_Process_History WHERE ID_Detail_Process = @nID_Detail_Process  [BrokerLst_Detail_Insert]''
 DECLARE @SOitem CHAR(10)
 SELECT TOP 1 @SOitem = SOitem 
-   FROM dbo.Ar.BrokerLst_Process_History
+   FROM dbo.Ar_BrokerLst_Process_History
    WHERE ID_Detail_Process = @nID_Detail_Process
 
 
@@ -91764,8 +91341,8 @@ SELECT TOP 1 @SOitem = SOitem
 
 
 ---
-PRINT '' INSERT dbo.Ar.BrokerLst_Detail_History FROM inserted  [BrokerLst_Detail_Insert]''
-INSERT dbo.Ar.BrokerLst_Detail_History 
+PRINT '' INSERT dbo.Ar_BrokerLst_Detail_History FROM inserted  [BrokerLst_Detail_Insert]''
+INSERT dbo.Ar_BrokerLst_Detail_History 
 	([ID_Detail_Process],
 	[ProcessValue],
 	[What],
@@ -91829,8 +91406,8 @@ SELECT 	case when ISNULL(spd.ID_Detail_Process,0) > 0 then spd.ID_Detail_Process
 		AND spd.Who = SUSER_SNAME() AND spd.What = ''ADD''
 
 ---
-PRINT '' INSERT dbo.Ar.BrokerLst_Process_GS_History   [BrokerLst_Detail_Insert]''
-INSERT dbo.Ar.BrokerLst_Process_GS_History 
+PRINT '' INSERT dbo.Ar_BrokerLst_Process_GS_History   [BrokerLst_Detail_Insert]''
+INSERT dbo.Ar_BrokerLst_Process_GS_History 
 	(What,
 	[SOitem],
 	[comment],
@@ -92073,7 +91650,7 @@ AS
 
 PRINT ''Trigger Start [BrokerLst_Master_After_Insert]'';
 
-INSERT dbo.Ar.BrokerLst_Master_History 
+INSERT dbo.Ar_BrokerLst_Master_History 
 	([WHO],[WHAT],[WHEN],
 	[alloy],
 	[form],
@@ -92176,7 +91753,7 @@ IF UPDATE(alloy)
 
 begin
 
- INSERT dbo.Ar.BrokerLst_Master_History 
+ INSERT dbo.Ar_BrokerLst_Master_History 
 	([WHO],[WHAT],[WHEN],
 	[alloy],
 	[form],
@@ -92231,7 +91808,7 @@ SELECT 	suser_sname(),''BEFOREEDIT'',GetDate(),
 	[ProjID]
  FROM Deleted
 
-INSERT dbo.Ar.BrokerLst_Master_History 
+INSERT dbo.Ar_BrokerLst_Master_History 
 	([WHO],[WHAT],[WHEN],
 	[alloy],
 	[form],
@@ -92322,7 +91899,7 @@ BEGIN
 END
 
 -------------------------------------------
-INSERT dbo.Ar.BrokerLst_Master_History 
+INSERT dbo.Ar_BrokerLst_Master_History 
 	([WHO],[WHAT],[WHEN],
 	[alloy],
 	[form],
@@ -92815,8 +92392,8 @@ IF EXISTS( SELECT * from deleted WHERE ISNULL(deleted.WO_Detail,0)>0 )
 	PRINT '' WO_Detail Deleted from BrokerLst_Process''
 	end
 
-PRINT '' INSERT dbo.Ar.BrokerLst_Process_History  [BrokerLst_Process_Delete]'';
-INSERT dbo.Ar.BrokerLst_Process_History
+PRINT '' INSERT dbo.Ar_BrokerLst_Process_History  [BrokerLst_Process_Delete]'';
+INSERT dbo.Ar_BrokerLst_Process_History
 (	[Who],
 	[What],
 	[When],
@@ -93119,8 +92696,8 @@ IF (SELECT COUNT(*) FROM inserted WHERE inserted.[Process_ID] = ''SELECTED'') > 
 --- rtr ---
 
 
-PRINT '' INSERT dbo.Ar.BrokerLst_Process_History  [BrokerLst_Process_Insert]'';
-INSERT dbo.Ar.BrokerLst_Process_History 
+PRINT '' INSERT dbo.Ar_BrokerLst_Process_History  [BrokerLst_Process_Insert]'';
+INSERT dbo.Ar_BrokerLst_Process_History 
 	([Who],
 	[What],
 	[When],
@@ -93290,8 +92867,8 @@ WHERE inserted.[SOitem]   = deleted.[SOitem] and
    ) <> 1
 BEGIN
 	--Major field has changed
-   PRINT '' INSERT dbo.Ar.BrokerLst_Process_History  [BrokerLst_Process_Update]'';
-   INSERT dbo.Ar.BrokerLst_Process_History 
+   PRINT '' INSERT dbo.Ar_BrokerLst_Process_History  [BrokerLst_Process_Update]'';
+   INSERT dbo.Ar_BrokerLst_Process_History 
 	([Who],[What],[When],
 	[SOitem],
 	[PO_Item],
@@ -93389,7 +92966,7 @@ BEGIN
 		or UPDATE([FoundSTK]) )
 
 
-   INSERT dbo.Ar.BrokerLst_Process_History 
+   INSERT dbo.Ar_BrokerLst_Process_History 
 	([Who],[What],[When],
 	[SOitem],
 	[PO_Item],
@@ -93504,7 +93081,7 @@ AS
 
 PRINT ''Start trigger [BrokerLst_Process_Detail_Delete]'';
 
-INSERT dbo.Ar.BrokerLst_Process_Detail_History 
+INSERT dbo.Ar_BrokerLst_Process_Detail_History 
 	([Who],
 	[What],
 	[When],
@@ -93539,7 +93116,7 @@ FOR DELETE
 AS
 
      
-INSERT dbo.Ar.Cert_History
+INSERT dbo.Ar_Cert_History
 	([WHO],[WHAT],[WHEN]
 	,[Reference]
       ,[DateCert]
@@ -93840,7 +93417,7 @@ BEGIN
 END
 ----------------------
 
-INSERT dbo.Ar.Cert_History
+INSERT dbo.Ar_Cert_History
 	([WHO],[WHAT],[WHEN]
 	,[Reference]
       ,[DateCert]
@@ -94115,7 +93692,7 @@ SELECT 	suser_sname(),''BeforeEdit'',GetDate()
  FROM inserted
 
 
-INSERT dbo.Ar.Cert_History
+INSERT dbo.Ar_Cert_History
 	([WHO],[WHAT],[WHEN]
 	,[Reference]
       ,[DateCert]
@@ -94827,7 +94404,7 @@ FOR DELETE
 --NOT FOR REPLICATION
 AS
 
-INSERT INTO dbo.Ar.GFMlog_hist 
+INSERT INTO dbo.Ar_GFMlog_hist 
 	([AlloyName],
 	[Heat],
 	[Lot],
@@ -95456,7 +95033,7 @@ FOR DELETE
 --NOT FOR REPLICATION
 AS
 
-INSERT INTO dbo.Ar.LakeErie_log_hist 
+INSERT INTO dbo.Ar_LakeErie_log_hist 
 	([AlloyName],
 	[Heat],
 	[Lot],
@@ -96268,9 +95845,9 @@ RETURN;
 
 ----------------------
 
-PRINT '' INSERT dbo.Ar.PackingSlip_Delete'';
+PRINT '' INSERT dbo.Ar_PackingSlip_Delete'';
 
-INSERT dbo.Ar.PackingSlip
+INSERT dbo.Ar_PackingSlip
 	(	[Who2], [What],[When],
 		[packingsli]
 
@@ -96412,9 +95989,9 @@ END
 
 -------------------------
 
-PRINT '' INSERT dbo.Ar.PackingSlip_Update'';
+PRINT '' INSERT dbo.Ar_PackingSlip_Update'';
 
-INSERT dbo.Ar.PackingSlip
+INSERT dbo.Ar_PackingSlip
 	(	[Who2], [What],[When],
 		[packingsli]
       ,[PCs]
@@ -96469,7 +96046,7 @@ SELECT suser_sname() AS [Who2],
       ,[PT_P]
   FROM Deleted
 
-  PRINT '' INSERT dbo.Ar.PackingSlip_Update'';
+  PRINT '' INSERT dbo.Ar_PackingSlip_Update'';
 ' 
 GO
 ALTER TABLE [dbo].[PackingSlip] ENABLE TRIGGER [PackingSlip_Update]
@@ -96543,8 +96120,8 @@ RETURN;
 */
 ----------------------
 
-PRINT '' INSERT dbo.Ar.PackingSlip_No_Delete'';
-INSERT dbo.Ar.PackingSlip_No 
+PRINT '' INSERT dbo.Ar_PackingSlip_No_Delete'';
+INSERT dbo.Ar_PackingSlip_No 
 	(	[Who2], [What],[When],
 	[packingsli],
 	[ps_date],
@@ -96859,7 +96436,7 @@ BEGIN
     RETURN;
 END
 */     
-     INSERT INTO dbo.Ar.pricetable_hist 
+     INSERT INTO dbo.Ar_pricetable_hist 
 	 ([pt_id],[alloy],[form],[cc],[thk],[size],[size2],[size3]
       ,[w0],[w5],[w10],[w25],[w50],[w100],[w200],[w500],[w1000],[w2000],[wBASE]
       ,[activepric],[lastedit],[username],[zalloy]
@@ -96890,7 +96467,7 @@ FOR INSERT
 --NOT FOR REPLICATION
 AS
 
-INSERT INTO dbo.Ar.pricetable_hist 
+INSERT INTO dbo.Ar_pricetable_hist 
 	 ([pt_id],[alloy],[form],[cc],[thk],[size],[size2],[size3]
       ,[w0],[w5],[w10],[w25],[w50],[w100],[w200],[w500],[w1000],[w2000],[wBASE]
       ,[activepric],[lastedit],[username],[zalloy],[item_code]
@@ -96941,7 +96518,7 @@ IF  UPDATE([alloy])
 	OR UPDATE([costCurr])
 	
 begin	
-	INSERT INTO dbo.Ar.Pricetable_Hist 
+	INSERT INTO dbo.Ar_Pricetable_Hist 
 		 ([pt_id],[alloy],[form],[cc],[thk],[size],[size2],[size3]
 		  ,[w0],[w5],[w10],[w25],[w50],[w100],[w200],[w500],[w1000],[w2000],[wBASE]
 		  ,[activepric],[lastedit],[username],[zalloy],[item_code]
@@ -96958,7 +96535,7 @@ begin
 		  ,[hist],[commspec],suser_sname(), ''Insert UPD'',GETDATE() 
 		   FROM inserted
 
-	INSERT INTO dbo.Ar.pricetable_hist 
+	INSERT INTO dbo.Ar_pricetable_hist 
 		 ([pt_id],[alloy],[form],[cc],[thk],[size],[size2],[size3]
 		  ,[w0],[w5],[w10],[w25],[w50],[w100],[w200],[w500],[w1000],[w2000],[wBASE]
 		  ,[activepric],[lastedit],[username],[zalloy],[item_code]
@@ -97108,7 +96685,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [dbo].[PurchaseOrder After_
 AS
 
 PRINT ''Trigger begin [PurchaseOrder After_Delete]''
-INSERT INTO dbo.Ar.PurchaseOrder_hist 
+INSERT INTO dbo.Ar_PurchaseOrder_hist 
 (	[poitem],
 	[hpapo],
 	[itempo],
@@ -97299,7 +96876,7 @@ BEGIN
 PRINT ''Trigger begin [PurchaseOrder After_Update]''
 IF UPDATE([SalesNum]) or UPDATE([Company]) or UPDATE([Amendment]) or UPDATE([itempo])
 	BEGIN
-		INSERT INTO dbo.Ar.PurchaseOrder_hist 
+		INSERT INTO dbo.Ar_PurchaseOrder_hist 
 	(	[poitem],
 		[hpapo],
 		[itempo],
@@ -99405,9 +98982,9 @@ IF UPDATE(Pass)
 		END
 
 ----------------------------------------------------
-PRINT ''Insert into dbo.Ar.Receiving_Hist WHERE [ID_Master] changes.''
+PRINT ''Insert into dbo.Ar_Receiving_Hist WHERE [ID_Master] changes.''
   
-INSERT INTO dbo.Ar.Receiving_Hist 
+INSERT INTO dbo.Ar_Receiving_Hist 
 (	[ID],
 	[Received],
 	[POitem],
@@ -99510,7 +99087,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE TRIGGER [dbo].[Receiving_Delete] ON
 AS
 
 
-INSERT INTO dbo.Ar.Receiving_Hist 
+INSERT INTO dbo.Ar_Receiving_Hist 
 (	[ID],
 	[Received],
 	[POitem],
@@ -99828,7 +99405,7 @@ FOR DELETE
 --NOT FOR REPLICATION
 AS
 
-INSERT INTO dbo.Ar.Roll_log_hist 
+INSERT INTO dbo.Ar_Roll_log_hist 
 	([AlloyName],
 	[Heat],
 	[Lot],
@@ -100770,7 +100347,7 @@ AS
 
 PRINT ''trigger start Sales_After_Delete:'';
 
-INSERT dbo.Ar.Sales_History 
+INSERT dbo.Ar_Sales_History 
 	([WHO],[WHAT],[WHEN]
       ,[soitem]
       ,[salesnum]
@@ -101647,9 +101224,9 @@ IF LEN(@cReturn)>0
 ----------------------------------------------------
 
 
-PRINT ''Insert into dbo.Ar.Sales_History ''
+PRINT ''Insert into dbo.Ar_Sales_History ''
 
-INSERT dbo.Ar.Sales_History 
+INSERT dbo.Ar_Sales_History 
 	([WHO],[WHAT],[WHEN]
       ,[soitem]
       ,[salesnum]
@@ -102372,7 +101949,7 @@ AS
 
 PRINT ''trigger start Sales_No_After_Delete:'';
 
-INSERT dbo.Ar.Sales_No_History 
+INSERT dbo.Ar_Sales_No_History 
 	(What,[WHEN]
 	  ,[salesnum]
       ,[salesrep]
@@ -102475,8 +102052,8 @@ PRINT ''trigger start Sales_No_After_Update:'';
 
 --IF UPDATE() only need the WHERE NOT clause.
 
-PRINT ''Archive: dbo.Ar.Sales_No_History ''
-INSERT dbo.Ar.Sales_No_History 
+PRINT ''Archive: dbo.Ar_Sales_No_History ''
+INSERT dbo.Ar_Sales_No_History 
 	  (What
 	  ,[WHEN]
 	  ,[salesnum]
@@ -104103,7 +103680,7 @@ AS
 PRINT ''Start trigger [SalesP_Customer_Delete]'';
 
 
-   INSERT dbo.Ar.SalesP_Customer_History 
+   INSERT dbo.Ar_SalesP_Customer_History 
 	( [ID]
       ,[SoldCode]
       ,[SalesP]
@@ -104145,7 +103722,7 @@ AS
 PRINT ''Start trigger [SalesP_Customer_Delete]'';
 
 
-   INSERT dbo.Ar.SalesP_Customer_History 
+   INSERT dbo.Ar_SalesP_Customer_History 
 	( [ID]
       ,[SoldCode]
       ,[SalesP]
@@ -104187,7 +103764,7 @@ AS
 PRINT ''Start trigger [SalesP_Customer_Update]'';
 
 	
-   INSERT dbo.Ar.SalesP_Customer_History 
+   INSERT dbo.Ar_SalesP_Customer_History 
 	( [ID]
       ,[SoldCode]
       ,[SalesP]
@@ -104209,7 +103786,7 @@ PRINT ''Start trigger [SalesP_Customer_Update]'';
 	  ,GETDATE() AS [When]
     FROM inserted
 
-   INSERT dbo.Ar.SalesP_Customer_History 
+   INSERT dbo.Ar_SalesP_Customer_History 
 	( [ID]
       ,[SoldCode]
       ,[SalesP]
@@ -105469,9 +105046,9 @@ IF ( UPDATE(PC)
 	or UPDATE([Location]) )
 begin
 	
-	PRINT '' INSERT dbo.Ar.StockLst_Detail_History from Before Edit.  [StockLst_Detail_After_Update]'';
+	PRINT '' INSERT dbo.Ar_StockLst_Detail_History from Before Edit.  [StockLst_Detail_After_Update]'';
 
-	INSERT dbo.Ar.StockLst_Detail_History 
+	INSERT dbo.Ar_StockLst_Detail_History 
 		([ID_Detail_Process],[Who],[What],[When],
 		[ProcessValue],[size_h],[size_l],[pc],
 		[dim1],[dim2],[dim3],[length],[weight],
@@ -105490,9 +105067,9 @@ begin
 		deleted.[S_QTY],deleted.[S_P],deleted.[S_Total],deleted.[S_PU],deleted.[Prime],deleted.[WO]
 			FROM deleted
 
-	PRINT '' INSERT dbo.Ar.StockLst_Detail_History from deleted.  [StockLst_Detail_After_Update]'';
+	PRINT '' INSERT dbo.Ar_StockLst_Detail_History from deleted.  [StockLst_Detail_After_Update]'';
 
-	INSERT dbo.Ar.StockLst_Detail_History 
+	INSERT dbo.Ar_StockLst_Detail_History 
 		([ID_Detail_Process],[Who],[What],[When],
 		[ProcessValue],[size_h],[size_l],[pc],
 		[dim1],[dim2],[dim3],[length],[weight],
@@ -105511,7 +105088,7 @@ begin
 		inserted.[S_QTY],inserted.[S_P],inserted.[S_Total],inserted.[S_PU],inserted.[Prime],inserted.[WO]
 			FROM inserted
 			
-		PRINT '' INSERT dbo.Ar.StockLst_Detail_History from inserted.  [StockLst_Detail_After_Update]'';
+		PRINT '' INSERT dbo.Ar_StockLst_Detail_History from inserted.  [StockLst_Detail_After_Update]'';
 
 	--Update if Process DETAIL is found
 	IF EXISTS(SELECT * FROM dbo.StockLst_Process_Detail WHERE Who = @cWho 
@@ -105525,11 +105102,11 @@ begin
 
 		PRINT ''nID_Detail_Process = ''+CAST(@nID_Detail_Process AS CHAR(10))+''  [StockLst_Detail_After_Update]'';
 		
-		PRINT '' UPDATE dbo.Ar.StockLst_Detail_History from deleted.  [StockLst_Detail_After_Update]'';
+		PRINT '' UPDATE dbo.Ar_StockLst_Detail_History from deleted.  [StockLst_Detail_After_Update]'';
 
-		UPDATE dbo.Ar.StockLst_Detail_History 
+		UPDATE dbo.Ar_StockLst_Detail_History 
 			SET ID_Detail_Process = SPD.ID_Detail_Process
-			FROM dbo.Ar.StockLst_Detail_History DH
+			FROM dbo.Ar_StockLst_Detail_History DH
 			INNER JOIN deleted ON DH.ID_Detail = deleted.ID_Detail
 			INNER JOIN dbo.StockLst_Process_Detail SPD ON deleted.ID_Detail = SPD.ID_Detail
 				WHERE SPD.Who = @cWho 
@@ -105540,11 +105117,11 @@ begin
 				AND DH.[When] = @dtWHEN 
 				
 --( What = ''EDIT'' or What = ''Sell Stock'' )		
-		PRINT '' UPDATE dbo.Ar.StockLst_Detail_History from inserted.   [StockLst_Detail_After_Update]'';
+		PRINT '' UPDATE dbo.Ar_StockLst_Detail_History from inserted.   [StockLst_Detail_After_Update]'';
 		
-		UPDATE dbo.Ar.StockLst_Detail_History 
+		UPDATE dbo.Ar_StockLst_Detail_History 
 			SET ID_Detail_Process = SPD.ID_Detail_Process
-			FROM dbo.Ar.StockLst_Detail_History DH
+			FROM dbo.Ar_StockLst_Detail_History DH
 			INNER JOIN inserted ON DH.ID_Detail = inserted.ID_Detail
 			INNER JOIN dbo.StockLst_Process_Detail SPD ON inserted.ID_Detail = SPD.ID_Detail
 				WHERE SPD.Who = @cWho 
@@ -105577,14 +105154,14 @@ begin
 		WHERE Stocklst_Master.ID = inserted.ID
 
 	SELECT @SOitem = SOitem, @POitem = PO_Item 
-	   FROM dbo.Ar.StockLst_Process_History
+	   FROM dbo.Ar_StockLst_Process_History
 	   WHERE ID_Detail_Process = @nID_Detail_Process
 	
 	--PRINT ''get WeightChange,PcChange,SOitem''
 
 	/*
-	PRINT '' INSERT dbo.Ar.StockLst_Process_GS_History.  [StockLst_Detail_After_Update]'';
-	INSERT dbo.Ar.StockLst_Process_GS_History 
+	PRINT '' INSERT dbo.Ar_StockLst_Process_GS_History.  [StockLst_Detail_After_Update]'';
+	INSERT dbo.Ar_StockLst_Process_GS_History 
 		( [Who], [what] ,[When],	
 		[SOitem], [POitem],
 		[comment], [process_id], 
@@ -105602,10 +105179,10 @@ begin
 		FROM inserted
 		INNER JOIN deleted ON deleted.ID_Detail = inserted.ID_Detail
 		INNER JOIN dbo.StockLst_Process_Detail SPD ON inserted.ID_Detail = SPD.ID_Detail
-		INNER JOIN dbo.Ar.StockLst_Process_History SPH ON SPD.ID_Detail_Process = SPH.ID_Detail_Process
+		INNER JOIN dbo.Ar_StockLst_Process_History SPH ON SPD.ID_Detail_Process = SPH.ID_Detail_Process
 			WHERE SPD.[Who] = SUSER_SNAME() AND SPD.[What] = ''EDIT''
 
-	PRINT '' INSERT dbo.Ar.StockLst_Process_GS_History [StockLst_Detail_After_Update]''
+	PRINT '' INSERT dbo.Ar_StockLst_Process_GS_History [StockLst_Detail_After_Update]''
 	*/		
 		---
 
@@ -105725,7 +105302,7 @@ IF ISNULL(
 	 ( NOT
 	  ( P.SOitem IN 
 	   (SELECT DISTINCT SOitem 
-        FROM dbo.Ar.StockLst_Process_History
+        FROM dbo.Ar_StockLst_Process_History
         WHERE ID_Detail_Process IN 
 	     (SELECT DISTINCT ID_Detail_Process 
           FROM dbo.StockLst_Process_Detail 
@@ -105736,7 +105313,7 @@ IF ISNULL(
 	 OR
 	  ( P.WO IN 
 	   (SELECT DISTINCT WO
-        FROM dbo.Ar.StockLst_Process_History
+        FROM dbo.Ar_StockLst_Process_History
         WHERE ID_Detail_Process IN 
 	     (SELECT DISTINCT ID_Detail_Process 
           FROM dbo.StockLst_Process_Detail 
@@ -105768,7 +105345,7 @@ begin
 		 ( NOT
 		  ( P.SOitem IN 
 		   (SELECT DISTINCT SOitem 
-		    FROM dbo.Ar.StockLst_Process_History
+		    FROM dbo.Ar_StockLst_Process_History
 		    WHERE ID_Detail_Process IN 
 		     (SELECT DISTINCT ID_Detail_Process 
 		      FROM dbo.StockLst_Process_Detail 
@@ -105779,7 +105356,7 @@ begin
 		 OR
 		  ( P.WO IN 
 		   (SELECT DISTINCT WO
-		    FROM dbo.Ar.StockLst_Process_History
+		    FROM dbo.Ar_StockLst_Process_History
 		    WHERE ID_Detail_Process IN 
 		     (SELECT DISTINCT ID_Detail_Process 
 		      FROM dbo.StockLst_Process_Detail 
@@ -105875,8 +105452,8 @@ end
 ---
 
 ---
-PRINT '' INSERT dbo.Ar.StockLst_Detail_History FROM deleted.  [StockLst_Detail_Delete]''
-INSERT dbo.Ar.StockLst_Detail_History 
+PRINT '' INSERT dbo.Ar_StockLst_Detail_History FROM deleted.  [StockLst_Detail_Delete]''
+INSERT dbo.Ar_StockLst_Detail_History 
 	([ID_Detail_Process],
 	[What],
 	[When],
@@ -105945,17 +105522,17 @@ SELECT  TOP 1
 	d.[Prime]
 	,d.[WO]
  FROM deleted d
- 	INNER JOIN dbo.Ar.StockLst_Process_History SPH ON SPH.ID_Detail = d.ID_Detail 
+ 	INNER JOIN dbo.Ar_StockLst_Process_History SPH ON SPH.ID_Detail = d.ID_Detail 
 --	WHERE SPH.[WHAT] = ''DELETE''
 	ORDER BY SPH.[When] DESC
 
 ---************************************************************************************
 
---SOitem IN (SELECT DISTINCT SOitem FROM dbo.Ar.StockLst_Process_History WHERE ID_Detail_Process IN 
+--SOitem IN (SELECT DISTINCT SOitem FROM dbo.Ar_StockLst_Process_History WHERE ID_Detail_Process IN 
 --(SELECT DISTINCT ID_Detail_Process FROM dbo.StockLst_Process_Detail WHERE Who = SUSER_SNAME() AND ( What = ''DELETE'' OR What = ''REMOVED'' OR What = ''CONSUMED'' )))
 
-PRINT '' INSERT dbo.Ar.StockLst_Process_GS_History  [StockLst_Detail_Delete]''
-INSERT dbo.Ar.StockLst_Process_GS_History 
+PRINT '' INSERT dbo.Ar_StockLst_Process_GS_History  [StockLst_Detail_Delete]''
+INSERT dbo.Ar_StockLst_Process_GS_History 
 	(What,
 	[When],
 	[SOitem],
@@ -105984,7 +105561,7 @@ INSERT dbo.Ar.StockLst_Process_GS_History
 	SD.[S_P],
 	SD.[S_PU]
     FROM  dbo.StockLst_Process_Detail SPD 
-	INNER JOIN dbo.Ar.StockLst_Process_History SPH 
+	INNER JOIN dbo.Ar_StockLst_Process_History SPH 
 		ON SPH.ID_Detail_Process = SPD.ID_Detail_Process 
 	INNER JOIN Stocklst_Detail SD 
 		ON SD.ID_Detail = SPD.ID_Detail
@@ -106081,8 +105658,8 @@ END
 
 ---
 
-PRINT '' INSERT dbo.Ar.StockLst_Detail_History FROM inserted.   [StockLst_Detail_Insert]''
-INSERT dbo.Ar.StockLst_Detail_History 
+PRINT '' INSERT dbo.Ar_StockLst_Detail_History FROM inserted.   [StockLst_Detail_Insert]''
+INSERT dbo.Ar_StockLst_Detail_History 
 	([ID_Detail_Process],
 	[ProcessValue],
 	[What],
@@ -106149,8 +105726,8 @@ SELECT 	ISNULL(spd.ID_Detail_Process,0),
  LEFT OUTER JOIN dbo.StockLst_Process_Detail spd WITH(NOLOCK) ON inserted.ID = spd.ID 
 		AND spd.Who = SUSER_SNAME() AND spd.What = ''ADD''
 
-PRINT '' INSERT dbo.Ar.StockLst_Process_GS_History    [StockLst_Detail_Insert]''
- INSERT dbo.Ar.StockLst_Process_GS_History 
+PRINT '' INSERT dbo.Ar_StockLst_Process_GS_History    [StockLst_Detail_Insert]''
+ INSERT dbo.Ar_StockLst_Process_GS_History 
 	(What,
 	[When],
 	[SOitem],
@@ -106412,7 +105989,7 @@ AS
 
 PRINT ''Trigger Start [StockLst_Master_After_Insert]'';
 
-INSERT dbo.Ar.StockLst_Master_History 
+INSERT dbo.Ar_StockLst_Master_History 
 	([WHO],[WHAT],[WHEN],
 	[alloy],
 	[form],
@@ -106514,7 +106091,7 @@ PRINT ''Trigger Start [StockLst_Master_After_Update]'';
  
 begin
 
-	INSERT dbo.Ar.StockLst_Master_History 
+	INSERT dbo.Ar_StockLst_Master_History 
 		([Who],[what],[When],
 		[alloy],
 		[form],
@@ -106571,7 +106148,7 @@ begin
 		MillTrace
 	 FROM Deleted
 
-	INSERT dbo.Ar.Stocklst_Master_History 
+	INSERT dbo.Ar_Stocklst_Master_History 
 		([who],[what],[When],
 		[alloy],
 		[form],
@@ -106664,7 +106241,7 @@ END
 
 PRINT ''Trigger Start [StockLst_Master_delete]'';
 
-INSERT dbo.Ar.StockLst_Master_History 
+INSERT dbo.Ar_StockLst_Master_History 
 	([WHO],[WHAT],[WHEN],
 	[alloy],
 	[cc],
@@ -106885,8 +106462,8 @@ PRINT ''Trigger  End  [StockLst_Master_Update]'';
 SELECT * FROM dbo.StockLst_Master WHERE ID= 15261
 SELECT * FROM dbo.StockLst_Detail WHERE ID= 15261
 
-SELECT * FROM dbo.Ar.Stocklst_Master_History WHERE ID= 15261 AND ID_History = 71548
-SELECT * FROM dbo.Ar.StockLst_Detail_History WHERE ID= 15261 AND ID_Detail_History = 325433
+SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE ID= 15261 AND ID_History = 71548
+SELECT * FROM dbo.Ar_StockLst_Detail_History WHERE ID= 15261 AND ID_Detail_History = 325433
 
 
 --Copy from ERP_1_Archive back to ERP_1
@@ -106917,7 +106494,7 @@ UPDATE sm SET
       ,sm.[mS_QTY]=h.mS_QTY
       ,sm.[WO_Detail]=h.WO_Detail
 
-  FROM dbo.Ar.Stocklst_Master_History H 
+  FROM dbo.Ar_Stocklst_Master_History H 
   JOIN dbo.StockLst_Master sm on sm.ID = h.ID
 WHERE sm.ID= 15261
 AND h.ID= 15261 AND H.ID_History = 71548
@@ -106958,7 +106535,7 @@ UPDATE sd SET
       ,sd.[Prime]=h.Prime
       ,sd.[WO]=h.WO
 
- FROM dbo.Ar.Stocklst_Detail_History H 
+ FROM dbo.Ar_Stocklst_Detail_History H 
   JOIN dbo.StockLst_Detail sd on sd.ID = h.ID
 WHERE sd.ID_Detail= 33219
 AND h.ID_Detail = 33219 AND h.ID_Detail_History = 325433
@@ -107262,8 +106839,8 @@ IF EXISTS( SELECT * from deleted WHERE ISNULL(deleted.WO_Detail,0)>0 )
 	PRINT '' WO_Detail Process Deleted from StockLst_Process''
 	end
 
-PRINT '' INSERT dbo.Ar.StockLst_Process_History'';
-INSERT dbo.Ar.StockLst_Process_History 
+PRINT '' INSERT dbo.Ar_StockLst_Process_History'';
+INSERT dbo.Ar_StockLst_Process_History 
 	([Who],
 	[What],
 	[When],
@@ -107577,9 +107154,9 @@ IF (SELECT COUNT(*) FROM inserted WHERE inserted.[Process_ID] = ''SELECTED'') > 
 --- rtr ---
 
 
-PRINT '' [StockLst_Process_Insert] INSERT dbo.Ar.StockLst_Process_History '';
+PRINT '' [StockLst_Process_Insert] INSERT dbo.Ar_StockLst_Process_History '';
 
-INSERT dbo.Ar.StockLst_Process_History 
+INSERT dbo.Ar_StockLst_Process_History 
 	([Who],
 	[What],
 	[When],
@@ -107792,9 +107369,9 @@ WHERE inserted.[SOitem]   = deleted.[SOitem] and
    ) <> 1
 BEGIN
 --An important field has changed
-	PRINT '' An important field has changed, save to dbo.Ar.StockLst_Process_History''
+	PRINT '' An important field has changed, save to dbo.Ar_StockLst_Process_History''
 	
-   INSERT dbo.Ar.StockLst_Process_History 
+   INSERT dbo.Ar_StockLst_Process_History 
 	([Who],
 	[What],
 	[When],
@@ -107893,7 +107470,7 @@ BEGIN
 		or UPDATE([Prc_QTY])
 		or UPDATE([FoundSTK]))
 
-   INSERT dbo.Ar.StockLst_Process_History 
+   INSERT dbo.Ar_StockLst_Process_History 
 	([Who],
 	[What],
 	[When],
@@ -108026,7 +107603,7 @@ AS
 
 PRINT ''Start trigger [StockLst_Process_Detail_Delete]'';
 
-INSERT dbo.Ar.StockLst_Process_Detail_History 
+INSERT dbo.Ar_StockLst_Process_Detail_History 
 	([Who],
 	[What],
 	[When],
@@ -108291,7 +107868,7 @@ AS
 PRINT ''Trigger Start [Swage_Log_Delete]'';
 
 /*
-INSERT INTO dbo.Ar.Swage_Log_hist 
+INSERT INTO dbo.Ar_Swage_Log_hist 
 	([AlloyName],
 	[Heat],
 	[Lot],
@@ -108862,7 +108439,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-		INSERT INTO dbo.Ar.TimeTable_Hist
+		INSERT INTO dbo.Ar_TimeTable_Hist
 		 ([ID]
 		  ,[EmployeeID]
 		  ,[SOItem]
@@ -109260,7 +108837,7 @@ IF EXISTS(
 	( NOT
 	 ( P.SOitem IN 
 	 (SELECT DISTINCT SOitem 
-      FROM dbo.Ar.WIPLst_Process_History
+      FROM dbo.Ar_WIPLst_Process_History
       WHERE ID_Detail_Process IN 
 	   (SELECT DISTINCT ID_Detail_Process 
         FROM dbo.WIPLst_Process_Detail 
@@ -109271,7 +108848,7 @@ IF EXISTS(
 	OR
 	 ( P.WO IN 
 	 (SELECT DISTINCT WO
-      FROM dbo.Ar.WIPLst_Process_History
+      FROM dbo.Ar_WIPLst_Process_History
       WHERE ID_Detail_Process IN 
 	   (SELECT DISTINCT ID_Detail_Process 
         FROM dbo.WIPLst_Process_Detail 
@@ -109296,7 +108873,7 @@ begin
 		AND P.Process_ID = ''SELECTED''
 		AND NOT P.SOitem IN 
 		(SELECT DISTINCT SOitem 
-			FROM dbo.Ar.WIPLst_Process_History
+			FROM dbo.Ar_WIPLst_Process_History
 			WHERE ID_Detail_Process IN 
 			(SELECT DISTINCT ID_Detail_Process 
 				FROM dbo.WIPLst_Process_Detail 
@@ -109380,8 +108957,8 @@ IF EXISTS(SELECT * FROM dbo.WIPLst_Process P INNER JOIN deleted ON deleted.ID_De
 	end
 
 ---
-PRINT '' INSERT dbo.Ar.WIPLst_Detail_History FROM deleted  [WIPLst_Detail_Delete]''
-INSERT dbo.Ar.WIPLst_Detail_History 
+PRINT '' INSERT dbo.Ar_WIPLst_Detail_History FROM deleted  [WIPLst_Detail_Delete]''
+INSERT dbo.Ar_WIPLst_Detail_History 
 	([ID_Detail_Process],
 	[What],
 	[When],
@@ -109451,14 +109028,14 @@ SELECT TOP 1
 	d.sStockLst_ID_Detail,
 	d.fStockLst_ID_Detail
  FROM deleted d
- 	INNER JOIN dbo.Ar.WIPLst_Process_History BPH ON BPH.ID_Detail = d.ID_Detail 
+ 	INNER JOIN dbo.Ar_WIPLst_Process_History BPH ON BPH.ID_Detail = d.ID_Detail 
 --	WHERE BPH.[WHAT] = ''DELETE''
 	ORDER BY BPH.[When] DESC
 
 ---************************************************************************************
 
-PRINT '' INSERT dbo.Ar.WIPLst_Process_GS_History   [WIPLst_Detail_Delete]''
-INSERT dbo.Ar.WIPLst_Process_GS_History 
+PRINT '' INSERT dbo.Ar_WIPLst_Process_GS_History   [WIPLst_Detail_Delete]''
+INSERT dbo.Ar_WIPLst_Process_GS_History 
 	(What,
 	[When],
 	[SOitem],
@@ -109486,7 +109063,7 @@ INSERT dbo.Ar.WIPLst_Process_GS_History
 	BD.[S_P],
 	BD.[S_PU]
     FROM  dbo.WIPLst_Process_Detail BPD 
-	INNER JOIN dbo.Ar.WIPLst_Process_History BPH 
+	INNER JOIN dbo.Ar_WIPLst_Process_History BPH 
 		ON BPH.ID_Detail_Process = BPD.ID_Detail_Process 
 	INNER JOIN WIPLst_Detail BD 
 		ON BD.ID_Detail = BPD.ID_Detail
@@ -109571,8 +109148,8 @@ SET @WO = (SELECT TOP 1 inserted.WO
 	FROM inserted )
 PRINT @WO
 
-PRINT '' INSERT dbo.Ar.WIPLst_Detail_History FROM inserted.   [WIPLst_Detail_Insert]''
-INSERT dbo.Ar.WIPLst_Detail_History 
+PRINT '' INSERT dbo.Ar_WIPLst_Detail_History FROM inserted.   [WIPLst_Detail_Insert]''
+INSERT dbo.Ar_WIPLst_Detail_History 
 	([ID_Detail_Process],
 	[ProcessValue],
 	[What],
@@ -109646,9 +109223,9 @@ SELECT 	ISNULL(spd.ID_Detail_Process,0),
 		--AND spd.Who = SUSER_SNAME() AND ( spd.What = ''ADD'' OR spd.What = ''Work Order'' )
 
 /*
-PRINT '' INSERT dbo.Ar.WIPLst_Process_GS_History    [WIPLst_Detail_Insert]''
+PRINT '' INSERT dbo.Ar_WIPLst_Process_GS_History    [WIPLst_Detail_Insert]''
 
- INSERT dbo.Ar.WIPLst_Process_GS_History 
+ INSERT dbo.Ar_WIPLst_Process_GS_History 
 	(What,
 	[When],
 	[SOitem],
@@ -109712,7 +109289,7 @@ AS
 
 PRINT ''Trigger Start [WIPLst_Master_After_Insert]'';
 
-INSERT dbo.Ar.WIPLst_Master_History 
+INSERT dbo.Ar_WIPLst_Master_History 
 	([WHO],[WHAT],[WHEN],
 	[alloy],
 	[form],
@@ -109808,7 +109385,7 @@ PRINT ''Trigger Start [WIPLst_Master_After_Update]'';
  OR UPDATE(PoStatus)
 begin
 
-	INSERT dbo.Ar.WIPLst_Master_History 
+	INSERT dbo.Ar_WIPLst_Master_History 
 		([Who],[what],[When],
 		[alloy],
 		[form],
@@ -109863,7 +109440,7 @@ begin
 		[ProjID]
 	 FROM Deleted
 
-	INSERT dbo.Ar.WIPLst_Master_History 
+	INSERT dbo.Ar_WIPLst_Master_History 
 		([who],[what],[When],
 		[alloy],
 		[form],
@@ -109955,7 +109532,7 @@ END
 
 PRINT ''Trigger Start [WIPLst_Master_delete]'';
 
-INSERT dbo.Ar.WIPLst_Master_History 
+INSERT dbo.Ar_WIPLst_Master_History 
 	([WHO],[WHAT],[WHEN],
 	[alloy],
 	[cc],
@@ -110436,8 +110013,8 @@ IF EXISTS( SELECT * from deleted WHERE ISNULL(deleted.WO_Detail,0)>0 )
 	PRINT '' WO_Detail Deleted from WIPLst_Process''
 	end
 
-PRINT '' INSERT dbo.Ar.WIPLst_Process_History  [WIPLst_Process_Delete]'';
-INSERT dbo.Ar.WIPLst_Process_History
+PRINT '' INSERT dbo.Ar_WIPLst_Process_History  [WIPLst_Process_Delete]'';
+INSERT dbo.Ar_WIPLst_Process_History
 (	[Who],
 	[What],
 	[When],
@@ -110695,9 +110272,9 @@ IF (SELECT COUNT(*) FROM inserted WHERE inserted.[Process_ID] = ''SELECTED'') > 
 
 
 
-PRINT '' INSERT dbo.Ar.WIPLst_Process_History  [WIPLst_Process_Insert]'';
+PRINT '' INSERT dbo.Ar_WIPLst_Process_History  [WIPLst_Process_Insert]'';
 
-INSERT dbo.Ar.WIPLst_Process_History 
+INSERT dbo.Ar_WIPLst_Process_History 
 	([Who],
 	[What],
 	[When],
@@ -110855,8 +110432,8 @@ WHERE inserted.[SOitem]   = deleted.[SOitem] and
    ) <> 1
 BEGIN
 	--Major field has changed
-   PRINT '' INSERT dbo.Ar.WIPLst_Process_History  [WIPLst_Process_Update]'';
-   INSERT dbo.Ar.WIPLst_Process_History 
+   PRINT '' INSERT dbo.Ar_WIPLst_Process_History  [WIPLst_Process_Update]'';
+   INSERT dbo.Ar_WIPLst_Process_History 
 	([Who],[What],[When],
 	[SOitem],
 	[PO_Item],
@@ -110954,7 +110531,7 @@ BEGIN
 		or UPDATE([FoundSTK]) )
 
 
-   INSERT dbo.Ar.WIPLst_Process_History 
+   INSERT dbo.Ar_WIPLst_Process_History 
 	([Who],[What],[When],
 	[SOitem],
 	[PO_Item],

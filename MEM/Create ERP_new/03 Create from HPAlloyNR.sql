@@ -1,4 +1,4 @@
---03 Create from HPAlloyNR 
+﻿--03 Create from HPAlloyNR 
 USE [ERP_1]
 
 
@@ -4428,44 +4428,6 @@ BEGIN
 	end
 END
 GO
-/****** Object:  StoredProcedure [dbo].[p_NR_TimeClockPunches]    Script Date: 12/26/2025 4:00:41 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[p_NR_TimeClockPunches]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[p_NR_TimeClockPunches] AS' 
-END
-GO
--- =============================================
--- Author:		 
--- Create date: 2015 05 07
--- Description:	Gets the employee timeclock punches for a trackID
--- =============================================
-ALTER PROCEDURE [dbo].[p_NR_TimeClockPunches] 
-	-- Add the parameters for the stored procedure here
-	@startDate datetime
-	,@time datetime
-	,@trackid uniqueidentifier
-AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
-
-    -- Insert statements for procedure here
-SELECT TOP 1000 [TimeIn]
-		,[TimeOut]
-	FROM [TimeClockPlus].[dbo].[NR_EmployeeHours]
-	WHERE ((TimeIn > @startDate
-			AND TimeIn < @time)
-		OR (TimeOut > @startDate
-			AND TimeOut < @time))
-	AND EmployeeId IN (SELECT TOP 1000 [EmployeeId]
-							FROM [dbo].[NR_OT_Employee]
-							WHERE trackID = @trackID)
-ORDER BY TimeIn
 END
 GO
 /****** Object:  StoredProcedure [dbo].[p_NR_Web_Inquiry_ins]    Script Date: 12/26/2025 4:00:41 PM ******/

@@ -10,14 +10,25 @@ Two **separate** layers. Both must work for a user to use the ERP normally.
 | **ERP_AppWrite** | SELECT, INSERT, UPDATE, DELETE |
 | **ERP_AppAdmin** | + EXECUTE (procs, views) — developers, DBAs |
 
+**Area roles** (`ERP_Accounting_Reader`, `ERP_Inventory_Writer`, … — 36 roles from `02_CreateDB_Roles.sql`):
+
+| Table | Purpose |
+|-------|---------|
+| `dbo.AppSqlRole` | Catalog of area SQL database roles |
+| `dbo.AppSqlRoleGrant` | Windows login → role (from `dbo.AppUsers`; not AppSetup) |
+| `dbo.usp_AppSqlRole_SyncLogin` | Applies grants to SQL Server `ALTER ROLE` membership |
+| `dbo.v_AppSqlRoleEffectiveGrant` | Active grants joined to catalog |
+
+VFP screen: **Maintenance → SQL Database Roles** — `Forms\AppSqlRole_Maint.scx`
+
 **Scripts (run on SuperMicro + Server26):**
 
 1. `01_CreateRoles.sql`
-2. **You (admin):** `02b_GrantCurrentUser_Admin.sql` — uses `SYSTEM_USER`  
+2. **You (admin):** `05_GrantCurrentUser_Admin.sql` — uses `SYSTEM_USER`  
    - On SuperMicro if you are **`dbo`**, script exits — you already have full access.
-3. **You (standard write access):** `02d_GrantCurrentUser_AppWrite.sql` on each server where needed
-4. **Another Windows account:** edit `@login` in `02c_GrantUser_AppWrite.sql` — use **`ComputerName\user`** (no domain). See **[README-Workgroup-Logins.md](README-Workgroup-Logins.md)**.
-5. Optional template: `02_GrantWindowsUser.sql` (manual)
+3. **You (standard write access):** `07_GrantCurrentUser_AppWrite.sql` on each server where needed
+4. **Another Windows account:** edit `@login` in `06_GrantUser_AppWrite.sql` — use **`ComputerName\user`** (no domain). See **[README-Workgroup-Logins.md](README-Workgroup-Logins.md)**.
+5. Optional template: `04_GrantWindowsUser.sql` (manual)
 
 **No domain yet:** do **not** use `SPACEALLOYS\YourUser` — that placeholder was for a future domain.
 
@@ -43,7 +54,7 @@ WHERE sp.name = SYSTEM_USER;
 
 If **DbUser = `dbo`** and **RoleName is NULL**, that is normal on SuperMicro — you built/restored `ERP_1` as that login, so you already have full access. Roles are for non-owner accounts (`ERP_AppWrite`, etc.).
 
-On **Server26**, expect **`Server26\Admin`** in **`ERP_AppAdmin`** after running `02b` or `02c`.
+On **Server26**, expect **`Server26\Admin`** in **`ERP_AppAdmin`** after running `05` or `06`.
 
 Without Layer 1, VFP gets connection errors — no permission screen will help.
 
@@ -57,7 +68,7 @@ ERP naming (all in schema **`dbo`**, dot is part of the **table name**):
 | **`NR_*`** (e.g. `NR_Vendor`, `NR_Sales_Summary`) | No replication | **SELECT** |
 | **`NR_UserTrack`** | Audit / track messages | **SELECT** + **INSERT** (`TrackMess` in VFP; triggers add `ServerName`) |
 
-**Script:** `04_GrantArchiveAndNR_Permissions.sql` — run on **SuperMicro + Server26** after `01_CreateRoles.sql`. Re-run after adding new `AR.*` or `NR_*` tables.
+**Script:** `03_GrantArchiveAndNR_Permissions.sql` — run on **SuperMicro + Server26** after `02_CreateDB_Roles.sql`. Re-run after adding new `AR.*` or `NR_*` tables.
 
 **Why `04` if `01` already grants database-wide SELECT?**  
 `01` gives `ERP_AppRead` only **SELECT** at database scope. Archive **INSERT** from triggers and **`NR_UserTrack`** inserts require explicit **INSERT** on those objects for read-only role members. `04` applies object-level grants to all three app roles.
@@ -86,7 +97,7 @@ ORDER BY TableName, dp.name, p.permission_name;
 | **ERP_AppWrite** | `SELECT`, `INSERT`, `UPDATE`, `DELETE` |
 | **ERP_AppAdmin** | above + `EXECUTE` on procs/functions |
 
-Users get table access by **membership in a role** (`02b`, `02c`, `02d`), not by naming each table.
+Users get table access by **membership in a role** (`05`, `06`, `07`), not by naming each table.
 
 **New tables** created later in `ERP_1` inherit those database-level grants automatically.
 
@@ -141,11 +152,11 @@ SELECT * FROM fn_my_permissions(NULL, 'DATABASE');
 | `dbo.v_AppUserEffectivePermission` | Grants + legacy AppSetup (until fully migrated) |
 | `dbo.AppUsers` | Optional coarse role (`Admin`, `Sales`, …) — not wired to `HavePermission` yet |
 
-**Scripts (run on both servers, after `CreateAppUsers.sql`):**
+**Scripts (run on both servers, after `03_CreateAppUsers.sql`):**
 
-1. `MEM\SQL\Config\AppPermission_Schema.sql`
-2. `MEM\SQL\Config\05_Migrate_AppSetup_Permissions.sql` — copies existing YES rows into `AppUserGrant`
-3. `MEM\SQL\Security\03_SeedAppUsers.sql` — your Windows login as coarse Admin (optional)
+1. `MEM\SQL\Config\04_AppPermission_Schema.sql`
+2. `MEM\SQL\Config\06_Migrate_AppSetup_Permissions.sql` — copies existing YES rows into `AppUserGrant`
+3. `MEM\SQL\Security\08_SeedAppUsers.sql` — your Windows login as coarse Admin (optional)
 
 **Verify:**
 
@@ -161,7 +172,7 @@ SELECT * FROM dbo.AppUsers WHERE Active = 1;
 IF NOT EXISTS (SELECT 1 FROM dbo.AppSetup WHERE UN = 'talkt' AND ANS = 'Admin' AND PRP = 'YES')
     INSERT INTO dbo.AppSetup (UN, PRP, ANS) VALUES ('talkt', 'YES', 'Admin');
 -- SuperMicro: SYS(0) = 'SUPERMICRO # talkt' → UN is talkt (ALLTRIM after #)
--- Then re-run 05_Migrate or insert into AppUserGrant directly
+-- Then re-run 06_Migrate or insert into AppUserGrant directly
 ```
 
 Use the **display name** VFP sees after `#` in `SYS(0)` — same as `HavePermission` uses, not Windows login.
@@ -190,12 +201,17 @@ Coarse `AppUsers.AppRole` can later map to default permission bundles (e.g. Sale
 ## Order on a fresh ERP_1
 
 ```
-01_CreateRoles.sql
-04_GrantArchiveAndNR_Permissions.sql    (SuperMicro + Server26)
-02b_GrantCurrentUser_Admin.sql          (each admin, each server)
-CreateAppUsers.sql
-AppPermission_Schema.sql
-05_Migrate_AppSetup_Permissions.sql
-03_SeedAppUsers.sql                     (optional)
-CompanyProfile_Schema.sql               (if not in 01 build)
+Security\01_CreateRoles.sql
+Security\02_CreateDB_Roles.sql
+Security\03_GrantArchiveAndNR_Permissions.sql    (re-run after 02 or new AR./NR_* tables)
+Security\05_GrantCurrentUser_Admin.sql          (each admin, each server)
+Config\03_CreateAppUsers.sql
+Config\04_AppPermission_Schema.sql
+Config\05_AppSqlRole_Schema.sql
+Config\06_Migrate_AppSetup_Permissions.sql
+Security\08_SeedAppUsers.sql                     (optional)
+Config\01_CompanyProfile_Schema.sql              (if not in full build)
+Config\07_Seed_CompanyProfile.sql
 ```
+
+See **[../RUN-ORDER.md](../RUN-ORDER.md)** for the full table.

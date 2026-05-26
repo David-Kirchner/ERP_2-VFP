@@ -1,4 +1,4 @@
-/* Grant ERP_AppWrite to whoever runs this script (same as 02b but standard user role).
+/* Grant ERP_AppWrite to whoever runs this script (standard user role; admin use 05).
    Use when you are NOT dbo but need ERP access on this server.
    Run in SSMS on each instance while logged in as that Windows user. */
 

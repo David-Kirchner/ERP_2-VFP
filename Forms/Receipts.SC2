@@ -4134,9 +4134,9 @@ DEFINE CLASS receipts AS formset
 				cSQL = cSQL +",'' AS [Who_Add]"
 				cSQL = cSQL +",0 AS [Reconciled]"
 				cSQL = cSQL +",'' AS [Who_Rec]"
-				cSQL = cSQL +" FROM [HPAlloy_Archive].[dbo].[StockLst_Process_History] P"
-				cSQL = cSQL +" LEFT OUTER JOIN [HPAlloy_Archive].[dbo].[StockLst_Detail_History] D ON D.ID_Detail = P.ID_Detail"
-				cSQL = cSQL +" LEFT OUTER JOIN [HPAlloy_Archive].[dbo].[StockLst_Master_History] M ON M.ID = D.ID"
+				cSQL = cSQL +" FROM dbo.[Ar.StockLst_Process_History] P"
+				cSQL = cSQL +" LEFT OUTER JOIN dbo.[Ar.Stocklst_Detail_History] D ON D.ID_Detail = P.ID_Detail"
+				cSQL = cSQL +" LEFT OUTER JOIN dbo.[Ar.Stocklst_Master_History] M ON M.ID = D.ID"
 				cSQL = cSQL +" WHERE P.SOitem = dbo.ProperSO('"+cSOitem+"')"
 		
 				nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL, 'tmpSales_Stock')

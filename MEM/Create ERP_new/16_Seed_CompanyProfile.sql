@@ -1,4 +1,4 @@
-/* Seed dbo.CompanyProfile — run after CompanyProfile_Schema.sql on ERP_1 */
+/* Seed dbo.CompanyProfile — run after 01_CompanyProfile_Schema.sql on ERP_1 */
 USE [ERP_1];
 GO
 

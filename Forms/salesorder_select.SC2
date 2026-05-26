@@ -538,7 +538,7 @@ DEFINE CLASS frmsalesorder_select AS form
 		
 		nSalesNum = ChooseSales_No.Salesnum
 		
-		cSQL = "Select mess1, errordate, Machine FROM HPAlloyNR.dbo.UserTrack WHERE mess1 LIKE '%"+ ALLTRIM(STR(nSalesNum)) +"%' "
+		cSQL = "Select mess1, errordate, Machine FROM dbo.NR_UserTrack WHERE mess1 LIKE '%"+ ALLTRIM(STR(nSalesNum)) +"%' "
 		cSQL = cSQL + " AND mess1 NOT LIKE 'Quote was cloned to %'"
 		cSQL = cSQL + " ORDER BY ErrorDate DESC"
 		

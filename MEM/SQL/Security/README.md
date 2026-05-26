@@ -1,42 +1,56 @@
-# SQL Server security setup (ERP_1)
+﻿# SQL Server security setup (ERP_1)
+
+
 
 Apply on **SuperMicro** (production) and **Server26** (development). Windows Authentication only.
 
+
+
+See **[../RUN-ORDER.md](../RUN-ORDER.md)** for numbered script list.
+
+
+
 ## Steps
 
-1. Run `01_CreateRoles.sql` on database `ERP_1`.
-2. Run `04_GrantArchiveAndNR_Permissions.sql` — **AR.*** archive read/insert, **NR_*** read, **NR_UserTrack** insert for all app roles.
-3. Edit `02_GrantWindowsUser.sql` or use `02b` / `02c` / `02d`. See `README-Workgroup-Logins.md`.
-4. Run `MEM\SQL\Config\CreateAppUsers.sql`, then edit and run `03_SeedAppUsers.sql`.
-5. Keep fine-grained VFP permissions in `dbo.AppUserGrant` / legacy `dbo.AppSetup`. See **[README-Permissions.md](README-Permissions.md)**.
 
-## App permission scripts (Layer 2)
 
-Run on both servers after roles/grants:
+1. `01_CreateRoles.sql`
 
-1. `MEM\SQL\Config\AppPermission_Schema.sql`
-2. `MEM\SQL\Config\05_Migrate_AppSetup_Permissions.sql`
+2. `02_CreateDB_Roles.sql` — 36 area `ERP_*` roles
 
-## Verification checklist
+3. `03_GrantArchiveAndNR_Permissions.sql` — Ar_* / NR_* (re-run after `05_AppSqlRole_Schema.sql` or new tables)
 
-```sql
-SELECT SYSTEM_USER AS Me;
-SELECT TOP 1 * FROM dbo.CompanyProfile;
-SELECT TOP 1 * FROM dbo.AllQuotes;
-SELECT * FROM dbo.AppUsers WHERE Active = 1;
-```
+4. Login grants: `04_GrantWindowsUser.sql` (template) or `05` / `06` / `07` — see `README-Workgroup-Logins.md`
 
-From VFP (ERP_2):
+5. `Config\03_CreateAppUsers.sql`, then optional `08_SeedAppUsers.sql`
 
-- Confirm `_screen.Caption` shows profile name (e.g. `ERP [Development]`).
-- **Setup HPA** → Change server → pick Development vs Production.
-- **Set Server** → **Test SQL**.
-- **Maintenance → Company Profile** (requires `AppSetup` Admin = YES).
+6. `Config\05_AppSqlRole_Schema.sql` — SQL Database Roles maintenance screen
+
+7. Layer 2 app tasks: `Config\04_AppPermission_Schema.sql`, `Config\06_Migrate_AppSetup_Permissions.sql` — see **[README-Permissions.md](README-Permissions.md)**
+
+
+
+## VFP maintenance
+
+
+
+**SQL Database Roles:** `DO FORM Forms\AppSqlRole_Maint.scx`  
+
+Uses `AppSqlRole` / `AppSqlRoleGrant` + `AppUsers` (not AppSetup).
+
+
 
 ## Role mapping (guidance)
 
+
+
 | Role | Typical use |
+
 |------|-------------|
+
 | ERP_AppRead | Reporting, read-only workstations |
+
 | ERP_AppWrite | Standard shop-floor and office users |
+
 | ERP_AppAdmin | DBAs, developers, company-profile editors |
+

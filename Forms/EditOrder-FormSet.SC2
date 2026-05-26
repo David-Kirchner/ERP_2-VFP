@@ -14122,7 +14122,7 @@ DEFINE CLASS editorder AS formset
 						USE IN StkDetailCnt
 					ENDIF
 		
-					cSQL_Detail_DEL_cnt="SELECT COUNT(ID) AS counted FROM HPAlloy_Archive.dbo.StockLst_Detail_History WHERE ID = "+ALLTRIM(STR(nMaster_ID ))
+					cSQL_Detail_DEL_cnt="SELECT COUNT(ID) AS counted FROM dbo.[Ar.Stocklst_Detail_History] WHERE ID = "+ALLTRIM(STR(nMaster_ID ))
 					cSQL_Detail_DEL_cnt=cSQL_Detail_DEL_cnt+" AND [WHAT] <> 'ADD'"
 					SELECT 0
 					nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL_Detail_DEL_cnt, 'StkDetail_DELCnt')
@@ -14907,7 +14907,7 @@ DEFINE CLASS editorder AS formset
 					ENDIF
 				ELSE
 					*No BrokerLst_Master found to update- Check History
-					cSQL_Master_PO="SELECT COUNT(ID) AS counted FROM HPAlloy_Archive.dbo.BrokerLst_Master_History WHERE dbo.ProperPO(PO_Item) = dbo.ProperPO('"+cPoItem+"')"
+					cSQL_Master_PO="SELECT COUNT(ID) AS counted FROM dbo.[Ar.BrokerLst_Master_history] WHERE dbo.ProperPO(PO_Item) = dbo.ProperPO('"+cPoItem+"')"
 					cSQL_Master_PO=cSQL_Master_PO+" AND [WHAT] = 'DELETE'"  &&Due in
 		
 					SELECT 0
@@ -14999,7 +14999,7 @@ DEFINE CLASS editorder AS formset
 						USE IN StkDetailCnt
 					ENDIF
 		
-					cSQL_Detail_DEL_cnt="SELECT COUNT(ID) AS counted FROM HPAlloy_Archive.dbo.BrokerLst_Detail_History WHERE ID = "+ALLTRIM(STR(nBrokerMaster_ID))
+					cSQL_Detail_DEL_cnt="SELECT COUNT(ID) AS counted FROM dbo.[Ar.BrokerLst_Detail_History] WHERE ID = "+ALLTRIM(STR(nBrokerMaster_ID))
 					cSQL_Detail_DEL_cnt=cSQL_Detail_DEL_cnt+" AND [WHAT] <> 'ADD'"
 					SELECT 0
 					nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL_Detail_DEL_cnt, 'StkDetail_DELCnt')

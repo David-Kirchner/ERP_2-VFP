@@ -1,4 +1,4 @@
-/* =============================================================================
+﻿/* =============================================================================
    Company Profile + Multi-Site + Cert Signers + Cert PDF Retention + Admin Gate
    -----------------------------------------------------------------------------
    Target DB    : ERP_1
@@ -210,31 +210,25 @@ END
 GO
 
 /* =============================================================================
-   §5  dbo.HPAcertPdf  -- rendered cert PDF retention with input snapshot
         Captures: the bytes that went to the customer, plus a JSON snapshot of
         every CompanyProfile / CompanyPlant / CompanyCertSigner field used at
         render time. That snapshot is what makes future audits answerable.
    ============================================================================= */
 
-IF OBJECT_ID('dbo.HPAcertPdf', 'U') IS NULL
 BEGIN
-    CREATE TABLE dbo.HPAcertPdf (
         PdfId            BIGINT IDENTITY(1,1) NOT NULL
-            CONSTRAINT PK_HPAcertPdf PRIMARY KEY,
 
         -- Link back to the cert record. CLAUDE.md confirms dbo.HPAcert exists
         -- but does not document its PK column name. Add the FK manually after
         -- confirming. For now, store a loose key.
         HPAcertKey       NVARCHAR(50)   NOT NULL,        -- value of dbo.HPAcert.<FILL-IN PK col>
         PlantId          INT            NOT NULL
-            CONSTRAINT FK_HPAcertPdf_Plant REFERENCES dbo.CompanyPlant (PlantId),
         CertNumber       NVARCHAR(40)   NULL,            -- denormalized for fast lookup
         WorkOrderNumber  NVARCHAR(40)   NULL,            -- denormalized for fast lookup
         CustomerName     NVARCHAR(120)  NULL,            -- denormalized for fast lookup
 
         -- The actual bytes shipped --------------------------------------
         PdfBlob          VARBINARY(MAX) NOT NULL,
-        PdfMime          NVARCHAR(40)   NOT NULL CONSTRAINT DF_HPAcertPdf_Mime DEFAULT 'application/pdf',
         PdfSizeBytes     INT            NOT NULL,
         PdfSha256        BINARY(32)     NOT NULL,        -- integrity check
 
@@ -246,26 +240,16 @@ BEGIN
         RenderEngineVersion  NVARCHAR(40)  NULL,
 
         -- Audit
-        RenderedUtc      DATETIME2(0)   NOT NULL CONSTRAINT DF_HPAcertPdf_Rendered DEFAULT SYSUTCDATETIME(),
-        RenderedBy       NVARCHAR(80)   NOT NULL CONSTRAINT DF_HPAcertPdf_RenderBy DEFAULT SUSER_SNAME(),
         ReprintOfPdfId   BIGINT         NULL
-            CONSTRAINT FK_HPAcertPdf_Reprint REFERENCES dbo.HPAcertPdf (PdfId)
     );
 
-    CREATE INDEX IX_HPAcertPdf_CertKey   ON dbo.HPAcertPdf (HPAcertKey);
-    CREATE INDEX IX_HPAcertPdf_CertNo    ON dbo.HPAcertPdf (CertNumber)      WHERE CertNumber IS NOT NULL;
-    CREATE INDEX IX_HPAcertPdf_WO        ON dbo.HPAcertPdf (WorkOrderNumber) WHERE WorkOrderNumber IS NOT NULL;
-    CREATE INDEX IX_HPAcertPdf_Rendered  ON dbo.HPAcertPdf (RenderedUtc DESC);
 
-    PRINT 'Created dbo.HPAcertPdf';
 END
 GO
 
 /* -----------------------------------------------------------------------------
    §5.a  Once you confirm dbo.HPAcert's PK column name, wire up the FK:
 
-   ALTER TABLE dbo.HPAcertPdf
-     ADD CONSTRAINT FK_HPAcertPdf_HPAcert
          FOREIGN KEY (HPAcertKey)
          REFERENCES dbo.HPAcert (<FILL-IN PK col>);
 
@@ -469,7 +453,6 @@ SELECT * FROM ranked WHERE rn = 1;
 GO
 
 /* =============================================================================
-   §9  Helper proc — assemble the full snapshot JSON for HPAcertPdf.
         Call this from the report renderer right before writing the row.
    ============================================================================= */
 
@@ -510,7 +493,6 @@ GO
    -- A. Objects present?
    SELECT name, type_desc FROM sys.objects
    WHERE name IN ('CompanyProfile','CompanyPlant','CompanyCertSigner',
-                  'HPAcertPdf','AdminUser','CompanyAuditLog',
                   'v_Company_ForCert','v_CertSigners_Active',
                   'usp_BuildCertSnapshot','fn_IsAdmin')
    ORDER BY type_desc, name;

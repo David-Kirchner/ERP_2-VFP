@@ -1,4 +1,4 @@
---** 04 Create Views
+﻿--** 04 Create Views
 USE [ERP_1]
 
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[vMFG_Log]'))
@@ -4192,7 +4192,7 @@ UNION
 SELECT        TOP (100) PERCENT LEFT(Who, 20) AS [Who], [What], MH.[When] AS [MWhen], alloy, form, cc, size, cond, mweight, specs, heat, lot, Paid
 , po_item, poduedate, mill, stkdate, history, num, POStatus, BrandName, FROM_ID, id, ID_History, [Melt], 
                          [mS_QTY], [WO_Detail], [ProjID]
-FROM			dbo.[Ar.BrokerLst_Master_history] MH WITH (NOLOCK)
+FROM			dbo.[Ar_BrokerLst_Master_history] MH WITH (NOLOCK)
 ORDER BY id, alloy, form, cc, size, heat, What
 ' 
 GO
@@ -4210,7 +4210,7 @@ FROM            dbo.WIPLst_Master WITH (NOLOCK)
 UNION
 SELECT        TOP (100) PERCENT LEFT(Who, 20) AS [Who], [What],MH. [When] AS [MWhen], alloy, form, cc, size, cond, mweight, specs, heat, lot, Paid, po_item, poduedate, mill, stkdate, history, num, POStatus, BrandName, FROM_ID, id, ID_History, [Melt], 
                          [mS_QTY], [WO_Detail], [ProjID], MillTrace
-FROM            dbo.[Ar.WIPLst_Master_History] MH WITH (NOLOCK)
+FROM            dbo.[Ar_WIPLst_Master_History] MH WITH (NOLOCK)
 ORDER BY id, alloy, form, cc, size, heat, What
 ' 
 GO
@@ -4232,7 +4232,7 @@ FROM            dbo.stocklst_master M
 UNION
 SELECT        TOP (100) PERCENT LEFT(MH.Who, 20) AS [Who], MH.[What] AS [What], MH.[When] AS [MWhen], MH.alloy, MH.form, MH.cc, MH.cl, MH.size, MH.cond, MH.mweight, MH.specs, MH.heat, MH.lot, MH.Paid, MH.po_item, MH.poduedate, 
                          MH.mill, MH.stkdate, MH.history, MH.num, MH.POStatus, MH.BrandName, MH.FROM_ID, MH.id, MH.ID_History, MH.[Melt], MH.[mS_QTY], MH.[WO_Detail], MH.[ProjID], MH.MillTrace
-FROM            dbo.[Ar.Stocklst_Master_History] MH
+FROM            dbo.[Ar_Stocklst_Master_History] MH
 ORDER BY id, alloy, form, cc, cl, size, heat, What
 ' 
 GO
@@ -4250,7 +4250,7 @@ FROM            dbo.Stocklst_Detail D
 UNION
 SELECT        TOP (100) PERCENT LEFT(DH.Who, 20) AS Who, DH.what, DH.[when], DH.[size_h], DH.[size_l], DH.[pc], DH.[dim1], DH.[dim2], DH.[dim3], DH.[length], DH.[weight], DH.[costvalue], DH.[descript], DH.[location], DH.[floorstatus]
 , DH.[class], DH.[unit], DH.[RandLen], DH.[InvCheck], DH.[id], DH.[id_detail], DH.[ReceivingID]
-FROM            dbo.[Ar.Stocklst_Detail_History] DH
+FROM            dbo.[Ar_Stocklst_Detail_History] DH
 ORDER BY ID, ID_Detail, What
 ' 
 GO
@@ -4277,8 +4277,8 @@ SELECT        TOP (100) PERCENT LEFT(MH.Who, 20) AS [MWho], MH.[What] AS MWhat, 
                          MH.poduedate, MH.mill, MH.stkdate, MH.history, MH.num, MH.POStatus, MH.BrandName, MH.FROM_ID, MH.id, MH.ID_History, MH.[Melt], MH.[mS_QTY], MH.[WO_Detail], MH.[ProjID], MH.MillTrace, LEFT(DH.Who, 20) 
                          AS [DWho], DH.what AS DWhat, DH.[when] AS Dwhen, DH.[size_h], DH.[size_l], DH.[pc], DH.[dim1], DH.[dim2], DH.[dim3], DH.[length], DH.[weight], DH.[costvalue], DH.[descript], DH.[location], DH.[floorstatus], DH.[class], 
                          DH.[unit], DH.[RandLen], DH.[InvCheck], DH.[id_detail], DH.[ReceivingID]
-FROM            dbo.[Ar.Stocklst_Master_History] MH WITH (NOLOCK) INNER JOIN
-                         dbo.[Ar.Stocklst_Detail_History] DH WITH (NOLOCK) ON MH.ID = DH.ID
+FROM            dbo.[Ar_Stocklst_Master_History] MH WITH (NOLOCK) INNER JOIN
+                         dbo.[Ar_Stocklst_Detail_History] DH WITH (NOLOCK) ON MH.ID = DH.ID
 ' 
 GO
 

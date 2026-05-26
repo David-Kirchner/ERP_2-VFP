@@ -49,9 +49,9 @@ IF NOT FILE(lcFoxBin2Prg)
 ENDIF
 
 IF FILE(lcPjx)
-	DO (lcFoxBin2Prg) WITH lcPjx, "*"
+*	DO (lcFoxBin2Prg) WITH lcPjx, "*"
 ELSE
-	DO (lcFoxBin2Prg) WITH lcProjectPath, "BIN2PRG"
+*	DO (lcFoxBin2Prg) WITH lcProjectPath, "BIN2PRG"
 ENDIF
 
 lcErrLog = lcProjectPath + "tools\FoxBin2Prg_Error.LOG"
@@ -65,7 +65,7 @@ ENDIF
 *--- 2. git add
 ? "2. git add . ..."
 *GitCommit_RunCmd(lcProjectPath, "git add .")
-RUN /N cmd /k "git add ."
+RUN /N cmd /c "git add ."
 ? "   git add finished."
 ?
 
@@ -75,14 +75,15 @@ STRTOFILE(lcFullMessage, lcMsgFile, 0)   && 0 = overwrite
 *GitCommit_RunCmd(lcProjectPath, ;
 *	"git commit -F tools\_gitcommit_msg.txt && del tools\_gitcommit_msg.txt")
 	
-RUN /N cmd /k "git commit -F tools\_gitcommit_msg.txt && del tools\_gitcommit_msg.txt"
+RUN /N cmd /c "git commit -F tools\_gitcommit_msg.txt && del tools\_gitcommit_msg.txt"
 
 ? "   git commit started (/k)."
 ?
 
 IF llPushAfterCommit
 	? "4. git push ..."
-	GitCommit_RunCmd(lcProjectPath, "git push -u origin main")
+	RUN /N cmd /k "git push -u origin main")
+*	GitCommit_RunCmd(lcProjectPath, "git push -u origin main")
 	? "   git push started (/k)."
 ENDIF
 

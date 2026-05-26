@@ -4,7 +4,7 @@ GO
 
 IF OBJECT_ID('dbo.AppUsers', 'U') IS NULL
 BEGIN
-    RAISERROR('Run MEM\SQL\Config\CreateAppUsers.sql first.', 16, 1);
+    RAISERROR('Run MEM\SQL\Config\03_CreateAppUsers.sql first.', 16, 1);
     RETURN;
 END
 GO

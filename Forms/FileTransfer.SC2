@@ -493,7 +493,6 @@ DEFINE CLASS frmfiletransfer AS form
 		*!*	        dbStream.Close();
 		*!*	        sourceFile.Close();
 		*!*	        transaction.Commit();
-		ENDPROC
 	ENDPROC
 
 	PROCEDURE cmdGetFile.Click

@@ -9765,7 +9765,7 @@ DEFINE CLASS frmquotes AS formset
 		AutoSize = .F., ;
 		BackColor = 192,192,192, ;
 		BackStyle = 1, ;
-		Caption = "®", ;
+		Caption = "ï¿½", ;
 		Centered = .F., ;
 		ControlSource = "quotes.TN", ;
 		FontBold = .T., ;
@@ -9777,7 +9777,7 @@ DEFINE CLASS frmquotes AS formset
 		Style = 1, ;
 		TabIndex = 46, ;
 		TabStop = .F., ;
-		ToolTipText = "Use the Registered TradeName ® -Blue ring when True", ;
+		ToolTipText = "Use the Registered TradeName ï¿½ -Blue ring when True", ;
 		Top = 97, ;
 		Width = 20
 		*< END OBJECT: BaseClass="checkbox" />
@@ -47237,7 +47237,7 @@ DEFINE CLASS frmquotes AS formset
 		ENDIF
 		
 		cSQL = "SELECT TOP 1 dateEntered "
-		cSQL = cSQL + " FROM [HPAlloyNR].[dbo].[EmailTracker] WITH(NOLOCK) "
+		cSQL = cSQL + " FROM dbo.NR_EmailTracker WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE QuoteID = "+STR(Quotes.ID)
 		cSQL = cSQL + " AND EmailKey = 'Quote'"
 		cSQL = cSQL + " AND ipAddress NOT LIKE '192.168.%'"

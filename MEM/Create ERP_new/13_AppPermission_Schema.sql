@@ -1,5 +1,5 @@
 /* ERP_1 — application permission catalog + user grants (future App Permission screen)
-   Run on SuperMicro and Server26 after CreateAppUsers.sql / AppSetup exists.
+   Run on SuperMicro and Server26 after 03_CreateAppUsers.sql / AppSetup exists.
    Idempotent. Does NOT drop dbo.AppSetup — legacy rows remain until migrated. */
 
 USE [ERP_1];
@@ -97,5 +97,5 @@ AS
       );
 GO
 
-PRINT 'AppPermission schema ready. Run 05_Migrate_AppSetup_Permissions.sql to copy legacy rows into AppUserGrant.';
+PRINT 'AppPermission schema ready. Run 06_Migrate_AppSetup_Permissions.sql to copy legacy rows into AppUserGrant.';
 GO

@@ -1,12 +1,12 @@
 /* One-time (idempotent): copy dbo.AppSetup YES rows into dbo.AppUserGrant
-   Run after AppPermission_Schema.sql on each ERP_1 instance. */
+   Run after 04_AppPermission_Schema.sql on each ERP_1 instance. */
 
 USE [ERP_1];
 GO
 
 IF OBJECT_ID('dbo.AppUserGrant', 'U') IS NULL OR OBJECT_ID('dbo.AppSetup', 'U') IS NULL
 BEGIN
-    RAISERROR('Run AppPermission_Schema.sql and ensure AppSetup exists.', 16, 1);
+    RAISERROR('Run 04_AppPermission_Schema.sql and ensure AppSetup exists.', 16, 1);
     RETURN;
 END
 GO

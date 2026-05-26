@@ -1,4 +1,4 @@
---02 Create from HPAlloy_Archive to AR
+﻿--02 Create from HPAlloy_Archive to AR
 USE [ERP_1]
 
 
@@ -7,14 +7,14 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UW
 EXEC dbo.sp_executesql N'CREATE DEFAULT [dbo].[UW_ZeroDefault] AS 0'
 GO
 
-/****** Object:  Table [dbo].[Ar.AlloySurcharge_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_AlloySurcharge_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.AlloySurcharge_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_AlloySurcharge_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.AlloySurcharge_History](
+CREATE TABLE [dbo].[Ar_AlloySurcharge_History](
 	[Ni] [decimal](9, 6) NOT NULL,
 	[Co] [decimal](9, 6) NOT NULL,
 	[Cr] [decimal](9, 6) NOT NULL,
@@ -29,14 +29,14 @@ CREATE TABLE [dbo].[Ar.AlloySurcharge_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.AllQuotes_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_AllQuotes_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.AllQuotes_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_AllQuotes_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.AllQuotes_History](
+CREATE TABLE [dbo].[Ar_AllQuotes_History](
 	[Who] [varchar](255) NOT NULL,
 	[What] [char](10) NOT NULL,
 	[When] [datetime] NOT NULL,
@@ -131,14 +131,14 @@ CREATE TABLE [dbo].[Ar.AllQuotes_History](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.AllQuotes_Old]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_AllQuotes_Old]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.AllQuotes_Old]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_AllQuotes_Old]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.AllQuotes_Old](
+CREATE TABLE [dbo].[Ar_AllQuotes_Old](
 	[Company] [char](30) NULL,
 	[name] [char](25) NULL,
 	[phone] [char](10) NULL,
@@ -217,14 +217,14 @@ CREATE TABLE [dbo].[Ar.AllQuotes_Old](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.BrokerLst_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_BrokerLst_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Detail_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Detail_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.BrokerLst_Detail_History](
+CREATE TABLE [dbo].[Ar_BrokerLst_Detail_History](
 	[ID_Detail_Process] [int] NULL,
 	[Who] [varchar](255) NOT NULL,
 	[What] [char](10) NULL,
@@ -267,14 +267,14 @@ CREATE TABLE [dbo].[Ar.BrokerLst_Detail_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.BrokerLst_Master_history]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_BrokerLst_Master_history]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Master_history]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Master_history]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.BrokerLst_Master_history](
+CREATE TABLE [dbo].[Ar_BrokerLst_Master_history](
 	[Who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -311,14 +311,14 @@ GO
 
 
 
-/****** Object:  Table [dbo].[Ar.BrokerLst_Process_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_BrokerLst_Process_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Process_Detail_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Process_Detail_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.BrokerLst_Process_Detail_History](
+CREATE TABLE [dbo].[Ar_BrokerLst_Process_Detail_History](
 	[Who] [varchar](255) NOT NULL,
 	[What] [char](10) NULL,
 	[When] [datetime] NULL,
@@ -330,14 +330,14 @@ CREATE TABLE [dbo].[Ar.BrokerLst_Process_Detail_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.BrokerLst_Process_GS_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_BrokerLst_Process_GS_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Process_GS_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Process_GS_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.BrokerLst_Process_GS_History](
+CREATE TABLE [dbo].[Ar_BrokerLst_Process_GS_History](
 	[who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -358,14 +358,14 @@ CREATE TABLE [dbo].[Ar.BrokerLst_Process_GS_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.BrokerLst_Process_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_BrokerLst_Process_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Process_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Process_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.BrokerLst_Process_History](
+CREATE TABLE [dbo].[Ar_BrokerLst_Process_History](
 	[who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -407,14 +407,14 @@ CREATE TABLE [dbo].[Ar.BrokerLst_Process_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.Cert_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_Cert_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Cert_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Cert_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.Cert_History](
+CREATE TABLE [dbo].[Ar_Cert_History](
 	[Who] [varchar](255) NULL,
 	[What] [char](10) NULL,
 	[When] [datetime] NULL,
@@ -556,14 +556,14 @@ CREATE TABLE [dbo].[Ar.Cert_History](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.GFMlog_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_GFMlog_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.GFMlog_hist]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_GFMlog_hist]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.GFMlog_hist](
+CREATE TABLE [dbo].[Ar_GFMlog_hist](
 	[AlloyName] [char](12) NULL,
 	[Heat] [char](50) NULL,
 	[Lot] [int] NOT NULL,
@@ -667,14 +667,14 @@ CREATE TABLE [dbo].[Ar.GFMlog_hist](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.LakeErie_log_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_LakeErie_log_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.LakeErie_log_hist]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_LakeErie_log_hist]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.LakeErie_log_hist](
+CREATE TABLE [dbo].[Ar_LakeErie_log_hist](
 	[alloyname] [char](12) NULL,
 	[heat] [char](50) NULL,
 	[lot] [int] NOT NULL,
@@ -743,14 +743,14 @@ CREATE TABLE [dbo].[Ar.LakeErie_log_hist](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.PackingSlip]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_PackingSlip]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.PackingSlip]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_PackingSlip]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.PackingSlip](
+CREATE TABLE [dbo].[Ar_PackingSlip](
 	[WHO2] [varchar](255) NULL,
 	[What] [varchar](255) NULL,
 	[When] [varchar](255) NULL,
@@ -780,14 +780,14 @@ CREATE TABLE [dbo].[Ar.PackingSlip](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.PackingSlip_No]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_PackingSlip_No]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.PackingSlip_No]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_PackingSlip_No]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.PackingSlip_No](
+CREATE TABLE [dbo].[Ar_PackingSlip_No](
 	[Who2] [varchar](255) NULL,
 	[what] [varchar](255) NULL,
 	[When] [datetime] NULL,
@@ -819,14 +819,14 @@ CREATE TABLE [dbo].[Ar.PackingSlip_No](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.PriceTable_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_PriceTable_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.PriceTable_hist]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_PriceTable_hist]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.PriceTable_hist](
+CREATE TABLE [dbo].[Ar_PriceTable_hist](
 	[pt_id] [bigint] NULL,
 	[alloy] [char](12) NULL,
 	[form] [char](2) NULL,
@@ -915,14 +915,14 @@ CREATE TABLE [dbo].[Ar.PriceTable_hist](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.PurchaseOrder_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_PurchaseOrder_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.PurchaseOrder_hist]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_PurchaseOrder_hist]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.PurchaseOrder_hist](
+CREATE TABLE [dbo].[Ar_PurchaseOrder_hist](
 	[poitem] [char](12) NOT NULL,
 	[hpapo] [int] NOT NULL,
 	[itempo] [decimal](2, 0) NOT NULL,
@@ -1014,14 +1014,14 @@ CREATE TABLE [dbo].[Ar.PurchaseOrder_hist](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.Receiving_Hist]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_Receiving_Hist]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Receiving_Hist]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Receiving_Hist]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.Receiving_Hist](
+CREATE TABLE [dbo].[Ar_Receiving_Hist](
 	[ID] [int] NOT NULL,
 	[Received] [smalldatetime] NOT NULL,
 	[POitem] [char](12) NULL,
@@ -1078,14 +1078,14 @@ CREATE TABLE [dbo].[Ar.Receiving_Hist](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.Roll_log_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_Roll_log_hist]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Roll_log_hist]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Roll_log_hist]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.Roll_log_hist](
+CREATE TABLE [dbo].[Ar_Roll_log_hist](
 	[alloyname] [char](12) NULL,
 	[heat] [char](50) NULL,
 	[lot] [int] NOT NULL,
@@ -1156,14 +1156,14 @@ CREATE TABLE [dbo].[Ar.Roll_log_hist](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.Sales_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_Sales_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Sales_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Sales_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.Sales_History](
+CREATE TABLE [dbo].[Ar_Sales_History](
 	[Who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -1245,14 +1245,14 @@ CREATE TABLE [dbo].[Ar.Sales_History](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.Sales_No_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_Sales_No_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Sales_No_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Sales_No_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.Sales_No_History](
+CREATE TABLE [dbo].[Ar_Sales_No_History](
 	[Who] [varchar](255) NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -1292,14 +1292,14 @@ CREATE TABLE [dbo].[Ar.Sales_No_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.SalesP_Customer_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_SalesP_Customer_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.SalesP_Customer_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_SalesP_Customer_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.SalesP_Customer_History](
+CREATE TABLE [dbo].[Ar_SalesP_Customer_History](
 	[ID] [int] NOT NULL,
 	[SoldCode] [int] NULL,
 	[SalesP] [char](1) NOT NULL,
@@ -1312,14 +1312,14 @@ CREATE TABLE [dbo].[Ar.SalesP_Customer_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.ShipAddr_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_ShipAddr_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.ShipAddr_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_ShipAddr_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.ShipAddr_History](
+CREATE TABLE [dbo].[Ar_ShipAddr_History](
 	[shipcode] [decimal](10, 0) NOT NULL,
 	[company] [varchar](100) NULL,
 	[addr1] [varchar](100) NULL,
@@ -1349,14 +1349,14 @@ CREATE TABLE [dbo].[Ar.ShipAddr_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.Stocklst_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_Stocklst_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Stocklst_Detail_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Stocklst_Detail_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.Stocklst_Detail_History](
+CREATE TABLE [dbo].[Ar_Stocklst_Detail_History](
 	[ID_Detail_Process] [int] NULL,
 	[Who] [varchar](255) NOT NULL,
 	[What] [char](10) NULL,
@@ -1399,14 +1399,14 @@ CREATE TABLE [dbo].[Ar.Stocklst_Detail_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.Stocklst_Master_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_Stocklst_Master_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Stocklst_Master_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Stocklst_Master_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.Stocklst_Master_History](
+CREATE TABLE [dbo].[Ar_Stocklst_Master_History](
 	[Who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -1440,14 +1440,14 @@ CREATE TABLE [dbo].[Ar.Stocklst_Master_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.StockLst_Process_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_StockLst_Process_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_Detail_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_Detail_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.StockLst_Process_Detail_History](
+CREATE TABLE [dbo].[Ar_StockLst_Process_Detail_History](
 	[Who] [varchar](255) NOT NULL,
 	[What] [char](10) NULL,
 	[When] [datetime] NOT NULL,
@@ -1459,14 +1459,14 @@ CREATE TABLE [dbo].[Ar.StockLst_Process_Detail_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.StockLst_Process_GS_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_StockLst_Process_GS_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_GS_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_GS_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.StockLst_Process_GS_History](
+CREATE TABLE [dbo].[Ar_StockLst_Process_GS_History](
 	[who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -1487,14 +1487,14 @@ CREATE TABLE [dbo].[Ar.StockLst_Process_GS_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.StockLst_Process_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_StockLst_Process_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.StockLst_Process_History](
+CREATE TABLE [dbo].[Ar_StockLst_Process_History](
 	[who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -1536,14 +1536,14 @@ CREATE TABLE [dbo].[Ar.StockLst_Process_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.TimeTable_Hist]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_TimeTable_Hist]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.TimeTable_Hist]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_TimeTable_Hist]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.TimeTable_Hist](
+CREATE TABLE [dbo].[Ar_TimeTable_Hist](
 	[IDHist] [bigint] NOT NULL,
 	[ID] [bigint] NOT NULL,
 	[EmployeeID] [nchar](10) NOT NULL,
@@ -1559,14 +1559,14 @@ CREATE TABLE [dbo].[Ar.TimeTable_Hist](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.UserTrack_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_UserTrack_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.UserTrack_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_UserTrack_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.UserTrack_History](
+CREATE TABLE [dbo].[Ar_UserTrack_History](
 	[mess1] [varchar](254) NULL,
 	[cprogram] [varchar](60) NULL,
 	[errordate] [datetime] NOT NULL,
@@ -1576,14 +1576,14 @@ CREATE TABLE [dbo].[Ar.UserTrack_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.UserTrack_Old]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_UserTrack_Old]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.UserTrack_Old]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_UserTrack_Old]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.UserTrack_Old](
+CREATE TABLE [dbo].[Ar_UserTrack_Old](
 	[mess1] [varchar](254) NULL,
 	[cprogram] [varchar](60) NULL,
 	[errordate] [datetime] NOT NULL,
@@ -1592,14 +1592,14 @@ CREATE TABLE [dbo].[Ar.UserTrack_Old](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.WIPlst_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_WIPlst_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.WIPlst_Detail_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_WIPlst_Detail_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.WIPlst_Detail_History](
+CREATE TABLE [dbo].[Ar_WIPlst_Detail_History](
 	[ID_Detail_Process] [int] NULL,
 	[Who] [varchar](255) NOT NULL,
 	[What] [char](10) NULL,
@@ -1644,14 +1644,14 @@ CREATE TABLE [dbo].[Ar.WIPlst_Detail_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.WIPLst_Master_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_WIPLst_Master_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.WIPLst_Master_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_WIPLst_Master_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.WIPLst_Master_History](
+CREATE TABLE [dbo].[Ar_WIPLst_Master_History](
 	[Who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -1685,14 +1685,14 @@ CREATE TABLE [dbo].[Ar.WIPLst_Master_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.WIPLst_Process_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_WIPLst_Process_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.WIPLst_Process_Detail_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_WIPLst_Process_Detail_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.WIPLst_Process_Detail_History](
+CREATE TABLE [dbo].[Ar_WIPLst_Process_Detail_History](
 	[Who] [varchar](255) NOT NULL,
 	[What] [char](10) NULL,
 	[When] [datetime] NOT NULL,
@@ -1704,14 +1704,14 @@ CREATE TABLE [dbo].[Ar.WIPLst_Process_Detail_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.WIPLst_Process_GS_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_WIPLst_Process_GS_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.WIPLst_Process_GS_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_WIPLst_Process_GS_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.WIPLst_Process_GS_History](
+CREATE TABLE [dbo].[Ar_WIPLst_Process_GS_History](
 	[who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -1732,14 +1732,14 @@ CREATE TABLE [dbo].[Ar.WIPLst_Process_GS_History](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [dbo].[Ar.WIPLst_Process_History]    Script Date: 12/26/2025 5:28:42 PM ******/
+/****** Object:  Table [dbo].[Ar_WIPLst_Process_History]    Script Date: 12/26/2025 5:28:42 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar.WIPLst_Process_History]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_WIPLst_Process_History]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[Ar.WIPLst_Process_History](
+CREATE TABLE [dbo].[Ar_WIPLst_Process_History](
 	[who] [varchar](255) NOT NULL,
 	[what] [char](10) NULL,
 	[when] [datetime] NOT NULL,
@@ -1784,15 +1784,15 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_AllQuotes_History-NoNoiseName]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.AllQuotes_History]') AND name = N'IX_Ar_AllQuotes_History-NoNoiseName')
-CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_History-NoNoiseName] ON [dbo].[Ar.AllQuotes_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_AllQuotes_History]') AND name = N'IX_Ar_AllQuotes_History-NoNoiseName')
+CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_History-NoNoiseName] ON [dbo].[Ar_AllQuotes_History]
 (
 	[NoNoiseName] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_AllQuotes_History-SalesNum]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.AllQuotes_History]') AND name = N'IX_Ar_AllQuotes_History-SalesNum')
-CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_History-SalesNum] ON [dbo].[Ar.AllQuotes_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_AllQuotes_History]') AND name = N'IX_Ar_AllQuotes_History-SalesNum')
+CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_History-SalesNum] ON [dbo].[Ar_AllQuotes_History]
 (
 	[SalesNum] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1800,8 +1800,8 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_AllQuotes_History-SOitem]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.AllQuotes_History]') AND name = N'IX_Ar_AllQuotes_History-SOitem')
-CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_History-SOitem] ON [dbo].[Ar.AllQuotes_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_AllQuotes_History]') AND name = N'IX_Ar_AllQuotes_History-SOitem')
+CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_History-SOitem] ON [dbo].[Ar_AllQuotes_History]
 (
 	[SOitem] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1809,43 +1809,43 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_AllQuotes_Old-NoNoiseName]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.AllQuotes_Old]') AND name = N'IX_Ar_AllQuotes_Old-NoNoiseName')
-CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_Old-NoNoiseName] ON [dbo].[Ar.AllQuotes_Old]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_AllQuotes_Old]') AND name = N'IX_Ar_AllQuotes_Old-NoNoiseName')
+CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_Old-NoNoiseName] ON [dbo].[Ar_AllQuotes_Old]
 (
 	[NoNoiseName] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_AllQuotes_Old-SalesNum]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.AllQuotes_Old]') AND name = N'IX_Ar_AllQuotes_Old-SalesNum')
-CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_Old-SalesNum] ON [dbo].[Ar.AllQuotes_Old]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_AllQuotes_Old]') AND name = N'IX_Ar_AllQuotes_Old-SalesNum')
+CREATE NONCLUSTERED INDEX [IX_Ar_AllQuotes_Old-SalesNum] ON [dbo].[Ar_AllQuotes_Old]
 (
 	[SalesNum] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_BrokerLst_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Detail_History]') AND name = N'IX_Ar_BrokerLst_Detail_History')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Detail_History] ON [dbo].[Ar.BrokerLst_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Detail_History]') AND name = N'IX_Ar_BrokerLst_Detail_History')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Detail_History] ON [dbo].[Ar_BrokerLst_Detail_History]
 (
 	[ID_Detail_Process] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_BrokerLst_Detail_History-ID_Detail]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Detail_History]') AND name = N'IX_Ar_BrokerLst_Detail_History-ID_Detail')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Detail_History-ID_Detail] ON [dbo].[Ar.BrokerLst_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Detail_History]') AND name = N'IX_Ar_BrokerLst_Detail_History-ID_Detail')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Detail_History-ID_Detail] ON [dbo].[Ar_BrokerLst_Detail_History]
 (
 	[id_detail] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_BrokerLst_Detail_History-ID_Detail_Process]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Detail_History]') AND name = N'IX_Ar_BrokerLst_Detail_History-ID_Detail_Process')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Detail_History-ID_Detail_Process] ON [dbo].[Ar.BrokerLst_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Detail_History]') AND name = N'IX_Ar_BrokerLst_Detail_History-ID_Detail_Process')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Detail_History-ID_Detail_Process] ON [dbo].[Ar_BrokerLst_Detail_History]
 (
 	[ID_Detail_Process] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_BrokerLst_Master_history-ID]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Master_history]') AND name = N'IX_Ar_BrokerLst_Master_history-ID')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Master_history-ID] ON [dbo].[Ar.BrokerLst_Master_history]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Master_history]') AND name = N'IX_Ar_BrokerLst_Master_history-ID')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Master_history-ID] ON [dbo].[Ar_BrokerLst_Master_history]
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1853,29 +1853,29 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_BrokerLst_Master_history-PO_Item]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Master_history]') AND name = N'IX_Ar_BrokerLst_Master_history-PO_Item')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Master_history-PO_Item] ON [dbo].[Ar.BrokerLst_Master_history]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Master_history]') AND name = N'IX_Ar_BrokerLst_Master_history-PO_Item')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Master_history-PO_Item] ON [dbo].[Ar_BrokerLst_Master_history]
 (
 	[po_item] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_BrokerLst_Process_Detail_History-ID_Detail]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Process_Detail_History]') AND name = N'IX_Ar_BrokerLst_Process_Detail_History-ID_Detail')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_Detail_History-ID_Detail] ON [dbo].[Ar.BrokerLst_Process_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Process_Detail_History]') AND name = N'IX_Ar_BrokerLst_Process_Detail_History-ID_Detail')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_Detail_History-ID_Detail] ON [dbo].[Ar_BrokerLst_Process_Detail_History]
 (
 	[ID_Detail] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_BrokerLst_Process_Detail_History-ID_Detail_Process]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Process_Detail_History]') AND name = N'IX_Ar_BrokerLst_Process_Detail_History-ID_Detail_Process')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_Detail_History-ID_Detail_Process] ON [dbo].[Ar.BrokerLst_Process_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Process_Detail_History]') AND name = N'IX_Ar_BrokerLst_Process_Detail_History-ID_Detail_Process')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_Detail_History-ID_Detail_Process] ON [dbo].[Ar_BrokerLst_Process_Detail_History]
 (
 	[ID_Detail_Process] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_BrokerLst_Process_History-ID_Detail]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Process_History]') AND name = N'IX_Ar_BrokerLst_Process_History-ID_Detail')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_History-ID_Detail] ON [dbo].[Ar.BrokerLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Process_History]') AND name = N'IX_Ar_BrokerLst_Process_History-ID_Detail')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_History-ID_Detail] ON [dbo].[Ar_BrokerLst_Process_History]
 (
 	[ID_Detail] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1883,8 +1883,8 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_BrokerLst_Process_History-PO_item]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Process_History]') AND name = N'IX_Ar_BrokerLst_Process_History-PO_item')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_History-PO_item] ON [dbo].[Ar.BrokerLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Process_History]') AND name = N'IX_Ar_BrokerLst_Process_History-PO_item')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_History-PO_item] ON [dbo].[Ar_BrokerLst_Process_History]
 (
 	[PO_item] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1892,15 +1892,15 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_BrokerLst_Process_History-SOitem]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.BrokerLst_Process_History]') AND name = N'IX_Ar_BrokerLst_Process_History-SOitem')
-CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_History-SOitem] ON [dbo].[Ar.BrokerLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_BrokerLst_Process_History]') AND name = N'IX_Ar_BrokerLst_Process_History-SOitem')
+CREATE NONCLUSTERED INDEX [IX_Ar_BrokerLst_Process_History-SOitem] ON [dbo].[Ar_BrokerLst_Process_History]
 (
 	[SOitem] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_PurchaseOrder_hist-HPAPO]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.PurchaseOrder_hist]') AND name = N'IX_Ar_PurchaseOrder_hist-HPAPO')
-CREATE NONCLUSTERED INDEX [IX_Ar_PurchaseOrder_hist-HPAPO] ON [dbo].[Ar.PurchaseOrder_hist]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_PurchaseOrder_hist]') AND name = N'IX_Ar_PurchaseOrder_hist-HPAPO')
+CREATE NONCLUSTERED INDEX [IX_Ar_PurchaseOrder_hist-HPAPO] ON [dbo].[Ar_PurchaseOrder_hist]
 (
 	[hpapo] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1908,22 +1908,22 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_PurchaseOrder_hist-POitem]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.PurchaseOrder_hist]') AND name = N'IX_Ar_PurchaseOrder_hist-POitem')
-CREATE NONCLUSTERED INDEX [IX_Ar_PurchaseOrder_hist-POitem] ON [dbo].[Ar.PurchaseOrder_hist]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_PurchaseOrder_hist]') AND name = N'IX_Ar_PurchaseOrder_hist-POitem')
+CREATE NONCLUSTERED INDEX [IX_Ar_PurchaseOrder_hist-POitem] ON [dbo].[Ar_PurchaseOrder_hist]
 (
 	[poitem] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_Sales_History-SalesNum]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Sales_History]') AND name = N'IX_Ar_Sales_History-SalesNum')
-CREATE NONCLUSTERED INDEX [IX_Ar_Sales_History-SalesNum] ON [dbo].[Ar.Sales_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Sales_History]') AND name = N'IX_Ar_Sales_History-SalesNum')
+CREATE NONCLUSTERED INDEX [IX_Ar_Sales_History-SalesNum] ON [dbo].[Ar_Sales_History]
 (
 	[salesnum] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_Sales_No_History-SalesNum]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Sales_No_History]') AND name = N'IX_Ar_Sales_No_History-SalesNum')
-CREATE NONCLUSTERED INDEX [IX_Ar_Sales_No_History-SalesNum] ON [dbo].[Ar.Sales_No_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Sales_No_History]') AND name = N'IX_Ar_Sales_No_History-SalesNum')
+CREATE NONCLUSTERED INDEX [IX_Ar_Sales_No_History-SalesNum] ON [dbo].[Ar_Sales_No_History]
 (
 	[salesnum] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1931,8 +1931,8 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_SalesP_Customer_History-Customer]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.SalesP_Customer_History]') AND name = N'IX_Ar_SalesP_Customer_History-Customer')
-CREATE NONCLUSTERED INDEX [IX_Ar_SalesP_Customer_History-Customer] ON [dbo].[Ar.SalesP_Customer_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_SalesP_Customer_History]') AND name = N'IX_Ar_SalesP_Customer_History-Customer')
+CREATE NONCLUSTERED INDEX [IX_Ar_SalesP_Customer_History-Customer] ON [dbo].[Ar_SalesP_Customer_History]
 (
 	[Customer] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1940,36 +1940,36 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_SalesP_Customer_History-NoNoiseName]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.SalesP_Customer_History]') AND name = N'IX_Ar_SalesP_Customer_History-NoNoiseName')
-CREATE NONCLUSTERED INDEX [IX_Ar_SalesP_Customer_History-NoNoiseName] ON [dbo].[Ar.SalesP_Customer_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_SalesP_Customer_History]') AND name = N'IX_Ar_SalesP_Customer_History-NoNoiseName')
+CREATE NONCLUSTERED INDEX [IX_Ar_SalesP_Customer_History-NoNoiseName] ON [dbo].[Ar_SalesP_Customer_History]
 (
 	[NoNoiseName] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_SalesP_Customer_History-SoldCode]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.SalesP_Customer_History]') AND name = N'IX_Ar_SalesP_Customer_History-SoldCode')
-CREATE NONCLUSTERED INDEX [IX_Ar_SalesP_Customer_History-SoldCode] ON [dbo].[Ar.SalesP_Customer_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_SalesP_Customer_History]') AND name = N'IX_Ar_SalesP_Customer_History-SoldCode')
+CREATE NONCLUSTERED INDEX [IX_Ar_SalesP_Customer_History-SoldCode] ON [dbo].[Ar_SalesP_Customer_History]
 (
 	[SoldCode] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_Stocklst_Detail_History]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Stocklst_Detail_History]') AND name = N'IX_Ar_Stocklst_Detail_History')
-CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Detail_History] ON [dbo].[Ar.Stocklst_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Stocklst_Detail_History]') AND name = N'IX_Ar_Stocklst_Detail_History')
+CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Detail_History] ON [dbo].[Ar_Stocklst_Detail_History]
 (
 	[ID_Detail_Process] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_Stocklst_Detail_History-ID_Detail]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Stocklst_Detail_History]') AND name = N'IX_Ar_Stocklst_Detail_History-ID_Detail')
-CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Detail_History-ID_Detail] ON [dbo].[Ar.Stocklst_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Stocklst_Detail_History]') AND name = N'IX_Ar_Stocklst_Detail_History-ID_Detail')
+CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Detail_History-ID_Detail] ON [dbo].[Ar_Stocklst_Detail_History]
 (
 	[id_detail] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_Stocklst_Detail_History-ID_Detail_Process]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Stocklst_Detail_History]') AND name = N'IX_Ar_Stocklst_Detail_History-ID_Detail_Process')
-CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Detail_History-ID_Detail_Process] ON [dbo].[Ar.Stocklst_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Stocklst_Detail_History]') AND name = N'IX_Ar_Stocklst_Detail_History-ID_Detail_Process')
+CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Detail_History-ID_Detail_Process] ON [dbo].[Ar_Stocklst_Detail_History]
 (
 	[ID_Detail_Process] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1977,15 +1977,15 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_Stocklst_Master_History-Heat]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Stocklst_Master_History]') AND name = N'IX_Ar_Stocklst_Master_History-Heat')
-CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Master_History-Heat] ON [dbo].[Ar.Stocklst_Master_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Stocklst_Master_History]') AND name = N'IX_Ar_Stocklst_Master_History-Heat')
+CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Master_History-Heat] ON [dbo].[Ar_Stocklst_Master_History]
 (
 	[heat] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_Stocklst_Master_History-ID]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Stocklst_Master_History]') AND name = N'IX_Ar_Stocklst_Master_History-ID')
-CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Master_History-ID] ON [dbo].[Ar.Stocklst_Master_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Stocklst_Master_History]') AND name = N'IX_Ar_Stocklst_Master_History-ID')
+CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Master_History-ID] ON [dbo].[Ar_Stocklst_Master_History]
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -1993,22 +1993,22 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_Stocklst_Master_History-PO_Item]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.Stocklst_Master_History]') AND name = N'IX_Ar_Stocklst_Master_History-PO_Item')
-CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Master_History-PO_Item] ON [dbo].[Ar.Stocklst_Master_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_Stocklst_Master_History]') AND name = N'IX_Ar_Stocklst_Master_History-PO_Item')
+CREATE NONCLUSTERED INDEX [IX_Ar_Stocklst_Master_History-PO_Item] ON [dbo].[Ar_Stocklst_Master_History]
 (
 	[po_item] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_StockLst_Process_Detail_History-ID_Detail]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_Detail_History]') AND name = N'IX_Ar_StockLst_Process_Detail_History-ID_Detail')
-CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_Detail_History-ID_Detail] ON [dbo].[Ar.StockLst_Process_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_Detail_History]') AND name = N'IX_Ar_StockLst_Process_Detail_History-ID_Detail')
+CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_Detail_History-ID_Detail] ON [dbo].[Ar_StockLst_Process_Detail_History]
 (
 	[ID_Detail] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_StockLst_Process_Detail_History-ID_Detail_Process]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_Detail_History]') AND name = N'IX_Ar_StockLst_Process_Detail_History-ID_Detail_Process')
-CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_Detail_History-ID_Detail_Process] ON [dbo].[Ar.StockLst_Process_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_Detail_History]') AND name = N'IX_Ar_StockLst_Process_Detail_History-ID_Detail_Process')
+CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_Detail_History-ID_Detail_Process] ON [dbo].[Ar_StockLst_Process_Detail_History]
 (
 	[ID_Detail_Process] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -2016,22 +2016,22 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_StockLst_Process_Detail_History-SOitem]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_Detail_History]') AND name = N'IX_Ar_StockLst_Process_Detail_History-SOitem')
-CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_Detail_History-SOitem] ON [dbo].[Ar.StockLst_Process_Detail_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_Detail_History]') AND name = N'IX_Ar_StockLst_Process_Detail_History-SOitem')
+CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_Detail_History-SOitem] ON [dbo].[Ar_StockLst_Process_Detail_History]
 (
 	[SOitem] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_StockLst_Process_History-ID_Detail]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-ID_Detail')
-CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-ID_Detail] ON [dbo].[Ar.StockLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-ID_Detail')
+CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-ID_Detail] ON [dbo].[Ar_StockLst_Process_History]
 (
 	[ID_Detail] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_StockLst_Process_History-ID_Detail_Process]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-ID_Detail_Process')
-CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-ID_Detail_Process] ON [dbo].[Ar.StockLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-ID_Detail_Process')
+CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-ID_Detail_Process] ON [dbo].[Ar_StockLst_Process_History]
 (
 	[ID_Detail_Process] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -2039,15 +2039,15 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_StockLst_Process_History-PO_item]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-PO_item')
-CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-PO_item] ON [dbo].[Ar.StockLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-PO_item')
+CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-PO_item] ON [dbo].[Ar_StockLst_Process_History]
 (
 	[PO_item] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_StockLst_Process_History-ReceivingID]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-ReceivingID')
-CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-ReceivingID] ON [dbo].[Ar.StockLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-ReceivingID')
+CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-ReceivingID] ON [dbo].[Ar_StockLst_Process_History]
 (
 	[ReceivingID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -2055,22 +2055,22 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_StockLst_Process_History-SOitem]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-SOitem')
-CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-SOitem] ON [dbo].[Ar.StockLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_StockLst_Process_History]') AND name = N'IX_Ar_StockLst_Process_History-SOitem')
+CREATE NONCLUSTERED INDEX [IX_Ar_StockLst_Process_History-SOitem] ON [dbo].[Ar_StockLst_Process_History]
 (
 	[SOitem] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_UserTrack_History-ErrorDate]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.UserTrack_History]') AND name = N'IX_Ar_UserTrack_History-ErrorDate')
-CREATE NONCLUSTERED INDEX [IX_Ar_UserTrack_History-ErrorDate] ON [dbo].[Ar.UserTrack_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_UserTrack_History]') AND name = N'IX_Ar_UserTrack_History-ErrorDate')
+CREATE NONCLUSTERED INDEX [IX_Ar_UserTrack_History-ErrorDate] ON [dbo].[Ar_UserTrack_History]
 (
 	[errordate] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_WIPLst_Master_History-ID]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.WIPLst_Master_History]') AND name = N'IX_Ar_WIPLst_Master_History-ID')
-CREATE NONCLUSTERED INDEX [IX_Ar_WIPLst_Master_History-ID] ON [dbo].[Ar.WIPLst_Master_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_WIPLst_Master_History]') AND name = N'IX_Ar_WIPLst_Master_History-ID')
+CREATE NONCLUSTERED INDEX [IX_Ar_WIPLst_Master_History-ID] ON [dbo].[Ar_WIPLst_Master_History]
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -2078,8 +2078,8 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_WIPLst_Master_History-PO_Item]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.WIPLst_Master_History]') AND name = N'IX_Ar_WIPLst_Master_History-PO_Item')
-CREATE NONCLUSTERED INDEX [IX_Ar_WIPLst_Master_History-PO_Item] ON [dbo].[Ar.WIPLst_Master_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_WIPLst_Master_History]') AND name = N'IX_Ar_WIPLst_Master_History-PO_Item')
+CREATE NONCLUSTERED INDEX [IX_Ar_WIPLst_Master_History-PO_Item] ON [dbo].[Ar_WIPLst_Master_History]
 (
 	[po_item] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -2087,392 +2087,392 @@ GO
 SET ANSI_PADDING ON
 GO
 /****** Object:  Index [IX_WIPLst_Process_History-PO_item]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.WIPLst_Process_History]') AND name = N'IX_Ar_WIPLst_Process_History-PO_item')
-CREATE NONCLUSTERED INDEX [IX_Ar_WIPLst_Process_History-PO_item] ON [dbo].[Ar.WIPLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_WIPLst_Process_History]') AND name = N'IX_Ar_WIPLst_Process_History-PO_item')
+CREATE NONCLUSTERED INDEX [IX_Ar_WIPLst_Process_History-PO_item] ON [dbo].[Ar_WIPLst_Process_History]
 (
 	[PO_item] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [IX_WIPLst_Process_History-WO_Detail]    Script Date: 12/26/2025 5:28:42 PM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar.WIPLst_Process_History]') AND name = N'IX_Ar_WIPLst_Process_History-WO_Detail')
-CREATE NONCLUSTERED INDEX [IX_Ar_WIPLst_Process_History-WO_Detail] ON [dbo].[Ar.WIPLst_Process_History]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[dbo].[Ar_WIPLst_Process_History]') AND name = N'IX_Ar_WIPLst_Process_History-WO_Detail')
+CREATE NONCLUSTERED INDEX [IX_Ar_WIPLst_Process_History-WO_Detail] ON [dbo].[Ar_WIPLst_Process_History]
 (
 	[WO_Detail] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_AlloySurcharge_history_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.AlloySurcharge_History] ADD  CONSTRAINT [DF_Ar_AlloySurcharge_history_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_AlloySurcharge_History] ADD  CONSTRAINT [DF_Ar_AlloySurcharge_history_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_AlloySurcharge_history_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.AlloySurcharge_History] ADD  CONSTRAINT [DF_Ar_AlloySurcharge_history_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_AlloySurcharge_History] ADD  CONSTRAINT [DF_Ar_AlloySurcharge_history_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_AllQuotes_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.AllQuotes_History] ADD  CONSTRAINT [DF_Ar_AllQuotes_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_AllQuotes_History] ADD  CONSTRAINT [DF_Ar_AllQuotes_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_AllQuotes_History_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.AllQuotes_History] ADD  CONSTRAINT [DF_Ar_AllQuotes_History_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_AllQuotes_History] ADD  CONSTRAINT [DF_Ar_AllQuotes_History_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_AllQuotes_Old_CL]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.AllQuotes_Old] ADD  CONSTRAINT [DF_Ar_AllQuotes_Old_CL]  DEFAULT ('') FOR [CL]
+ALTER TABLE [dbo].[Ar_AllQuotes_Old] ADD  CONSTRAINT [DF_Ar_AllQuotes_Old_CL]  DEFAULT ('') FOR [CL]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Detail_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Detail_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_BrokerLst_Detail_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Detail_History_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Detail_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Detail_History_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_BrokerLst_Detail_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Detail_History_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Master_history_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Master_history] ADD  CONSTRAINT [DF_Ar_BrokerLst_Master_history_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_BrokerLst_Master_history] ADD  CONSTRAINT [DF_Ar_BrokerLst_Master_history_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Master_history_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Master_history] ADD  CONSTRAINT [DF_Ar_BrokerLst_Master_history_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_BrokerLst_Master_history] ADD  CONSTRAINT [DF_Ar_BrokerLst_Master_history_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Master_history_Melt]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Master_history] ADD  CONSTRAINT [DF_Ar_BrokerLst_Master_history_Melt]  DEFAULT (' ') FOR [Melt]
+ALTER TABLE [dbo].[Ar_BrokerLst_Master_history] ADD  CONSTRAINT [DF_Ar_BrokerLst_Master_history_Melt]  DEFAULT (' ') FOR [Melt]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Process_Detail_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_BrokerLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Process_Detail_History_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_Detail_History_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_BrokerLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_Detail_History_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Process_GS_History_who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_GS_History_who]  DEFAULT (suser_sname()) FOR [who]
+ALTER TABLE [dbo].[Ar_BrokerLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_GS_History_who]  DEFAULT (suser_sname()) FOR [who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Process_GS_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_GS_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_BrokerLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_GS_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Process_History_who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Process_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_History_who]  DEFAULT (suser_sname()) FOR [who]
+ALTER TABLE [dbo].[Ar_BrokerLst_Process_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_History_who]  DEFAULT (suser_sname()) FOR [who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Process_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Process_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_BrokerLst_Process_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_BrokerLst_Process_History_Removed]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.BrokerLst_Process_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_History_Removed]  DEFAULT (getdate()) FOR [Removed]
+ALTER TABLE [dbo].[Ar_BrokerLst_Process_History] ADD  CONSTRAINT [DF_Ar_BrokerLst_Process_History_Removed]  DEFAULT (getdate()) FOR [Removed]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Cert_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Cert_History] ADD  CONSTRAINT [DF_Ar_Cert_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_Cert_History] ADD  CONSTRAINT [DF_Ar_Cert_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Cert_History_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Cert_History] ADD  CONSTRAINT [DF_Ar_Cert_History_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_Cert_History] ADD  CONSTRAINT [DF_Ar_Cert_History_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_GFMlog_Machine]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_Machine]  DEFAULT ('') FOR [Machine]
+ALTER TABLE [dbo].[Ar_GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_Machine]  DEFAULT ('') FOR [Machine]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_GFMlog_Oper]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_Oper]  DEFAULT ('') FOR [Oper]
+ALTER TABLE [dbo].[Ar_GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_Oper]  DEFAULT ('') FOR [Oper]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_GFMlog_hist_ProjID]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_hist_ProjID]  DEFAULT ((0)) FOR [ProjID]
+ALTER TABLE [dbo].[Ar_GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_hist_ProjID]  DEFAULT ((0)) FOR [ProjID]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_GFMlog_hist_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_hist_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_hist_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_GFMlog_hist_What]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_hist_What]  DEFAULT ('Delete') FOR [What]
+ALTER TABLE [dbo].[Ar_GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_hist_What]  DEFAULT ('Delete') FOR [What]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_GFMlog_hist_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_hist_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_GFMlog_hist] ADD  CONSTRAINT [DF_Ar_GFMlog_hist_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_LakeErie_log_history_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.LakeErie_log_hist] ADD  CONSTRAINT [DF_Ar_LakeErie_log_history_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_LakeErie_log_hist] ADD  CONSTRAINT [DF_Ar_LakeErie_log_history_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_LakeErie_log_history_What]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.LakeErie_log_hist] ADD  CONSTRAINT [DF_Ar_LakeErie_log_history_What]  DEFAULT ('Delete') FOR [What]
+ALTER TABLE [dbo].[Ar_LakeErie_log_hist] ADD  CONSTRAINT [DF_Ar_LakeErie_log_history_What]  DEFAULT ('Delete') FOR [What]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_LakeErie_log_history_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.LakeErie_log_hist] ADD  CONSTRAINT [DF_Ar_LakeErie_log_history_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_LakeErie_log_hist] ADD  CONSTRAINT [DF_Ar_LakeErie_log_history_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_PackingSlip_No_who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.PackingSlip_No] ADD  CONSTRAINT [DF_Ar_PackingSlip_No_who]  DEFAULT (suser_sname()) FOR [WHO]
+ALTER TABLE [dbo].[Ar_PackingSlip_No] ADD  CONSTRAINT [DF_Ar_PackingSlip_No_who]  DEFAULT (suser_sname()) FOR [WHO]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_PriceTable_hist_cost2018]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.PriceTable_hist] ADD  CONSTRAINT [DF_Ar_PriceTable_hist_cost2018]  DEFAULT ((0)) FOR [cost2018]
+ALTER TABLE [dbo].[Ar_PriceTable_hist] ADD  CONSTRAINT [DF_Ar_PriceTable_hist_cost2018]  DEFAULT ((0)) FOR [cost2018]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_PriceTable_hist_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.PriceTable_hist] ADD  CONSTRAINT [DF_Ar_PriceTable_hist_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_PriceTable_hist] ADD  CONSTRAINT [DF_Ar_PriceTable_hist_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_PriceTable_hist_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.PriceTable_hist] ADD  CONSTRAINT [DF_Ar_PriceTable_hist_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_PriceTable_hist] ADD  CONSTRAINT [DF_Ar_PriceTable_hist_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_PurchaseOrder_hist_cmplt]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_cmplt]  DEFAULT ((0)) FOR [cmplt]
+ALTER TABLE [dbo].[Ar_PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_cmplt]  DEFAULT ((0)) FOR [cmplt]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_PurchaseOrder_hist_Metric]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_Metric]  DEFAULT ((0)) FOR [Metric]
+ALTER TABLE [dbo].[Ar_PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_Metric]  DEFAULT ((0)) FOR [Metric]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_PurchaseOrder_hist_Melt_type]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_Melt_type]  DEFAULT ('-') FOR [Melt]
+ALTER TABLE [dbo].[Ar_PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_Melt_type]  DEFAULT ('-') FOR [Melt]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_PurchaseOrder_hist_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_PurchaseOrder_hist_WHEN]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_WHEN]  DEFAULT (getdate()) FOR [WHEN]
+ALTER TABLE [dbo].[Ar_PurchaseOrder_hist] ADD  CONSTRAINT [DF_Ar_PurchaseOrder_hist_WHEN]  DEFAULT (getdate()) FOR [WHEN]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Roll_log_hist_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Roll_log_hist] ADD  CONSTRAINT [DF_Ar_Roll_log_hist_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_Roll_log_hist] ADD  CONSTRAINT [DF_Ar_Roll_log_hist_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Roll_log_hist_What]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Roll_log_hist] ADD  CONSTRAINT [DF_Ar_Roll_log_hist_What]  DEFAULT ('Delete') FOR [What]
+ALTER TABLE [dbo].[Ar_Roll_log_hist] ADD  CONSTRAINT [DF_Ar_Roll_log_hist_What]  DEFAULT ('Delete') FOR [What]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Roll_log_hist_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Roll_log_hist] ADD  CONSTRAINT [DF_Ar_Roll_log_hist_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_Roll_log_hist] ADD  CONSTRAINT [DF_Ar_Roll_log_hist_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Sales_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Sales_History] ADD  CONSTRAINT [DF_Ar_Sales_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_Sales_History] ADD  CONSTRAINT [DF_Ar_Sales_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Sales_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Sales_History] ADD  CONSTRAINT [DF_Ar_Sales_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_Sales_History] ADD  CONSTRAINT [DF_Ar_Sales_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Sales_History_Review]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Sales_History] ADD  CONSTRAINT [DF_Ar_Sales_History_Review]  DEFAULT ((0)) FOR [RVW_Stock]
+ALTER TABLE [dbo].[Ar_Sales_History] ADD  CONSTRAINT [DF_Ar_Sales_History_Review]  DEFAULT ((0)) FOR [RVW_Stock]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Sales_History_RVW_Prod]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Sales_History] ADD  CONSTRAINT [DF_Ar_Sales_History_RVW_Prod]  DEFAULT ((0)) FOR [RVW_Prod]
+ALTER TABLE [dbo].[Ar_Sales_History] ADD  CONSTRAINT [DF_Ar_Sales_History_RVW_Prod]  DEFAULT ((0)) FOR [RVW_Prod]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Sales_No_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Sales_No_History] ADD  CONSTRAINT [DF_Ar_Sales_No_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_Sales_No_History] ADD  CONSTRAINT [DF_Ar_Sales_No_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Sales_No_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Sales_No_History] ADD  CONSTRAINT [DF_Ar_Sales_No_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_Sales_No_History] ADD  CONSTRAINT [DF_Ar_Sales_No_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_SalesP_Customer_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.SalesP_Customer_History] ADD  CONSTRAINT [DF_Ar_SalesP_Customer_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_SalesP_Customer_History] ADD  CONSTRAINT [DF_Ar_SalesP_Customer_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_SalesP_Customer_History_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.SalesP_Customer_History] ADD  CONSTRAINT [DF_Ar_SalesP_Customer_History_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_SalesP_Customer_History] ADD  CONSTRAINT [DF_Ar_SalesP_Customer_History_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_ShipAddr_History_lastedit]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.ShipAddr_History] ADD  CONSTRAINT [DF_Ar_ShipAddr_History_lastedit]  DEFAULT (getdate()) FOR [lastedit]
+ALTER TABLE [dbo].[Ar_ShipAddr_History] ADD  CONSTRAINT [DF_Ar_ShipAddr_History_lastedit]  DEFAULT (getdate()) FOR [lastedit]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_ShipAddr_History_WhoAdd]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.ShipAddr_History] ADD  CONSTRAINT [DF_Ar_ShipAddr_History_WhoAdd]  DEFAULT (suser_sname()) FOR [WhoAdd]
+ALTER TABLE [dbo].[Ar_ShipAddr_History] ADD  CONSTRAINT [DF_Ar_ShipAddr_History_WhoAdd]  DEFAULT (suser_sname()) FOR [WhoAdd]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Stocklst_Detail_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Stocklst_Detail_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_Stocklst_Detail_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Stocklst_Detail_History_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Stocklst_Detail_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Detail_History_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_Stocklst_Detail_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Detail_History_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Stocklst_Master_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Stocklst_Master_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Master_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_Stocklst_Master_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Master_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Stocklst_Master_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Stocklst_Master_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Master_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_Stocklst_Master_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Master_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_Stocklst_Master_History_Melt]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.Stocklst_Master_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Master_History_Melt]  DEFAULT (' ') FOR [Melt]
+ALTER TABLE [dbo].[Ar_Stocklst_Master_History] ADD  CONSTRAINT [DF_Ar_Stocklst_Master_History_Melt]  DEFAULT (' ') FOR [Melt]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_StockLst_Process_Detail_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.StockLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_StockLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_StockLst_Process_Detail_History_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.StockLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_Detail_History_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_StockLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_Detail_History_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_StockLst_Process_GS_History_who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.StockLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_GS_History_who]  DEFAULT (suser_sname()) FOR [who]
+ALTER TABLE [dbo].[Ar_StockLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_GS_History_who]  DEFAULT (suser_sname()) FOR [who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_StockLst_Process_GS_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.StockLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_GS_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_StockLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_GS_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_StockLst_Process_History_who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.StockLst_Process_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_History_who]  DEFAULT (suser_sname()) FOR [who]
+ALTER TABLE [dbo].[Ar_StockLst_Process_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_History_who]  DEFAULT (suser_sname()) FOR [who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_StockLst_Process_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.StockLst_Process_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_StockLst_Process_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_StockLst_Process_History_Valid_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.StockLst_Process_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_History_Valid_When]  DEFAULT (getdate()) FOR [Valid_When]
+ALTER TABLE [dbo].[Ar_StockLst_Process_History] ADD  CONSTRAINT [DF_Ar_StockLst_Process_History_Valid_When]  DEFAULT (getdate()) FOR [Valid_When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_TimeTable_Hist_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.TimeTable_Hist] ADD  CONSTRAINT [DF_Ar_TimeTable_Hist_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_TimeTable_Hist] ADD  CONSTRAINT [DF_Ar_TimeTable_Hist_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_TimeTable_Hist_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.TimeTable_Hist] ADD  CONSTRAINT [DF_Ar_TimeTable_Hist_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_TimeTable_Hist] ADD  CONSTRAINT [DF_Ar_TimeTable_Hist_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPlst_Detail_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPlst_Detail_History] ADD  CONSTRAINT [DF_Ar_WIPlst_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_WIPlst_Detail_History] ADD  CONSTRAINT [DF_Ar_WIPlst_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPlst_Detail_History_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPlst_Detail_History] ADD  CONSTRAINT [DF_Ar_WIPlst_Detail_History_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_WIPlst_Detail_History] ADD  CONSTRAINT [DF_Ar_WIPlst_Detail_History_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPLst_Master_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPLst_Master_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Master_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_WIPLst_Master_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Master_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPLst_Master_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPLst_Master_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Master_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_WIPLst_Master_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Master_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPLst_Master_History_Melt]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPLst_Master_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Master_History_Melt]  DEFAULT (' ') FOR [Melt]
+ALTER TABLE [dbo].[Ar_WIPLst_Master_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Master_History_Melt]  DEFAULT (' ') FOR [Melt]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPLst_Process_Detail_History_Who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
+ALTER TABLE [dbo].[Ar_WIPLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_Detail_History_Who]  DEFAULT (suser_sname()) FOR [Who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPLst_Process_Detail_History_When]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_Detail_History_When]  DEFAULT (getdate()) FOR [When]
+ALTER TABLE [dbo].[Ar_WIPLst_Process_Detail_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_Detail_History_When]  DEFAULT (getdate()) FOR [When]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPLst_Process_GS_History_who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_GS_History_who]  DEFAULT (suser_sname()) FOR [who]
+ALTER TABLE [dbo].[Ar_WIPLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_GS_History_who]  DEFAULT (suser_sname()) FOR [who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPLst_Process_GS_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_GS_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_WIPLst_Process_GS_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_GS_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPLst_Process_History_who]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPLst_Process_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_History_who]  DEFAULT (suser_sname()) FOR [who]
+ALTER TABLE [dbo].[Ar_WIPLst_Process_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_History_who]  DEFAULT (suser_sname()) FOR [who]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_Ar_WIPLst_Process_History_when]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Ar.WIPLst_Process_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_History_when]  DEFAULT (getdate()) FOR [when]
+ALTER TABLE [dbo].[Ar_WIPLst_Process_History] ADD  CONSTRAINT [DF_Ar_WIPLst_Process_History_when]  DEFAULT (getdate()) FOR [when]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Ar.AllQuotes_History', N'COLUMN',N'Surcharge'))

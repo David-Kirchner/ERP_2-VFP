@@ -215,7 +215,7 @@ DEFINE CLASS frmordertasks AS form
 			SELECT 0
 			
 			cSQL = "SELECT * "
-		    cSQL = cSQL+" FROM [HPAlloyNR].[dbo].[OrderTrackingJob] "
+		    cSQL = cSQL+" FROM dbo.NR_OT_Job "
 		
 			nSQLEXEC = SQLEXEC( ThisForm.nConnHandle, cSQL, 'tmpTasks')
 			DO WHILE nSQLEXEC = 0

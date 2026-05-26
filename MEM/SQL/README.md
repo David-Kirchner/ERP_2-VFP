@@ -1,4 +1,4 @@
-# ERP_1 SQL scripts (ERP_2 repo)
+﻿# ERP_1 SQL scripts (ERP_2 repo)
 
 **Database name:** `ERP_1` on SuperMicro (production) and Server26 (development).  
 **Source of truth:** this folder in git (`E:\VFP\ERP_2\MEM\SQL\`), not OneDrive alone.
@@ -8,9 +8,9 @@
 | Folder | Purpose |
 |--------|---------|
 | [`../Create ERP_new/`](../Create%20ERP_new/) | **Full database build** — run in order `01` … `09` on a **new empty** `ERP_1` |
-| [`Config/`](Config/) | **Incremental** changes after build (CompanyProfile, AppUsers, seeds) — idempotent |
-| [`Security/`](Security/) | Roles, Windows login grants |
-| [`Migrations/`](Migrations/) | **New** one-off changes — add a dated script here when you alter live `ERP_1` |
+| [`Config/`](Config/) | **Incremental** changes after build — scripts `01` … `07` (CompanyProfile, AppUsers, permissions) |
+| [`Security/`](Security/) | Roles, Windows login grants — scripts `01` … `08` |
+| [`Migrations/`](Migrations/) | **New** one-off changes — copy `00_Migration_TEMPLATE.sql` to `YYYYMMDD_description.sql` |
 
 ## When you change the live database
 
@@ -41,9 +41,9 @@ On **each** instance (SuperMicro, Server26), in SSMS:
 09 fill some Quotes.sql
 ```
 
-Then **Config** (see [Config/README.md](Config/README.md)) and **Security** ([Security/README.md](Security/README.md)).
+Then **Config** ([RUN-ORDER.md](RUN-ORDER.md), [Config/README.md](Config/README.md)) and **Security** ([Security/README.md](Security/README.md)).
 
-`CreateAppUsers.sql` in `Create ERP_new` matches `Config\CreateAppUsers.sql` — prefer **Config** for updates; re-copy to `Create ERP_new` when refreshing the full build bundle.
+`10_CreateAppUsers.sql` in `Create ERP_new` matches `Config\03_CreateAppUsers.sql` — prefer **Config** for updates; re-copy to `Create ERP_new` when refreshing the full build bundle.
 
 ## Sync from SSMS default folder
 
