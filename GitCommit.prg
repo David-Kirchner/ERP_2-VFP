@@ -49,9 +49,9 @@ IF NOT FILE(lcFoxBin2Prg)
 ENDIF
 
 IF FILE(lcPjx)
-*	DO (lcFoxBin2Prg) WITH lcPjx, "*"
+	DO (lcFoxBin2Prg) WITH lcPjx, "*"
 ELSE
-*	DO (lcFoxBin2Prg) WITH lcProjectPath, "BIN2PRG"
+	DO (lcFoxBin2Prg) WITH lcProjectPath, "BIN2PRG"
 ENDIF
 
 lcErrLog = lcProjectPath + "tools\FoxBin2Prg_Error.LOG"
@@ -77,21 +77,17 @@ STRTOFILE(lcFullMessage, lcMsgFile, 0)   && 0 = overwrite
 	
 RUN /N cmd /c "git commit -F tools\_gitcommit_msg.txt && del tools\_gitcommit_msg.txt"
 
-? "   git commit started (/k)."
+? "   git commit finished."
 ?
 
 IF llPushAfterCommit
 	? "4. git push ..."
-	RUN /N cmd /k "git push -u origin main")
-*	GitCommit_RunCmd(lcProjectPath, "git push -u origin main")
-	? "   git push started (/k)."
+	RUN /N cmd /c "git push -u origin main"
+	? "   git push finished."
 ENDIF
 
-MESSAGEBOX("Git operations launched in cmd windows." + CHR(13) + ;
+MESSAGEBOX("Git commit workflow finished." + CHR(13) + ;
 	"Message: " + lcFullMessage + CHR(13) + CHR(13) + ;
-	"Review each cmd window for success.", 64, "GitCommit")
+	"Check the VFP window for FoxBin2Prg / git output.", 64, "GitCommit")
 
 RETURN
-
-
-ENDFUNC
