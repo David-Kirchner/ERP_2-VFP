@@ -9,7 +9,8 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS (SELECT 1 FROM dbo.AppUsers WHERE WindowsLogin = N'<DOMAIN\login>')
+IF NOT EXISTS (SELECT 1 FROM dbo.AppUsers WHERE WindowsLogin = N'ComputerName\WindowsUsername')
     INSERT INTO dbo.AppUsers (WindowsLogin, AppRole, DisplayName, Active)
-    VALUES (N'<DOMAIN\login>', N'Admin', N'ERP Administrator', 1);
+    VALUES (N'ComputerName\WindowsUsername', N'Admin', N'ERP Administrator', 1);
+-- Workgroup example: N'SuperMicro\talkt'  — use whoami on that PC
 GO

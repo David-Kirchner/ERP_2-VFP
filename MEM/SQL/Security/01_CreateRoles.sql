@@ -16,4 +16,5 @@ GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE TO [ERP_AppAdmin];
 GO
 
 PRINT 'ERP_AppRead / ERP_AppWrite / ERP_AppAdmin roles ready.';
+PRINT 'Next: run 04_GrantArchiveAndNR_Permissions.sql for AR.* / NR_* object grants.';
 GO

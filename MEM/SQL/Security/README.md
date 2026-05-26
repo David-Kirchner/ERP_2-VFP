@@ -5,9 +5,17 @@ Apply on **SuperMicro** (production) and **Server26** (development). Windows Aut
 ## Steps
 
 1. Run `01_CreateRoles.sql` on database `ERP_1`.
-2. Edit `02_GrantWindowsUser.sql`: replace `<DOMAIN\login>` with `SELECT SYSTEM_USER` output (e.g. `SPACEALLOYS\DavidKirchner`). Run on **master** + `ERP_1` on each instance.
-3. Run `MEM\SQL\Config\CreateAppUsers.sql`, then edit and run `03_SeedAppUsers.sql`.
-4. Keep fine-grained VFP permissions in `dbo.AppSetup` (UN / PRP / ANS). `HavePermission()` continues to use AppSetup; `AppUsers` is for future Admin/coarse roles.
+2. Run `04_GrantArchiveAndNR_Permissions.sql` — **AR.*** archive read/insert, **NR_*** read, **NR_UserTrack** insert for all app roles.
+3. Edit `02_GrantWindowsUser.sql` or use `02b` / `02c` / `02d`. See `README-Workgroup-Logins.md`.
+4. Run `MEM\SQL\Config\CreateAppUsers.sql`, then edit and run `03_SeedAppUsers.sql`.
+5. Keep fine-grained VFP permissions in `dbo.AppUserGrant` / legacy `dbo.AppSetup`. See **[README-Permissions.md](README-Permissions.md)**.
+
+## App permission scripts (Layer 2)
+
+Run on both servers after roles/grants:
+
+1. `MEM\SQL\Config\AppPermission_Schema.sql`
+2. `MEM\SQL\Config\05_Migrate_AppSetup_Permissions.sql`
 
 ## Verification checklist
 

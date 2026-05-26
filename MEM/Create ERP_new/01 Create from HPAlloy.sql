@@ -23493,7 +23493,7 @@ RETURNS CHAR(12)
 -- 2 Digit item
 -- 1 digit for dash -
 
--- SEE dbo.NR_OT_Def for Definitions
+-- SEE dbo.OT_Def for Definitions
 
 -- Return ''         0-00'' for NULL
 -- PRINT dbo.ProperPO(''   10000-1'')
@@ -34168,7 +34168,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[OT_OrderType]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[OT_OrderType](
-	[OrderTypeId] [int] IDENTITY(1,1) NOT NULL,
+	[OrderTypeId] [tinyInt]  NOT NULL,
 	[TypeName] [varchar](50) NOT NULL,
 	[TypeAbr] [varchar](4) NOT NULL,
 	[Type] [varchar](20) NOT NULL,
@@ -39175,7 +39175,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[OT_Job_Class]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[OT_Job_Class](
-	[ClassId] [int] IDENTITY(1,1) NOT NULL,
+	[ClassId] [TinyInt] NOT NULL,
 	[Name] [varchar](50) NOT NULL,
  CONSTRAINT [PK_OT_Job_Class] PRIMARY KEY CLUSTERED 
 (
@@ -77119,13 +77119,13 @@ BEGIN
 			,RTRIM(LTRIM([orderItem])) AS [orderItem]
 			,otj2.[JobId]
 			,otot2.[OrderTypeId]
-		FROM [dbo].[NR_OT] ot
+		FROM [dbo].[OT] ot
 		left outer join [dbo].[OT_Migration] otm on ot.trackID = otm.OldTrackId
-		join [dbo].[NR_OT_OrderType] otot on ot.orderType = otot.Id
-		join [dbo].[NR_OT_OrderType] otot2 on otot.OrderType = otot2.TypeAbr
-		join [dbo].[NR_OT_Job] otj on ot.jobID = otj.jobID
-		join [dbo].[NR_OT_Job] otj2 on otj.jobDescription = otj2.Description
-		left outer join [dbo].[NR_OT_Time] ott on ot.trackID = ott.trackID
+		join [dbo].[OT_OrderType] otot on ot.orderType = otot.Id
+		join [dbo].[OT_OrderType] otot2 on otot.OrderType = otot2.TypeAbr
+		join [dbo].[OT_Job] otj on ot.jobID = otj.jobID
+		join [dbo].[OT_Job] otj2 on otj.jobDescription = otj2.Description
+		left outer join [dbo].[OT_Time] ott on ot.trackID = ott.trackID
 		where otm.OldTrackId is null AND ott.[status] = 'start' AND ott.time < @maxdate
 		order by ott.[time]
 
@@ -77147,24 +77147,24 @@ BEGIN
 			SELECT [time] AS [StartTime]
 				,otts.StatusId AS [Start_StatusId]
 					,(SELECT min(ott2.[time])
-						FROM [dbo].[NR_OT_Time] ott2
+						FROM [dbo].[OT_Time] ott2
 						where ott2.trackID = ott.trackID
 						AND ([status] = 'pause' OR [status] = 'finish')
 						AND ott2.[time] > ott.[time]
 					) AS [StopTime]
 					,(SELECT TOP (1) otts2.[StatusId]
-						FROM [dbo].[NR_OT_Time] ott2
+						FROM [dbo].[OT_Time] ott2
 						join [dbo].[OT_Times_Status] otts2 on ott2.[status] = otts2.[Status]
 						where ott2.trackID = ott.trackID
 						AND (ott2.[status] = 'pause' OR ott2.[status] = 'finish')
 						AND ott2.[time] in (SELECT min(ott3.[time])
-							FROM [dbo].[NR_OT_Time] ott3
+							FROM [dbo].[OT_Time] ott3
 							where ott3.trackID = ott.trackID
 							AND ([status] = 'pause' OR [status] = 'finish')
 							AND ott3.[time] > ott.[time]
 						)
 					) AS [Stop_StatusId]
-			FROM [dbo].[NR_OT_Time] ott
+			FROM [dbo].[OT_Time] ott
 			join [dbo].[OT_Times_Status] otts on ott.[status] = otts.[Status]
 			where trackID = @OldTrackId
 			AND (ott.[status] = 'start' OR ott.[status] = 'resume')
@@ -77182,7 +77182,7 @@ BEGIN
 
 			insert into [dbo].[OT_Times_Employees] (EmployeeId, TimeId, TrackId)
 			SELECT EmployeeId, @NewTimeId, @NewTrackId
-			FROM [dbo].[NR_OT_Employee] ote
+			FROM [dbo].[OT_Employee] ote
 			WHERE ote.trackID = @OldTrackId
 
 			FETCH NEXT FROM TrackingTimeCursor INTO @StartTime, @Start_StatusId, @StopTime, @Stop_StatusId
@@ -81781,11 +81781,11 @@ OTE.EmployeeID
 ,OTT.status, OTT.time
 ,rO.Oper_ID
 ,rO.Operation
-  FROM [dbo].NR_OT OT
-INNER JOIN [dbo].NR_OT_Job OTJ ON OT.jobID = OTJ.jobID
-INNER JOIN [dbo].NR_OT_Employee OTE ON OT.trackID = OTE.trackID
-INNER JOIN [dbo].NR_OT_Time OTT ON OT.trackID = OTT.trackID
-INNER JOIN [dbo].NR_OT_OrderType OTtype ON OT.orderType = OTtype.Id
+  FROM [dbo].OT OT
+INNER JOIN [dbo].OT_Job OTJ ON OT.jobID = OTJ.jobID
+INNER JOIN [dbo].OT_Employee OTE ON OT.trackID = OTE.trackID
+INNER JOIN [dbo].OT_Time OTT ON OT.trackID = OTT.trackID
+INNER JOIN [dbo].OT_OrderType OTtype ON OT.orderType = OTtype.Id
 
 INNER JOIN dbo.rtr_Operation rO ON OTJ.jobClass = rO.jobClass AND OTJ.jobType = rO.jobType
 

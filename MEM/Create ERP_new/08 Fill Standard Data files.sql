@@ -62,6 +62,10 @@ BEGIN TRY
     DELETE FROM [ERP_1].[dbo].[IND_Type];
     DELETE FROM [ERP_1].[dbo].[Mach_Type];
     DELETE FROM [ERP_1].[dbo].[Melt_Type];
+
+    DELETE FROM [ERP_1].[dbo].[OT_Job_Class]
+    DELETE FROM [ERP_1].[dbo].[OT_OrderType]
+
     DELETE FROM [ERP_1].[dbo].[PO_StockLst_Def];
     DELETE FROM [ERP_1].[dbo].[POstatusDef];
     DELETE FROM [ERP_1].[dbo].[prc_Equipment];
@@ -223,6 +227,20 @@ BEGIN TRY
     INSERT INTO [ERP_1].[dbo].[Melt_Type]
         SELECT * FROM [HPAlloy].[dbo].[Melt_Type];
     PRINT 'Copied Melt_Type: ' + CAST(@@ROWCOUNT AS VARCHAR(10)) + ' rows';
+
+
+    -- OT_Job_Class (no identity:)
+    INSERT INTO [ERP_1].[dbo].[OT_Job_Class]
+        SELECT * FROM [HPAlloy].[dbo].[OTracking_Job_Class];
+    PRINT 'Copied OT_Job_Class: ' + CAST(@@ROWCOUNT AS VARCHAR(10)) + ' rows';
+    
+    -- OT_OrderType (no identity)
+    INSERT INTO [ERP_1].[dbo].[OT_OrderType]
+        SELECT * FROM [HPAlloy].[dbo].[OTracking_OrderType];
+    PRINT 'Copied OT_OrderType: ' + CAST(@@ROWCOUNT AS VARCHAR(10)) + ' rows';
+    
+
+
 
     -- PO_StockLst_Def (no identity)
     INSERT INTO [ERP_1].[dbo].[PO_StockLst_Def]

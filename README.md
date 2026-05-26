@@ -16,7 +16,7 @@ Legacy VFP sources: `E:\VFP\ERP_1` (archived; do not use for new work).
 | **Development** | `Server26\Server26` | `ERP_1` | `Server26\Server26` |
 | **Windfall** (legacy) | `RAPTOR` | `ERP_1` | `RAPTOR` |
 
-Apply schema scripts on **both** SuperMicro and Server26 (`MEM\SQL\Config\`, then `MEM\SQL\Security\`).
+Apply schema on **both** servers — see [`MEM\SQL\README.md`](MEM/SQL/README.md) (full build in `Create ERP_new`, incremental in `Config` / `Migrations`).
 
 Connection: [`ERP_Environment.xml`](ERP_Environment.xml). Per-machine overrides: `ERP_Environment.local.xml` (gitignored).
 
@@ -45,4 +45,3 @@ Use `RUN /C` for git — **not** `RUN /N` (async; races with FoxBin2Prg).
 1. Open `ERP.PJX` in VFP 9.
 2. Default directory: `E:\VFP\ERP_2`.
 3. Run `PROGS\main.prg`.
-"# ERP_2-VFP" 

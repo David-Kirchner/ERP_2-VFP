@@ -3,8 +3,7 @@
 *.pjt
 ERP.pjx
 ERP.PJX
-SetupERP.pjx
-SetupERP.PJT
+ERP.APP
 
 # Visual FoxPro compiled files
 *.fxp
@@ -58,9 +57,6 @@ SalesP.MEM
 
 # Per-machine SQL / company path overrides
 ERP_Environment.local.xml
-
-# Git backup from ERP_1 copy
-.git.erp1-backup/
 
 # IDE and editor files
 .vscode/

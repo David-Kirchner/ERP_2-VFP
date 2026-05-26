@@ -1,6 +1,10 @@
 /* Template: grant a Windows login access to ERP_1
    Run on EACH SQL instance (SuperMicro, Server26).
-   Replace <DOMAIN\login> with your account, e.g. SPACEALLOYS\DavidKirchner
+
+   Workgroup (no domain):  ComputerName\WindowsUser   e.g. SuperMicro\talkt
+   Domain (later):         DOMAIN\WindowsUser
+
+   See README-Workgroup-Logins.md — prefer 02c_GrantUser_AppWrite.sql instead.
 */
 USE [master];
 GO

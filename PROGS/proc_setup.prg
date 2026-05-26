@@ -4653,15 +4653,20 @@ ENDIF
 SELECT 0
 
 IF nConn > 0
-	*Un = cUserName AND SETUP.Prp = "Machine"
-	*INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('David Kirchner','YES','EditStockWants')
-	*INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('David Kirchner','YES','EditPOLate')
-	*INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('Sutton','YES','ReconcilePO')
-	*INSERT into dbo.AppSetup (UN,PRP,ANS) VALUES ('Dave Morrow','YES','CofC Backup')
-	*INSERT into dbo.AppSetup (UN,PRP,ANS) VALUES ('David Kirchner','YES','EditSOLate')
-	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = '"+cTask+"'"
+	* Prefer v_AppUserEffectivePermission when deployed; else legacy AppSetup (no invalid-object error)
+	IF AppPermission_ViewExists(nConn)
+		cSQL = "SELECT TOP 1 PermissionCode FROM dbo.v_AppUserEffectivePermission WITH(NOLOCK) "
+		cSQL = cSQL + "WHERE UserName = '"+ALLTRIM(cUserName)+"' AND PermissionCode = '"+cTask+"'"
+	ELSE
+		cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = '"+cTask+"'"
+	ENDIF
 	
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_SQL24' )
+	IF nSQLEXEC < 0 AND AppPermission_ViewExists(nConn)
+		* View query failed — legacy AppSetup path
+		cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = '"+cTask+"'"
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_SQL24' )
+	ENDIF
 	DO WHILE nSQLEXEC = 0
 		WAIT WINDOW 'SQL' TIMEOUT 1
 		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_SQL24' )
@@ -4686,12 +4691,17 @@ IF nConn > 0
 	
 	IF USED('tmpPSP_SQL24')
 		IF RECCOUNT('tmpPSP_SQL24') > 0
-			IF VARTYPE(tmpPSP_SQL24.PRP) = "C"
-				IF UPPER(tmpPSP_SQL24.PRP) = "YES"
-					lReturnApprove = .T.
-				ELSE
-					IF lReportFailure
-						TrackError(cUserName +" tried to "+cTask+".","No Permission ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+			* New view returns PermissionCode; legacy returns PRP = YES
+			IF USED('tmpPSP_SQL24') AND TYPE('tmpPSP_SQL24.PermissionCode') # 'U'
+				lReturnApprove = .T.
+			ELSE
+				IF VARTYPE(tmpPSP_SQL24.PRP) = "C"
+					IF UPPER(tmpPSP_SQL24.PRP) = "YES"
+						lReturnApprove = .T.
+					ELSE
+						IF lReportFailure
+							TrackError(cUserName +" tried to "+cTask+".","No Permission ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+						ENDIF
 					ENDIF
 				ENDIF
 			ENDIF
@@ -4715,6 +4725,27 @@ ENDIF
 
 RETURN lReturnApprove
 ENDPROC
+
+**********************************
+FUNCTION AppPermission_ViewExists
+LPARAMETERS tnConn
+LOCAL lnRet, lcSQL
+IF VARTYPE(tnConn) # "N" OR tnConn < 1
+	RETURN .F.
+ENDIF
+IF USED("tmpPermViewChk")
+	USE IN tmpPermViewChk
+ENDIF
+lcSQL = "SELECT OBJECT_ID(N'dbo.v_AppUserEffectivePermission', N'V') AS Vid"
+lnRet = SQLEXEC(tnConn, lcSQL, "tmpPermViewChk")
+IF lnRet > 0 AND USED("tmpPermViewChk") AND !ISNULL(tmpPermViewChk.Vid)
+	USE IN tmpPermViewChk
+	RETURN .T.
+ENDIF
+IF USED("tmpPermViewChk")
+	USE IN tmpPermViewChk
+ENDIF
+RETURN .F.
 
 ********************************** 
 PROCEDURE HaveVendorApprovedPermission 
