@@ -75,14 +75,15 @@ STRTOFILE(lcFullMessage, lcMsgFile, 0)   && 0 = overwrite
 *GitCommit_RunCmd(lcProjectPath, ;
 *	"git commit -F tools\_gitcommit_msg.txt && del tools\_gitcommit_msg.txt")
 	
-RUN /N cmd /c "git commit -F tools\_gitcommit_msg.txt && del tools\_gitcommit_msg.txt"
+RUN /N cmd /c "git commit -F "
+*RUN /N cmd /c "git commit -F tools\_gitcommit_msg.txt && del tools\_gitcommit_msg.txt"
 
 ? "   git commit finished."
 ?
 
 IF llPushAfterCommit
 	? "4. git push ..."
-	RUN /N cmd /c "git push -u origin main"
+	RUN /N cmd /k "git push -u origin main"
 	? "   git push finished."
 ENDIF
 
