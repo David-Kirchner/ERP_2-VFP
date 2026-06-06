@@ -1,7 +1,7 @@
 /* =============================================================================
    CompanyProfile schema — Fix script #01
    -----------------------------------------------------------------------------
-   Target DB    : ERP_1
+   Target DB    : ERP_2
    Date         : 2026-05-11
    Companion    : 01_CompanyProfile_Schema.sql (main script, partially executed)
    -----------------------------------------------------------------------------
@@ -18,7 +18,7 @@
    Safe to re-run.
    ============================================================================= */
 
-USE [ERP_1];
+USE [ERP_2];
 GO
 SET ANSI_NULLS ON; SET QUOTED_IDENTIFIER ON; SET NOCOUNT ON;
 GO

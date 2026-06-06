@@ -1,26 +1,26 @@
-ï»¿/* =============================================================================
+/* =============================================================================
    Company Profile + Multi-Site + Cert Signers + Cert PDF Retention + Admin Gate
    -----------------------------------------------------------------------------
-   Target DB    : ERP_1
+   Target DB    : ERP_2
    Author       : Claude (Cowork) for David Kirchner
    Date         : 2026-05-11
    Companion    : ERP\CompanyProfile_Maintenance_Plan.md
    -----------------------------------------------------------------------------
    IMPORTANT BEFORE RUNNING
-   1. dbo.CompanyProfile was created manually by David. The CREATE in Â§1 below is
+   1. dbo.CompanyProfile was created manually by David. The CREATE in §1 below is
       guarded with IF NOT EXISTS; if your existing columns differ from the spec,
-      run Â§1.a (DIFF HELPER) first and reconcile by hand. Do not let SSMS silently
+      run §1.a (DIFF HELPER) first and reconcile by hand. Do not let SSMS silently
       drop your row.
-   2. Search this file for the token <FILL-IN> â€” three spots:
-        - Your Windows login in Â§6 seed (e.g. SPACEALLOYS\DavidKirchner)
-        - The actual primary-key column name of dbo.HPAcert in Â§5 FK constraint
-        - Confirm IP subnets for Windfall/Tipton in Â§3 seed if they differ from
+   2. Search this file for the token <FILL-IN> — three spots:
+        - Your Windows login in §6 seed (e.g. SPACEALLOYS\DavidKirchner)
+        - The actual primary-key column name of dbo.HPAcert in §5 FK constraint
+        - Confirm IP subnets for Windfall/Tipton in §3 seed if they differ from
           the values in CLAUDE.md (192.168.1.x / 192.168.2.x)
    3. Run inside an explicit transaction in production. Each section is a
       separate batch (GO) so you can step through it.
    ============================================================================= */
 
-USE [ERP_1];
+USE [ERP_2];
 GO
 
 SET ANSI_NULLS ON;
@@ -29,7 +29,7 @@ SET NOCOUNT ON;
 GO
 
 /* =============================================================================
-   Â§1  dbo.CompanyProfile  -- single-row identity table
+   §1  dbo.CompanyProfile  -- single-row identity table
    ============================================================================= */
 
 IF OBJECT_ID('dbo.CompanyProfile', 'U') IS NULL
@@ -66,7 +66,7 @@ BEGIN
         As9100Registrar     NVARCHAR(80)   NULL,
         As9100ExpDate       DATE           NULL,
 
-        -- Branding (blobs only â€” no paths per design decision 2026-05-11) --
+        -- Branding (blobs only — no paths per design decision 2026-05-11) --
         LogoImage           VARBINARY(MAX) NULL,
         LogoMime            NVARCHAR(40)   NULL,         -- e.g. 'image/png'
         IconImage           VARBINARY(MAX) NULL,         -- .ico for window chrome
@@ -76,7 +76,7 @@ BEGIN
 
         -- Cert boilerplate -------------------------------------------------
         CertHeaderText      NVARCHAR(MAX)  NULL,
-        CertCertifyText     NVARCHAR(MAX)  NULL,         -- "We hereby certifyâ€¦"
+        CertCertifyText     NVARCHAR(MAX)  NULL,         -- "We hereby certify…"
         CertFooterText      NVARCHAR(MAX)  NULL,
         CertDisclaimerText  NVARCHAR(MAX)  NULL,
 
@@ -90,11 +90,11 @@ BEGIN
     PRINT 'Created dbo.CompanyProfile';
 END
 ELSE
-    PRINT 'dbo.CompanyProfile already exists â€” run Â§1.a DIFF HELPER to reconcile columns';
+    PRINT 'dbo.CompanyProfile already exists — run §1.a DIFF HELPER to reconcile columns';
 GO
 
 /* -----------------------------------------------------------------------------
-   Â§1.a  DIFF HELPER -- run this to see what columns your existing table
+   §1.a  DIFF HELPER -- run this to see what columns your existing table
                        has versus the spec. Manual reconciliation only.
    ----------------------------------------------------------------------------- */
 /*
@@ -109,7 +109,7 @@ ORDER BY c.column_id;
 GO
 
 /* =============================================================================
-   Â§2  dbo.CompanyPlant  -- per-site address & contact (multi-site)
+   §2  dbo.CompanyPlant  -- per-site address & contact (multi-site)
         Windfall and Tipton each get a row. IP subnet drives the existing
         auto-detect logic from proc_setup.prg (192.168.1.x / 192.168.2.x).
    ============================================================================= */
@@ -150,7 +150,7 @@ END
 GO
 
 /* =============================================================================
-   Â§3  Seed dbo.CompanyPlant  -- placeholders. Update addresses to real values.
+   §3  Seed dbo.CompanyPlant  -- placeholders. Update addresses to real values.
    ============================================================================= */
 
 IF NOT EXISTS (SELECT 1 FROM dbo.CompanyPlant WHERE PlantCode = 'PRODUCTION')
@@ -169,10 +169,10 @@ VALUES ('DEVELOPMENT', 'David DEV',
 GO
 
 /* =============================================================================
-   Â§4  dbo.CompanyCertSigner  -- variable signers per plant
+   §4  dbo.CompanyCertSigner  -- variable signers per plant
         Slot codes used today: LAB_TECH, INSPECTOR, QM.
         A row with PlantId IS NULL applies to all plants (fallback default).
-        Only one active row per (PlantId, SlotCode) at a time â€” enforced by
+        Only one active row per (PlantId, SlotCode) at a time — enforced by
         the filtered unique index UX_Signer_OneActive.
    ============================================================================= */
 
@@ -210,19 +210,24 @@ END
 GO
 
 /* =============================================================================
+   §5  dbo.CompanyCertPdf  -- immutable rendered certificate archive
         Captures: the bytes that went to the customer, plus a JSON snapshot of
         every CompanyProfile / CompanyPlant / CompanyCertSigner field used at
         render time. That snapshot is what makes future audits answerable.
    ============================================================================= */
 
+IF OBJECT_ID('dbo.CompanyCertPdf', 'U') IS NULL
 BEGIN
+    CREATE TABLE dbo.CompanyCertPdf (
         PdfId            BIGINT IDENTITY(1,1) NOT NULL
+            CONSTRAINT PK_CompanyCertPdf PRIMARY KEY,
 
         -- Link back to the cert record. CLAUDE.md confirms dbo.HPAcert exists
         -- but does not document its PK column name. Add the FK manually after
         -- confirming. For now, store a loose key.
         HPAcertKey       NVARCHAR(50)   NOT NULL,        -- value of dbo.HPAcert.<FILL-IN PK col>
         PlantId          INT            NOT NULL
+            CONSTRAINT FK_CompanyCertPdf_Plant REFERENCES dbo.CompanyPlant (PlantId),
         CertNumber       NVARCHAR(40)   NULL,            -- denormalized for fast lookup
         WorkOrderNumber  NVARCHAR(40)   NULL,            -- denormalized for fast lookup
         CustomerName     NVARCHAR(120)  NULL,            -- denormalized for fast lookup
@@ -243,12 +248,14 @@ BEGIN
         ReprintOfPdfId   BIGINT         NULL
     );
 
-
+    PRINT 'Created dbo.CompanyCertPdf';
 END
+ELSE
+    PRINT 'dbo.CompanyCertPdf already exists';
 GO
 
 /* -----------------------------------------------------------------------------
-   Â§5.a  Once you confirm dbo.HPAcert's PK column name, wire up the FK:
+   §5.a  Once you confirm dbo.HPAcert's PK column name, wire up the FK:
 
          FOREIGN KEY (HPAcertKey)
          REFERENCES dbo.HPAcert (<FILL-IN PK col>);
@@ -257,7 +264,7 @@ GO
    ----------------------------------------------------------------------------- */
 
 /* =============================================================================
-   Â§6  dbo.AdminUser  -- single-row admin gate (you said: just you for now)
+   §6  dbo.AdminUser  -- single-row admin gate (you said: just you for now)
    ============================================================================= */
 
 IF OBJECT_ID('dbo.AdminUser', 'U') IS NULL
@@ -284,7 +291,7 @@ VALUES ('SuperMicro\talkt',
 GO
 
 /* -----------------------------------------------------------------------------
-   Helper to look up admin status from VFP / Blazor â€” wraps SUSER_SNAME().
+   Helper to look up admin status from VFP / Blazor — wraps SUSER_SNAME().
    Call: SELECT dbo.fn_IsAdmin(NULL)            -- checks current connection user
          SELECT dbo.fn_IsAdmin('DOMAIN\bob')    -- checks a specific login
    ----------------------------------------------------------------------------- */
@@ -304,7 +311,7 @@ END
 GO
 
 /* =============================================================================
-   Â§7  dbo.CompanyAuditLog  -- single audit log for Profile / Plant / Signer.
+   §7  dbo.CompanyAuditLog  -- single audit log for Profile / Plant / Signer.
         One log table is cheaper than three History tables and gives a unified
         "who changed what when" view for ISO 7.5.3 (Control of Documented
         Information).
@@ -329,7 +336,7 @@ END
 GO
 
 /* -----------------------------------------------------------------------------
-   Triggers â€” one per source table, all writing into CompanyAuditLog.
+   Triggers — one per source table, all writing into CompanyAuditLog.
    Drop & recreate so this script stays re-runnable.
    ----------------------------------------------------------------------------- */
 
@@ -394,7 +401,7 @@ END
 GO
 
 /* =============================================================================
-   Â§8  Convenience views â€” what VFP / Blazor will actually call.
+   §8  Convenience views — what VFP / Blazor will actually call.
         These keep the reports loose-coupled from schema changes.
    ============================================================================= */
 
@@ -487,7 +494,7 @@ END
 GO
 
 /* =============================================================================
-   Â§10  Smoke-test queries (run manually after the script completes)
+   §10  Smoke-test queries (run manually after the script completes)
    =============================================================================
 
    -- A. Objects present?

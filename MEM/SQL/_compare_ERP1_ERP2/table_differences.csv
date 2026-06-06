@@ -1,0 +1,6 @@
+"SchemaName","TableName","InERP1","InERP2","Difference"
+"dbo","CREDITREF","1","0","Only ERP_1"
+"dbo","HPAcertPdf","1","0","Only ERP_1"
+"dbo","sysdiagrams","1","0","Only ERP_1"
+"dbo","WindfallSTK_2025","1","0","Only ERP_1"
+"dbo","CUSTOMER TERMS and List","0","1","Only ERP_2"

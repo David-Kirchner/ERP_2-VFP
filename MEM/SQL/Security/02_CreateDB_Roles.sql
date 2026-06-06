@@ -1,10 +1,10 @@
-/* ERP_1 — area-scoped database roles (Layer 1 fine-grained)
+/* ERP_2 — area-scoped database roles (Layer 1 fine-grained)
    Run on SuperMicro and Server26 after 01_CreateRoles.sql.
    Idempotent. Does not grant table/object permissions — use 03 + future securable scripts.
 
    Pair with MEM\SQL\Config\05_AppSqlRole_Schema.sql for catalog + maintenance screen. */
 
-USE [ERP_1];
+USE [ERP_2];
 GO
 
 SET NOCOUNT ON;

@@ -1,0 +1,14 @@
+---
+description: VFP data maintenance — prefer visual screens in Forms\, not PRG-built UIs
+globs: "**/*.{sc2,scx,prg,pj2}"
+alwaysApply: true
+---
+
+When building or extending ERP **data maintenance** UI:
+
+- Use **visual Form Designer screens** under `Forms\` (`*.SC2` / `*.SCX`) with drag-and-drop fields and pageframes.
+- Use **PRGs only** for: shared libraries, `DO FORM` launchers, SQL/load helpers, and report expression functions — **not** for programmatic-only maintenance forms (`CREATEOBJECT` + `ADDOBJECT` UIs).
+- Rebuild binaries from SC2 via FoxBin2Prg when SCX must be updated.
+
+Company Profile pattern: `Forms\CompanyProfile_Maint.SC2` + thin `PROGS\CompanyProfile_maint.prg` launcher.
+

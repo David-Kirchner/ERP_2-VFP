@@ -45,3 +45,7 @@ Use `RUN /C` for git — **not** `RUN /N` (async; races with FoxBin2Prg).
 1. Open `ERP.PJX` in VFP 9.
 2. Default directory: `E:\VFP\ERP_2`.
 3. Run `PROGS\main.prg`.
+
+## Company logo (personalization)
+
+Logo is stored in `dbo.CompanyProfile` and applied to **forms** (top-right) and **reports** (`MEM\company_logo.*`). Admin: **Maintenance → Company Profile → Logo** tab. Details: [`MEM\COMPANY_BRANDING.md`](MEM/COMPANY_BRANDING.md).

@@ -20,7 +20,7 @@ BEGIN
     PRINT 'Created server login.';
 END
 
-USE [ERP_1];
+USE [ERP_2];
 
 SELECT @dbUser = dp.name
 FROM sys.database_principals AS dp

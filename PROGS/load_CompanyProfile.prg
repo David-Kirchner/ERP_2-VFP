@@ -12,7 +12,7 @@ IF VARTYPE(goCompany) = "O" AND !tlForceReload
 	RETURN .T.
 ENDIF
 
-LOCAL nConn, nRet, lcSQL, i, laFld[1], lcFld
+LOCAL nConn, nRet, lcSQL, i, laFld[1], lcFld, lcType, xVal
 
 nConn = get_SQLSTRINGCONNECT()
 IF nConn < 1
@@ -39,8 +39,15 @@ goCompany = CREATEOBJECT("Empty")
 SELECT curCompany
 = AFIELDS(laFld, "curCompany")
 FOR i = 1 TO ALEN(laFld, 1)
-	lcFld = laFld[i, 1]
-	ADDPROPERTY(goCompany, lcFld, EVALUATE("curCompany." + lcFld))
+	lcFld  = laFld[i, 1]
+	lcType = laFld[i, 2]
+	xVal   = EVALUATE("curCompany." + lcFld)
+	DO CASE
+		CASE lcType = "M" OR lcType = "G" OR lcType = "Q"
+			ADDPROPERTY(goCompany, lcFld, xVal)
+		OTHERWISE
+			ADDPROPERTY(goCompany, lcFld, TRANSFORM(xVal))
+	ENDCASE
 ENDFOR
 USE IN curCompany
 SQLDISCONNECT(nConn)

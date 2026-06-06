@@ -1,5 +1,5 @@
-/* ERP_1 database roles — idempotent */
-USE [ERP_1];
+/* ERP_2 database roles — idempotent */
+USE [ERP_2];
 GO
 
 IF DATABASE_PRINCIPAL_ID('ERP_AppRead') IS NULL

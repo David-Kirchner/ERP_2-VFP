@@ -1,8 +1,8 @@
-/* ERP_1 — SQL database role catalog + Windows login grants (Layer 1 maintenance)
+/* ERP_2 — SQL database role catalog + Windows login grants (Layer 1 maintenance)
    Uses dbo.AppUsers (Windows login list). Does NOT use AppSetup.
    Run on SuperMicro and Server26 after Config\03_CreateAppUsers.sql and Security\02_CreateDB_Roles.sql. */
 
-USE [ERP_1];
+USE [ERP_2];
 GO
 
 /* ----- Catalog of ERP_* database roles (mirrors sys.database_principals type R) ----- */

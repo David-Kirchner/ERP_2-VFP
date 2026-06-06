@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 05/24/26             QUOTESC.MPR              12:20:45  
+*       * 05/26/2026            QUOTESC.MPR             16:44:11  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -30,26 +30,26 @@ DEFINE BAR 3 OF shortcut PROMPT "Reset Open Quotes"
 DEFINE BAR 4 OF shortcut PROMPT "Move Quote"
 DEFINE BAR 5 OF shortcut PROMPT "Reduction of Area"
 ON SELECTION BAR 1 OF shortcut ;
-	DO _7h20qglzn ;
+	DO _7h40zvedh ;
 	IN LOCFILE("ERP_2\MENUS\QUOTESC" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTESC?")
 ON SELECTION BAR 2 OF shortcut ;
-	DO _7h20qglzo ;
+	DO _7h40zvedi ;
 	IN LOCFILE("ERP_2\MENUS\QUOTESC" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTESC?")
 ON SELECTION BAR 3 OF shortcut ;
-	DO _7h20qglzp ;
+	DO _7h40zvedj ;
 	IN LOCFILE("ERP_2\MENUS\QUOTESC" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTESC?")
 ON SELECTION BAR 4 OF shortcut ;
-	DO _7h20qglzq ;
+	DO _7h40zvedk ;
 	IN LOCFILE("ERP_2\MENUS\QUOTESC" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTESC?")
 ON SELECTION BAR 5 OF shortcut ;
-	DO _7h20qglzr ;
+	DO _7h40zvedl ;
 	IN LOCFILE("ERP_2\MENUS\QUOTESC" ,"MPX;MPR|FXP;PRG" ,"WHERE is QUOTESC?")
 
 ACTIVATE POPUP shortcut
 
 *       *********************************************************
 *       *                                                         
-*       * _7H20QGLZN  ON SELECTION BAR 1 OF POPUP shortcut        
+*       * _7H40ZVEDH  ON SELECTION BAR 1 OF POPUP shortcut        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -60,7 +60,7 @@ ACTIVATE POPUP shortcut
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h20qglzn
+PROCEDURE _7h40zvedh
 PRIVATE m.nINQMAX,m.cUseThisSP
 
 *!*	PRIVATE m.nUseThisID, m.cOldName, m.cCurInqNumP
@@ -429,7 +429,7 @@ ENDIF
 
 *       *********************************************************
 *       *                                                         
-*       * _7H20QGLZO  ON SELECTION BAR 2 OF POPUP shortcut        
+*       * _7H40ZVEDI  ON SELECTION BAR 2 OF POPUP shortcut        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -440,7 +440,7 @@ ENDIF
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h20qglzo
+PROCEDURE _7h40zvedi
 PRIVATE INQMAX,RC,m.next_inq,cUseThisName,cOldName,nSalesNum
 PRIVATE cCurInqNumP
 
@@ -953,9 +953,10 @@ SET FILTER TO
 LOCATE FOR InqNumP = cCurInqNumP
 
 
+
 *       *********************************************************
 *       *                                                         
-*       * _7H20QGLZP  ON SELECTION BAR 3 OF POPUP shortcut        
+*       * _7H40ZVEDJ  ON SELECTION BAR 3 OF POPUP shortcut        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -966,7 +967,7 @@ LOCATE FOR InqNumP = cCurInqNumP
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h20qglzp
+PROCEDURE _7h40zvedj
 PRIVATE INQMAX,RC,m.next_inq,cUseThisName,cOldName,nSalesNum
 PRIVATE cCurInqNumP
 
@@ -1015,9 +1016,10 @@ WAIT CLEAR
 MESSAGEBOX("Reset Open Quotes to just last 30 days",64,"Done")
 
 
+
 *       *********************************************************
 *       *                                                         
-*       * _7H20QGLZQ  ON SELECTION BAR 4 OF POPUP shortcut        
+*       * _7H40ZVEDK  ON SELECTION BAR 4 OF POPUP shortcut        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -1028,7 +1030,7 @@ MESSAGEBOX("Reset Open Quotes to just last 30 days",64,"Done")
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h20qglzq
+PROCEDURE _7h40zvedk
 *Move Quote.
 
 IF NOT "PROC_HPA" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
@@ -1216,9 +1218,10 @@ ENDIF
 LOCATE FOR InqNumP = cPrevInqNumP
 
 
+
 *       *********************************************************
 *       *                                                         
-*       * _7H20QGLZR  ON SELECTION BAR 5 OF POPUP shortcut        
+*       * _7H40ZVEDL  ON SELECTION BAR 5 OF POPUP shortcut        
 *       *                                                         
 *       * Procedure Origin:                                       
 *       *                                                         
@@ -1229,6 +1232,7 @@ LOCATE FOR InqNumP = cPrevInqNumP
 *       *                                                         
 *       *********************************************************
 *
-PROCEDURE _7h20qglzr
+PROCEDURE _7h40zvedl
 *DO FORM Forms\RA
 DO FORM Forms\RedArea
+

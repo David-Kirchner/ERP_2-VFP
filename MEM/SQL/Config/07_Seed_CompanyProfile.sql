@@ -1,5 +1,5 @@
-/* Seed dbo.CompanyProfile — run after 01_CompanyProfile_Schema.sql on ERP_1 */
-USE [ERP_1];
+/* Seed dbo.CompanyProfile — run after 01_CompanyProfile_Schema.sql on ERP_2 */
+USE [ERP_2];
 GO
 
 IF NOT EXISTS (SELECT 1 FROM dbo.CompanyProfile WHERE CompanyId = 1)
@@ -14,11 +14,11 @@ BEGIN
         N'Space Alloys USA',
         N'Space Alloys USA',
         N'Space Alloys USA',
-        N'Nitronic 60 and specialty alloys',
+        N'Manufacturer and Distributor of High Strength Alloys',
         N'sales@spacealloysusa.com',
         N'quality@spacealloysusa.com',
         N'https://www.spacealloysusa.com',
-        N'Material Certification',
+        N'Material Certification Report',
         N'We hereby certify that the material described below was manufactured in accordance with the requirements specified.',
         N'This certification is issued under our ISO 9001:2015 quality management system.'
     );

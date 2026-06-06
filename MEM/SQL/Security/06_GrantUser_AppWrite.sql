@@ -37,7 +37,7 @@ END
 ELSE
     PRINT CONCAT('Server login already exists: ', @login);
 
-USE [ERP_1];
+USE [ERP_2];
 
 SELECT @dbUser = dp.name
 FROM sys.database_principals AS dp

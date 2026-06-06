@@ -1,1 +1,1 @@
-ERP_1:.C migrate archive/NR SQL off HPAlloy databases - 05/26/2026 04:23:26 PM
+Add AppSqlRole/AppPermission to project; quotes NR_OT fix; rebuild - 05/26/2026 08:27:12 PM

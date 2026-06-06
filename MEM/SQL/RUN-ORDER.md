@@ -4,7 +4,7 @@ Run on **both** SuperMicro and Server26 unless noted. Idempotent scripts are saf
 
 ## Full build (empty database)
 
-Use [`../Create ERP_new/`](../Create%20ERP_new/) scripts `01` … `09`, then `10_CreateAppUsers.sql` (see [README.md](README.md)).
+Use [`Create ERP_new/`](Create%20ERP_new/) scripts in filename order, including the split `01_*` files and `20_Z_ERP1_Alignment.sql` before `21_CurrentSupportTables.sql`.
 
 ## Config (`MEM\SQL\Config\`)
 
@@ -17,6 +17,7 @@ Use [`../Create ERP_new/`](../Create%20ERP_new/) scripts `01` … `09`, then `10
 | 05 | `05_AppSqlRole_Schema.sql` |
 | 06 | `06_Migrate_AppSetup_Permissions.sql` |
 | 07 | `07_Seed_CompanyProfile.sql` |
+| 08 | `08_CompanyPlant_CertReport.sql` (plant lines / CAGE for certs11 header) |
 
 ## Security (`MEM\SQL\Security\`)
 

@@ -1,8 +1,8 @@
--- Template: copy to YYYYMMDD_description.sql when you change live ERP_1
--- Run on BOTH SuperMicro and Server26 (database ERP_1).
+-- Template: copy to YYYYMMDD_description.sql when you change live ERP_2
+-- Run on BOTH SuperMicro and Server26 (database ERP_2).
 -- Keep idempotent where possible (IF NOT EXISTS, etc.).
 
-USE [ERP_1];
+USE [ERP_2];
 GO
 
 -- Example:

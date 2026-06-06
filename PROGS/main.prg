@@ -352,9 +352,22 @@ IF FILE(SYS(5)+SYS(2003)+"Progs\Proc_Setup.prg")
 	IF FILE(SYS(5)+SYS(2003)+"Progs\load_CompanyProfile.prg")
 		SET PROCEDURE TO Progs\load_CompanyProfile ADDITIVE
 	ENDIF
+	IF FILE(SYS(5)+SYS(2003)+"Progs\company_branding.prg")
+		SET PROCEDURE TO Progs\company_branding ADDITIVE
+	ENDIF
 	= get_SQLSTRINGCONNECT()		&&Sets gGlobalServer via ERP_Environment.xml
 	IF FILE(SYS(5)+SYS(2003)+"Progs\load_CompanyProfile.prg")
 		DO load_CompanyProfile
+	ENDIF
+	IF FILE(SYS(5)+SYS(2003)+"Progs\load_CompanyPlants.prg")
+		SET PROCEDURE TO Progs\load_CompanyPlants ADDITIVE
+		DO load_CompanyPlants
+	ENDIF
+	IF FILE(SYS(5)+SYS(2003)+"Progs\company_report.prg")
+		SET PROCEDURE TO Progs\company_report ADDITIVE
+	ENDIF
+	IF FILE(SYS(5)+SYS(2003)+"Progs\company_branding.prg")
+		= InitCompanyBranding()
 	ENDIF
 	IF VARTYPE(gERPProfile)="C" AND !EMPTY(gERPProfile)
 		_SCREEN.Caption = "ERP ["+gERPProfile+"]"

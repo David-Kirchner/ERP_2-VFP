@@ -1,4 +1,4 @@
-/* Grant the Windows login running this script ERP_AppAdmin on ERP_1.
+/* Grant the Windows login running this script ERP_AppAdmin on ERP_2.
    Run in SSMS on EACH instance (SuperMicro, Server26). Uses SYSTEM_USER.
 
    If your login is already dbo (built the database), you already have full access —
@@ -30,7 +30,7 @@ END
 ELSE
     PRINT 'Server login already exists.';
 
-USE [ERP_1];
+USE [ERP_2];
 
 /* Map login → database principal (may be dbo, not the login name) */
 SELECT @dbUser = dp.name
@@ -40,8 +40,8 @@ WHERE sp.name = @login;
 
 IF @dbUser = N'dbo'
 BEGIN
-    PRINT 'Login maps to dbo (database owner). Full access on ERP_1 — ERP_AppAdmin not required.';
-    PRINT CONCAT('Done. ', @login, ' is dbo on ERP_1.');
+    PRINT 'Login maps to dbo (database owner). Full access on ERP_2 — ERP_AppAdmin not required.';
+    PRINT CONCAT('Done. ', @login, ' is dbo on ERP_2.');
     RETURN;
 END
 
@@ -82,5 +82,5 @@ END
 ELSE
     PRINT CONCAT(@dbUser, ' is already in ERP_AppAdmin.');
 
-PRINT CONCAT('Done. ', @login, ' (', @dbUser, ') has ERP_AppAdmin on ERP_1.');
+PRINT CONCAT('Done. ', @login, ' (', @dbUser, ') has ERP_AppAdmin on ERP_2.');
 GO

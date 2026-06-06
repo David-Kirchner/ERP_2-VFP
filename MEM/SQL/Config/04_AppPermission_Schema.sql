@@ -1,8 +1,8 @@
-/* ERP_1 — application permission catalog + user grants (future App Permission screen)
+/* ERP_2 — application permission catalog + user grants (future App Permission screen)
    Run on SuperMicro and Server26 after 03_CreateAppUsers.sql / AppSetup exists.
    Idempotent. Does NOT drop dbo.AppSetup — legacy rows remain until migrated. */
 
-USE [ERP_1];
+USE [ERP_2];
 GO
 
 /* ----- Catalog of permission codes (matches HavePermission('Task') strings) ----- */
@@ -81,20 +81,27 @@ WHEN MATCHED AND (t.DisplayName <> s.DisplayName OR t.Category <> s.Category) TH
     UPDATE SET DisplayName = s.DisplayName, Category = s.Category, SortOrder = s.SortOrder;
 GO
 
-/* ----- Effective permissions: new grants + legacy AppSetup (PRP = YES) ----- */
-CREATE OR ALTER VIEW dbo.v_AppUserEffectivePermission
+/* ----- Effective permissions: new grants + legacy AppSetup (PRP = YES), when present ----- */
+IF OBJECT_ID('dbo.AppSetup', 'U') IS NOT NULL
+    EXEC(N'CREATE OR ALTER VIEW dbo.v_AppUserEffectivePermission
 AS
-    SELECT g.UserName, g.PermissionCode, N'Grant' AS Source
+    SELECT g.UserName, g.PermissionCode, N''Grant'' AS Source
     FROM dbo.AppUserGrant AS g WITH (NOLOCK)
     WHERE g.Granted = 1
     UNION
-    SELECT a.UN AS UserName, a.ANS AS PermissionCode, N'AppSetup' AS Source
+    SELECT a.UN AS UserName, a.ANS AS PermissionCode, N''AppSetup'' AS Source
     FROM dbo.AppSetup AS a WITH (NOLOCK)
-    WHERE UPPER(LTRIM(RTRIM(a.PRP))) = N'YES'
+    WHERE UPPER(LTRIM(RTRIM(a.PRP))) = N''YES''
       AND NOT EXISTS (
           SELECT 1 FROM dbo.AppUserGrant AS g WITH (NOLOCK)
           WHERE g.UserName = a.UN AND g.PermissionCode = a.ANS
-      );
+      );');
+ELSE
+    EXEC(N'CREATE OR ALTER VIEW dbo.v_AppUserEffectivePermission
+AS
+    SELECT g.UserName, g.PermissionCode, N''Grant'' AS Source
+    FROM dbo.AppUserGrant AS g WITH (NOLOCK)
+    WHERE g.Granted = 1;');
 GO
 
 PRINT 'AppPermission schema ready. Run 06_Migrate_AppSetup_Permissions.sql to copy legacy rows into AppUserGrant.';

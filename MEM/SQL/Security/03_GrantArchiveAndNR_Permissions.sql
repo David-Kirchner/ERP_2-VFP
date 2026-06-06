@@ -1,4 +1,4 @@
-/* ERP_1 — Archive (AR.*) and No-Replication (NR_*) table permissions.
+/* ERP_2 — Archive (AR.*) and No-Replication (NR_*) table permissions.
    Run on SuperMicro and Server26 after 01_CreateRoles.sql and 02_CreateDB_Roles.sql.
 
    Policy:
@@ -9,7 +9,7 @@
 
    Idempotent — safe to re-run after new AR./NR_ tables are added. */
 
-USE [ERP_1];
+USE [ERP_2];
 GO
 
 SET NOCOUNT ON;
@@ -69,7 +69,7 @@ DECLARE @nArIns   int = 0;
 DECLARE @nNrSel   int = 0;
 DECLARE @nTrack   int = 0;
 
-PRINT '=== ERP_1 AR.* / NR_* permissions ===';
+PRINT '=== ERP_2 AR.* / NR_* permissions ===';
 
 /* ----- AR.* archive tables (name starts with AR. — case-insensitive) ----- */
 DECLARE ar_cur CURSOR LOCAL FAST_FORWARD FOR

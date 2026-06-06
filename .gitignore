@@ -47,6 +47,9 @@ foxuser.dbf
 foxuser.fpt
 foxuser.*
 
+# Company logo cache (generated from dbo.CompanyProfile at runtime)
+MEM/company_logo.*
+
 # VFP memory / local setup (machine-specific)
 *.MEM
 *.mem
