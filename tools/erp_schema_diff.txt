@@ -1,0 +1,69 @@
+Issue|TABLE_NAME|COLUMN_NAME|DATA_TYPE
+-----|----------|-----------|---------
+ExtraInERP2|CompanyPlant|CageCode|nvarchar
+ExtraInERP2|CompanyPlant|CertReportLine|nvarchar
+MissingInERP2|CREDITREF|Company|char
+MissingInERP2|CREDITREF|ID|int
+MissingInERP2|CREDITREF|reserved0|char
+MissingInERP2|CREDITREF|reserved1|int
+MissingInERP2|CREDITREF|reserved2|int
+MissingInERP2|CREDITREF|reserved3|int
+MissingInERP2|CREDITREF|reserved4|int
+MissingInERP2|CREDITREF|ScanDate|smalldatetime
+MissingInERP2|HPAcertPdf|CertNumber|nvarchar
+MissingInERP2|HPAcertPdf|CompanySnapshotJson|nvarchar
+MissingInERP2|HPAcertPdf|CustomerName|nvarchar
+MissingInERP2|HPAcertPdf|HPAcertKey|nvarchar
+MissingInERP2|HPAcertPdf|PdfBlob|varbinary
+MissingInERP2|HPAcertPdf|PdfId|bigint
+MissingInERP2|HPAcertPdf|PdfMime|nvarchar
+MissingInERP2|HPAcertPdf|PdfSha256|binary
+MissingInERP2|HPAcertPdf|PdfSizeBytes|int
+MissingInERP2|HPAcertPdf|PlantId|int
+MissingInERP2|HPAcertPdf|PlantSnapshotJson|nvarchar
+MissingInERP2|HPAcertPdf|RenderedBy|nvarchar
+MissingInERP2|HPAcertPdf|RenderedUtc|datetime2
+MissingInERP2|HPAcertPdf|RenderEngine|nvarchar
+MissingInERP2|HPAcertPdf|RenderEngineVersion|nvarchar
+MissingInERP2|HPAcertPdf|ReprintOfPdfId|bigint
+MissingInERP2|HPAcertPdf|SignerSnapshotJson|nvarchar
+MissingInERP2|HPAcertPdf|WorkOrderNumber|nvarchar
+MissingInERP2|PriceTable|DescriptID|varchar
+MissingInERP2|StockLst_Master_50CC|CC|char
+MissingInERP2|StockLst_Master_50CC|CCnew|char
+MissingInERP2|StockLst_Master_50CC|CLnew|char
+MissingInERP2|StockLst_Master_50CC|ID|int
+MissingInERP2|sysdiagrams|definition|varbinary
+MissingInERP2|sysdiagrams|diagram_id|int
+MissingInERP2|sysdiagrams|name|nvarchar
+MissingInERP2|sysdiagrams|principal_id|int
+MissingInERP2|sysdiagrams|version|int
+MissingInERP2|WindfallSTK_2025| WEIGHT 1|varchar
+MissingInERP2|WindfallSTK_2025|Alloy|char
+MissingInERP2|WindfallSTK_2025|ALLOY 1|nvarchar
+MissingInERP2|WindfallSTK_2025|ChangeDate|datetime
+MissingInERP2|WindfallSTK_2025|Detail_ID|int
+MissingInERP2|WindfallSTK_2025|DIMENSIONS1|nvarchar
+MissingInERP2|WindfallSTK_2025|FoundTwin|bit
+MissingInERP2|WindfallSTK_2025|Heat|char
+MissingInERP2|WindfallSTK_2025|HEAT NUMBER 1|nvarchar
+MissingInERP2|WindfallSTK_2025|Hist_ID|int
+MissingInERP2|WindfallSTK_2025|Hist_ID_Detail|int
+MissingInERP2|WindfallSTK_2025|id|int
+MissingInERP2|WindfallSTK_2025|INV UPDATED1|nvarchar
+MissingInERP2|WindfallSTK_2025|loc|char
+MissingInERP2|WindfallSTK_2025|LOCATION 1|nvarchar
+MissingInERP2|WindfallSTK_2025|Lot|char
+MissingInERP2|WindfallSTK_2025|madeChange|bit
+MissingInERP2|WindfallSTK_2025|Master_ID|int
+MissingInERP2|WindfallSTK_2025|Master_ID2|int
+MissingInERP2|WindfallSTK_2025|Master_ID3|int
+MissingInERP2|WindfallSTK_2025|PC|int
+MissingInERP2|WindfallSTK_2025|PC COUNT 1|nvarchar
+MissingInERP2|WindfallSTK_2025|Sz2|float
+MissingInERP2|WindfallSTK_2025|Sz3|float
+MissingInERP2|WindfallSTK_2025|Thck|numeric
+MissingInERP2|WindfallSTK_2025|THICKNESS1|varchar
+MissingInERP2|WindfallSTK_2025|weight|decimal
+
+(65 rows affected)

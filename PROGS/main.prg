@@ -80,8 +80,8 @@ ELSE
 			*MESSAGEBOX("Run the ERP Setup to set defaults."+CHR(13)+"SetupERP"+CHR(13)+"Line A "+CHR(13)+STR(LINENO(1)),48,"Set Defaults")
 			WAIT WINDOW "Running the ERP Setup to set defaults." TIMEOUT 1
 			
-			IF FILE("\Forms\SetupERP.SCX")
-				DO FORM (SYS(5)+SYS(2003) +"\Forms\SetupERP")
+			IF FILE("\Forms\setuperp.scx")
+				DO FORM (SYS(5)+SYS(2003) +"\Forms\setuperp")
 			ELSE
 				*STOP
 			ENDIF
@@ -149,7 +149,7 @@ IF NOT ( FILE(LoginAppHome+"ERP Home.txt") OR FILE(LoginAppHome+"ERP.APP")  )
 	ENDIF
 	MESSAGEBOX("Run the ERP Setup to set defaults."+CHR(13)+"Main.prg"+CHR(13)+CHR(13)+"SYS(5)="+SYS(5)+CHR(13)+"SYS(2003)="+SYS(2003)+CHR(13)+"Line B "+STR(LINENO(1))+CHR(13)+"LoginAppHome="+LoginAppHome,48,"Home Directory not found!")
 
-	DO FORM LOCFILE("E:\VFP\ERP_2\Forms\SetupERP.SCX","SCX","Select the SetupERP.SCX")
+	DO FORM LOCFILE("E:\VFP\ERP_2\Forms\setuperp.scx","SCX","Select the setuperp.scx")
 	*RESTORE FROM (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM") ADDITIVE
 ENDIF
 
@@ -184,6 +184,9 @@ IF FILE(LoginAppHome+"ERP Home.txt") OR FILE(LoginAppHome+"ERP.APP")
 
 	*PROGWORK - 
 ENDIF
+
+PUBLIC gERPAppHome
+gERPAppHome = ADDBS(LoginAppHome)
 
 *?(LoginAppHome)
 *SET PATH - Specifies a path for file searches
@@ -263,7 +266,11 @@ cOldError = ON("ERROR")
 *ON ERROR \Progs\ErrorHandlerLog(ERROR(),MESSAGE(),MESSAGE(1),PROGRAM(),LINENO())
 *ON ERROR DO Progs\ErrorHandlerLog WITH ERROR(),MESSAGE(),MESSAGE(1),PROGRAM(),LINENO()
 
-ON ERROR DO (SYS(5)+SYS(2003)+"\Progs\ErrorHandlerLog.prg") WITH ERROR(),MESSAGE(1),MESSAGE(),PROGRAM(),LINENO()
+* SYS(2003) later points at \MEM\ — use gERPAppHome so the handler file is always found
+IF NOT "ERRORHANDLERLOG" $ UPPER(SET("PROCEDURE"))
+	SET PROCEDURE TO (gERPAppHome + "PROGS\errorhandlerlog.prg") ADDITIVE
+ENDIF
+ON ERROR DO errorhandlerlog WITH ERROR(),MESSAGE(1),MESSAGE(),PROGRAM(),LINENO()
 
 *SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 AppSetup_HomeDir(LoginAppHome)
@@ -325,7 +332,7 @@ ELSE
 		RESTORE FROM (SYS(5)+SYS(2003) +"\MEM\SalesP.MEM") ADDITIVE
 	ELSE
 		MESSAGEBOX("Run the ERP Setup to set defaults."+CHR(13)+"Main.prg"+CHR(13)+CHR(13)+"SYS(5)="+SYS(5)+" "+CHR(13)+"SYS(2003)="+SYS(2003)+" "+CHR(13)+"Line C "+STR(LINENO()) ,48,"Set Defaults")
-		DO FORM LOCFILE("E:\VFP\ERP_2\MEM\SetupERP.SCX","SCX","Select the SetupERP")
+		DO FORM LOCFILE("E:\VFP\ERP_2\Forms\setuperp.scx","SCX","Select the setuperp.scx")
 		*RESTORE FROM (SYS(5)+SYS(2003) +"\SalesP.MEM") ADDITIVE
 		
 *		IF NOT FILE(SYS(5)+SYS(2003) +"\MEM\SalesP.MEM")	&&Old Code
@@ -369,8 +376,9 @@ IF FILE(SYS(5)+SYS(2003)+"Progs\Proc_Setup.prg")
 	IF FILE(SYS(5)+SYS(2003)+"Progs\company_branding.prg")
 		= InitCompanyBranding()
 	ENDIF
-	IF VARTYPE(gERPProfile)="C" AND !EMPTY(gERPProfile)
-		_SCREEN.Caption = "ERP ["+gERPProfile+"]"
+	IF VARTYPE(gGlobalServer)="C" AND !EMPTY(gGlobalServer)
+		_SCREEN.Caption = "ERP [" + ALLTRIM(gGlobalServer) ;
+			+ IIF(VARTYPE(gGlobalDatabase)="C" AND !EMPTY(gGlobalDatabase), " / " + ALLTRIM(gGlobalDatabase), "") + "]"
 	ENDIF
 ELSE
 	IF "\MEM" $ SYS(2003)

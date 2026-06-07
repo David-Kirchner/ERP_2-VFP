@@ -1,5 +1,5 @@
 *IF NOT "PROC_HPA" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
-*	SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+*	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 *ENDIF
 
 ***********************************************************************************************

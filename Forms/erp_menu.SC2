@@ -927,11 +927,11 @@ DEFINE CLASS hpa AS form
 			ELSE
 				DO FORM "Forms\VacationSchedule.SCX"
 			ENDIF
-		CASE tNodeText = "Setup HPA"
-			IF WEXIST("HPASETUP")	
-				ACTIVATE WINDOW HPASETUP
+		CASE tNodeText = "ERP Setup"
+			IF WEXIST("ERPSETUP")	
+				ACTIVATE WINDOW ERPSETUP
 			ELSE
-				DO FORM "Forms\SetupERP.SCX"
+				DO FORM "Forms\setuperp.scx"
 			ENDIF
 		CASE tNodeText = "Set Server"
 			IF WEXIST("frmSetServer")	
@@ -1129,7 +1129,7 @@ DEFINE CLASS hpa AS form
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"Employee","Employee")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Employee",4,,"Employee Maintanence")
 		******* other ********
-		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"Setup HPA","Setup HPA")
+		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"ERP Setup","ERP Setup")
 		
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"ShowPermission","ShowPermission")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"Set Server","Set Server")
@@ -1673,8 +1673,8 @@ DEFINE CLASS hpa AS form
 		
 		******* other ********
 		
-		IF WEXIST("HPASETUP")	
-			ACTIVATE WINDOW HPASETUP
+		IF WEXIST("ERPSETUP")	
+			ACTIVATE WINDOW ERPSETUP
 			lQuit = .F.
 		ENDIF
 		

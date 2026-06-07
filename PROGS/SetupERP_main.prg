@@ -3,7 +3,15 @@
 *====================================================================
 SET TALK OFF
 SET SAFETY OFF
-SET DEFAULT TO (JUSTPATH(SYS(16)))
+LOCAL lcRoot
+lcRoot = ADDBS(JUSTPATH(SYS(16)))
+IF UPPER(JUSTFNAME(lcRoot)) == "PROGS"
+	lcRoot = ADDBS(JUSTPATH(lcRoot))
+ENDIF
+SET DEFAULT TO (lcRoot)
+PUBLIC gERPAppHome, LoginAppHome
+gERPAppHome = lcRoot
+LoginAppHome = lcRoot
 
 IF FILE("PROGS\load_ERP_Environment.prg")
 	SET PROCEDURE TO PROGS\load_ERP_Environment ADDITIVE
@@ -20,12 +28,13 @@ ENDIF
 
 PUBLIC gcSetupCaption
 gcSetupCaption = "ERP Setup"
-IF VARTYPE(gERPProfile) = "C"
-	gcSetupCaption = gcSetupCaption + " [" + gERPProfile + "]"
+IF VARTYPE(gGlobalServer)="C" AND !EMPTY(gGlobalServer)
+	gcSetupCaption = gcSetupCaption + " [" + ALLTRIM(gGlobalServer) ;
+		+ IIF(VARTYPE(gGlobalDatabase)="C" AND !EMPTY(gGlobalDatabase), " / " + ALLTRIM(gGlobalDatabase), "") + "]"
 ENDIF
 _SCREEN.Caption = gcSetupCaption
 
-DO FORM Forms\SetupERP.scx
+DO FORM Forms\setuperp.scx
 READ EVENTS
 
 CLEAR EVENTS

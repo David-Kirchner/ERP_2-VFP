@@ -459,9 +459,11 @@ DEFINE CLASS frmsetserver AS form
 		
 		************
 		
-		ThisForm.txtTable.Value = "HPAlloy"
-		
-		
+		IF FILE(SYS(5)+SYS(2003)+"\PROGS\ERP_Environment_UI.prg")
+			DO PROGS\ERP_Environment_UI WITH "INITSETSERVER", ThisForm
+		ELSE
+			ThisForm.txtTable.Value = "ERP_1"
+		ENDIF
 		
 	ENDPROC
 
@@ -472,6 +474,12 @@ DEFINE CLASS frmsetserver AS form
 		IF NOT "PROC_QUOTES" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
 		ENDIF 
+		IF FILE(SYS(5)+SYS(2003)+"\PROGS\load_ERP_Environment.prg")
+			SET PROCEDURE TO PROGS\load_ERP_Environment ADDITIVE
+		ENDIF
+		IF FILE(SYS(5)+SYS(2003)+"\PROGS\ERP_Environment_UI.prg")
+			SET PROCEDURE TO PROGS\ERP_Environment_UI ADDITIVE
+		ENDIF
 	ENDPROC
 
 	PROCEDURE cmd4.Click
@@ -515,6 +523,10 @@ DEFINE CLASS frmsetserver AS form
 			GlobalTable		= ""
 		ENDIF
 		GlobalTable	= ALLTRIM(ThisForm.txtTable.Value)
+		IF VARTYPE(gGlobalDatabase) # "C"
+			PUBLIC gGlobalDatabase
+		ENDIF
+		gGlobalDatabase = GlobalTable
 	ENDPROC
 
 	PROCEDURE cmdSetTipton1.Click

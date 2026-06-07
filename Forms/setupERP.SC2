@@ -18,7 +18,7 @@ DEFINE CLASS dataenvironment AS dataenvironment
 
 ENDDEFINE
 
-DEFINE CLASS hpasetup AS form 
+DEFINE CLASS erpsetup AS form 
  	*< CLASSDATA: Baseclass="form" Timestamp="" Scale="" Uniqueid="" />
 
 	*-- OBJECTDATA items order determines ZOrder / El orden de los items OBJECTDATA determina el ZOrder 
@@ -29,6 +29,10 @@ DEFINE CLASS hpasetup AS form
 	*< OBJECTDATA: ObjPath="ServerDir" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdChangeHome" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdChangeServer" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="lblDatabase" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="DatabaseDir" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="cmdChangeDatabase" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="lblProfile" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Label1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="SalespTXT" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdSalesp" UniqueID="" Timestamp="" />
@@ -36,13 +40,14 @@ DEFINE CLASS hpasetup AS form
 	*< OBJECTDATA: ObjPath="cmdRMAIL" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdUserInfo" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdRunScripts" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="Label2" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdTiptonPrinter" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="lblLoginUN" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdUserPermission" UniqueID="" Timestamp="" />
 
 	*<DefinedPropArrayMethod>
+		*p: databasedirmem		&& SQL Database name from ERP_Environment.xml
 		*p: homedirmem		&& Location of home, normally "C:\Program Files\VFP"
+		*p: logindatabase
 		*p: loginhome
 		*p: loginpc
 		*p: loginpeachinv
@@ -50,7 +55,7 @@ DEFINE CLASS hpasetup AS form
 		*p: loginun		&& User Name
 		*p: safetyset		&& Setting of SAFETY, Set off in INIT.
 		*p: salesp		&& From c:\Salesp.mem
-		*p: serverdirmem		&& Location of the Server, normally "E:\Quotes"
+		*p: serverdirmem		&& SQL Server name from ERP_Environment.xml
 		*p: serverpeachinv
 	*</DefinedPropArrayMethod>
 
@@ -60,36 +65,49 @@ DEFINE CLASS hpasetup AS form
 		Caption = "ERP Setup"
 		DataSession = 2
 		DoCreate = .T.
-		Height = 174
+		Height = 220
 		Icon = ..\ico\options.ico
+		logindatabase = ""
 		loginhome = ""
 		loginpc = ""
 		loginpeachinv = ""
 		loginserver = ""
 		loginun = "
-		Name = "HPASETUP"
+		Name = "ERPSETUP"
 		serverpeachinv = ""
 		Width = 428
 		WindowType = 1
 	*</PropValue>
 
+	ADD OBJECT 'cmdChangeDatabase' AS commandbutton WITH ;
+		Caption = "Save", ;
+		Height = 23, ;
+		Left = 331, ;
+		Name = "cmdChangeDatabase", ;
+		TabIndex = 12, ;
+		ToolTipText = "Pick SQL database from ERP_Environment.xml", ;
+		Top = 78, ;
+		Width = 84
+		*< END OBJECT: BaseClass="commandbutton" />
+
 	ADD OBJECT 'cmdChangeHome' AS commandbutton WITH ;
-		Caption = "Change", ;
+		Caption = "Save", ;
 		Height = 23, ;
 		Left = 331, ;
 		Name = "cmdChangeHome", ;
 		TabIndex = 7, ;
-		Top = 37, ;
+		Top = 36, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
 	ADD OBJECT 'cmdChangeServer' AS commandbutton WITH ;
-		Caption = "Change", ;
+		Caption = "Save", ;
 		Height = 23, ;
 		Left = 331, ;
 		Name = "cmdChangeServer", ;
 		TabIndex = 10, ;
-		Top = 63, ;
+		ToolTipText = "Pick SQL server from ERP_Environment.xml", ;
+		Top = 57, ;
 		Visible = .T., ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -102,7 +120,7 @@ DEFINE CLASS hpasetup AS form
 		Name = "cmdDone", ;
 		TabIndex = 1, ;
 		TerminateRead = .T., ;
-		Top = 144, ;
+		Top = 190, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -113,7 +131,7 @@ DEFINE CLASS hpasetup AS form
 		Left = 12, ;
 		Name = "cmdRHPA", ;
 		TabIndex = 14, ;
-		Top = 96, ;
+		Top = 103, ;
 		Visible = .F., ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -125,7 +143,7 @@ DEFINE CLASS hpasetup AS form
 		Left = 12, ;
 		Name = "cmdRMAIL", ;
 		TabIndex = 16, ;
-		Top = 120, ;
+		Top = 127, ;
 		Visible = .F., ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -137,7 +155,7 @@ DEFINE CLASS hpasetup AS form
 		Left = 12, ;
 		Name = "cmdRunScripts", ;
 		TabIndex = 15, ;
-		Top = 144, ;
+		Top = 167, ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -159,7 +177,7 @@ DEFINE CLASS hpasetup AS form
 		Name = "cmdTiptonPrinter", ;
 		TabIndex = 14, ;
 		ToolTipText = "Check for a Tipton Printer", ;
-		Top = 96, ;
+		Top = 139, ;
 		Visible = .T., ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -171,7 +189,7 @@ DEFINE CLASS hpasetup AS form
 		Left = 324, ;
 		Name = "cmdUserInfo", ;
 		TabIndex = 17, ;
-		Top = 108, ;
+		Top = 139, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -182,9 +200,19 @@ DEFINE CLASS hpasetup AS form
 		Left = 153, ;
 		Name = "cmdUserPermission", ;
 		TabIndex = 17, ;
-		Top = 132, ;
+		Top = 167, ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'DatabaseDir' AS textbox WITH ;
+		ControlSource = "ThisForm.DatabaseDirMem", ;
+		Height = 23, ;
+		Left = 77, ;
+		Name = "DatabaseDir", ;
+		TabIndex = 11, ;
+		Top = 78, ;
+		Width = 240
+		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'HomeDir' AS textbox WITH ;
 		ControlSource = "ThisForm.HomeDirMem", ;
@@ -200,22 +228,24 @@ DEFINE CLASS hpasetup AS form
 		Alignment = 1, ;
 		Caption = "Sales Person", ;
 		Height = 17, ;
-		Left = 168, ;
+		Left = 204, ;
 		Name = "Label1", ;
 		TabIndex = 2, ;
 		Top = 16, ;
-		Width = 120
+		Width = 84
 		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'Label2' AS label WITH ;
-		AutoSize = .T., ;
-		Caption = "Must have a Drive C:", ;
+	ADD OBJECT 'lblDatabase' AS label WITH ;
+		Alignment = 2, ;
+		BorderStyle = 1, ;
+		Caption = "Database", ;
 		Height = 17, ;
-		Left = 313, ;
-		Name = "Label2", ;
-		Top = 87, ;
-		Visible = .F., ;
-		Width = 113
+		Left = 12, ;
+		Name = "lblDatabase", ;
+		TabIndex = 8, ;
+		ToolTipText = "SQL database catalog (ERP_1, ERP_2, ...). Click label to clear.", ;
+		Top = 81, ;
+		Width = 62
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'lblHome' AS label WITH ;
@@ -234,11 +264,23 @@ DEFINE CLASS hpasetup AS form
 	ADD OBJECT 'lblLoginUN' AS label WITH ;
 		Caption = "LoginUN", ;
 		Height = 17, ;
-		Left = 4, ;
+		Left = 6, ;
 		Name = "lblLoginUN", ;
 		TabIndex = 5, ;
-		Top = 2, ;
+		Top = 3, ;
 		Width = 132
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'lblProfile' AS label WITH ;
+		AutoSize = .F., ;
+		BackStyle = 1, ;
+		Caption = "SQL:", ;
+		Height = 17, ;
+		Left = 77, ;
+		Name = "lblProfile", ;
+		ToolTipText = "Click to pick a full profile (sets Server and Database together)", ;
+		Top = 115, ;
+		Width = 300
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'lblServer' AS label WITH ;
@@ -249,8 +291,8 @@ DEFINE CLASS hpasetup AS form
 		Left = 24, ;
 		Name = "lblServer", ;
 		TabIndex = 8, ;
-		ToolTipText = "May be passed over with a XML file entry.", ;
-		Top = 66, ;
+		ToolTipText = "SQL Server instance from ERP_Environment.xml", ;
+		Top = 61, ;
 		Visible = .T., ;
 		Width = 50
 		*< END OBJECT: BaseClass="label" />
@@ -272,7 +314,7 @@ DEFINE CLASS hpasetup AS form
 		Left = 77, ;
 		Name = "ServerDir", ;
 		TabIndex = 9, ;
-		Top = 62, ;
+		Top = 56, ;
 		Visible = .T., ;
 		Width = 240
 		*< END OBJECT: BaseClass="textbox" />
@@ -284,21 +326,61 @@ DEFINE CLASS hpasetup AS form
 		This.Safetyset = SET('SAFETY')
 		SET SAFETY OFF
 		
+		LOCAL lcRoot
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
 		
 		IF NOT "Proc_ERP" $ SET("PROCEDURE")
-			SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_ERP.prg") ADDITIVE
+			SET PROCEDURE TO (lcRoot + "PROGS\Proc_ERP.prg") ADDITIVE
 		ENDIF
 		
 		IF NOT "PROC_SETUP" $ SET("PROCEDURE")
-			SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_Setup.prg") ADDITIVE
+			SET PROCEDURE TO (lcRoot + "PROGS\Proc_Setup.prg") ADDITIVE
 		ENDIF
 		IF NOT "PROC_SQL" $ SET("PROCEDURE")
-			SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_SQL.prg") ADDITIVE
+			SET PROCEDURE TO (lcRoot + "PROGS\Proc_SQL.prg") ADDITIVE
+		ENDIF
+		IF FILE(lcRoot + "PROGS\load_ERP_Environment.prg")
+			SET PROCEDURE TO (lcRoot + "PROGS\load_ERP_Environment.prg") ADDITIVE
+		ENDIF
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			SET PROCEDURE TO (lcRoot + "PROGS\ERP_Environment_UI.prg") ADDITIVE
+		ENDIF
+		
+		LOCAL lcAppRoot, MachineInfo, LoginPC1, LoginUN1
+		lcAppRoot = lcRoot
+		DO CASE
+		    CASE LOWER(JUSTFNAME(lcAppRoot)) == "forms"
+		        lcAppRoot = JUSTPATH(lcAppRoot)
+		    CASE LOWER(JUSTFNAME(lcAppRoot)) == "libs"
+		        lcAppRoot = JUSTPATH(lcAppRoot)
+		    CASE LOWER(JUSTFNAME(lcAppRoot)) == "mem"
+		        lcAppRoot = JUSTPATH(lcAppRoot)
+		    CASE LOWER(JUSTFNAME(lcAppRoot)) == "menus"
+		        lcAppRoot = JUSTPATH(lcAppRoot)
+		    CASE LOWER(JUSTFNAME(lcAppRoot)) == "progs"
+		        lcAppRoot = JUSTPATH(lcAppRoot)
+		    CASE LOWER(JUSTFNAME(lcAppRoot)) == "reports"
+		        lcAppRoot = JUSTPATH(lcAppRoot)
+		    CASE LOWER(JUSTFNAME(lcAppRoot)) == "tools"
+		        lcAppRoot = JUSTPATH(lcAppRoot)
+		ENDCASE
+		lcAppRoot = ADDBS(lcAppRoot)
+		IF VARTYPE(LoginAppHome) = "U"
+			PUBLIC LoginAppHome
+		ENDIF
+		IF VARTYPE(gERPAppHome) = "U"
+			PUBLIC gERPAppHome
+		ENDIF
+		IF FILE(lcAppRoot + "ERP_Environment.xml")
+			LoginAppHome = lcAppRoot
+			gERPAppHome = lcAppRoot
+		ENDIF
+		IF FILE(lcRoot + "PROGS\load_ERP_Environment.prg")
+			= load_ERP_Environment(.T.)
 		ENDIF
 		
 		
-		
-		LOCAL MachineInfo, LoginPC1, LoginUN1
 		LOCAL LoginHome1
 		
 		PRIVATE chngHome,ChngServer
@@ -318,8 +400,9 @@ DEFINE CLASS hpasetup AS form
 			LoginUN1 = ThisForm.LoginUN
 		ENDIF
 		
-		lcAppPath = JUSTPATH(SYS(16, 0))
-		? lcAppPath 
+		lcAppPath = lcRoot	
+		*JUSTPATH(SYS(16, 0))
+		*? lcAppPath 
 		
 		*Strip lcAppPath to ERP_2
 		DO CASE
@@ -339,7 +422,7 @@ DEFINE CLASS hpasetup AS form
 		        lcAppPath = JUSTPATH(lcAppPath)
 		ENDCASE
 		
-		? SET("DEFAULT")
+		*? SET("DEFAULT")
 		SET DEFAULT TO (lcAppPath)
 		
 		ThisForm.LoginHome = lcAppPath
@@ -361,25 +444,36 @@ DEFINE CLASS hpasetup AS form
 		
 		IF FILE( SYS(5)+SYS(2003)+"\ERPSetup.mem" )
 			RESTORE FROM SYS(5)+SYS(2003)+"\ERPSetup.mem" ADDITIVE
+			ThisForm.LoginPC		= LoginPC
+			ThisForm.LoginUN		= LoginUN
+			ThisForm.LoginHome		= LoginHome
+			ThisForm.LoginServer	= gGlobalServer
+			ThisForm.LoginDatabase	= gGlobalDatabase
 		ELSE
 			IF FILE( SYS(5)+SYS(2003)+"\MEM\ERPSetup.mem" )
 				RESTORE FROM SYS(5)+SYS(2003)+"\MEM\ERPSetup.mem" ADDITIVE
+				ThisForm.LoginPC		= LoginPC
+				ThisForm.LoginUN		= LoginUN
+				ThisForm.LoginHome		= LoginHome
+				ThisForm.LoginServer	= gGlobalServer
+				ThisForm.LoginDatabase	= gGlobalDatabase
+			
 			ELSE
 				MESSAGEBOX("Could not Restore the ERPSetup Memory Variables."+CHR(13)+"Called from SetupERP.SCX Init."+CHR(13)++CHR(13)+"You will need to make the FILE!"+CHR(13)+"Line "+STR(LINENO(1))+CHR(13)+"Possible the first time the Setup App is run.",0+16,"ERPSetup.MEM File not found")
 			ENDIF
 		ENDIF
 		
 		*********************
-		IF VARTYPE(LoginPC)!="C"
+		*IF VARTYPE(LoginPC)!="C"
 			LoginPC = LEFT(MachineInfo,AT("#",MachineInfo)-1 )
-		ENDIF
+		*ENDIF
 		IF VARTYPE(LoginPC)!="C"
 			LoginPC = ''
 		ENDIF
 		
-		IF VARTYPE(LoginUN)!="C"
+		*IF VARTYPE(LoginUN)!="C"
 			LoginUN = SUBSTR(SYS(0),AT("#",SYS(0))+2)
-		ENDIF
+		*ENDIF
 		IF VARTYPE(LoginHome)!="C"
 			LoginHome = ''
 		ENDIF
@@ -436,7 +530,12 @@ DEFINE CLASS hpasetup AS form
 			ThisForm.LoginPC		= LoginPC
 			ThisForm.LoginUN		= LoginUN
 			ThisForm.LoginHome		= LoginHome
-			ThisForm.LoginServer	= gGlobalServer
+			IF VARTYPE(gGlobalServer)="C" AND !EMPTY(ALLTRIM(gGlobalServer))
+				ThisForm.LoginServer = gGlobalServer
+			ENDIF
+			IF VARTYPE(gGlobalDatabase)="C" AND !EMPTY(ALLTRIM(gGlobalDatabase))
+				ThisForm.LoginDatabase = gGlobalDatabase
+			ENDIF
 			
 		ELSE
 			IF VARTYPE(LoginPC)!="C"
@@ -455,8 +554,6 @@ DEFINE CLASS hpasetup AS form
 				ThisForm.LoginServer = gGlobalServer
 			ENDIF
 			
-			ThisForm.cmdChangeHome.Caption = "Save"
-			ThisForm.cmdChangeServer.Caption = "Save"
 		ENDIF
 		
 		
@@ -581,10 +678,24 @@ DEFINE CLASS hpasetup AS form
 		
 		ThisForm.HomeDirMem   = ThisForm.LoginHome
 		ThisForm.ServerDirMem = ThisForm.LoginServer
+		IF VARTYPE(ThisForm.LoginDatabase) != "C"
+			ThisForm.LoginDatabase = ""
+		ENDIF
+		ThisForm.DatabaseDirMem = ThisForm.LoginDatabase
 		
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "INITSETUPERP", ThisForm
+		ENDIF
 		
 		LoginPC = LEFT( SYS(0), AT(" #",SYS(0)))
 		AppSetup_Login(ThisForm.LoginUN,LoginPC,ThisForm.LoginHome,ThisForm.LoginServer)
+		IF !EMPTY(ALLTRIM(ThisForm.LoginDatabase))
+			AppSetup_Update_Ans(ThisForm.LoginDatabase, ThisForm.LoginUN, "Database")
+		ELSE
+			IF VARTYPE(gGlobalDatabase) = "C" AND NOT EMPTY(gGlobalDatabase)
+				AppSetup_Update_Ans(gGlobalDatabase, ThisForm.LoginUN, "Database")
+			ENDIF
+		ENDIF
 		
 		
 		
@@ -616,156 +727,105 @@ DEFINE CLASS hpasetup AS form
 	ENDPROC
 
 	PROCEDURE Load
+		LOCAL lcRoot, lcMenu
+		
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+		lcMenu = lcRoot + "MENUS\SETUP_ERP.mpr"
+		IF !FILE(lcMenu)
+			lcMenu = lcRoot + "menus\Setup_ERP.mpr"
+		ENDIF
 		
 		_SCREEN.Icon = "\GRAPHICS\ERP_Icon.ICO"
-		_SCREEN.Caption="Shop Edit StockLst"
-		
-		*_SCREEN.Height = 1
-		*_SCREEN.Width = 200
-		
-		*DO (SYS(5)+SYS(2003)+"\Progs\CreateHPAdsn.prg")
-		*DO \Progs\CreateHPAdsn.prg
+		_SCREEN.Caption = "ERP Setup"
 		
 		PUSH MENU _msysmenu
-		*DO \Menus\SetupERP.mpr
-		DO (SYS(5)+SYS(2003)+"\menus\Setup_ERP.mpr")
+		IF FILE(lcMenu)
+			DO (lcMenu)
+		ENDIF
 		
 		
 		
+	ENDPROC
+
+	PROCEDURE cmdChangeDatabase.Click
+		LOCAL lcRoot
+		IF This.Caption # "Save"
+			RETURN
+		ENDIF
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "SAVEDATABASE", ThisForm
+		ENDIF
 	ENDPROC
 
 	PROCEDURE cmdChangeHome.Click
+		LOCAL lcRoot, lcFindHome, lcHome, lcMemFile
 		IF TYPE('ThisForm.LoginHome')="U"
-			ThisForm.LoginHome= ""
+			ThisForm.LoginHome = ""
 		ENDIF
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
 		
-		PRIVATE cFindHome
-		cFindHome = ''
-		
-		IF This.Caption = "Change"
-			LoginHome1 = ThisForm.LoginHome
-		*	cFindHome = LOCFILE("C:\ERP Home.txt","EXE","Find your Home directory with file ERP Home.txt")
-			cFindHome = GETFILE("EXE","ERP Home.txt","Select",0,"Find your Home directory with file ERP Home.txt")
-			IF !EMPTY(cFindHome) AND FILE(cFindHome)
-				ThisForm.LoginHome = ALLTRIM(LEFT(cFindHome,AT("ERP Home.txt",cFindHome)-1))
-				ThisForm.HomeDirMem = ThisForm.LoginHome
-				
-				IF LoginHome1 <> ThisForm.LoginHome
-					This.Caption = "Save"
-					ThisForm.HomeDir.Value = ALLTRIM(ThisForm.LoginHome)
-				ENDIF
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			lcFindHome = GETFILE("TXT","ERP Home.txt","Select",0,"Find folder containing ERP Home.txt")
+			IF EMPTY(lcFindHome)
+				RETURN
 			ENDIF
-		ELSE
-		*This.Caption = "Save"
-			LoginPC			= ThisForm.LoginPC
-			LoginUN			= ThisForm.LoginUN
-			LoginHome		= ThisForm.LoginHome
-		*	LoginServer		= ThisForm.LoginServer
+			lcHome = ALLTRIM(LEFT(lcFindHome, RAT("ERP Home.txt", lcFindHome) - 1))
+			IF EMPTY(lcHome)
+				lcHome = ALLTRIM(JUSTPATH(lcFindHome))
+			ENDIF
+			ThisForm.LoginHome = ADDBS(lcHome)
+			ThisForm.HomeDirMem = ThisForm.LoginHome
+			IF VARTYPE(LoginAppHome) = "U"
+				PUBLIC LoginAppHome
+			ENDIF
+			IF VARTYPE(gERPAppHome) = "U"
+				PUBLIC gERPAppHome
+			ENDIF
+			LoginAppHome = ThisForm.LoginHome
+			gERPAppHome = ThisForm.LoginHome
+			IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+				lcMemFile = ""
+				DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "SAVELOGINMEM", ThisForm
+			ENDIF
+			AppSetup_Update_Ans(ThisForm.LoginHome, ThisForm.LoginUN, "Home")
+			MESSAGEBOX("Home saved to:" + CHR(13) + ThisForm.LoginHome, 64, "ERP Setup")
 			
-			IF "\MEM" $ SYS(2003)
-				SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\ERPSetup.MEM")
-				WAIT WINDOW "SAVE ALL LIKE Login* TO "+(SYS(5)+SYS(2003) +"\ERPSetup.MEM   Any key to continue..." ) 
-			ELSE
-				SAVE ALL LIKE Login* TO (SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM")
-				WAIT WINDOW "SAVE ALL LIKE Login* TO "+(SYS(5)+SYS(2003) +"\MEM\ERPSetup.MEM   Any key to continue..." ) 
-			ENDIF
-			This.Caption = "Change"
-		
+			ThisForm.Refresh
 		ENDIF
-		
-		AppSetup_Update_Ans( (ThisForm.LoginHome),(ThisForm.LoginUN),"Home" )
-		
-		ThisForm.Refresh
+		IF This.Caption = "Save"
+			ThisForm.LoginHome = ADDBS(ALLTRIM(ThisForm.HomeDir.Value))
+			ThisForm.HomeDirMem = ThisForm.LoginHome
+			IF VARTYPE(LoginAppHome) = "U"
+				PUBLIC LoginAppHome
+			ENDIF
+			IF VARTYPE(gERPAppHome) = "U"
+				PUBLIC gERPAppHome
+			ENDIF
+			LoginAppHome = ThisForm.LoginHome
+			gERPAppHome = ThisForm.LoginHome
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "SAVELOGINMEM", ThisForm
+			AppSetup_Update_Ans(ThisForm.LoginHome, ThisForm.LoginUN, "Home")
+			MESSAGEBOX("Home saved to:" + CHR(13) + ThisForm.LoginHome, 64, "ERP Setup")
+		ENDIF	
 	ENDPROC
 
 	PROCEDURE cmdChangeServer.Click
-		IF VARTYPE(ThisForm.LoginServer)!="C"
-			ThisForm.LoginServer= ""
+		LOCAL lcRoot
+		IF This.Caption # "Save"
+			RETURN
 		ENDIF
-		PRIVATE cLoginServer
-		cLoginServer = ''
-		PRIVATE cFindHome
-		cFindHome = ''
-		
-		*!*	IF This.Caption = "Change"
-		*!*		cLoginServer = ThisForm.LoginServer
-		
-		*!*		*Read XML files only once	
-		*!*		IF FILE( "\\Windfall.HPA.local\SQL\HPAdata.xml" )
-		*!*			*READ file
-		*!*			TRY
-		*!*				XMLTOCURSOR( "\\Windfall.HPA.local\SQL\HPAdata.xml", 'HPAdata', 512)
-		*!*				
-		*!*				IF USED('HPAdata')
-		*!*					IF VARTYPE( HPAdata.WindfallServer ) = "C"
-		*!*						cWindfallServer1 = RTRIM(HPAdata.WindfallServer)
-		*!*						*gDefaultSQLserver = cWindfallServer1 
-		*!*						gGlobalServer = cWindfallServer1 
-		*!*						lFoundWindfall = .T.
-		*!*					ENDIF
-		*!*					
-		*!*					
-		*!*					IF VARTYPE( HPAdata.TiptonServer ) = "C"
-		*!*						cTiptonServer1 = RTRIM(HPAdata.TiptonServer)
-		*!*					ENDIF
-		
-		*!*					IF VARTYPE( HPAdata.BackUpServer ) = "C"
-		*!*						cBackUpServer = RTRIM(HPAdata.BackUpServer)
-		*!*					ENDIF
-		*!*					
-		*!*					USE IN HPAdata
-		*!*				ENDIF
-		*!*			CATCH
-		*!*				MESSAGEBOX("Tell IT department."+CHR(13)+CHR(13)+"ERROR Reading XML file."+CHR(13)+[XMLTOCURSOR( ]+CHR(13)+["\\Windfall.HPA.local\SQL\HPAdata.xml"]+CHR(13)+[, 'HPAdata', 512)],16,"Could not get DFS file")
-		*!*			ENDTRY
-		*!*			
-		*!*			
-		*!*			DO FORM "Forms\SetServer.scx"
-		*!*			
-		*!*		ENDIF
-		*!*		
-		*!*	*	IF !EMPTY(cFindHome) AND !FILE(cFindHome)
-		*!*	*		cFindHome = GETFILE("TXT","Find your SQL Server directory with file LoginServer.txt")
-		*!*	*	ENDIF
-		*!*		
-		*!*		*cLoginServer = gDefaultSQLserver 
-		*!*		cLoginServer = gGlobalServer
-		*!*	*	IF !EMPTY(cFindHome) AND FILE(cFindHome)
-		*!*	*		ThisForm.LoginServer = ALLTRIM(LEFT(cFindHome,AT("LOGINSERVER.TXT",UPPER(cFindHome))-1))
-		*!*			
-		*!*			IF cLoginServer <> ThisForm.LoginServer 
-		*!*				ThisForm.LoginServer = cLoginServer
-		*!*				*This.Caption = "Save"
-		*!*				ThisForm.ServerDir.Value = cLoginServer
-		*!*				*ThisForm.HomeDir.Value = ALLTRIM(ThisForm.LoginHome)
-		*!*			ENDIF
-		*!*	*	ENDIF
-		*!*	ELSE
-		*!*		*This.Caption = "Save"
-		
-		*!*		*This.Caption = "Change"
-		
-		*!*	ENDIF
-		
-		AppSetup_Update_Ans( (ThisForm.LoginServer ),(ThisForm.LoginUN),"Server" )
-		
-		ThisForm.Refresh
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "SAVESERVER", ThisForm
+		ENDIF
 	ENDPROC
 
 	PROCEDURE cmdDone.Click
-		IF ThisForm.cmdChangeHome.Caption = "Save" AND ThisForm.cmdChangeServer.Caption = "Save"
-			RETURN .F.
-		ENDIF
-		
-		IF ThisForm.cmdChangeHome.Caption = "Save"
-			=MESSAGEBOX('You must SAVE the Home location first!',16,"")
-			RETURN .F.
-		ENDIF
-		*IF ThisForm.cmdChangeServer.Caption = "Save"
-		*	=MESSAGEBOX('You must SAVE the Server location first!',16,"")
-		*	RETURN .F.
-		*ENDIF
-		
 		***Double check SalesP.MEM
 		IF NOT FILE(SYS(5)+SYS(2003) +"\SalesP.MEM") OR FILE(SYS(5)+SYS(2003) +"\MEM\SalesP.MEM")
 			SalesP = UPPER(ALLTRIM(ThisForm.SalesP))
@@ -789,6 +849,14 @@ DEFINE CLASS hpasetup AS form
 		
 		
 		
+		
+		LOCAL lcRoot
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "APPLYSETUPERP", ThisForm
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "SAVELOGINMEM", ThisForm
+		ENDIF
 		
 		IF ThisForm.Safetyset = "ON"
 			SET SAFETY ON
@@ -924,8 +992,17 @@ DEFINE CLASS hpasetup AS form
 		ThisForm.Visible = .T.
 	ENDPROC
 
-	PROCEDURE HomeDir.InteractiveChange
-			ThisForm.cmdChangeHome.Caption = "Save"
+	PROCEDURE DatabaseDir.Valid
+		LOCAL lcRoot
+		IF ThisForm.LoginDatabase <> ALLTRIM(This.Value)
+			ThisForm.LoginDatabase = ALLTRIM(This.Value)
+			ThisForm.DatabaseDirMem = ALLTRIM(This.Value)
+		ENDIF
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "APPLYSETUPERP", ThisForm
+		ENDIF
 	ENDPROC
 
 	PROCEDURE HomeDir.Valid
@@ -936,10 +1013,23 @@ DEFINE CLASS hpasetup AS form
 		
 	ENDPROC
 
-	PROCEDURE lblHome.Click
+	PROCEDURE lblDatabase.Click
+		LOCAL lcRoot
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
 		
-		lcAppPath = JUSTPATH(SYS(16, 0))
-		? lcAppPath 
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "PICKDATABASE", ThisForm
+			ThisForm.Refresh
+		ENDIF
+		
+		ThisForm.cmdChangeDatabase.Caption = "Save"
+	ENDPROC
+
+	PROCEDURE lblHome.Click
+		LOCAL lcAppPath 
+		lcAppPath = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
 		
 		*Strip lcAppPath to ERP_2
 		DO CASE
@@ -964,22 +1054,40 @@ DEFINE CLASS hpasetup AS form
 		ThisForm.cmdChangeHome.Caption = "Save"
 	ENDPROC
 
-	PROCEDURE lblServer.Click
-		ThisForm.ServerDir.Value = ""
-		ThisForm.cmdChangeServer.Caption = "Save"
+	PROCEDURE lblProfile.Click
+		LOCAL lcRoot
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "PICKPROFILE", ThisForm
+			ThisForm.Refresh
+		ENDIF
 	ENDPROC
 
-	PROCEDURE ServerDir.InteractiveChange
+	PROCEDURE lblServer.Click
+		LOCAL lcRoot
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+		IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+		
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "PICKSERVER", ThisForm
+			ThisForm.Refresh
+		ENDIF
+		
 		ThisForm.cmdChangeServer.Caption = "Save"
 	ENDPROC
 
 	PROCEDURE ServerDir.Valid
-		IF ThisForm.LoginServer	<> ALLTRIM(This.Value)
-			ThisForm.LoginServer	= ALLTRIM(This.Value)
+		LOCAL lcRoot
+		IF ThisForm.LoginServer <> ALLTRIM(This.Value)
+			ThisForm.LoginServer = ALLTRIM(This.Value)
+			ThisForm.ServerDirMem = ALLTRIM(This.Value)
 		ENDIF
-		
-		
-		
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+			IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+		IF FILE(lcRoot + "PROGS\ERP_Environment_UI.prg")
+			DO (lcRoot + "PROGS\ERP_Environment_UI.prg") WITH "APPLYSETUPERP", ThisForm
+		ENDIF
 	ENDPROC
 
 ENDDEFINE

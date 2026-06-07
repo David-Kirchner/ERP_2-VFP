@@ -50,15 +50,11 @@ cAlias = ALIAS()
 IF NOT FILE(SYS(5)+SYS(2003)+"PROGS\load_ERP_Environment.prg")
 	SET PROCEDURE TO PROGS\load_ERP_Environment ADDITIVE
 ENDIF
-DO load_ERP_Environment
+= load_ERP_Environment(.T.)
 
 cServer = gGlobalServer
 cDatabaseTable = gGlobalDatabase
-
-IF VARTYPE(GlobalTable) = "C" AND NOT EMPTY(GlobalTable)
-	cDatabaseTable = GlobalTable
-	gGlobalDatabase = GlobalTable
-ENDIF
+GlobalTable = gGlobalDatabase
 
 IF EMPTY(cServer)
 	MESSAGEBOX("Could not locate the SQL Server."+CHR(13)+"Check ERP_Environment.xml.",16,"SQL Error")
@@ -747,6 +743,9 @@ IF nConn > 0
 	AppSetup_Update_Ans( pLoginPC,pLoginUN,"Machine",nConn  )		
 	AppSetup_Update_Ans( pLoginHome,pLoginUN,"Home",nConn  )
 	AppSetup_Update_Ans( pLoginServer,pLoginUN,"Server",nConn  )
+	IF VARTYPE(gGlobalDatabase) = "C" AND NOT EMPTY(gGlobalDatabase)
+		AppSetup_Update_Ans( gGlobalDatabase, pLoginUN, "Database", nConn )
+	ENDIF
 	*update LoginUN with 'Last Connect'
 	AppSetup_Update_Ans( DTOC(DATE())+" "+TIME(),pLoginUN,"Last Connect",nConn  )
 	

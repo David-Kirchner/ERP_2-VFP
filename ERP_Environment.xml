@@ -1,15 +1,18 @@
-<?xml version="1.0" encoding="Windows-1252" standalone="yes"?>
-<!-- Active profile and signatures can be overridden in ERP_Environment.local.xml (not in git). -->
-<!-- database=ERP_1 is intentional on all profiles (same DB name, different instances). -->
-<!-- reportServer: SSRS host for get_Report_Server(); may differ from data server (SuperMicro has no SSRS). -->
-<ERPEnvironment>
-	<ActiveProfile>Development</ActiveProfile>
-	<Profiles>
-		<Profile name="Production" server="SuperMicro" database="ERP_1" reportServer="Server26"/>
-		<Profile name="Development" server="Server26\Server26" database="ERP_1" reportServer="Server26\Server26"/>
-		<Profile name="Windfall" server="RAPTOR" database="ERP_1" reportServer="RAPTOR"/>
-	</Profiles>
-	<Company>
-		<SignaturesRoot>\\SuperMicro\SQL\Company\Signatures</SignaturesRoot>
-	</Company>
-</ERPEnvironment>
+<?xml version="1.0" encoding="Windows-1252" standalone="yes"?>
+<!-- Active profile = server preset only (Production or Development). -->
+<!-- Database is chosen independently; override in ERP_Environment.local.xml -->
+<!-- reportServer: SSRS host; may differ from data server (SuperMicro has no SSRS). -->
+<ERPEnvironment>
+	<ActiveProfile>Development</ActiveProfile>
+	<Profiles>
+		<Profile name="Production" server="Server26" database="ERP_1" reportServer="Server26"/>
+		<Profile name="Development" server="SuperMicro" database="ERP_1" reportServer="Server26"/>
+	</Profiles>
+	<Databases>
+		<Database>ERP_1</Database>
+		<Database>ERP_2</Database>
+	</Databases>
+	<Company>
+		<SignaturesRoot>\\SuperMicro\SQL\Company\Signatures</SignaturesRoot>
+	</Company>
+</ERPEnvironment>
