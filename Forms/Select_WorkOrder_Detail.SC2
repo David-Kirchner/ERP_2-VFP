@@ -64,6 +64,7 @@ DEFINE CLASS frmselect_wod AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Choose Work Order Detail"
 		DataSession = 2

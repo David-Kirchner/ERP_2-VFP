@@ -56,6 +56,7 @@ DEFINE CLASS frmind_type AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		BackColor = 1,255,230
 		BorderStyle = 0

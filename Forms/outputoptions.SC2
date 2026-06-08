@@ -60,11 +60,11 @@ DEFINE CLASS frmoutputoptions AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BorderStyle = 2
 		Caption = "Output options"
 		DoCreate = .T.
 		Height = 267
-		Icon = ('..\HPA\ico\options.ico')
 		Left = 8
 		MaxButton = .F.
 		MinButton = .F.

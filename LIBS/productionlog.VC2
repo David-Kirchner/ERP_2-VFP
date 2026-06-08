@@ -518,7 +518,7 @@ DEFINE CLASS gfmlog AS form 		&& GFM log
 		Command1.Height = 55, ;
 		Command1.Left = 5, ;
 		Command1.Name = "Command1", ;
-		Command1.Picture = ..\graphics\calc.bmp, ;
+		Command1.Picture = GRAPHICS\calc.bmp, ;
 		Command1.ReleaseErase = .F., ;
 		Command1.SpecialEffect = 1, ;
 		Command1.TabStop = .F., ;
@@ -7887,7 +7887,7 @@ DEFINE CLASS lakeerielog AS form
 		Command1.Height = 55, ;
 		Command1.Left = 5, ;
 		Command1.Name = "Command1", ;
-		Command1.Picture = ..\graphics\calc.bmp, ;
+		Command1.Picture = GRAPHICS\calc.bmp, ;
 		Command1.ReleaseErase = .F., ;
 		Command1.SpecialEffect = 1, ;
 		Command1.TerminateRead = .F., ;
@@ -15575,8 +15575,13 @@ DEFINE CLASS stock_projected AS form 		&& Stock Projected
 		SELECT 0
 		PRIVATE cSQL, nSQLEXEC 
 		cSQL = "SELECT SP.* "
-		cSQL = cSQL+",ISNULL(PT.CWCnt,0) AS CWCnt, ISNULL(PT.CWMin,0) AS CWMin, ISNULL(PT.CWAvg,0) AS CWAvg "
-		cSQL = cSQL+",ISNULL(PT.CWMedian,0) AS CWMedian, ISNULL(PT.CWMax,0) AS CWMax, ISNULL(PT.StartDia,0) AS StartDia "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Cnt(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWCnt "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Min_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWMin "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Avg_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWAvg "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Median_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWMedian "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Max_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWMax "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Start(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS StartDia "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_DiaMax(SP.Alloy,SP.CC,SP.CL),0) AS DiaMax "
 		cSQL = cSQL+",ISNULL(CL.Text,'') AS CLText "
 		cSQL = cSQL+",ISNULL(CL.Spec,'') AS FSpec "
 		
@@ -15609,8 +15614,6 @@ DEFINE CLASS stock_projected AS form 		&& Stock Projected
 		
 		cSQL = cSQL+" FROM dbo.Stock_Projected SP "
 		cSQL = cSQL+" LEFT OUTER JOIN dbo.ConditionLevel CL ON CL.CC=SP.Spec_CC AND CL.CL=SP.Spec_CL "
-		cSQL = cSQL+" LEFT OUTER JOIN dbo.PriceTable PT ON SP.Alloy=PT.Alloy "
-		cSQL = cSQL+"	AND SP.Form = PT.Form AND SP.Thck=PT.Size AND SP.CC= PT.CC AND SP.CL=PT.CL "
 		
 		
 		nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL, 'tmpProjStk')

@@ -33,6 +33,7 @@ DEFINE CLASS frmpopupdate AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BorderStyle = 0

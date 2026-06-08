@@ -211,6 +211,7 @@ DEFINE CLASS swage_log AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BackColor = 60,220,20
 		Caption = "Space Alloys USA"
 		DataSession = 2
@@ -484,7 +485,7 @@ DEFINE CLASS swage_log AS form
 		Height = 20, ;
 		Left = 416, ;
 		Name = "cmdSrvcPOReport", ;
-		Picture = ..\graphics\report.ico, ;
+		Picture = GRAPHICS\report.ico, ;
 		PicturePosition = 14, ;
 		TabStop = .F., ;
 		ToolTipText = "Open PO Report Window", ;
@@ -507,7 +508,7 @@ DEFINE CLASS swage_log AS form
 		Height = 20, ;
 		Left = 416, ;
 		Name = "cmdTestPOReport", ;
-		Picture = ..\graphics\report.ico, ;
+		Picture = GRAPHICS\report.ico, ;
 		PicturePosition = 14, ;
 		TabStop = .F., ;
 		ToolTipText = "Open PO Report Window", ;
@@ -564,7 +565,7 @@ DEFINE CLASS swage_log AS form
 		Command1.Height = 55, ;
 		Command1.Left = 5, ;
 		Command1.Name = "Command1", ;
-		Command1.Picture = ..\graphics\calc.bmp, ;
+		Command1.Picture = GRAPHICS\calc.bmp, ;
 		Command1.ReleaseErase = .F., ;
 		Command1.SpecialEffect = 1, ;
 		Command1.TabStop = .F., ;

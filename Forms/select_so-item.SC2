@@ -95,6 +95,7 @@ DEFINE CLASS frmselect_so_item AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "View SO items"
 		DataSession = 2
 		DoCreate = .T.

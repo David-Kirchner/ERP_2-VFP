@@ -218,6 +218,7 @@ DEFINE CLASS vendor AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 1
 		editing = .F.

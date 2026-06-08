@@ -18,6 +18,7 @@ Use [`Create ERP_new/`](Create%20ERP_new/) scripts in filename order, including 
 | 06 | `06_Migrate_AppSetup_Permissions.sql` |
 | 07 | `07_Seed_CompanyProfile.sql` |
 | 08 | `08_CompanyPlant_CertReport.sql` (plant lines / CAGE for certs11 header) |
+| 09 | `09_CompanyProfile_ReportImage.sql` (report header BMP for `CompanyReport_Logo()`) |
 
 ## Security (`MEM\SQL\Security\`)
 

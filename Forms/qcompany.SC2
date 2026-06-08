@@ -166,7 +166,7 @@ DEFINE CLASS frmquickcompany AS embossedform OF "..\libs\wizstyle.vcx"
 		Height = 32, ;
 		Left = 324, ;
 		Name = "cmdPeach", ;
-		Picture = ..\graphics\peachsyncicon.bmp, ;
+		Picture = GRAPHICS\peachsyncicon.bmp, ;
 		PicturePosition = 14, ;
 		TabIndex = 14, ;
 		TabStop = .F., ;

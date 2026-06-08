@@ -29,6 +29,7 @@ DEFINE CLASS hpa AS form
 	*< OBJECTDATA: ObjPath="lblVersionOld" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Timer10" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="lblVersionNew" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="lblPath" UniqueID="" Timestamp="" />
 
 	*<DefinedPropArrayMethod>
 		*m: hpamenu		&& Main case for menu. (Node.Text)
@@ -36,13 +37,13 @@ DEFINE CLASS hpa AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
-		Caption = "HPA MainMenu"
+		Caption = "Main Menu"
 		Closable = .F.
 		Desktop = .F.
 		DoCreate = .T.
-		Height = 336
-		Icon = ..\ico\earth.ico
+		Height = 353
 		Left = 0
 		MaxButton = .F.
 		MaxHeight = 600
@@ -52,7 +53,7 @@ DEFINE CLASS hpa AS form
 		MDIForm = .T.
 		MinHeight = 60
 		MinWidth = 15
-		Name = "HPA"
+		Name = "hpa"
 		SizeBox = .T.
 		Top = 0
 		Width = 212
@@ -74,6 +75,18 @@ DEFINE CLASS hpa AS form
 		Top = 293, ;
 		Width = 46
 		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'lblPath' AS label WITH ;
+		Alignment = 2, ;
+		Caption = "Path", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,160, ;
+		Height = 15, ;
+		Left = 1, ;
+		Name = "lblPath", ;
+		Top = 335, ;
+		Width = 210
+		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'lblServerData' AS label WITH ;
 		Alignment = 2, ;
@@ -118,7 +131,7 @@ DEFINE CLASS hpa AS form
 		Name = "oleListViewHPA", ;
 		Top = 2, ;
 		Width = 200
-		*< END OBJECT: BaseClass="olecontrol" OLEObject="c:\windows\syswow64\comctl32.ocx" Value="0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAAEAAAAgAAAAEAAAD+////AAAAAAAAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9/////v////7////+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////1IAbwBvAHQAIABFAG4AdAByAHkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAUA//////////8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMB4zU+Iz9wBAwAAAAACAAAAAAAAAwBPAGwAZQBPAGIAagBlAGMAdABEAGEAdABhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4AAgEDAAAAAgAAAP////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZgAAAAAAAAADAEEAYwBjAGUAcwBzAE8AYgBqAFMAaQB0AGUARABhAHQAYQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgACAP///////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABPAAAAAAAAAAMAQwBoAGEAbgBnAGUAZABQAHIAbwBwAHMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAIA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAANMAAAAAAAAABAAAAAIAAAD+////BQAAAP7///8GAAAABwAAAP7///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+i6BMHCoUbEK/AQhAQKo2nIUM0EggAAACsFAAA+R0AAI5+4eYCAAUAIgAAALkAAQDlAgAAAQAAAAHvzasAAAUATwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAABcAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcWhqIFp0dVFoYTtqZGZuW2lhZXRyIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACADgAAAEhpZGVTZWxlY3Rpb24ABQAAAEwBAAAADAAAAEluZGVudGF0aW9uABEAAABODQAAAAcAAAAAAAAACAAAAA8AAAAAAAAABQAAgNzpGgABAAAAXAAf3uy9AQAFAEiJzwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPEANAAAATW91c2VQb2ludGVyAAkAAABJCgAAAAEAAAAOAAAAUGF0aFNlcGFyYXRvcgAKAAAASAAAAAABAAAAXAYAAABTdHlsZQAJAAAASQoAAAAGAAAADAAAAE9MRURyYWdNb2RlAAkAAABJCgAAAAAAAAAMAAAAT0xFRHJvcE1vZGUACQAAAEkKAAAAAAAAAABpAG4AdAAgAFAAcgBlAHMAZQBuAHQAYQB0AGkAbwBuAAkAewA2ADQAOAAxAA==" />
+		*< END OBJECT: BaseClass="olecontrol" OLEObject="c:\windows\syswow64\comctl32.ocx" Value="0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAAEAAAAgAAAAEAAAD+////AAAAAAAAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9/////v////7////+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////1IAbwBvAHQAIABFAG4AdAByAHkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAUA//////////8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCBXium9twBAwAAAAACAAAAAAAAAwBPAGwAZQBPAGIAagBlAGMAdABEAGEAdABhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4AAgEDAAAAAgAAAP////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZgAAAAAAAAADAEEAYwBjAGUAcwBzAE8AYgBqAFMAaQB0AGUARABhAHQAYQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgACAP///////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABPAAAAAAAAAAMAQwBoAGEAbgBnAGUAZABQAHIAbwBwAHMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAIA////////////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAANMAAAAAAAAABAAAAAIAAAD+////BQAAAP7///8GAAAABwAAAP7///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+i6BMHCoUbEK/AQhAQKo2nIUM0EggAAACsFAAA+R0AAI5+4eYCAAUAIgAAALkAAQDlAgAAAQAAAAHvzasAAAUATwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAABcAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgcWhqIFp0dVFoYTtqZGZuW2lhZXRyIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACADgAAAEhpZGVTZWxlY3Rpb24ABQAAAEwBAAAADAAAAEluZGVudGF0aW9uABEAAABODQAAAAcAAAAAAAAACAAAAA8AAAAAAAAABQAAgNzpGgABAAAAXAAf3uy9AQAFAOjMxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPEANAAAATW91c2VQb2ludGVyAAkAAABJCgAAAAEAAAAOAAAAUGF0aFNlcGFyYXRvcgAKAAAASAAAAAABAAAAXAYAAABTdHlsZQAJAAAASQoAAAAGAAAADAAAAE9MRURyYWdNb2RlAAkAAABJCgAAAAAAAAAMAAAAT0xFRHJvcE1vZGUACQAAAEkKAAAAAAAAAABpAG4AdAAgAFAAcgBlAHMAZQBuAHQAYQB0AGkAbwBuAAkAewA2ADQAOAAxAA==" />
 
 	ADD OBJECT 'Timer10' AS timer WITH ;
 		Height = 23, ;
@@ -330,12 +343,6 @@ DEFINE CLASS hpa AS form
 		
 		******* Reports ********
 		CASE tNodeText = "Reports"
-		CASE tNodeText = "Errors"
-			IF WEXIST("frmErrors")
-				ACTIVATE WINDOW frmErrors
-			ELSE
-				DO FORM "Forms\Errors.SCX"
-			ENDIF
 		CASE tNodeText = "Sales Report"
 			IF WEXIST("frmSalesRpt")
 				ACTIVATE WINDOW frmSalesRpt 
@@ -880,8 +887,6 @@ DEFINE CLASS hpa AS form
 			ENDIF
 		CASE tNodeText = "Company Profile"
 			DO PROGS\CompanyProfile_maint
-		CASE tNodeText = "Company Branding"
-			DO PROGS\CompanyBranding_maint
 		CASE tNodeText = "SQL Database Roles"
 			DO FORM "Forms\AppSqlRole_Maint.scx"
 		CASE tNodeText = "App Permissions"
@@ -973,6 +978,8 @@ DEFINE CLASS hpa AS form
 	ENDPROC
 
 	PROCEDURE Init
+		= ApplyCompanyIconToForm(This)
+
 		******* QUOTES ********
 		*? "HPA.Init"
 		*Key is not unique in collection .Add() -make sure key is unique!!
@@ -1009,7 +1016,6 @@ DEFINE CLASS hpa AS form
 		
 		******* REPORTS  ********
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"Reports","Reports")
-		nodX = ThisForm.oleListViewHPA.Nodes.Add("Reports",4,,"Errors")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Reports",4,,"Sales Report")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Reports",4,,"Sales Month Report")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Reports",4,,"Sales Order Status")
@@ -1119,7 +1125,6 @@ DEFINE CLASS hpa AS form
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Pipe Weight")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"StockLst SQL Maint")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Company Profile")
-		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Company Branding")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"SQL Database Roles")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"App Permissions")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Shipping Address")
@@ -1152,6 +1157,8 @@ DEFINE CLASS hpa AS form
 		ThisForm.lblVersionOld.Caption =  Get_HPAVersion(.F.,"STABLE")	&&not Visible
 		ThisForm.lblVersionNew.Caption =  Get_HPAVersion(.F.,"LATEST")
 		*ThisForm.lblVersionNew.Caption =  Get_HPAVersion(.F.,'BETA')
+		ThisForm.lblPath.Caption = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome,	IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+			
 		
 		ThisForm.Timer10.Interval = 600000		&&Ten Minutes
 		*ThisForm.Timer10.Interval = 60000	&&One Minute
@@ -1205,7 +1212,7 @@ DEFINE CLASS hpa AS form
 
 	PROCEDURE Resize
 		PRIVATE nDeltaHeight, nDeltaWidth
-		nDeltaHeight = This.Height - 339
+		nDeltaHeight = This.Height - 353
 		nDeltaWidth = This.Width - 212
 		
 		WITH ThisForm.oleListViewHPA
@@ -1227,7 +1234,7 @@ DEFINE CLASS hpa AS form
 		
 		ThisForm.lblVersionOld.Top = 303 + nDeltaHeight 
 		ThisForm.lblVersionNew.Top = 318 + nDeltaHeight 
-		
+		ThisForm.lblPath.Top = 335 + nDeltaHeight 
 		
 		
 	ENDPROC
@@ -1372,10 +1379,6 @@ DEFINE CLASS hpa AS form
 		ENDIF
 		
 		******* REPORTS *******
-		IF WEXIST("frmErrors")
-			ACTIVATE WINDOW frmErrors
-			lQuit = .F.
-		ENDIF
 		IF WEXIST("frmSalesRpt")
 			ACTIVATE WINDOW frmSalesRpt
 		*		lQuit = .F.

@@ -257,6 +257,7 @@ DEFINE CLASS frmstocklst_report AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Green Sheet"
 		DataSession = 2
 		DoCreate = .T.
@@ -3111,7 +3112,7 @@ DEFINE CLASS frmstocklst_report AS form
 					LOOP
 				NEXT i
 				
-				cSQL =        "SELECT SUM(ProcessValue) AS TotProc FROM dbo.[AR.StockLst_Detail_History "
+				cSQL =        "SELECT SUM(ProcessValue) AS TotProc FROM dbo.Ar_Stocklst_Detail_History "
 				cSQL = cSQL + " WHERE ID_Detail_Process IN ("
 				cSQL = cSQL + cDetPro + ")"
 				
@@ -3283,9 +3284,9 @@ DEFINE CLASS frmstocklst_report AS form
 			IF !EMPTY(pSOItem)
 				
 				cSQL =        "SELECT SUM(SDH.ProcessValue) AS TotCost "
-				cSQL = cSQL + "FROM dbo.[AR.StockLst_Detail_History SDH "
+				cSQL = cSQL + "FROM dbo.Ar_Stocklst_Detail_History SDH "
 				cSQL = cSQL + "WHERE SDH.ID_Detail_Process IN "
-				cSQL = cSQL + "(SELECT ID_Detail_Process FROM dbo.[AR.StockLst_process_History SPh "
+				cSQL = cSQL + "(SELECT ID_Detail_Process FROM dbo.Ar_StockLst_Process_History SPh "
 				cSQL = cSQL + "WHERE SPH.SOitem = '"+pSOItem+"')"
 				
 				SELECT 0
@@ -3632,7 +3633,7 @@ DEFINE CLASS frmstocklst_report AS form
 		IF USED("tmpSO")
 			USE IN tmpSO
 		ENDIF
-		cSQL = "SELECT DISTINCT SOitem FROM dbo.[AR.StockLst_Process_History WHERE Validated <> 'T' ORDER BY SOitem "
+		cSQL = "SELECT DISTINCT SOitem FROM dbo.Ar_StockLst_Process_History WHERE Validated <> 'T' ORDER BY SOitem "
 		SELECT 0
 		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpSO_All')
 		DO WHILE nSQLEXEC = 0
@@ -3679,8 +3680,8 @@ DEFINE CLASS frmstocklst_report AS form
 			cSQL=     "SELECT ID_Detail_Process "
 			cSQL=cSQL+",CONVERT( CHAR(100),Who) AS Who,What "
 			cSQL=cSQL+",ProcessValue,CostValue,PC,Dim1,Dim2,Dim3,Length,Weight,Descript,[when] "
-			cSQL=cSQL+"FROM dbo.[AR.StockLst_Detail_History WHERE ID_Detail_Process IN "
-			cSQL=cSQL+"( SELECT ID_Detail_Process FROM dbo.[AR.StockLst_Process_History WHERE SOitem ='"+tmpSO.SOitem+"')"
+			cSQL=cSQL+"FROM dbo.Ar_Stocklst_Detail_History WHERE ID_Detail_Process IN "
+			cSQL=cSQL+"( SELECT ID_Detail_Process FROM dbo.Ar_StockLst_Process_History WHERE SOitem ='"+tmpSO.SOitem+"')"
 		
 		*	This.pf.pgProc_History.grdStockLst_Detail_History.RecordSource = ""
 		
@@ -3851,7 +3852,7 @@ DEFINE CLASS frmstocklst_report AS form
 		ELSE
 			nStockLst_ID = StockLst_ID.ID
 			IF EMPTY(nStockLst_ID)
-				cSQL = "SELECT DISTINCT ID FROM dbo.[AR.StockLst_Detail_History WHERE ID_Detail = "+ALLTRIM(STR( nID_Detail ))
+				cSQL = "SELECT DISTINCT ID FROM dbo.Ar_Stocklst_Detail_History WHERE ID_Detail = "+ALLTRIM(STR( nID_Detail ))
 				IF USED("StockLst_ID")
 					USE IN StockLst_ID
 				ENDIF
@@ -3887,7 +3888,7 @@ DEFINE CLASS frmstocklst_report AS form
 			ENDIF
 			
 			IF lUseMasterHistory
-				cSQL = "SELECT * FROM dbo.[AR.StockLst_Master_History WHERE ID = "+ALLTRIM(STR( nStockLst_ID ))
+				cSQL = "SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE ID = "+ALLTRIM(STR( nStockLst_ID ))
 				ThisForm.pf.pgCurrStock.cmdAdjInvV.Enabled = .F.
 			ELSE
 				cSQL = "SELECT * FROM dbo.StockLst_Master WHERE ID = "+ALLTRIM(STR( nStockLst_ID ))
@@ -3997,14 +3998,14 @@ DEFINE CLASS frmstocklst_report AS form
 		*!*	SELECT CONVERT( CHAR(100),Who) AS Who,What 
 		*!*	,ProcessValue,CostValue,PC,Dim1,Dim2,Dim3,Length,Weight,Descript,[when] 
 		*!*	,ID_Detail
-		*!*	FROM dbo.[AR.StockLst_Detail_History WHERE ID_Detail_Process IN 
-		*!*	( SELECT ID_Detail_Process FROM dbo.[AR.StockLst_Process_History WHERE SOitem = '  38484-01')
+		*!*	FROM dbo.Ar_Stocklst_Detail_History WHERE ID_Detail_Process IN 
+		*!*	( SELECT ID_Detail_Process FROM dbo.Ar_StockLst_Process_History WHERE SOitem = '  38484-01')
 		*!*	UNION
 		*!*	SELECT 'ERP StockLst' AS Who, 'CURRENT' AS What, CostValue*Weight AS ProcessValue,CostValue,PC,Dim1,Dim2,Dim3,Length,Weight,Descript,GETDATE() AS [when]
 		*!*	, ID_Detail
 		*!*	FROM dbo.StockLst_Detail
 		*!*	WHERE ID_Detail IN
-		*!*	( SELECT ID_Detail FROM dbo.[AR.StockLst_Process_History WHERE SOitem = '  38484-01' AND WHAT = 'DELETE' )
+		*!*	( SELECT ID_Detail FROM dbo.Ar_StockLst_Process_History WHERE SOitem = '  38484-01' AND WHAT = 'DELETE' )
 		*!*	ORDER BY [When], [What] DESC
 		
 		*BEFORE
@@ -4014,7 +4015,7 @@ DEFINE CLASS frmstocklst_report AS form
 		ThisForm.pf.pgProc_History.txtDimB.Value = 'No Detail Process'
 		
 		cSQLb = "SELECT ProcessValue,CostValue,PC,Dim1,Dim2,Dim3,Length,Weight,Descript,[when] "
-		cSQLb = cSQLb + " FROM dbo.[AR.StockLst_Detail_History WHERE ID_Detail_Process = "+ALLTRIM(STR(pID_Detail_Process))
+		cSQLb = cSQLb + " FROM dbo.Ar_Stocklst_Detail_History WHERE ID_Detail_Process = "+ALLTRIM(STR(pID_Detail_Process))
 		cSQLb = cSQLb + " AND [WHAT] = 'BEFOREEDIT' "
 		
 		IF USED("tmpStockLstDH")
@@ -4075,7 +4076,7 @@ DEFINE CLASS frmstocklst_report AS form
 		ThisForm.pf.pgProc_History.txtDimA.Value = 'No Detail Process'
 		
 		cSQLa = "SELECT ProcessValue,CostValue,PC,Dim1,Dim2,Dim3,Length,Weight,Descript,[when] "
-		cSQLa = cSQLa + " FROM dbo.[AR.StockLst_Detail_History WHERE ID_Detail_Process = "+ALLTRIM(STR(pID_Detail_Process))
+		cSQLa = cSQLa + " FROM dbo.Ar_Stocklst_Detail_History WHERE ID_Detail_Process = "+ALLTRIM(STR(pID_Detail_Process))
 		cSQLa = cSQLa + " AND [WHAT] = 'AFTER EDIT' "
 		
 		IF USED("tmpStockLstDH")
@@ -4218,7 +4219,7 @@ DEFINE CLASS frmstocklst_report AS form
 		
 		cSQL="SELECT 0 AS Vld,CONVERT( CHAR(100),Who) AS Who,What,[When],SOItem,SalesPerson AS SalesPerso,StartDate,DueDate,Comment,"
 		cSQL=cSQL+"Processor,AllowSub,pWeight,pPc,ID_Detail,ID_Detail_Process AS ID_Det_Pr,Removed,ID_Process_History AS ID_Proc_H "
-		cSQL=cSQL+" FROM dbo.[AR.StockLst_Process_History WHERE SOitem = '"+pSOitem+"'"
+		cSQL=cSQL+" FROM dbo.Ar_StockLst_Process_History WHERE SOitem = '"+pSOitem+"'"
 		
 		This.pf.pgProc_History.grdStockLst_Process_History.RecordSource = ""
 		
@@ -4260,7 +4261,7 @@ DEFINE CLASS frmstocklst_report AS form
 		
 		PRIVATE cSQL
 		cSQL="SELECT DISTINCT SD.ID_Detail "
-		cSQL=cSQL+"FROM dbo.StockLst_Detail SD JOIN dbo.[AR.StockLst_Process_History SPH ON SD.ID_Detail = SPH.ID_Detail "
+		cSQL=cSQL+"FROM dbo.StockLst_Detail SD JOIN dbo.Ar_StockLst_Process_History SPH ON SD.ID_Detail = SPH.ID_Detail "
 		cSQL=cSQL+"WHERE SPH.SOitem = '"+pSOitem+"'"+" ORDER BY SD.ID_Detail "
 		
 		ThisForm.pf.pgCurrStock.GrdHistory_Details.RecordSource = ""
@@ -4583,7 +4584,7 @@ DEFINE CLASS frmstocklst_report AS form
 		
 		*cSQL="SELECT 0 AS Vld,CONVERT( CHAR(100),Who) AS Who,What,[When],SOItem,SalesPerson AS SalesPerso,StartDate,DueDate,Comment,"
 		*cSQL=cSQL+"Processor,AllowSub,pWeight,pPc,ID_Detail,ID_Detail_Process AS ID_Det_Pr,Removed,ID_Process_History AS ID_Proc_H "
-		*cSQL=cSQL+" FROM dbo.[AR.StockLst_Process_History WHERE SOitem = '"+pSOitem+"'"
+		*cSQL=cSQL+" FROM dbo.Ar_StockLst_Process_History WHERE SOitem = '"+pSOitem+"'"
 		
 		DECLARE aDetPr(1)
 		aDetPr(1) = 0
@@ -4617,7 +4618,7 @@ DEFINE CLASS frmstocklst_report AS form
 					LOOP
 				NEXT i
 				
-				cSQL =        "SELECT SUM(ProcessValue) AS TotProc FROM dbo.[AR.StockLst_Detail_History "
+				cSQL =        "SELECT SUM(ProcessValue) AS TotProc FROM dbo.Ar_Stocklst_Detail_History "
 				cSQL = cSQL + " WHERE ID_Detail_Process IN ("
 				cSQL = cSQL + cDetPro + ")"
 				
@@ -4662,7 +4663,7 @@ DEFINE CLASS frmstocklst_report AS form
 					
 					FOR i = 1 TO ALEN(aDetPr,1)
 						
-						cSQL_SO = "UPDATE dbo.[AR.StockLst_Process_History SET Validated = 'T' WHERE ID_Detail_Process = "+STR( aDetPr(i) )
+						cSQL_SO = "UPDATE dbo.Ar_StockLst_Process_History SET Validated = 'T' WHERE ID_Detail_Process = "+STR( aDetPr(i) )
 		
 						nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL_SO )
 						DO WHILE nSQLEXEC = 0
@@ -4818,9 +4819,9 @@ DEFINE CLASS frmstocklst_report AS form
 		ENDIF
 		PRIVATE cSQL, nSQLEXEC 
 		IF nSO = 0
-			cSQL= "SELECT DISTINCT SOitem FROM dbo.[AR.StockLst_Process_History WHERE Validated <> 'T' ORDER BY SOitem "
+			cSQL= "SELECT DISTINCT SOitem FROM dbo.Ar_StockLst_Process_History WHERE Validated <> 'T' ORDER BY SOitem "
 		ELSE
-			cSQL= "SELECT DISTINCT SOitem FROM dbo.[AR.StockLst_Process_History "
+			cSQL= "SELECT DISTINCT SOitem FROM dbo.Ar_StockLst_Process_History "
 			cSQL= cSQL +" WHERE  SOitem LIKE '"+STR(nSO,7)+"-%'"
 			cSQL= cSQL+" ORDER BY SOitem "
 		ENDIF
@@ -4857,14 +4858,14 @@ DEFINE CLASS frmstocklst_report AS form
 				USE IN tmpSO
 			ENDIF
 			IF nSO = 0
-				cSQL = "SELECT DISTINCT SPH.SOitem FROM dbo.[AR.StockLst_Process_History SPH"
+				cSQL = "SELECT DISTINCT SPH.SOitem FROM dbo.Ar_StockLst_Process_History SPH"
 				cSQL = cSQL+", dbo.Sales "
 				cSQL = cSQL+" WHERE SPH.Validated <> 'T' "
 				cSQL = cSQL+" AND SPH.SOitem = Sales.SOitem "
 				cSQL = cSQL+" AND ( Sales.CNCLD=1 OR Sales.CMPLT=1 )"
 				cSQL = cSQL+" ORDER BY SPH.SOitem "
 			ELSE
-				cSQL = "SELECT DISTINCT SPH.SOitem FROM dbo.[AR.StockLst_Process_History SPH"
+				cSQL = "SELECT DISTINCT SPH.SOitem FROM dbo.Ar_StockLst_Process_History SPH"
 				cSQL = cSQL+", dbo.Sales "
 				cSQL = cSQL+" WHERE SPH.SOitem LIKE '"+STR(nSO,7)+"-%'"
 				cSQL = cSQL+" AND SPH.SOitem = Sales.SOitem "

@@ -40,6 +40,7 @@ DEFINE CLASS frmstocklst_search AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Search StockLst, BrokerLst then History"
 		DataSession = 2
 		DoCreate = .T.
@@ -134,7 +135,7 @@ DEFINE CLASS frmstocklst_search AS form
 				
 		*		cSQL = "SELECT 'T' as [Current], ' ' as [WHO], ' ' as [WHAT], GetDate() as [WHEN], *, 0 as [ID_History] FROM dbo.StockLst_Master "
 		*		cSQL = cSQL + " WHERE HEAT LIKE '%" + cHeat + "%'"
-		*		cSQL = cSQL + " UNION SELECT 'F' as [Current], * FROM dbo.[AR.StockLst_Master_History]"
+		*		cSQL = cSQL + " UNION SELECT 'F' as [Current], * FROM dbo.Ar_Stocklst_Master_History"
 		*		cSQL = cSQL + " WHERE HEAT LIKE '%" + cHeat + "%'"
 				*cSQL = cSQL = " AND [WHAT] = 'DELETE'"
 		*		cSQL = cSQL + " ORDER BY Alloy,Form,cc,Size,Heat,[Current],[What] "
@@ -179,7 +180,7 @@ DEFINE CLASS frmstocklst_search AS form
 					PRIVATE nMess
 					nMess = MESSAGEBOX("Your heat was not found"+CHR(13)+"Do you want to search "+CHR(13)+"History?",4+32,"Your heat was not found")
 					IF nMess = 6
-						cSQL = "SELECT *,TBL = 'S' FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) "
+						cSQL = "SELECT *,TBL = 'S' FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) "
 						cSQL = cSQL + " WHERE HEAT LIKE '%" + cHeat + "%'"
 						cSQL = cSQL + " AND What = 'DELETE' "
 						cSQL = cSQL + " ORDER BY id, alloy, form, cc, size, heat, What"
@@ -274,7 +275,7 @@ DEFINE CLASS frmstocklst_search AS form
 		cSQL = "SELECT *,TBL = 'S' FROM dbo.StockLst_Master_Union WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE ID IN ( "
 		cSQL = cSQL + " SELECT DISTINCT ID FROM dbo.StockLst_Detail_Union WITH(NOLOCK) WHERE ID_Detail IN ("
-		cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.[AR.StockLst_Process_History] PH WITH(NOLOCK) "
+		cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.Ar_StockLst_Process_History PH WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE PH.PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 		cSQL = cSQL + " )) ORDER BY id, alloy, form, cc, size, heat, What"
 		
@@ -319,7 +320,7 @@ DEFINE CLASS frmstocklst_search AS form
 				cSQL = "SELECT *,TBL = 'B' FROM dbo.BrokerLst_Master_Union WITH(NOLOCK) "
 				cSQL = cSQL + " WHERE ID IN ( "
 				cSQL = cSQL + " SELECT DISTINCT ID FROM dbo.BrokerLst_Detail WITH(NOLOCK) WHERE ID_Detail IN ("
-				cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.[AR.BrokerLst_Process_History] PH WITH(NOLOCK) "
+				cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.Ar_BrokerLst_Process_History PH WITH(NOLOCK) "
 				cSQL = cSQL + " WHERE PH.PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 				cSQL = cSQL + " )) ORDER BY id, alloy, form, cc, size, heat, What"
 				
@@ -328,7 +329,7 @@ DEFINE CLASS frmstocklst_search AS form
 				ENDIF
 		
 				SELECT 0
-				*WAIT WINDOW "SELECT * FROM dbo.[AR.StockLst_Master WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
+				*WAIT WINDOW "SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
 				
 				nSQLEXEC = SQLEXEC(THISFORM.nConnHandle, cSQL, 'tStockLst_SQL')
 				DO WHILE nSQLEXEC = 0
@@ -363,12 +364,12 @@ DEFINE CLASS frmstocklst_search AS form
 			PRIVATE nMess
 			nMess = MESSAGEBOX("Your PO item was not found"+CHR(13)+"Do you want to search again in "+CHR(13)+"History?",4+32,"Your PO item was not found")
 			IF nMess = 6
-				cSQL = "SELECT *,TBL = 'S' FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) "
+				cSQL = "SELECT *,TBL = 'S' FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) "
 				cSQL = cSQL + " WHERE PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 				cSQL = cSQL + " AND What = 'DELETE' "
 				
 				cSQL = cSQL + " UNION "
-				cSQL = cSQL + " SELECT *,TBL = 'B' FROM dbo.[AR.BrokerLst_Master_History] WITH(NOLOCK) "
+				cSQL = cSQL + " SELECT *,TBL = 'B' FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) "
 				cSQL = cSQL + " WHERE PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 				cSQL = cSQL + " AND What = 'DELETE' "
 				
@@ -378,7 +379,7 @@ DEFINE CLASS frmstocklst_search AS form
 				ENDIF
 		
 				SELECT 0
-				*WAIT WINDOW "SELECT * FROM dbo.[AR.StockLst_Master WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
+				*WAIT WINDOW "SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
 				
 				nSQLEXEC = SQLEXEC(THISFORM.nConnHandle, cSQL, 'tStockLst_SQL')
 				DO WHILE nSQLEXEC = 0
@@ -456,7 +457,7 @@ DEFINE CLASS frmstocklst_search AS form
 				cSQL = "SELECT *,TBL = 'S' FROM dbo.StockLst_Master_Union M WITH(NOLOCK) "
 				cSQL = cSQL + " WHERE ID IN ( "
 				cSQL = cSQL + " SELECT DISTINCT ID FROM dbo.StockLst_Detail WITH(NOLOCK) WHERE ID_Detail IN ("
-				cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.[AR.StockLst_Process_History] PH WITH(NOLOCK) "
+				cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.Ar_StockLst_Process_History PH WITH(NOLOCK) "
 				cSQL = cSQL + " WHERE PH.SOitem = dbo.f_ProperSOitem('"+cSOItem+"')"
 				cSQL = cSQL + " )) ORDER BY M.id, M.alloy, M.form, M.cc, M.size, M.heat, M.What"
 				
@@ -502,7 +503,7 @@ DEFINE CLASS frmstocklst_search AS form
 						cSQL = "SELECT *,TBL = 'B' FROM dbo.BrokerLst_Master_Union WITH(NOLOCK) "
 						cSQL = cSQL + " WHERE ID IN ( "
 						cSQL = cSQL + " SELECT DISTINCT ID FROM dbo.BrokerLst_Detail WITH(NOLOCK) WHERE ID_Detail IN ("
-						cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.[AR.BrokerLst_Process_History] PH WITH(NOLOCK) "
+						cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.Ar_BrokerLst_Process_History PH WITH(NOLOCK) "
 						cSQL = cSQL + " WHERE PH.SOitem = dbo.f_ProperSOitem('"+cSOItem+"')"
 						cSQL = cSQL + " )) ORDER BY id, alloy, form, cc, size, heat, What"
 						
@@ -511,7 +512,7 @@ DEFINE CLASS frmstocklst_search AS form
 						ENDIF
 		
 						SELECT 0
-						*WAIT WINDOW "SELECT * FROM dbo.[AR.StockLst_Master WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
+						*WAIT WINDOW "SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
 						
 						nSQLEXEC = SQLEXEC(THISFORM.nConnHandle, cSQL, 'tStockLst_SQL')
 						DO WHILE nSQLEXEC = 0
@@ -547,18 +548,18 @@ DEFINE CLASS frmstocklst_search AS form
 					PRIVATE nMess
 					nMess = MESSAGEBOX("Your SOitem was not found"+CHR(13)+"Do you want to search again in "+CHR(13)+"History?",4+32,"Your SO item was not found")
 					IF nMess = 6
-						cSQL = "SELECT *,TBL = 'S' FROM dbo.[AR.StockLst_Master_History] M WITH(NOLOCK) "
-						cSQL = cSQL + " INNER JOIN dbo.[AR.StockLst_Detail_History] D WITH(NOLOCK) ON M.ID = D.ID "
-						cSQL = cSQL + " INNER JOIN dbo.[AR.StockLst_Process_History] P WITH(NOLOCK) ON D.ID_Detail = P.ID_Detail "
+						cSQL = "SELECT *,TBL = 'S' FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
+						cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D WITH(NOLOCK) ON M.ID = D.ID "
+						cSQL = cSQL + " INNER JOIN dbo.Ar_StockLst_Process_History P WITH(NOLOCK) ON D.ID_Detail = P.ID_Detail "
 						cSQL = cSQL + " WHERE P.SOitem = dbo.f_ProperSOitem('"+cSOItem+"')"
 						cSQL = cSQL + " AND M.What = 'DELETE' "
 						cSQL = cSQL + " AND D.What = 'DELETE' "
 						cSQL = cSQL + " AND P.What = 'DELETE' "
 						
 						cSQL = cSQL + " UNION "
-						cSQL = cSQL + " SELECT *,TBL = 'B' FROM dbo.[AR.BrokerLst_Master_History] M WITH(NOLOCK) "
-						cSQL = cSQL + " INNER JOIN dbo.[AR.BrokerLst_Detail_History] D WITH(NOLOCK) ON M.ID = D.ID "
-						cSQL = cSQL + " INNER JOIN dbo.[AR.BrokerLst_Process_History] P WITH(NOLOCK) ON D.ID_Detail = P.ID_Detail "
+						cSQL = cSQL + " SELECT *,TBL = 'B' FROM dbo.Ar_BrokerLst_Master_history M WITH(NOLOCK) "
+						cSQL = cSQL + " INNER JOIN dbo.Ar_BrokerLst_Detail_History D WITH(NOLOCK) ON M.ID = D.ID "
+						cSQL = cSQL + " INNER JOIN dbo.Ar_BrokerLst_Process_History P WITH(NOLOCK) ON D.ID_Detail = P.ID_Detail "
 						cSQL = cSQL + " WHERE P.SOitem = dbo.f_ProperSOitem('"+cSOItem+"')"
 						cSQL = cSQL + " AND M.What = 'DELETE' "
 						cSQL = cSQL + " AND D.What = 'DELETE' "
@@ -571,7 +572,7 @@ DEFINE CLASS frmstocklst_search AS form
 						ENDIF
 		
 						SELECT 0
-						*WAIT WINDOW "SELECT * FROM dbo.[AR.StockLst_Master WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
+						*WAIT WINDOW "SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
 						
 						nSQLEXEC = SQLEXEC(THISFORM.nConnHandle, cSQL, 'tStockLst_SQL')
 						DO WHILE nSQLEXEC = 0
@@ -634,7 +635,7 @@ DEFINE CLASS frmstocklst_search AS form
 				cSQL = "SELECT *,TBL = 'S' FROM dbo.StockLst_Master_Union WITH(NOLOCK) "
 				cSQL = cSQL + " WHERE ID IN ( "
 				cSQL = cSQL + " SELECT DISTINCT ID FROM dbo.StockLst_Detail_Union WITH(NOLOCK) WHERE ID_Detail IN ("
-				cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.[AR.StockLst_Process_History] PH WITH(NOLOCK)  "
+				cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.Ar_StockLst_Process_History PH WITH(NOLOCK)  "
 		
 				cSQL = cSQL + " WHERE PH.WO = "+STR(pWO)
 				cSQL = cSQL + " )) ORDER BY id, alloy, form, cc, size, heat, What"
@@ -680,7 +681,7 @@ DEFINE CLASS frmstocklst_search AS form
 						cSQL = "SELECT *,TBL = 'B' FROM dbo.BrokerLst_Master_Union WITH(NOLOCK) "
 						cSQL = cSQL + " WHERE ID IN ( "
 						cSQL = cSQL + " SELECT DISTINCT ID FROM dbo.BrokerLst_Detail WITH(NOLOCK) WHERE ID_Detail IN ("
-						cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.[AR.BrokerLst_Process_History] PH WITH(NOLOCK) "
+						cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.Ar_BrokerLst_Process_History PH WITH(NOLOCK) "
 		
 						cSQL = cSQL + " WHERE PH.WO = "+STR(pWO)
 						cSQL = cSQL + " )) ORDER BY id, alloy, form, cc, size, heat, What"
@@ -691,7 +692,7 @@ DEFINE CLASS frmstocklst_search AS form
 						ENDIF
 		
 						SELECT 0
-						*WAIT WINDOW "SELECT * FROM dbo.[AR.StockLst_Master WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
+						*WAIT WINDOW "SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
 						
 						nSQLEXEC = SQLEXEC(THISFORM.nConnHandle, cSQL, 'tStockLst_SQL')
 						DO WHILE nSQLEXEC = 0
@@ -726,18 +727,18 @@ DEFINE CLASS frmstocklst_search AS form
 					PRIVATE nMess
 					nMess = MESSAGEBOX("Your WO was not found"+CHR(13)+"Do you want to search again in "+CHR(13)+"History?",4+32,"Your Work Order was not found")
 					IF nMess = 6
-						cSQL = "SELECT *,TBL = 'S' FROM dbo.[AR.StockLst_Master_History] M WITH(NOLOCK) "
-						cSQL = cSQL + " INNER JOIN dbo.[AR.StockLst_Detail_History] D WITH(NOLOCK) ON M.ID = D.ID "
-						cSQL = cSQL + " INNER JOIN dbo.[AR.StockLst_Process_History] P WITH(NOLOCK) ON D.ID_Detail = P.ID_Detail "
+						cSQL = "SELECT *,TBL = 'S' FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
+						cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D WITH(NOLOCK) ON M.ID = D.ID "
+						cSQL = cSQL + " INNER JOIN dbo.Ar_StockLst_Process_History P WITH(NOLOCK) ON D.ID_Detail = P.ID_Detail "
 						cSQL = cSQL + " WHERE P.WO = "+STR(pWO)
 						cSQL = cSQL + " AND M.What = 'DELETE' "
 						cSQL = cSQL + " AND D.What = 'DELETE' "
 						cSQL = cSQL + " AND P.What = 'DELETE' "
 						
 						cSQL = cSQL + " UNION "
-						cSQL = cSQL + " SELECT *,TBL = 'B' FROM dbo.[AR.BrokerLst_Master_History] M WITH(NOLOCK) "
-						cSQL = cSQL + " INNER JOIN dbo.[AR.BrokerLst_Detail_History] D WITH(NOLOCK) ON M.ID = D.ID "
-						cSQL = cSQL + " INNER JOIN dbo.[AR.BrokerLst_Process_History] P WITH(NOLOCK) ON D.ID_Detail = P.ID_Detail "
+						cSQL = cSQL + " SELECT *,TBL = 'B' FROM dbo.Ar_BrokerLst_Master_history M WITH(NOLOCK) "
+						cSQL = cSQL + " INNER JOIN dbo.Ar_BrokerLst_Detail_History D WITH(NOLOCK) ON M.ID = D.ID "
+						cSQL = cSQL + " INNER JOIN dbo.Ar_BrokerLst_Process_History P WITH(NOLOCK) ON D.ID_Detail = P.ID_Detail "
 						cSQL = cSQL + " WHERE P.WO = "+STR(pWO)
 						cSQL = cSQL + " AND M.What = 'DELETE' "
 						cSQL = cSQL + " AND D.What = 'DELETE' "
@@ -749,7 +750,7 @@ DEFINE CLASS frmstocklst_search AS form
 						ENDIF
 		
 						SELECT 0
-						*WAIT WINDOW "SELECT * FROM dbo.[AR.StockLst_Master WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
+						*WAIT WINDOW "SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
 						
 						nSQLEXEC = SQLEXEC(THISFORM.nConnHandle, cSQL, 'tStockLst_SQL')
 						DO WHILE nSQLEXEC = 0
@@ -812,7 +813,7 @@ DEFINE CLASS frmstocklst_search AS form
 				cSQL = "SELECT *,TBL = 'S' FROM dbo.StockLst_Master_Union WITH(NOLOCK) "
 				cSQL = cSQL + " WHERE ID IN ( "
 				cSQL = cSQL + " SELECT DISTINCT ID FROM dbo.StockLst_Detail_Union WITH(NOLOCK) WHERE ID_Detail IN ("
-				cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.[AR.StockLst_Process_History] PH WITH(NOLOCK) "
+				cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.Ar_StockLst_Process_History PH WITH(NOLOCK) "
 		
 				cSQL = cSQL + " WHERE PH.WO_Detail = "+STR(pWO_Detail)
 				cSQL = cSQL + " )) ORDER BY id, alloy, form, cc, size, heat, What"
@@ -859,7 +860,7 @@ DEFINE CLASS frmstocklst_search AS form
 						cSQL = "SELECT *,TBL = 'B' FROM dbo.BrokerLst_Master_Union WITH(NOLOCK) "
 						cSQL = cSQL + " WHERE ID IN ( "
 						cSQL = cSQL + " SELECT DISTINCT ID FROM dbo.BrokerLst_Detail WITH(NOLOCK) WHERE ID_Detail IN ("
-						cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.[AR.BrokerLst_Process_History] PH WITH(NOLOCK) "
+						cSQL = cSQL + " SELECT DISTINCT ID_Detail FROM dbo.Ar_BrokerLst_Process_History PH WITH(NOLOCK) "
 		
 						cSQL = cSQL + " WHERE PH.WO_Detail = "+STR(pWO_Detail)
 						cSQL = cSQL + " )) ORDER BY id, alloy, form, cc, size, heat, What"
@@ -903,12 +904,12 @@ DEFINE CLASS frmstocklst_search AS form
 					PRIVATE nMess
 					nMess = MESSAGEBOX("Your WO Detail was not found"+CHR(13)+"Do you want to search again in "+CHR(13)+"History?",4+32,"Your WO Detail was not found")
 					IF nMess = 6
-						cSQL = "SELECT *,TBL = 'S' FROM dbo.[AR.StockLst_Master_History] SMH WITH(NOLOCK) "
+						cSQL = "SELECT *,TBL = 'S' FROM dbo.Ar_Stocklst_Master_History SMH WITH(NOLOCK) "
 						cSQL = cSQL + " WHERE SMH.WO_Detail = "+STR(pWO_Detail)
 						cSQL = cSQL + " AND SMH.What = 'DELETE' "
 						
 						cSQL = cSQL + " UNION "
-						cSQL = cSQL + " SELECT *,TBL = 'B' FROM dbo.[AR.BrokerLst_Master_History] BMH WITH(NOLOCK) "
+						cSQL = cSQL + " SELECT *,TBL = 'B' FROM dbo.Ar_BrokerLst_Master_history BMH WITH(NOLOCK) "
 						cSQL = cSQL + " WHERE BMH.WO_Detail = "+STR(pWO_Detail)
 						cSQL = cSQL + " AND BMH.What = 'DELETE' "
 						
@@ -918,7 +919,7 @@ DEFINE CLASS frmstocklst_search AS form
 						ENDIF
 		
 						SELECT 0
-						WAIT WINDOW "SELECT * FROM dbo.[AR.StockLst_Master WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
+						WAIT WINDOW "SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE HEAT LIKE '%"+cHeat+"%'" NOWAIT
 						
 						nSQLEXEC = SQLEXEC(THISFORM.nConnHandle, cSQL, 'tStockLst_SQL')
 						DO WHILE nSQLEXEC = 0

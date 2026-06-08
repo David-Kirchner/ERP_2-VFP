@@ -45,6 +45,7 @@ DEFINE CLASS frmselectpo_item AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Select CustomerID"
 		closeconn = .F.
 		creturnvalue = ""

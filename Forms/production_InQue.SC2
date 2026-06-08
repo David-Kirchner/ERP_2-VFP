@@ -55,6 +55,7 @@ DEFINE CLASS production_inque AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BorderStyle = 3
 		Caption = "Select InQue for Production Board."
 		ClipControls = .T.

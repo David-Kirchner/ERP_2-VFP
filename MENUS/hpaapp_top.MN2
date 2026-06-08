@@ -203,58 +203,6 @@ ON PAD _msm_prog OF _msysmenu ACTIVATE POPUP _mprog
 	DEFINE BAR _mtl_browser OF _mprog PROMPT "Class \<Browser"
 	ON SELECTION POPUP _mprog MESSAGEBOX(APP_FEATURE_NOT_AVAILABLE_LOC,0,APP_GLOBAL.cCaption)
 
-DEFINE PAD "_msm_fave" OF _msysmenu PROMPT "F\<avorites" COLOR SCHEME 3 ;
-	KEY ALT+A, "ALT+A"
-
-ON PAD _msm_fave OF _msysmenu ACTIVATE POPUP _mFave
-
-	*----------------------------------
-	DEFINE POPUP _mFave MARGIN RELATIVE SHADOW COLOR SCHEME 4
-	DEFINE BAR 1 OF _mFave PROMPT "\<Add to Favorites..."
-	ON SELECTION BAR 1 OF _mFave APP_GLOBAL.DoStartupForm(.T.)
-
-	DEFINE BAR 2 OF _mFave PROMPT "\<Clear Favorites"
-	ON SELECTION BAR 2 OF _mFave APP_GLOBAL.ClearFavorites()
-
-	DEFINE BAR 3 OF _mFave PROMPT "\-"
-	ON SELECTION BAR 3 OF _mFave
-	ON SELECTION POPUP _mFave MESSAGEBOX(APP_FEATURE_NOT_AVAILABLE_LOC,0,APP_GLOBAL.cCaption)
-
-DEFINE PAD "_msm_windo" OF _msysmenu PROMPT "\<Window" COLOR SCHEME 3 ;
-	NEGOTIATE RIGHT, NONE ;
-	KEY ALT+W, ""
-
-ON PAD _msm_windo OF _msysmenu ACTIVATE POPUP _mwindow
-
-	*----------------------------------
-	DEFINE POPUP _mwindow MARGIN RELATIVE SHADOW COLOR SCHEME 4
-	DEFINE BAR 1 OF _mwindow PROMPT "\<Cascade"
-	ON SELECTION BAR 1 OF _mwindow APP_GLOBAL.CascadeAll()
-
-	DEFINE BAR _mwi_arran OF _mwindow PROMPT "\<Arrange All"
-
-	DEFINE BAR _mwi_rotat OF _mwindow PROMPT "C\<ycle" ;
-		KEY CTRL+F1, "CTRL+F1"
-	ON SELECTION POPUP _mwindow MESSAGEBOX(APP_FEATURE_NOT_AVAILABLE_LOC,0,APP_GLOBAL.cCaption)
-
-DEFINE PAD "_msm_systm" OF _msysmenu PROMPT "\<Help" COLOR SCHEME 3 ;
-	KEY ALT+H, ""
-
-ON PAD _msm_systm OF _msysmenu ACTIVATE POPUP _msystem
-
-	*----------------------------------
-	DEFINE POPUP _msystem MARGIN RELATIVE SHADOW COLOR SCHEME 4
-	DEFINE BAR 1 OF _msystem PROMPT "\<Help" ;
-		KEY F1, "F1"
-	ON SELECTION BAR 1 OF _msystem APP_GLOBAL.DoHelp()
-
-	DEFINE BAR 2 OF _msystem PROMPT "\-"
-	ON SELECTION BAR 2 OF _msystem
-
-	DEFINE BAR 3 OF _msystem PROMPT "\<About "+APP_GLOBAL.cCaption+"..."
-	ON SELECTION BAR 3 OF _msystem APP_GLOBAL.DoAboutBox()
-	ON SELECTION POPUP _msystem MESSAGEBOX(APP_FEATURE_NOT_AVAILABLE_LOC,0,APP_GLOBAL.cCaption)
-
 *</MenuCode>
 
 *<CleanupCode>

@@ -49,6 +49,7 @@ DEFINE CLASS frmselectpo_item AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Edited SO"
 		closeconn = .F.
 		creturnvalue = ""

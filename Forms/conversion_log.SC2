@@ -172,6 +172,7 @@ DEFINE CLASS frmoutsourcelog AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BackColor = 233,233,233
 		Caption = "Space Alloys USA"
 		connhandle = <fb2p_value>0&#13;</fb2p_value>
@@ -452,7 +453,7 @@ DEFINE CLASS frmoutsourcelog AS form
 		Command1.Height = 55, ;
 		Command1.Left = 5, ;
 		Command1.Name = "Command1", ;
-		Command1.Picture = ..\graphics\calc.bmp, ;
+		Command1.Picture = GRAPHICS\calc.bmp, ;
 		Command1.ReleaseErase = .F., ;
 		Command1.SpecialEffect = 1, ;
 		Command1.TerminateRead = .F., ;

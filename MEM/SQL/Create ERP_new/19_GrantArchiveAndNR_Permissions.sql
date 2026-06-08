@@ -1,13 +1,13 @@
-/* ERP_1 — Archive (AR.*) and No-Replication (NR_*) table permissions.
+/* ERP_1 — Archive (Ar_*) and No-Replication (NR_*) table permissions.
    Run on SuperMicro and Server26 after 01_CreateRoles.sql and 02_CreateDB_Roles.sql.
 
    Policy:
-     [AR.*]  Archive history — SELECT for all app roles; INSERT for all app roles
+     Ar_*  Archive history — SELECT for all app roles; INSERT for all app roles
              (INSERT triggers on live tables run as the calling user).
      [NR_*]  No replication   — SELECT for all app roles.
      [NR_UserTrack]           — SELECT + INSERT for all app roles (VFP TrackMess + triggers).
 
-   Idempotent — safe to re-run after new AR./NR_ tables are added. */
+   Idempotent — safe to re-run after new Ar_/NR_ tables are added. */
 
 USE [ERP_2];
 GO
@@ -69,14 +69,14 @@ DECLARE @nArIns   int = 0;
 DECLARE @nNrSel   int = 0;
 DECLARE @nTrack   int = 0;
 
-PRINT '=== ERP_1 AR.* / NR_* permissions ===';
+PRINT '=== ERP_1 Ar_* / NR_* permissions ===';
 
-/* ----- AR.* archive tables (name starts with AR. — case-insensitive) ----- */
+/* ----- Ar_* archive tables (name starts with Ar_) ----- */
 DECLARE ar_cur CURSOR LOCAL FAST_FORWARD FOR
     SELECT QUOTENAME(OBJECT_SCHEMA_NAME(t.object_id)) + N'.' + QUOTENAME(t.name)
     FROM sys.tables AS t
     WHERE t.type = N'U'
-      AND t.name LIKE N'AR.%' ESCAPE N'\';  /* CI collation: matches Ar., AR., etc. */
+      AND t.name LIKE N'Ar[_]%' ESCAPE N'\';
 
 OPEN ar_cur;
 FETCH NEXT FROM ar_cur INTO @obj;
@@ -171,7 +171,7 @@ END
 ELSE
     PRINT 'WARNING: dbo.NR_UserTrack not found — skip INSERT grants.';
 
-PRINT CONCAT('AR.*  SELECT grants: ', @nArSel, '  INSERT grants: ', @nArIns);
+PRINT CONCAT('Ar_*  SELECT grants: ', @nArSel, '  INSERT grants: ', @nArIns);
 PRINT CONCAT('NR_*  SELECT grants: ', @nNrSel);
 PRINT CONCAT('NR_UserTrack INSERT grants: ', @nTrack);
 PRINT 'Done.';
@@ -183,7 +183,7 @@ GO
 /*
 SELECT name AS ArchiveTable
 FROM sys.tables
-WHERE name LIKE N'AR.%'
+WHERE name LIKE N'Ar[_]%' ESCAPE N'\'
 ORDER BY name;
 
 SELECT name AS NR_Table
@@ -194,7 +194,7 @@ ORDER BY name;
 SELECT OBJECT_NAME(major_id) AS Obj, dp.name AS Grantee, permission_name, state_desc
 FROM sys.database_permissions AS p
 JOIN sys.database_principals AS dp ON p.grantee_principal_id = dp.principal_id
-WHERE OBJECT_NAME(major_id) LIKE N'AR.%'
+WHERE OBJECT_NAME(major_id) LIKE N'Ar[_]%' ESCAPE N'\'
    OR OBJECT_NAME(major_id) LIKE N'NR[_]%' ESCAPE N'\'
 ORDER BY Obj, Grantee, permission_name;
 */

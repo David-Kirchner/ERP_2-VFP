@@ -1025,9 +1025,9 @@ DEFINE CLASS frmstocklst_detail_history AS embossedform OF "..\libs\wizembss.vcx
 		cSQL = "SELECT DISTINCT CAST([When] AS Date) AS [When],[What]"
 		cSQL = cSQL + " ,[ID] ,[ID_Detail] "
 		IF ThisForm.Lst = "S"
-			cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History "
+			cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History "
 		ELSE
-			cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Detail_History "
+			cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Detail_History "
 		ENDIF
 		cSQL = cSQL + " WHERE ID_Detail = "+STR(ThisForm.ID_Detail)
 		
@@ -1203,9 +1203,9 @@ DEFINE CLASS frmstocklst_detail_history AS embossedform OF "..\libs\wizembss.vcx
 		ELSE
 			cSQL = "SELECT DH.* "
 			 IF ThisForm.Lst = "S"
-				cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History DH"
+				cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History DH"
 			ELSE
-				cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Detail_History DH"
+				cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Detail_History DH"
 			ENDIF
 			cSQL = cSQL + " WHERE DH.WHAT = '"+cWhat +"'"
 			cSQL = cSQL + " AND CAST(DH.[WHEN] AS DATE) = '"+cWhen+"'"

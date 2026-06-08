@@ -49,6 +49,7 @@ DEFINE CLASS frmcompanysources AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Company Sources"
 		closeconn = .F.
 		creturnvalue = ""

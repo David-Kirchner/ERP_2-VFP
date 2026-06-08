@@ -81,6 +81,7 @@ DEFINE CLASS frmpo_late AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 1
 		Name = "frmPO_Late"
@@ -754,13 +755,13 @@ DEFINE CLASS frmpo_late AS formset
 		SELECT 0
 		PRIVATE cSQL, nSQLEXEC
 		
-		cSQL = "SELECT LEFT([Who],20) AS [Who],[What],[When],[StkDate],'Stock ' AS STK,ID FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) "
+		cSQL = "SELECT LEFT([Who],20) AS [Who],[What],[When],[StkDate],'Stock ' AS STK,ID FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE po_item = '"+cPOitem+"'"
 		cSQL = cSQL + " UNION "
-		cSQL = cSQL + "SELECT LEFT([Who],20) AS [Who],[What],[When],[StkDate],'Broker' AS STK,ID FROM dbo.[AR.BrokerLst_Master_History] WITH(NOLOCK) "
+		cSQL = cSQL + "SELECT LEFT([Who],20) AS [Who],[What],[When],[StkDate],'Broker' AS STK,ID FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE po_item = '"+cPOitem+"'"
 		cSQL = cSQL + " UNION "
-		cSQL = cSQL + "SELECT LEFT([Who],20) AS [Who],[What],[When],[StkDate],'WIP   ' AS STK,ID FROM dbo.[AR.WIPLst_Master_History] WITH(NOLOCK) "
+		cSQL = cSQL + "SELECT LEFT([Who],20) AS [Who],[What],[When],[StkDate],'WIP   ' AS STK,ID FROM dbo.Ar_WIPLst_Master_History WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE po_item = '"+cPOitem+"'"
 		
 		

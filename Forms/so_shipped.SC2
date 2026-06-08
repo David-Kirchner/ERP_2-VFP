@@ -109,6 +109,7 @@ DEFINE CLASS frmso_shipped AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "SO Shipped"
 		closeconn = .F.
 		creturnvalue = ""

@@ -90,6 +90,7 @@ DEFINE CLASS frmcustomerterms AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Customer Terms"

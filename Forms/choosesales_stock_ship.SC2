@@ -57,6 +57,7 @@ DEFINE CLASS frmchoosesales_stock_ship AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Choose the Sales Detail  Record that is Shipping"

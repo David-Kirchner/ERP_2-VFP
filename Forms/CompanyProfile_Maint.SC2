@@ -21,6 +21,7 @@ ENDDEFINE
 DEFINE CLASS frmcompanyprofile_maint AS form 
  	*< CLASSDATA: Baseclass="form" Timestamp="" Scale="" Uniqueid="" />
 
+	*-- OBJECTDATA items order determines ZOrder / El orden de los items OBJECTDATA determina el ZOrder 
 	*< OBJECTDATA: ObjPath="pgf1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.lblLegalName" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtLegalName" UniqueID="" Timestamp="" />
@@ -45,37 +46,36 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	*< OBJECTDATA: ObjPath="pgf1.pgCert.lblCertFooterText" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgCert.edtCertFooterText" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblLogoInfo" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblLogoTitle" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgLogo.imgLogoPreview" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgLogo.cmdPickLogo" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgLogo.cmdClearLogo" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.lblWFHdr" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.lblWFLine" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.edtWFLine" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.lblWFPhone" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.txtWFPhone" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.lblWFFax" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.txtWFFax" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.lblWFCage" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.txtWFCage" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.lblTPHdr" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.lblTPLine" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.edtTPLine" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.lblTPCage" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.txtTPCage" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgReportSites.lblReportHint" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblIconTitle" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblIconInfo" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.imgIconPreview" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.cmdPickIcon" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.cmdClearIcon" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblReportBmpTitle" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblReportBmpInfo" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.imgReportBmpPreview" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.cmdPickReportBmp" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.cmdClearReportBmp" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblShortNameTitle" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.txtShortNameBranding" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblShortNameHint" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdSave" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdReload" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdClose" UniqueID="" Timestamp="" />
 
 	*<DefinedPropArrayMethod>
-		*m: loadplantdata
 		*m: loaddata
+		*m: refreshiconpreview
 		*m: refreshlogopreview
-		*m: saveplantdata
+		*m: refreshreportbmppreview
+		*p: ccagecode
 		*p: ccertcertifytext
 		*p: ccertfootertext
 		*p: ccertheadertext
-		*p: ccagecode
 		*p: cdbaname
 		*p: clegalname
 		*p: cqualityemail
@@ -85,23 +85,16 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*p: cwebsite
 		*p: lskipcompanybranding
 		*p: nconnhandle
-		*p: ntp_plantid
-		*p: nwf_plantid
-		*p: ctp_cage
-		*p: ctp_reportline
-		*p: cwf_cage
-		*p: cwf_fax
-		*p: cwf_phone
-		*p: cwf_reportline
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Company Profile"
+		ccagecode = ""
 		ccertcertifytext = ""
 		ccertfootertext = ""
 		ccertheadertext = ""
-		ccagecode = ""
 		cdbaname = ""
 		clegalname = ""
 		cqualityemail = ""
@@ -110,18 +103,10 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		ctagline = ""
 		cwebsite = ""
 		DoCreate = .T.
-		Height = 480
+		Height = 560
 		lskipcompanybranding = .T.
 		Name = "frmCompanyProfile_maint"
 		nconnhandle = 0
-		ntp_plantid = 0
-		nwf_plantid = 0
-		ctp_cage = ""
-		ctp_reportline = ""
-		cwf_cage = ""
-		cwf_fax = ""
-		cwf_phone = ""
-		cwf_reportline = ""
 		Width = 520
 		WindowType = 1
 	*</PropValue>
@@ -132,7 +117,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 27, ;
 		Left = 400, ;
 		Name = "cmdClose", ;
-		Top = 440, ;
+		Top = 520, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -141,7 +126,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 27, ;
 		Left = 120, ;
 		Name = "cmdReload", ;
-		Top = 440, ;
+		Top = 520, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -150,16 +135,16 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 27, ;
 		Left = 280, ;
 		Name = "cmdSave", ;
-		Top = 440, ;
+		Top = 520, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
 	ADD OBJECT 'pgf1' AS pageframe WITH ;
 		ErasePage = .T., ;
-		Height = 420, ;
+		Height = 500, ;
 		Left = 10, ;
 		Name = "pgf1", ;
-		PageCount = 5, ;
+		PageCount = 4, ;
 		Top = 10, ;
 		Width = 500, ;
 		Page1.Caption = "Identity", ;
@@ -168,10 +153,8 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Page2.Name = "pgContact", ;
 		Page3.Caption = "Cert text", ;
 		Page3.Name = "pgCert", ;
-		Page4.Caption = "Logo", ;
-		Page4.Name = "pgLogo", ;
-		Page5.Caption = "Report sites", ;
-		Page5.Name = "pgReportSites"
+		Page4.Caption = "Branding", ;
+		Page4.Name = "pgLogo"
 		*< END OBJECT: BaseClass="pageframe" />
 
 	ADD OBJECT 'pgf1.pgCert.edtCertCertifyText' AS editbox WITH ;
@@ -269,6 +252,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 23, ;
 		Left = 111, ;
 		Name = "txtCageCode", ;
+		SelectOnEntry = .T., ;
 		Top = 108, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
@@ -278,6 +262,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 23, ;
 		Left = 111, ;
 		Name = "txtQualityEmail", ;
+		SelectOnEntry = .T., ;
 		Top = 48, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
@@ -287,6 +272,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 23, ;
 		Left = 111, ;
 		Name = "txtSalesEmail", ;
+		SelectOnEntry = .T., ;
 		Top = 18, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
@@ -296,6 +282,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 23, ;
 		Left = 111, ;
 		Name = "txtWebsite", ;
+		SelectOnEntry = .T., ;
 		Top = 78, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
@@ -319,16 +306,16 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgIdentity.lblShortName' AS label WITH ;
-		Caption = "Short name", ;
+		Caption = "Short name (window title)", ;
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShortName", ;
 		Top = 80, ;
-		Width = 90
+		Width = 140
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgIdentity.lblTagline' AS label WITH ;
-		Caption = "Tagline (reports)", ;
+		Caption = "Tagline", ;
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblTagline", ;
@@ -341,6 +328,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 23, ;
 		Left = 111, ;
 		Name = "txtDBAName", ;
+		SelectOnEntry = .T., ;
 		Top = 48, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
@@ -350,6 +338,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 23, ;
 		Left = 111, ;
 		Name = "txtLegalName", ;
+		SelectOnEntry = .T., ;
 		Top = 18, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
@@ -359,6 +348,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 23, ;
 		Left = 111, ;
 		Name = "txtShortName", ;
+		SelectOnEntry = .T., ;
 		Top = 78, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
@@ -368,9 +358,19 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 23, ;
 		Left = 111, ;
 		Name = "txtTagline", ;
+		SelectOnEntry = .T., ;
 		Top = 108, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgLogo.cmdClearIcon' AS commandbutton WITH ;
+		Caption = "Clear icon", ;
+		Height = 27, ;
+		Left = 394, ;
+		Name = "cmdClearIcon", ;
+		Top = 150, ;
+		Width = 90
+		*< END OBJECT: BaseClass="commandbutton" />
 
 	ADD OBJECT 'pgf1.pgLogo.cmdClearLogo' AS commandbutton WITH ;
 		Caption = "Clear logo", ;
@@ -379,6 +379,15 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Name = "cmdClearLogo", ;
 		Top = 150, ;
 		Width = 90
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'pgf1.pgLogo.cmdPickIcon' AS commandbutton WITH ;
+		Caption = "Choose icon...", ;
+		Height = 27, ;
+		Left = 260, ;
+		Name = "cmdPickIcon", ;
+		Top = 150, ;
+		Width = 120
 		*< END OBJECT: BaseClass="commandbutton" />
 
 	ADD OBJECT 'pgf1.pgLogo.cmdPickLogo' AS commandbutton WITH ;
@@ -390,166 +399,152 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 120
 		*< END OBJECT: BaseClass="commandbutton" />
 
+	ADD OBJECT 'pgf1.pgLogo.imgIconPreview' AS image WITH ;
+		BorderStyle = 1, ;
+		Height = 48, ;
+		Left = 260, ;
+		Name = "imgIconPreview", ;
+		Stretch = 1, ;
+		Top = 56, ;
+		Width = 48
+		*< END OBJECT: BaseClass="image" />
+
 	ADD OBJECT 'pgf1.pgLogo.imgLogoPreview' AS image WITH ;
 		BorderStyle = 1, ;
 		Height = 100, ;
 		Left = 16, ;
 		Name = "imgLogoPreview", ;
-		Picture = "", ;
 		Stretch = 1, ;
 		Top = 40, ;
 		Width = 220
 		*< END OBJECT: BaseClass="image" />
 
+	ADD OBJECT 'pgf1.pgLogo.lblIconInfo' AS label WITH ;
+		AutoSize = .T., ;
+		Caption = "Cached to MEM\Company_Icon.ico for ERP window and forms.", ;
+		Height = 17, ;
+		Left = 260, ;
+		Name = "lblIconInfo", ;
+		Top = 36, ;
+		Width = 224
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblIconTitle' AS label WITH ;
+		FontBold = .T., ;
+		Caption = "Company Icon", ;
+		Height = 17, ;
+		Left = 260, ;
+		Name = "lblIconTitle", ;
+		Top = 16, ;
+		Width = 120
+		*< END OBJECT: BaseClass="label" />
+
 	ADD OBJECT 'pgf1.pgLogo.lblLogoInfo' AS label WITH ;
 		AutoSize = .T., ;
-		Caption = "Logo appears on forms (top-right) and reports.", ;
+		Caption = "Optional image for on-screen branding (jpg/png/gif/bmp).", ;
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblLogoInfo", ;
-		Top = 16, ;
-		Width = 300
+		Top = 190, ;
+		Width = 468
 		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgf1.pgReportSites.edtTPLine' AS editbox WITH ;
-		ControlSource = "ThisForm.cTP_ReportLine", ;
-		Height = 40, ;
-		Left = 16, ;
-		Name = "edtTPLine", ;
-		Top = 268, ;
-		Width = 450
-		*< END OBJECT: BaseClass="editbox" />
-
-	ADD OBJECT 'pgf1.pgReportSites.edtWFLine' AS editbox WITH ;
-		ControlSource = "ThisForm.cWF_ReportLine", ;
-		Height = 40, ;
-		Left = 16, ;
-		Name = "edtWFLine", ;
-		Top = 66, ;
-		Width = 450
-		*< END OBJECT: BaseClass="editbox" />
-
-	ADD OBJECT 'pgf1.pgReportSites.lblReportHint' AS label WITH ;
-		AutoSize = .T., ;
-		Caption = "Certs11 header: Windfall + Tipton lines, phone/fax, CAGE codes.", ;
-		Height = 17, ;
-		Left = 16, ;
-		Name = "lblReportHint", ;
-		Top = 8, ;
-		Width = 420
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgReportSites.lblTPCage' AS label WITH ;
-		Caption = "Tipton CAGE", ;
-		Height = 17, ;
-		Left = 16, ;
-		Name = "lblTPCage", ;
-		Top = 318, ;
-		Width = 90
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgReportSites.lblTPLine' AS label WITH ;
-		Caption = "Tipton address line", ;
-		Height = 17, ;
-		Left = 16, ;
-		Name = "lblTPLine", ;
-		Top = 248, ;
+	ADD OBJECT 'pgf1.pgLogo.cmdClearReportBmp' AS commandbutton WITH ;
+		Caption = "Clear report BMP", ;
+		Height = 27, ;
+		Left = 150, ;
+		Name = "cmdClearReportBmp", ;
+		Top = 302, ;
 		Width = 120
-		*< END OBJECT: BaseClass="label" />
+		*< END OBJECT: BaseClass="commandbutton" />
 
-	ADD OBJECT 'pgf1.pgReportSites.lblTPHdr' AS label WITH ;
+	ADD OBJECT 'pgf1.pgLogo.cmdPickReportBmp' AS commandbutton WITH ;
+		Caption = "Choose Company BMP...", ;
+		Height = 27, ;
+		Left = 16, ;
+		Name = "cmdPickReportBmp", ;
+		Top = 302, ;
+		Width = 120
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'pgf1.pgLogo.imgReportBmpPreview' AS image WITH ;
+		BorderStyle = 1, ;
+		Height = 64, ;
+		Left = 16, ;
+		Name = "imgReportBmpPreview", ;
+		Stretch = 1, ;
+		Top = 232, ;
+		Width = 200
+		*< END OBJECT: BaseClass="image" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblReportBmpInfo' AS label WITH ;
 		AutoSize = .T., ;
-		Caption = "Tipton (certs11 lower address)", ;
-		FontBold = .T., ;
+		Caption = "Cached to MEM\Company_BMP.bmp; FRX use graphics\erphead.bmp (synced on upload).", ;
 		Height = 17, ;
 		Left = 16, ;
-		Name = "lblTPHdr", ;
-		Top = 228, ;
+		Name = "lblReportBmpInfo", ;
+		Top = 336, ;
+		Width = 468
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblShortNameTitle' AS label WITH ;
+		FontBold = .T., ;
+		Caption = "Short name (ERP window title)", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblShortNameTitle", ;
+		Top = 360, ;
 		Width = 200
 		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgf1.pgReportSites.lblWFCage' AS label WITH ;
-		Caption = "Windfall CAGE", ;
-		Height = 17, ;
+	ADD OBJECT 'pgf1.pgLogo.txtShortNameBranding' AS textbox WITH ;
+		ControlSource = "ThisForm.cShortName", ;
+		Height = 23, ;
 		Left = 16, ;
-		Name = "lblWFCage", ;
-		Top = 188, ;
-		Width = 90
-		*< END OBJECT: BaseClass="label" />
+		Name = "txtShortNameBranding", ;
+		SelectOnEntry = .T., ;
+		Top = 378, ;
+		Width = 350
+		*< END OBJECT: BaseClass="textbox" />
 
-	ADD OBJECT 'pgf1.pgReportSites.lblWFFax' AS label WITH ;
-		Caption = "Fax", ;
-		Height = 17, ;
-		Left = 260, ;
-		Name = "lblWFFax", ;
-		Top = 158, ;
-		Width = 40
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgReportSites.lblWFHdr' AS label WITH ;
+	ADD OBJECT 'pgf1.pgLogo.lblShortNameHint' AS label WITH ;
 		AutoSize = .T., ;
-		Caption = "Windfall (certs11 header phone/fax)", ;
+		Caption = "Same field as Identity tab. Save to update the main window Caption.", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblShortNameHint", ;
+		Top = 404, ;
+		Width = 468
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblReportBmpTitle' AS label WITH ;
 		FontBold = .T., ;
+		Caption = "Company BMP (reports)", ;
 		Height = 17, ;
 		Left = 16, ;
-		Name = "lblWFHdr", ;
-		Top = 28, ;
-		Width = 220
+		Name = "lblReportBmpTitle", ;
+		Top = 212, ;
+		Width = 200
 		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgf1.pgReportSites.lblWFLine' AS label WITH ;
-		Caption = "Windfall address line", ;
+	ADD OBJECT 'pgf1.pgLogo.lblLogoTitle' AS label WITH ;
+		FontBold = .T., ;
+		Caption = "Company Logo", ;
 		Height = 17, ;
 		Left = 16, ;
-		Name = "lblWFLine", ;
-		Top = 48, ;
+		Name = "lblLogoTitle", ;
+		Top = 16, ;
 		Width = 120
 		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgReportSites.lblWFPhone' AS label WITH ;
-		Caption = "Phone", ;
-		Height = 17, ;
-		Left = 16, ;
-		Name = "lblWFPhone", ;
-		Top = 158, ;
-		Width = 50
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgReportSites.txtTPCage' AS textbox WITH ;
-		ControlSource = "ThisForm.cTP_Cage", ;
-		Height = 23, ;
-		Left = 111, ;
-		Name = "txtTPCage", ;
-		Top = 316, ;
-		Width = 120
-		*< END OBJECT: BaseClass="textbox" />
-
-	ADD OBJECT 'pgf1.pgReportSites.txtWFCage' AS textbox WITH ;
-		ControlSource = "ThisForm.cWF_Cage", ;
-		Height = 23, ;
-		Left = 111, ;
-		Name = "txtWFCage", ;
-		Top = 186, ;
-		Width = 120
-		*< END OBJECT: BaseClass="textbox" />
-
-	ADD OBJECT 'pgf1.pgReportSites.txtWFFax' AS textbox WITH ;
-		ControlSource = "ThisForm.cWF_Fax", ;
-		Height = 23, ;
-		Left = 300, ;
-		Name = "txtWFFax", ;
-		Top = 156, ;
-		Width = 166
-		*< END OBJECT: BaseClass="textbox" />
-
-	ADD OBJECT 'pgf1.pgReportSites.txtWFPhone' AS textbox WITH ;
-		ControlSource = "ThisForm.cWF_Phone", ;
-		Height = 23, ;
-		Left = 111, ;
-		Name = "txtWFPhone", ;
-		Top = 156, ;
-		Width = 130
-		*< END OBJECT: BaseClass="textbox" />
+	
+	PROCEDURE Init
+		This.nConnHandle = get_SQLSTRINGCONNECT()
+		DO PROGS\load_CompanyProfile
+		This.LoadData()
+		This.RefreshLogoPreview()
+		This.RefreshIconPreview()
+		This.RefreshReportBmpPreview()
+	ENDPROC
 
 	PROCEDURE Load
 		LOCAL lcRoot
@@ -563,85 +558,10 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		IF NOT "COMPANY_BRANDING" $ UPPER(SET("PROCEDURE"))
 			SET PROCEDURE TO (lcRoot + "PROGS\company_branding.prg") ADDITIVE
 		ENDIF
-		IF NOT "LOAD_COMPANYPLANTS" $ UPPER(SET("PROCEDURE"))
-			SET PROCEDURE TO (lcRoot + "PROGS\load_CompanyPlants.prg") ADDITIVE
-		ENDIF
-		IF NOT "COMPANY_REPORT" $ UPPER(SET("PROCEDURE"))
-			SET PROCEDURE TO (lcRoot + "PROGS\company_report.prg") ADDITIVE
-		ENDIF
 		SET PROCEDURE TO (lcRoot + "PROGS\CompanyProfile_maint.prg") ADDITIVE
 	ENDPROC
 
-	PROCEDURE Init
-		This.nConnHandle = get_SQLSTRINGCONNECT()
-		DO PROGS\load_CompanyProfile
-		DO PROGS\load_CompanyPlants
-		This.LoadData()
-		This.LoadPlantData()
-		This.RefreshLogoPreview()
-	ENDPROC
-
-	PROCEDURE LoadPlantData
-		LOCAL lo
-		This.cWF_ReportLine = ""
-		This.cWF_Phone = ""
-		This.cWF_Fax = ""
-		This.cWF_Cage = ""
-		This.cTP_ReportLine = ""
-		This.cTP_Cage = ""
-		This.nWF_PlantId = 0
-		This.nTP_PlantId = 0
-		IF VARTYPE(goCompanyPlants) # "O"
-			DO PROGS\load_CompanyPlants
-		ENDIF
-		IF VARTYPE(goCompanyPlants) # "O"
-			RETURN
-		ENDIF
-		TRY
-			lo = goCompanyPlants.Item("WINDFALL")
-			This.nWF_PlantId = lo.PlantId
-			This.cWF_ReportLine = lo.CertReportLine
-			This.cWF_Phone = lo.Phone
-			This.cWF_Fax = lo.Fax
-			This.cWF_Cage = lo.CageCode
-		CATCH
-		ENDTRY
-		TRY
-			lo = goCompanyPlants.Item("TIPTON")
-			This.nTP_PlantId = lo.PlantId
-			This.cTP_ReportLine = lo.CertReportLine
-			This.cTP_Cage = lo.CageCode
-		CATCH
-		ENDTRY
-	ENDPROC
-
-	PROCEDURE SavePlantData
-		LOCAL lcSQL, nRet
-		IF Thisform.nConnHandle < 1
-			Thisform.nConnHandle = get_SQLSTRINGCONNECT()
-		ENDIF
-		IF Thisform.nWF_PlantId > 0
-			lcSQL = "UPDATE dbo.CompanyPlant SET "
-			lcSQL = lcSQL + "CertReportLine = "+CompanyProfile_SQLQuote(Thisform.cWF_ReportLine)+", "
-			lcSQL = lcSQL + "Phone = "+CompanyProfile_SQLQuote(Thisform.cWF_Phone)+", "
-			lcSQL = lcSQL + "Fax = "+CompanyProfile_SQLQuote(Thisform.cWF_Fax)+", "
-			lcSQL = lcSQL + "CageCode = "+CompanyProfile_SQLQuote(Thisform.cWF_Cage)+", "
-			lcSQL = lcSQL + "ModifiedDate = SYSDATETIME() "
-			lcSQL = lcSQL + "WHERE PlantId = "+TRANSFORM(Thisform.nWF_PlantId)
-			nRet = SQLEXEC(Thisform.nConnHandle, lcSQL)
-		ENDIF
-		IF Thisform.nTP_PlantId > 0
-			lcSQL = "UPDATE dbo.CompanyPlant SET "
-			lcSQL = lcSQL + "CertReportLine = "+CompanyProfile_SQLQuote(Thisform.cTP_ReportLine)+", "
-			lcSQL = lcSQL + "CageCode = "+CompanyProfile_SQLQuote(Thisform.cTP_Cage)+", "
-			lcSQL = lcSQL + "ModifiedDate = SYSDATETIME() "
-			lcSQL = lcSQL + "WHERE PlantId = "+TRANSFORM(Thisform.nTP_PlantId)
-			nRet = SQLEXEC(Thisform.nConnHandle, lcSQL)
-		ENDIF
-		DO PROGS\load_CompanyPlants WITH .T.
-	ENDPROC
-
-	PROCEDURE LoadData
+	PROCEDURE loaddata
 		LOCAL laP[11], i, lcP, lcProp, xVal
 		IF VARTYPE(goCompany) # "O"
 			DO PROGS\load_CompanyProfile
@@ -677,8 +597,18 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		ENDFOR
 	ENDPROC
 
-	PROCEDURE RefreshLogoPreview
+	PROCEDURE refreshiconpreview
+		This.pgf1.pgLogo.imgIconPreview.Picture = GetCompanyIconPath()
+	ENDPROC
+
+	PROCEDURE refreshlogopreview
 		This.pgf1.pgLogo.imgLogoPreview.Picture = GetCompanyLogoPath()
+	ENDPROC
+
+	PROCEDURE refreshreportbmppreview
+		LOCAL lcPath
+		lcPath = GetCompanyBmpPath()
+		This.pgf1.pgLogo.imgReportBmpPreview.Picture = lcPath
 	ENDPROC
 
 	PROCEDURE cmdClose.Click
@@ -687,10 +617,10 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 
 	PROCEDURE cmdReload.Click
 		DO PROGS\load_CompanyProfile WITH .T.
-		DO PROGS\load_CompanyPlants WITH .T.
 		Thisform.LoadData()
-		Thisform.LoadPlantData()
 		Thisform.RefreshLogoPreview()
+		Thisform.RefreshIconPreview()
+		Thisform.RefreshReportBmpPreview()
 	ENDPROC
 
 	PROCEDURE cmdSave.Click
@@ -717,8 +647,10 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 			MESSAGEBOX("Save failed. Check SQL connection and CompanyProfile table.", 16, "Company Profile")
 			RETURN
 		ENDIF
-		Thisform.SavePlantData()
 		DO PROGS\load_CompanyProfile WITH .T.
+		IF TYPE("SetERPAppCaption") = "F"
+			= SetERPAppCaption(Thisform.cShortName)
+		ENDIF
 		MESSAGEBOX("Company profile saved.", 64, "Company Profile")
 	ENDPROC
 
@@ -741,7 +673,71 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 			RETURN
 		ENDIF
 		Thisform.RefreshLogoPreview()
-		MESSAGEBOX("Logo saved. Open forms and reports will use the new image.", 64, "Company Profile")
+		MESSAGEBOX("Logo saved. Reports will use the new image.", 64, "Company Profile")
+	ENDPROC
+
+	PROCEDURE pgf1.pgLogo.cmdClearIcon.Click
+		IF MESSAGEBOX("Remove company icon from database and restore default?", 4+32, "Company Profile") # 6
+			RETURN
+		ENDIF
+		= CompanyBranding_ClearIcon(Thisform.nConnHandle)
+		Thisform.RefreshIconPreview()
+		IF TYPE("GetCompanyIconPath") = "F"
+			_SCREEN.Icon = GetCompanyIconPath()
+		ENDIF
+	ENDPROC
+
+	PROCEDURE pgf1.pgLogo.cmdPickIcon.Click
+		LOCAL lcFile, lcIcon, lcRoot, lcOldDir
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, SYS(5)+SYS(2003)))
+		lcOldDir = CURDIR()
+		CD (lcRoot + "ICO")
+		lcFile = GETFILE("ico", "Company icon", "Import", 0, "Choose company icon (.ico)")
+		CD (lcOldDir)
+		IF EMPTY(lcFile)
+			RETURN
+		ENDIF
+		IF !CompanyBranding_SaveIconFile(lcFile, Thisform.nConnHandle)
+			MESSAGEBOX("Could not save icon to SQL. Check connection and CompanyProfile table.", 16, "Company Profile")
+			RETURN
+		ENDIF
+		Thisform.RefreshIconPreview()
+		lcIcon = GetCompanyIconPath()
+		IF !EMPTY(lcIcon)
+			_SCREEN.Icon = lcIcon
+		ENDIF
+		MESSAGEBOX("Icon saved to MEM\Company_Icon.ico. ERP window and forms will use the new icon.", 64, "Company Profile")
+	ENDPROC
+
+	PROCEDURE pgf1.pgLogo.cmdClearReportBmp.Click
+		IF MESSAGEBOX("Remove Company BMP from database?", 4+32, "Company Profile") # 6
+			RETURN
+		ENDIF
+		IF !CompanyBranding_ClearReportBmp(Thisform.nConnHandle)
+			MESSAGEBOX("Could not clear report BMP. Run MEM\SQL\Config\09_CompanyProfile_ReportImage.sql if columns are missing.", 16, "Company Profile")
+			RETURN
+		ENDIF
+		Thisform.RefreshReportBmpPreview()
+	ENDPROC
+
+	PROCEDURE pgf1.pgLogo.cmdPickReportBmp.Click
+		LOCAL lcFile, lcRoot, lcOldDir
+		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, SYS(5)+SYS(2003)))
+		lcOldDir = CURDIR()
+		IF DIRECTORY(lcRoot + "GRAPHICS")
+			CD (lcRoot + "GRAPHICS")
+		ENDIF
+		lcFile = GETFILE("bmp", "Company BMP", "Import", 0, "Choose report header BMP")
+		CD (lcOldDir)
+		IF EMPTY(lcFile)
+			RETURN
+		ENDIF
+		IF !CompanyBranding_SaveReportBmpFile(lcFile, Thisform.nConnHandle)
+			MESSAGEBOX("Could not save report BMP. Choose a .bmp file and run MEM\SQL\Config\09_CompanyProfile_ReportImage.sql if needed.", 16, "Company Profile")
+			RETURN
+		ENDIF
+		Thisform.RefreshReportBmpPreview()
+		MESSAGEBOX("Company BMP saved to MEM\Company_BMP.bmp. Reports using CompanyReport_Bmp() will show this image.", 64, "Company Profile")
 	ENDPROC
 
 ENDDEFINE

@@ -56,6 +56,7 @@ DEFINE CLASS frmsql_alloy AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "SQL Alloy"
 		connhandle = 0
 		DoCreate = .T.

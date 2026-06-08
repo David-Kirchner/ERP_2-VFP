@@ -118,6 +118,7 @@ DEFINE CLASS frmshow_proc_order AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BackColor = 125,125,125

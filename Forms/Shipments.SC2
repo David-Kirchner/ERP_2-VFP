@@ -38,6 +38,7 @@ DEFINE CLASS frmshipments AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Daily Shipments"
 		DoCreate = .T.
 		Height = 250

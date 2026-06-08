@@ -578,6 +578,7 @@ DEFINE CLASS purchaseorder AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cc = ''
 		cl = ''
@@ -1741,7 +1742,7 @@ DEFINE CLASS purchaseorder AS formset
 		Height = 27, ;
 		Left = 264, ;
 		Name = "cmdBrowReport", ;
-		Picture = ..\graphics\report.ico, ;
+		Picture = GRAPHICS\report.ico, ;
 		TabIndex = 3, ;
 		ToolTipText = "Opens a Web Browser for thi PO", ;
 		Top = 370, ;
@@ -3631,7 +3632,7 @@ DEFINE CLASS purchaseorder AS formset
 		Height = 20, ;
 		Left = 199, ;
 		Name = "cmdReportUnrecievedConf", ;
-		Picture = ..\graphics\report.ico, ;
+		Picture = GRAPHICS\report.ico, ;
 		PicturePosition = 14, ;
 		TabIndex = 60, ;
 		TabStop = .F., ;

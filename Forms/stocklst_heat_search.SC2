@@ -36,6 +36,7 @@ DEFINE CLASS frmsearchheat AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Search by HEAT"
 		DataSession = 2
 		DoCreate = .T.
@@ -124,7 +125,7 @@ DEFINE CLASS frmsearchheat AS form
 				
 		*		cSQL = "SELECT 'T' as [Current], ' ' as [WHO], ' ' as [WHAT], GetDate() as [WHEN], *, 0 as [ID_History] FROM dbo.StockLst_Master "
 		*		cSQL = cSQL + " WHERE HEAT LIKE '%" + cHeat + "%'"
-		*		cSQL = cSQL + " UNION SELECT 'F' as [Current], * FROM dbo.[AR.StockLst_Master_History"
+		*		cSQL = cSQL + " UNION SELECT 'F' as [Current], * FROM dbo.Ar_Stocklst_Master_History"
 		*		cSQL = cSQL + " WHERE HEAT LIKE '%" + cHeat + "%'"
 				*cSQL = cSQL = " AND [WHAT] = 'DELETE'"
 		*		cSQL = cSQL + " ORDER BY Alloy,Form,cc,Size,Heat,[Current],[What] "

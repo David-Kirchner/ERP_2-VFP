@@ -50,15 +50,11 @@ cAlias = ALIAS()
 IF NOT FILE(SYS(5)+SYS(2003)+"PROGS\load_ERP_Environment.prg")
 	SET PROCEDURE TO PROGS\load_ERP_Environment ADDITIVE
 ENDIF
-DO load_ERP_Environment
+= load_ERP_Environment(.T.)
 
 cServer = gGlobalServer
 cDatabaseTable = gGlobalDatabase
-
-IF VARTYPE(GlobalTable) = "C" AND NOT EMPTY(GlobalTable)
-	cDatabaseTable = GlobalTable
-	gGlobalDatabase = GlobalTable
-ENDIF
+GlobalTable = gGlobalDatabase
 
 IF EMPTY(cServer)
 	MESSAGEBOX("Could not locate the SQL Server."+CHR(13)+"Check ERP_Environment.xml.",16,"SQL Error")
@@ -747,6 +743,9 @@ IF nConn > 0
 	AppSetup_Update_Ans( pLoginPC,pLoginUN,"Machine",nConn  )		
 	AppSetup_Update_Ans( pLoginHome,pLoginUN,"Home",nConn  )
 	AppSetup_Update_Ans( pLoginServer,pLoginUN,"Server",nConn  )
+	IF VARTYPE(gGlobalDatabase) = "C" AND NOT EMPTY(gGlobalDatabase)
+		AppSetup_Update_Ans( gGlobalDatabase, pLoginUN, "Database", nConn )
+	ENDIF
 	*update LoginUN with 'Last Connect'
 	AppSetup_Update_Ans( DTOC(DATE())+" "+TIME(),pLoginUN,"Last Connect",nConn  )
 	
@@ -2715,15 +2714,19 @@ PROCEDURE get_Report_Server
 *get_Report_Server()
 
 PRIVATE cSQLServer 
-IF VARTYPE(gGlobalServer)="C"
-	cSQLServer = gGlobalServer 
+IF VARTYPE(gGlobalReportServer)="C" AND !EMPTY(gGlobalReportServer)
+	cSQLServer = gGlobalReportServer
 ELSE
-	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
-	RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),'gGlobalServer was not set!')
- 	*cSQLServer = "BOBWHITE"
- 	*cSQLServer = "PEREGRINE"
- 	*cSQLServer = "RAPTOR"
- 	cSQLServer = get_SQL_ServerName()
+	IF VARTYPE(gGlobalServer)="C"
+		cSQLServer = gGlobalServer 
+	ELSE
+		SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
+		RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),'gGlobalServer was not set!')
+	 	*cSQLServer = "BOBWHITE"
+	 	*cSQLServer = "PEREGRINE"
+	 	*cSQLServer = "RAPTOR"
+	 	cSQLServer = get_SQL_ServerName()
+	ENDIF
 ENDIF
 
 IF cSQLServer = ""
@@ -2743,15 +2746,19 @@ PROCEDURE get_Report_SServer
 *get_Report_SServer()
 
 PRIVATE cSQLServer 
-IF VARTYPE(gGlobalServer)="C"
-	cSQLServer = gGlobalServer 
+IF VARTYPE(gGlobalReportServer)="C" AND !EMPTY(gGlobalReportServer)
+	cSQLServer = gGlobalReportServer
 ELSE
-	SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
-	RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),'gGlobalServer was not set!')
- 	*cSQLServer = "BOBWHITE"
- 	*cSQLServer = "PEREGRINE"
- 	*cSQLServer = "RAPTOR"
- 	cSQLServer = get_SQL_ServerName()
+	IF VARTYPE(gGlobalServer)="C"
+		cSQLServer = gGlobalServer 
+	ELSE
+		SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
+		RecordTest( 'Record Test Data.', "Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),'gGlobalServer was not set!')
+	 	*cSQLServer = "BOBWHITE"
+	 	*cSQLServer = "PEREGRINE"
+	 	*cSQLServer = "RAPTOR"
+	 	cSQLServer = get_SQL_ServerName()
+	ENDIF
 ENDIF
 
 IF cSQLServer = ""
@@ -3205,7 +3212,7 @@ ELSE
 				ELSE
 					LoginAppHome = SYS(5)+SYS(2003)+"\ERP"
 					IF NOT FILE(LoginAppHome+"ERP Home.txt")
-						MESSAGEBOX("ERP.EXE file not Found!"+CHR(13)+"Could not get the EXE version!"+CHR(13)+"This code must be not compiled!",16,"How did I get here?" )
+						MESSAGEBOX("ERP.EXE file not Found!"+CHR(13)+""+CHR(13)+"This code must be not compiled!",16,"Could not get the EXE version!" )
 					ENDIF
 					nArraySize = 0
 				ENDIF
@@ -3447,6 +3454,15 @@ ENDIF
 
 *MESSAGEBOX("RETURN cCaption "+cCaption ,0,"Get_HPAVersion")
 RETURN cCaption
+ENDPROC
+**********************************
+
+PROC Get_ERPPath 
+LOCAL lcRoot
+lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+	IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+*JUSTPATH(SYS(16, 0))
+RETURN lcRoot
 ENDPROC
 **********************************
 
@@ -4645,15 +4661,20 @@ ENDIF
 SELECT 0
 
 IF nConn > 0
-	*Un = cUserName AND SETUP.Prp = "Machine"
-	*INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('David Kirchner','YES','EditStockWants')
-	*INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('David Kirchner','YES','EditPOLate')
-	*INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('Sutton','YES','ReconcilePO')
-	*INSERT into dbo.AppSetup (UN,PRP,ANS) VALUES ('Dave Morrow','YES','CofC Backup')
-	*INSERT into dbo.AppSetup (UN,PRP,ANS) VALUES ('David Kirchner','YES','EditSOLate')
-	cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = '"+cTask+"'"
+	* Prefer v_AppUserEffectivePermission when deployed; else legacy AppSetup (no invalid-object error)
+	IF AppPermission_ViewExists(nConn)
+		cSQL = "SELECT TOP 1 PermissionCode FROM dbo.v_AppUserEffectivePermission WITH(NOLOCK) "
+		cSQL = cSQL + "WHERE UserName = '"+ALLTRIM(cUserName)+"' AND PermissionCode = '"+cTask+"'"
+	ELSE
+		cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = '"+cTask+"'"
+	ENDIF
 	
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_SQL24' )
+	IF nSQLEXEC < 0 AND AppPermission_ViewExists(nConn)
+		* View query failed — legacy AppSetup path
+		cSQL = "SELECT [PRP] FROM dbo.AppSetup WITH(NOLOCK) WHERE [UN] = '"+ALLTRIM(cUserName)+"' AND [ANS] = '"+cTask+"'"
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_SQL24' )
+	ENDIF
 	DO WHILE nSQLEXEC = 0
 		WAIT WINDOW 'SQL' TIMEOUT 1
 		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_SQL24' )
@@ -4678,12 +4699,17 @@ IF nConn > 0
 	
 	IF USED('tmpPSP_SQL24')
 		IF RECCOUNT('tmpPSP_SQL24') > 0
-			IF VARTYPE(tmpPSP_SQL24.PRP) = "C"
-				IF UPPER(tmpPSP_SQL24.PRP) = "YES"
-					lReturnApprove = .T.
-				ELSE
-					IF lReportFailure
-						TrackError(cUserName +" tried to "+cTask+".","No Permission ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+			* New view returns PermissionCode; legacy returns PRP = YES
+			IF USED('tmpPSP_SQL24') AND TYPE('tmpPSP_SQL24.PermissionCode') # 'U'
+				lReturnApprove = .T.
+			ELSE
+				IF VARTYPE(tmpPSP_SQL24.PRP) = "C"
+					IF UPPER(tmpPSP_SQL24.PRP) = "YES"
+						lReturnApprove = .T.
+					ELSE
+						IF lReportFailure
+							TrackError(cUserName +" tried to "+cTask+".","No Permission ","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+						ENDIF
 					ENDIF
 				ENDIF
 			ENDIF
@@ -4707,6 +4733,27 @@ ENDIF
 
 RETURN lReturnApprove
 ENDPROC
+
+**********************************
+FUNCTION AppPermission_ViewExists
+LPARAMETERS tnConn
+LOCAL lnRet, lcSQL
+IF VARTYPE(tnConn) # "N" OR tnConn < 1
+	RETURN .F.
+ENDIF
+IF USED("tmpPermViewChk")
+	USE IN tmpPermViewChk
+ENDIF
+lcSQL = "SELECT OBJECT_ID(N'dbo.v_AppUserEffectivePermission', N'V') AS Vid"
+lnRet = SQLEXEC(tnConn, lcSQL, "tmpPermViewChk")
+IF lnRet > 0 AND USED("tmpPermViewChk") AND !ISNULL(tmpPermViewChk.Vid)
+	USE IN tmpPermViewChk
+	RETURN .T.
+ENDIF
+IF USED("tmpPermViewChk")
+	USE IN tmpPermViewChk
+ENDIF
+RETURN .F.
 
 ********************************** 
 PROCEDURE HaveVendorApprovedPermission 

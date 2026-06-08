@@ -58,6 +58,7 @@ DEFINE CLASS frmgetnumber AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "  Send to Whom?            Only the yellow field is required!"
 		closeconn = .F.

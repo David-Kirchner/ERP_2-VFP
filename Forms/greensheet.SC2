@@ -114,6 +114,7 @@ DEFINE CLASS frmreconcile AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		Name = "frmReconcile"
@@ -1070,7 +1071,7 @@ DEFINE CLASS frmreconcile AS formset
 		cSQL = "SELECT 'B' AS [Tbl],BPH.What,ProcessValue,weight,CostValue,Size_H,PC,Dim1,Dim2,Dim3,Length,BPH.ID_Detail_Process "
 		*cSQL = cSQL + " ,BPH.Validated"
 		cSQL = cSQL + " ,BPH.SOitem,BDH.ID_Detail_History"
-		cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Detail_History] BDH WITH(NOLOCK) INNER JOIN dbo.[AR.BrokerLst_Process_History] WITH(NOLOCK) BPH ON BDH.ID_Detail_Process = BPH.ID_Detail_Process"
+		cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Detail_History BDH WITH(NOLOCK) INNER JOIN dbo.Ar_BrokerLst_Process_History WITH(NOLOCK) BPH ON BDH.ID_Detail_Process = BPH.ID_Detail_Process"
 		cSQL = cSQL + " WHERE BPH.SOitem = dbo.f_ProperSOitem('"+pcSOitem+"')"
 		cSQL = cSQL + " AND BPH.[What] = 'DELETE'"
 		*cSQL = cSQL + " AND ( BPH.[What] = 'BeforeEdit' OR BPH.[What] = 'After Edit' )"
@@ -1078,7 +1079,7 @@ DEFINE CLASS frmreconcile AS formset
 		cSQL = cSQL + " SELECT 'S' AS [Tbl],SPH.What,ProcessValue,weight,CostValue,Size_H,PC,Dim1,Dim2,Dim3,Length,sph.ID_Detail_Process "
 		*cSQL = cSQL + " ,SPH.Validated"
 		cSQL = cSQL + " ,SPH.SOitem,SDH.ID_Detail_History"
-		cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History] SDH WITH(NOLOCK) INNER JOIN dbo.[AR.StockLst_Process_History] WITH(NOLOCK) SPH ON SDH.ID_Detail_Process = SPH.ID_Detail_Process"
+		cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History SDH WITH(NOLOCK) INNER JOIN dbo.Ar_StockLst_Process_History WITH(NOLOCK) SPH ON SDH.ID_Detail_Process = SPH.ID_Detail_Process"
 		cSQL = cSQL + " WHERE SPH.SOitem = dbo.f_ProperSOitem('"+pcSOitem+"')"
 		cSQL = cSQL + " AND SPH.[What] = 'DELETE'"
 		*cSQL = cSQL + " AND ( SPH.[What] = 'BeforeEdit' OR SPH.[What] = 'After Edit' )"
@@ -1500,7 +1501,7 @@ DEFINE CLASS frmreconcile AS formset
 				ENDIF
 				SELECT 0
 				 	 
-				cSQL = "SELECT Alloy,Form,CC,CL,Size,Heat,PO_Item FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) WHERE ID = "+STR(nIDstk)
+				cSQL = "SELECT Alloy,Form,CC,CL,Size,Heat,PO_Item FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) WHERE ID = "+STR(nIDstk)
 				
 				nSQLEXEC = SQLEXEC( ThisFormSet.nConnHandle, cSQL, 'tmpAlloyForm')
 				DO WHILE nSQLEXEC = 0
@@ -1629,7 +1630,7 @@ DEFINE CLASS frmreconcile AS formset
 				ENDIF
 				SELECT 0
 				 	 
-				cSQL = "SELECT Alloy,Form,CC,CL,PC,Size,Heat,PO_Item FROM dbo.[AR.BrokerLst_Master_History] WITH(NOLOCK) WHERE ID = "+STR(nIDbrk)
+				cSQL = "SELECT Alloy,Form,CC,CL,PC,Size,Heat,PO_Item FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) WHERE ID = "+STR(nIDbrk)
 				
 				nSQLEXEC = SQLEXEC( ThisFormSet.nConnHandle, cSQL, 'tmpAlloyForm')
 				DO WHILE nSQLEXEC = 0
@@ -1725,7 +1726,7 @@ DEFINE CLASS frmreconcile AS formset
 				ENDIF
 				SELECT 0
 				 	 
-				cSQL = "SELECT PC,Dim1,Dim2,Dim3,Weight,RandLen FROM dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) WHERE ID_Detail = "+STR(nID_Detailstk)
+				cSQL = "SELECT PC,Dim1,Dim2,Dim3,Weight,RandLen FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) WHERE ID_Detail = "+STR(nID_Detailstk)
 				
 				nSQLEXEC = SQLEXEC( ThisFormSet.nConnHandle, cSQL, 'tmpSz')
 				DO WHILE nSQLEXEC = 0
@@ -1815,7 +1816,7 @@ DEFINE CLASS frmreconcile AS formset
 				ENDIF
 				SELECT 0
 				 	 
-				cSQL = "SELECT PC,Dim1,Dim2,Dim3,Weight,RandLen FROM dbo.[AR.BrokerLst_Detail_History WITH(NOLOCK) WHERE ID_Detail = "+STR(nID_Detailstk)
+				cSQL = "SELECT PC,Dim1,Dim2,Dim3,Weight,RandLen FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) WHERE ID_Detail = "+STR(nID_Detailstk)
 				
 				nSQLEXEC = SQLEXEC( ThisFormSet.nConnHandle, cSQL, 'tmpSz')
 				DO WHILE nSQLEXEC = 0
@@ -1993,7 +1994,7 @@ DEFINE CLASS frmreconcile AS formset
 					ENDIF
 					SELECT 0
 					 	 
-					cSQL = "SELECT Weight,CostValue,Unit FROM dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) WHERE ID_Detail = "+STR(nID_Detailstk)
+					cSQL = "SELECT Weight,CostValue,Unit FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) WHERE ID_Detail = "+STR(nID_Detailstk)
 					cSQL = cSQL + " ORDER BY [When] DESC"
 					
 					nSQLEXEC = SQLEXEC( ThisFormSet.nConnHandle, cSQL, 'tmpUnit')
@@ -2082,7 +2083,7 @@ DEFINE CLASS frmreconcile AS formset
 					ENDIF
 					SELECT 0
 					 	 
-					cSQL = "SELECT Weight,CostValue,Unit FROM dbo.[AR.BrokerLst_Detail_History] WITH(NOLOCK) WHERE ID_Detail = "+STR(nID_DetailBrk)
+					cSQL = "SELECT Weight,CostValue,Unit FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) WHERE ID_Detail = "+STR(nID_DetailBrk)
 					cSQL = cSQL + " ORDER BY [When] DESC"
 					
 					nSQLEXEC = SQLEXEC( ThisFormSet.nConnHandle, cSQL, 'tmpUnit')
@@ -2408,7 +2409,7 @@ DEFINE CLASS frmreconcile AS formset
 					SELECT 0
 					
 					cSQL = "SELECT TOP 1 CONVERT(CHAR(12),SDH.[WHEN],101) AS ShipDate"
-					cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History] SDH WITH(NOLOCK) INNER JOIN dbo.[AR.StockLst_Process_History] WITH(NOLOCK) SPH WITH(NOLOCK) ON SDH.ID_Detail_Process = SPH.ID_Detail_Process "
+					cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History SDH WITH(NOLOCK) INNER JOIN dbo.Ar_StockLst_Process_History WITH(NOLOCK) SPH WITH(NOLOCK) ON SDH.ID_Detail_Process = SPH.ID_Detail_Process "
 					cSQL = cSQL + " WHERE SPH.SOitem = dbo.f_ProperSOitem('"+STR(nSalesNum)+"-01') AND SDH.[What] = 'After Edit'"
 						  
 					nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL, 'tmpShipDate' )
@@ -2721,7 +2722,7 @@ DEFINE CLASS frmreconcile AS formset
 					SELECT 0
 					
 					cSQL = "SELECT TOP 1 CONVERT(CHAR(12),SDH.[WHEN],101) AS ShipDate"
-					cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History] SDH WITH(NOLOCK) INNER JOIN dbo.[AR.StockLst_Process_History] SPH WITH(NOLOCK) ON SDH.ID_Detail_Process = SPH.ID_Detail_Process "
+					cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History SDH WITH(NOLOCK) INNER JOIN dbo.Ar_StockLst_Process_History SPH WITH(NOLOCK) ON SDH.ID_Detail_Process = SPH.ID_Detail_Process "
 					cSQL = cSQL + " WHERE SPH.SOitem = dbo.f_ProperSOitem('"+STR(nSalesNum)+"-01') AND SDH.[What] = 'After Edit'"
 						  
 					nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL, 'tmpShipDate' )

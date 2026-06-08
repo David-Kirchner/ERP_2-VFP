@@ -60,6 +60,7 @@ DEFINE CLASS frmstocklst_location AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "StockLst Location"
 		cwhat = ''
 		DataSession = 2

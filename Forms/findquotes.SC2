@@ -140,7 +140,7 @@ DEFINE CLASS findquotes AS embossedform OF "..\libs\wizstyle.vcx"
 		Height = 22, ;
 		Left = 0, ;
 		Name = "cmdAutoFQuotes", ;
-		Picture = ..\graphics\spell.bmp, ;
+		Picture = GRAPHICS\spell.bmp, ;
 		TabIndex = 64, ;
 		TabStop = .F., ;
 		ToolTipText = "Click off to edit name and not remove the company name.", ;

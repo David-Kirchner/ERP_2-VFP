@@ -60,6 +60,8 @@ IF COL_LENGTH('dbo.CompanyProfile','IconImage')         IS NULL ALTER TABLE dbo.
 IF COL_LENGTH('dbo.CompanyProfile','IconMime')          IS NULL ALTER TABLE dbo.CompanyProfile ADD IconMime          NVARCHAR(40)  NULL;
 IF COL_LENGTH('dbo.CompanyProfile','WatermarkImage')    IS NULL ALTER TABLE dbo.CompanyProfile ADD WatermarkImage    VARBINARY(MAX) NULL;
 IF COL_LENGTH('dbo.CompanyProfile','WatermarkMime')     IS NULL ALTER TABLE dbo.CompanyProfile ADD WatermarkMime     NVARCHAR(40)  NULL;
+IF COL_LENGTH('dbo.CompanyProfile','ReportImage')       IS NULL ALTER TABLE dbo.CompanyProfile ADD ReportImage       VARBINARY(MAX) NULL;
+IF COL_LENGTH('dbo.CompanyProfile','ReportMime')        IS NULL ALTER TABLE dbo.CompanyProfile ADD ReportMime        NVARCHAR(40)  NULL;
 
 -- Cert boilerplate ----------------------------------------------------------
 IF COL_LENGTH('dbo.CompanyProfile','CertHeaderText')    IS NULL ALTER TABLE dbo.CompanyProfile ADD CertHeaderText    NVARCHAR(MAX) NULL;

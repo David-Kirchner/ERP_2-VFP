@@ -43,6 +43,7 @@ DEFINE CLASS frmquoteattach AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 255,255,0
 		BorderStyle = 3

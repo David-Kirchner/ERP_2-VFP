@@ -100,6 +100,7 @@ DEFINE CLASS removeduplicate AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		Name = "RemoveDuplicate"
@@ -1913,10 +1914,10 @@ DEFINE CLASS removeduplicate AS formset
 					DO CASE
 					CASE cTable = 'SOLDADDR'
 						*Sales_No pSoldAddr
-						cSQL = "UPDATE dbo.[AR.Sales_No_History SET pSoldAddr = "+ALLTRIM(STR(nAddrCode))+" WHERE pSoldAddr = "+ALLTRIM(STR(nRemoveCode))
+						cSQL = "UPDATE dbo.Ar_Sales_No_History SET pSoldAddr = "+ALLTRIM(STR(nAddrCode))+" WHERE pSoldAddr = "+ALLTRIM(STR(nRemoveCode))
 					CASE cTable = 'SHIPADDR'
 						*Sales_No pShipAddr
-						cSQL = "UPDATE dbo.[AR.Sales_No_History SET pShipAddr = "+ALLTRIM(STR(nAddrCode))+" WHERE pShipAddr = "+ALLTRIM(STR(nRemoveCode))		
+						cSQL = "UPDATE dbo.Ar_Sales_No_History SET pShipAddr = "+ALLTRIM(STR(nAddrCode))+" WHERE pShipAddr = "+ALLTRIM(STR(nRemoveCode))		
 					OTHERWISE
 						lOK  = .F.
 						lRollBack = .T.

@@ -169,6 +169,7 @@ DEFINE CLASS stockcheck AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		lst = StockLst

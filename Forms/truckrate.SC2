@@ -57,6 +57,7 @@ DEFINE CLASS frmtruckroute AS form
 	*< OBJECTDATA: ObjPath="_RESIZABLE1" UniqueID="" Timestamp="" />
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Get Truck Rate"
 		DoCreate = .T.
 		Height = 276
@@ -108,7 +109,7 @@ DEFINE CLASS frmtruckroute AS form
 		Height = 65, ;
 		Left = 419, ;
 		Name = "imgTruck", ;
-		Picture = ..\graphics\truck-orig.bmp, ;
+		Picture = GRAPHICS\truck-orig.bmp, ;
 		Top = 31, ;
 		Width = 90
 		*< END OBJECT: BaseClass="image" />

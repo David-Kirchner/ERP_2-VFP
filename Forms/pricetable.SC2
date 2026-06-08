@@ -496,6 +496,7 @@ DEFINE CLASS pricetable AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cc = ''
 		cl = ''
@@ -1384,7 +1385,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "cmdCalcFormula", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 116, ;
 		ToolTipText = "Copy Calculated formula to Formula, not saved!", ;
 		Top = 343, ;
@@ -1397,7 +1398,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist0", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 48, ;
 		ToolTipText = "Copy from History", ;
 		Top = 82, ;
@@ -1411,7 +1412,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist10", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 60, ;
 		ToolTipText = "Copy from History", ;
 		Top = 130, ;
@@ -1425,7 +1426,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist100", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 78, ;
 		ToolTipText = "Copy from History", ;
 		Top = 202, ;
@@ -1439,7 +1440,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist1000", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 96, ;
 		ToolTipText = "Copy from History", ;
 		Top = 274, ;
@@ -1453,7 +1454,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist200", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 84, ;
 		ToolTipText = "Copy from History", ;
 		Top = 226, ;
@@ -1467,7 +1468,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist2000", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 102, ;
 		ToolTipText = "Copy from History", ;
 		Top = 298, ;
@@ -1481,7 +1482,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist25", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 66, ;
 		ToolTipText = "Copy from History", ;
 		Top = 154, ;
@@ -1495,7 +1496,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist5", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 54, ;
 		ToolTipText = "Copy from History", ;
 		Top = 106, ;
@@ -1509,7 +1510,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist50", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 72, ;
 		ToolTipText = "Copy from History", ;
 		Top = 178, ;
@@ -1523,7 +1524,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHist500", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 90, ;
 		ToolTipText = "Copy from History", ;
 		Top = 250, ;
@@ -1537,7 +1538,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdCopyHistBase", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 108, ;
 		ToolTipText = "Copy from History", ;
 		Top = 322, ;
@@ -1561,7 +1562,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdMakeHistory", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 111, ;
 		ToolTipText = "Copy all to History", ;
 		Top = 345, ;
@@ -1593,7 +1594,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 149, ;
 		Name = "cmdRestoreAll", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 112, ;
 		ToolTipText = "Copy history to current formula, not saved!", ;
 		Top = 345, ;
@@ -1606,7 +1607,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist0", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 47, ;
 		ToolTipText = "Save to History", ;
 		Top = 82, ;
@@ -1620,7 +1621,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist10", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 59, ;
 		ToolTipText = "Save to History", ;
 		Top = 130, ;
@@ -1634,7 +1635,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist100", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 77, ;
 		ToolTipText = "Save to History", ;
 		Top = 202, ;
@@ -1648,7 +1649,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist1000", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 95, ;
 		ToolTipText = "Save to History", ;
 		Top = 274, ;
@@ -1662,7 +1663,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist200", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 83, ;
 		ToolTipText = "Save to History", ;
 		Top = 226, ;
@@ -1676,7 +1677,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist2000", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 101, ;
 		ToolTipText = "Save to History", ;
 		Top = 298, ;
@@ -1690,7 +1691,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist25", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 65, ;
 		ToolTipText = "Save to History", ;
 		Top = 154, ;
@@ -1704,7 +1705,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist5", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 53, ;
 		ToolTipText = "Save to History", ;
 		Top = 106, ;
@@ -1718,7 +1719,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist50", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 71, ;
 		ToolTipText = "Save to History", ;
 		Top = 178, ;
@@ -1732,7 +1733,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2Hist500", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 89, ;
 		ToolTipText = "Save to History", ;
 		Top = 250, ;
@@ -1746,7 +1747,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 125, ;
 		Name = "cmdSave2HistBase", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 107, ;
 		ToolTipText = "Save to History", ;
 		Top = 322, ;
@@ -1808,7 +1809,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command1", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 51, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 81, ;
@@ -1822,7 +1823,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command11", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 99, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 273, ;
@@ -1836,7 +1837,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command12", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 105, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 297, ;
@@ -1850,7 +1851,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command13", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 114, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 320, ;
@@ -1864,7 +1865,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command2", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 57, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 105, ;
@@ -1878,7 +1879,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command3", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 63, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 129, ;
@@ -1892,7 +1893,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command4", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 69, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 153, ;
@@ -1906,7 +1907,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command6", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 75, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 177, ;
@@ -1920,7 +1921,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command7", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 81, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 201, ;
@@ -1934,7 +1935,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command8", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 87, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 225, ;
@@ -1948,7 +1949,7 @@ DEFINE CLASS pricetable AS formset
 		Height = 24, ;
 		Left = 282, ;
 		Name = "Command9", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 93, ;
 		ToolTipText = "Use Calculated Formula", ;
 		Top = 249, ;

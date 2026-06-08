@@ -145,6 +145,7 @@ DEFINE CLASS frmship AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		allrecords = .F.
 		AutoCenter = .T.
 		Caption = "SHIP"
@@ -184,7 +185,7 @@ DEFINE CLASS frmship AS form
 		Height = 22, ;
 		Left = 6, ;
 		Name = "cmdPackingSlipHistory", ;
-		Picture = ..\graphics\packhist.bmp, ;
+		Picture = GRAPHICS\packhist.bmp, ;
 		TabIndex = 2, ;
 		TabStop = .F., ;
 		ToolTipText = '"Pop up the PackingSlip History"', ;

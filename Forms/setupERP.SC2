@@ -43,6 +43,7 @@ DEFINE CLASS erpsetup AS form
 	*< OBJECTDATA: ObjPath="cmdTiptonPrinter" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="lblLoginUN" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdUserPermission" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Command1" UniqueID="" Timestamp="" />
 
 	*<DefinedPropArrayMethod>
 		*p: databasedirmem		&& SQL Database name from ERP_Environment.xml
@@ -60,13 +61,13 @@ DEFINE CLASS erpsetup AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "ERP Setup"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 220
-		Icon = ..\ico\options.ico
 		logindatabase = ""
 		loginhome = ""
 		loginpc = ""
@@ -177,7 +178,7 @@ DEFINE CLASS erpsetup AS form
 		Name = "cmdTiptonPrinter", ;
 		TabIndex = 14, ;
 		ToolTipText = "Check for a Tipton Printer", ;
-		Top = 139, ;
+		Top = 129, ;
 		Visible = .T., ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -189,7 +190,7 @@ DEFINE CLASS erpsetup AS form
 		Left = 324, ;
 		Name = "cmdUserInfo", ;
 		TabIndex = 17, ;
-		Top = 139, ;
+		Top = 129, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -200,7 +201,18 @@ DEFINE CLASS erpsetup AS form
 		Left = 153, ;
 		Name = "cmdUserPermission", ;
 		TabIndex = 17, ;
-		Top = 167, ;
+		Top = 157, ;
+		Width = 132
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'Command1' AS commandbutton WITH ;
+		Caption = "Company Profile", ;
+		Enabled = .T., ;
+		Height = 27, ;
+		Left = 154, ;
+		Name = "Command1", ;
+		TabIndex = 17, ;
+		Top = 185, ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -264,10 +276,10 @@ DEFINE CLASS erpsetup AS form
 	ADD OBJECT 'lblLoginUN' AS label WITH ;
 		Caption = "LoginUN", ;
 		Height = 17, ;
-		Left = 6, ;
+		Left = 78, ;
 		Name = "lblLoginUN", ;
 		TabIndex = 5, ;
-		Top = 3, ;
+		Top = 13, ;
 		Width = 132
 		*< END OBJECT: BaseClass="label" />
 
@@ -279,7 +291,7 @@ DEFINE CLASS erpsetup AS form
 		Left = 77, ;
 		Name = "lblProfile", ;
 		ToolTipText = "Click to pick a full profile (sets Server and Database together)", ;
-		Top = 115, ;
+		Top = 109, ;
 		Width = 300
 		*< END OBJECT: BaseClass="label" />
 
@@ -736,7 +748,11 @@ DEFINE CLASS erpsetup AS form
 			lcMenu = lcRoot + "menus\Setup_ERP.mpr"
 		ENDIF
 		
-		_SCREEN.Icon = "\GRAPHICS\ERP_Icon.ICO"
+		IF TYPE("ApplyCompanyIconToForm") = "F"
+			= ApplyCompanyIconToForm(_SCREEN)
+		ELSE
+			_SCREEN.Icon = GetCompanyIconPath()
+		ENDIF
 		_SCREEN.Caption = "ERP Setup"
 		
 		PUSH MENU _msysmenu
@@ -989,6 +1005,12 @@ DEFINE CLASS erpsetup AS form
 	PROCEDURE cmdUserPermission.Click
 		ThisForm.Visible = .F.
 		DO FORM "Forms\Show_User_Permission.scx"
+		ThisForm.Visible = .T.
+	ENDPROC
+
+	PROCEDURE Command1.Click
+		ThisForm.Visible = .F.
+		DO FORM "Forms\companyprofile_maint.scx"
 		ThisForm.Visible = .T.
 	ENDPROC
 

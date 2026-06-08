@@ -80,6 +80,7 @@ DEFINE CLASS frmholiday AS embossedform OF "..\libs\wizembss.vcx"
 		usedataenv = .F., ;
 		Visible = .T., ;
 		CMDFIND.Name = "CMDFIND", ;
+		CMDPRINT.Enabled = .F., ;
 		CMDPRINT.Name = "CMDPRINT", ;
 		CMDEXIT.Name = "CMDEXIT", ;
 		cmdAdd.Enabled = .T., ;
@@ -211,9 +212,6 @@ DEFINE CLASS frmholiday AS embossedform OF "..\libs\wizembss.vcx"
 	ENDPROC
 
 	PROCEDURE BUTTONSET1.CMDPRINT.Click
-		
-		SELECT Holiday
-		REPORT FORM Quotes\Reports\Holiday.frx TO PRINTER PROMPT
 	ENDPROC
 
 	PROCEDURE cmbYear.Init

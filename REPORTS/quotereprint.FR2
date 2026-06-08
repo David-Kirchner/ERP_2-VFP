@@ -135,7 +135,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Space Alloys USA]]>
+	<expr><![CDATA[CompanyReport_Name()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -483,7 +483,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA capable of meeting requirements:"]]>
+	<expr><![CDATA["Company capable of meeting requirements:"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

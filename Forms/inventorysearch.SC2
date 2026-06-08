@@ -136,6 +136,7 @@ DEFINE CLASS inventorysearch AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Inventory "
 		connhandle = 0
 		DataSession = 2

@@ -1177,6 +1177,7 @@ DEFINE CLASS frmquotes AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		autoname = .T.
 		AutoRelease = .T.
 		cc = ''
@@ -8944,7 +8945,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 24, ;
 		Left = 391, ;
 		Name = "chkResearchAlloy", ;
-		Picture = ..\graphics\research.ico, ;
+		Picture = GRAPHICS\research.ico, ;
 		SpecialEffect = 1, ;
 		Style = 1, ;
 		TabIndex = 40, ;
@@ -8995,7 +8996,7 @@ DEFINE CLASS frmquotes AS formset
 		AutoSize = .F., ;
 		BackColor = 192,192,192, ;
 		BackStyle = 1, ;
-		Caption = "®", ;
+		Caption = "ï¿½", ;
 		Centered = .F., ;
 		ControlSource = "quotes.TN", ;
 		FontBold = .T., ;
@@ -9007,7 +9008,7 @@ DEFINE CLASS frmquotes AS formset
 		Style = 1, ;
 		TabIndex = 45, ;
 		TabStop = .F., ;
-		ToolTipText = "Use the Registered TradeName ® -Blue ring when True", ;
+		ToolTipText = "Use the Registered TradeName ï¿½ -Blue ring when True", ;
 		Top = 97, ;
 		Width = 20
 		*< END OBJECT: BaseClass="checkbox" />
@@ -9107,7 +9108,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 263, ;
 		Name = "cmdAutoName", ;
-		Picture = ..\graphics\spell.bmp, ;
+		Picture = GRAPHICS\spell.bmp, ;
 		TabIndex = 3, ;
 		TabStop = .F., ;
 		ToolTipText = "Click off to edit name and not remove the company name.", ;
@@ -9145,7 +9146,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 376, ;
 		Name = "cmdCompanyHistory", ;
-		Picture = ..\graphics\hist.bmp, ;
+		Picture = GRAPHICS\hist.bmp, ;
 		TabIndex = 20, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up the Company History", ;
@@ -9160,7 +9161,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 20, ;
 		Left = 246, ;
 		Name = "cmdCustomerInfo", ;
-		Picture = ..\graphics\frx2htm.bmp, ;
+		Picture = GRAPHICS\frx2htm.bmp, ;
 		TabIndex = 17, ;
 		TabStop = .F., ;
 		ToolTipText = "Open a web page with Company Info", ;
@@ -9175,7 +9176,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 469, ;
 		Name = "cmdCustomerTerms", ;
-		Picture = ..\graphics\terms.bmp, ;
+		Picture = GRAPHICS\terms.bmp, ;
 		TabIndex = 24, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up Customer Terms", ;
@@ -9201,7 +9202,7 @@ DEFINE CLASS frmquotes AS formset
 		Name = "cmdDropEmail", ;
 		OLEDropEffects = 1, ;
 		OLEDropMode = 1, ;
-		Picture = ..\graphics\mail2.ico, ;
+		Picture = GRAPHICS\mail2.ico, ;
 		TabIndex = 33, ;
 		TabStop = .F., ;
 		ToolTipText = "Drop an Email here to Add a new record.", ;
@@ -9245,7 +9246,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 26, ;
 		Left = 102, ;
 		Name = "cmdEditQuickCompany", ;
-		Picture = ..\graphics\bullseye.ico, ;
+		Picture = GRAPHICS\bullseye.ico, ;
 		PicturePosition = 0, ;
 		TabIndex = 15, ;
 		TabStop = .F., ;
@@ -9347,7 +9348,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 400, ;
 		Name = "cmdOrderHistory", ;
-		Picture = ..\graphics\orderhist.bmp, ;
+		Picture = GRAPHICS\orderhist.bmp, ;
 		TabIndex = 21, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up the Order History", ;
@@ -9363,7 +9364,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 32, ;
 		Left = 70, ;
 		Name = "cmdPeach", ;
-		Picture = ..\graphics\peachsyncicon.bmp, ;
+		Picture = GRAPHICS\peachsyncicon.bmp, ;
 		PicturePosition = 14, ;
 		TabIndex = 14, ;
 		TabStop = .F., ;
@@ -9413,7 +9414,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 353, ;
 		Name = "cmdSeekCompany", ;
-		Picture = ..\graphics\find.bmp, ;
+		Picture = GRAPHICS\find.bmp, ;
 		TabIndex = 19, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up the Company Names in system, choice to choose new name.", ;
@@ -9428,7 +9429,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 447, ;
 		Name = "cmdShowBillToAddress", ;
-		Picture = ..\graphics\billaddr.bmp, ;
+		Picture = GRAPHICS\billaddr.bmp, ;
 		TabIndex = 23, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up Billing Address", ;
@@ -9443,7 +9444,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 425, ;
 		Name = "cmdShowShipToAddress", ;
-		Picture = ..\graphics\shipaddr.bmp, ;
+		Picture = GRAPHICS\shipaddr.bmp, ;
 		TabIndex = 22, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up Shipping Address", ;

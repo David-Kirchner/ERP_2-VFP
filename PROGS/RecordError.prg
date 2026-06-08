@@ -28,7 +28,11 @@ TRY
 	cLastVersion = Get_HPAVersion(.F.)
 CATCH
 	cLastVersion = ''
-ENDTRY	
+ENDTRY
+* Dev (.APP): no compiled ERP.EXE revision — use date for dbo.Errors.Revision
+IF EMPTY(ALLTRIM(cLastVersion))
+	cLastVersion = "DEV " + DTOC(DATE())
+ENDIF
 
 *!*	IF VARTYPE(cLastVersion) = "C"
 *!*		nLastVersion = VAL(RIGHT( LEFT(cLastVersion,AT(".",cLastVersion)-1), LEN(LEFT(cLastVersion,AT(".",cLastVersion)-1))-8))*10000000 +VAL(RIGHT(cLastVersion,LEN(cLastVersion)-AT(".",cLastVersion)))*10000
@@ -197,12 +201,7 @@ IF USED('Errors')
 		m.dDateT = DATETIME()
 
 		PRIVATE nConn
-		IF LEN(cLastVersion) < 1
-			*call to HPAVersion() did not work!
-			nConn = 0
-		ELSE
-			nConn = get_SQLSTRINGCONNECT()
-		ENDIF
+		nConn = get_SQLSTRINGCONNECT()
 
 		PRIVATE cSQL, nSQLEXEC
 

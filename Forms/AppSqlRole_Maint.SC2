@@ -48,6 +48,7 @@ DEFINE CLASS frmappsqlrole_maint AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "SQL Database Roles (ERP_* Layer 1)"
 		cselectedlogin = ""

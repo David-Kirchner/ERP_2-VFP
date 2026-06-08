@@ -3499,7 +3499,7 @@ DEFINE CLASS frmstocklst_detail AS embossedform OF "..\libs\wizembss.vcx"
 		nID_Detail = THISFORM.ID_Detail
 		
 		
-		cSQLi = "INSERT INTO dbo.[AR."+ALLTRIM(ThisForm.txtLst.Value)+"_Process_History (What,SOitem,PO_Item,salesperson,startdate"
+		cSQLi = "INSERT INTO dbo.Ar_"+ALLTRIM(ThisForm.txtLst.Value)+"_Process_History (What,SOitem,PO_Item,salesperson,startdate"
 		cSQLi = cSQLi + ",duedate,comment,process_id,processor,AllowSub"
 		*cSQLi = cSQLi + ",pWeight,pPc"
 		cSQLi = cSQLi + ",ID_Detail"

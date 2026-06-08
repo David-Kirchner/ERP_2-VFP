@@ -63,6 +63,7 @@ DEFINE CLASS frmalloy_surcharge AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Alloy Surcharge"
 		DoCreate = .T.
 		Height = 228

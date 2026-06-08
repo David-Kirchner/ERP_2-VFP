@@ -19,6 +19,7 @@ IF nConn < 1
 	RETURN .F.
 ENDIF
 
+CURSORSETPROP("MapBinary", .T., 0)
 lcSQL = "SELECT TOP 1 * FROM dbo.CompanyProfile WITH (NOLOCK) WHERE CompanyId = 1"
 nRet = SQLEXEC(nConn, lcSQL, "curCompany")
 IF nRet < 1
@@ -41,11 +42,15 @@ SELECT curCompany
 FOR i = 1 TO ALEN(laFld, 1)
 	lcFld  = laFld[i, 1]
 	lcType = laFld[i, 2]
-	xVal   = EVALUATE("curCompany." + lcFld)
 	DO CASE
-		CASE lcType = "M" OR lcType = "G" OR lcType = "Q"
+		CASE lcType = "G"
+			* SQL varbinary without MapBinary maps as General — cannot EVALUATE
+			ADDPROPERTY(goCompany, lcFld, .NULL.)
+		CASE lcType = "M" OR lcType = "Q"
+			xVal = EVALUATE("curCompany." + lcFld)
 			ADDPROPERTY(goCompany, lcFld, xVal)
 		OTHERWISE
+			xVal = EVALUATE("curCompany." + lcFld)
 			ADDPROPERTY(goCompany, lcFld, TRANSFORM(xVal))
 	ENDCASE
 ENDFOR

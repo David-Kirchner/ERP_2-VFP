@@ -61,6 +61,7 @@ DEFINE CLASS frmchoosepoitem AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Mark all of the Packing Slip numbers for the RMA and Select"
 		DataSession = 2

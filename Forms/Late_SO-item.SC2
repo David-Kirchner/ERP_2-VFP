@@ -127,6 +127,7 @@ DEFINE CLASS latesales AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		Name = "LateSales"

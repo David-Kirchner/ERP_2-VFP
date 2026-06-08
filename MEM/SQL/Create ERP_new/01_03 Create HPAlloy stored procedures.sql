@@ -4399,7 +4399,7 @@ DECLARE @nNewID_Detail INT = 0
 DECLARE @nNewID_Detail_Process INT = 0
 
 --Check INPUTS
-IF NOT EXISTS (SELECT [ID] FROM dbo.Ar.BrokerLst_Master_History WHERE [ID] = @ID AND [What] = 'DELETE')
+IF NOT EXISTS (SELECT [ID] FROM dbo.Ar_BrokerLst_Master_History WHERE [ID] = @ID AND [What] = 'DELETE')
 	BEGIN
 		SET @nReturnCode = -1
 		PRINT 'nReturnCode = '+CAST(@nReturnCode AS CHAR(10))
@@ -4418,7 +4418,7 @@ INSERT INTO dbo.StockLst_Master
 SELECT [Alloy],[Form],[cc],[CL],[Size],[Cond],[MWeight],[specs],[Heat],[Lot],[PAID],[PO_Item]
 	,[PODueDate],[Mill],GetDate(),[History],[Num],[POStatus],[BrandName],[MillTrace],[From_ID]
 	,Melt,mS_QTY,WO_Detail 
-   FROM dbo.Ar.BrokerLst_Master_History   WITH (NOLOCK)
+   FROM dbo.Ar_BrokerLst_Master_History   WITH (NOLOCK)
    WHERE [ID] = @ID AND [What] = 'DELETE'
  
 
@@ -13361,7 +13361,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.Stocklst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -13427,7 +13427,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.Brokerlst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_Brokerlst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -13493,7 +13493,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.WIPlst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_WIPlst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -13823,7 +13823,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.Stocklst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -13889,7 +13889,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.Brokerlst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_Brokerlst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -13955,7 +13955,7 @@ ELSE
 		,[S_PU]
 		,[Prime]
 		,[WO]
-		FROM dbo.Ar.WIPlst_Detail_History WITH(NOLOCK)
+		FROM dbo.Ar_WIPlst_Detail_History WITH(NOLOCK)
 			WHERE ID_Detail = @ID_Detail
 			AND [WHAT] = 'DELETE'
 
@@ -16963,7 +16963,7 @@ ELSE
 		,0 AS [mS_QTY]
 		,[WO_Detail]
 		,[ProjID]
-		FROM dbo.Ar.Stocklst_Master_History WITH(NOLOCK) 
+		FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) 
 			WHERE ID = @ID
 			AND [WHAT] = 'DELETE'
 
@@ -16976,7 +16976,7 @@ ELSE
 			begin
 			SELECT SCOPE_IDENTITY()
 		
-			UPDATE dbo.Ar.Stocklst_Master_History SET [WHAT] = 'RECOVERED'
+			UPDATE dbo.Ar_Stocklst_Master_History SET [WHAT] = 'RECOVERED'
 				WHERE ID = @ID
 				AND [WHAT] = 'DELETE'
 			end
@@ -17044,7 +17044,7 @@ ELSE
 		, 0 AS [mS_QTY]
 		,[WO_Detail]
 		,[ProjID]
-		FROM dbo.Ar.BrokerLst_Master_history WITH(NOLOCK) 
+		FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) 
 			WHERE ID = @ID
 			AND [WHAT] = 'DELETE'
 
@@ -17059,7 +17059,7 @@ ELSE
 			begin
 			SELECT SCOPE_IDENTITY()
 
-			UPDATE dbo.Ar.BrokerLst_Master_history SET [WHAT] = 'RECOVERED'
+			UPDATE dbo.Ar_BrokerLst_Master_history SET [WHAT] = 'RECOVERED'
 				WHERE ID = @ID
 				AND [WHAT] = 'DELETE'
 			end
@@ -17127,7 +17127,7 @@ ELSE
 		,0 AS [mS_QTY]
 		,[WO_Detail]
 		,[ProjID]
-		FROM dbo.Ar.WIPLst_Master_History WITH(NOLOCK) 
+		FROM dbo.Ar_WIPLst_Master_History WITH(NOLOCK) 
 			WHERE ID = @ID
 			AND [WHAT] = 'DELETE'
 
@@ -17142,7 +17142,7 @@ ELSE
 			begin
 			SELECT SCOPE_IDENTITY()
 
-			UPDATE dbo.Ar.WIPLst_Master_History SET [WHAT] = 'RECOVERED'
+			UPDATE dbo.Ar_WIPLst_Master_History SET [WHAT] = 'RECOVERED'
 				WHERE ID = @ID
 				AND [WHAT] = 'DELETE'
 			end
@@ -21128,8 +21128,8 @@ IF @CntSO > 0
 	SET @Body=@Body+'				WHERE D.ID = M.ID AND ISNULL(ID_Detail,0)>0 ),0) = 0;'+CHAR(13)+CHAR(13);
 	SET @Body=@Body+'Top Master ID with no Detail: '+ CAST(ISNULL(@ID,0) AS CHAR(10))+'.'+CHAR(13)+CHAR(13);
 
-	SET @Body=@Body+' SELECT * FROM dbo.Ar.Stocklst_Detail_History DH 
-inner join dbo.Ar.StockLst_Process_History PH ON DH.ID_Detail_Process = PH.ID_Detail_Process AND PH.[What] = ''DELETE''
+	SET @Body=@Body+' SELECT * FROM dbo.Ar_Stocklst_Detail_History DH 
+inner join dbo.Ar_StockLst_Process_History PH ON DH.ID_Detail_Process = PH.ID_Detail_Process AND PH.[What] = ''DELETE''
 WHERE DH.ID='+CAST(ISNULL(@ID,0) AS CHAR(10))+' AND DH.[What] = ''DELETE'' '+CHAR(13)+CHAR(13);
 
 	SET @Body=@Body+' SELECT * FROM [dbo].[StockLst_Master_Inserted]
@@ -21520,7 +21520,7 @@ DECLARE @Count INT
 SELECT @Count = COUNT(*) FROM dbo.StockLst_Process WHERE SOitem = @SOitem
 IF @Count > 0
   BEGIN
-    INSERT dbo.Ar.StockLst_Process_History 
+    INSERT dbo.Ar_StockLst_Process_History 
 		([soitem],[po_item],[SalesPerson],[startdate],[duedate]
 		,[comment],[process_id],[processor],[AllowSub],[PWeight]
 		,[PPc],[id_detail],[id_detail_process],[ReceivingID],[WO])
@@ -25580,10 +25580,10 @@ IF @err <> 0
 	END
 
 ----------------------------------
-PRINT 'Insert dbo.Ar.BrokerLst_Process_History to show WHAT as MOVED'
+PRINT 'Insert dbo.Ar_BrokerLst_Process_History to show WHAT as MOVED'
 
 
-INSERT INTO dbo.Ar.BrokerLst_Process_History  
+INSERT INTO dbo.Ar_BrokerLst_Process_History  
 	([What], Comment, Process_ID, [ID_Detail], [Removed], ReceivingID, WO ) 
 	 SELECT 'MOVED', 'Moved to StockLst from BrokerLst', ISNULL(BP.Process_ID,'NULL'), BP.ID_Detail, GetDate()
 	 , ISNULL(BP.ReceivingID,0), ISNULL(BP.WO,0) 
@@ -26129,9 +26129,9 @@ IF @err <> 0
 
 
 ----------------------------------
-PRINT 'Insert dbo.Ar.StockLst_Process_History to show WHAT as MOVED'
+PRINT 'Insert dbo.Ar_StockLst_Process_History to show WHAT as MOVED'
 
-INSERT INTO dbo.Ar.StockLst_Process_History  
+INSERT INTO dbo.Ar_StockLst_Process_History  
 	([What], Comment, Process_ID, [ID_Detail], [Removed], ReceivingID, WO ) 
 	 SELECT 'MOVED', 'Moved to BrokerLst from StockLst', 'Moved', P.ID_Detail, GetDate(), P.ReceivingID, P.WO 
 	 FROM dbo.StockLst_Process P 
@@ -26575,9 +26575,9 @@ DELETE FROM dbo.WIPLst_Process WHERE [ID_Detail] = @ID_Detail
 	--AND Process_ID = 'SELECTED  '   --All Process need to go!
 
 ----------------------------------
-PRINT 'Update dbo.Ar.WIPlst_Process_History to show WHAT as MOVED'
+PRINT 'Update dbo.Ar_WIPlst_Process_History to show WHAT as MOVED'
 
-INSERT INTO dbo.Ar.WIPLst_Process_History  
+INSERT INTO dbo.Ar_WIPLst_Process_History  
 	([What], Comment, [Process_ID], [ID_Detail], [Removed], [Validated], ReceivingID, WO )
 	 VALUES ( 'MOVED', 'Moved to StockLst from WIPLst', 'MOVE', @ID_Detail, GetDate(), ' ', @ReceivingID, @WO )
 
@@ -26591,8 +26591,8 @@ IF @err <> 0
 	END
 
 ----------------------------------
-PRINT 'Update dbo.Ar.WIPlst_Master_History to show as MOVED'
-UPDATE dbo.Ar.WIPLst_Master_History  
+PRINT 'Update dbo.Ar_WIPlst_Master_History to show as MOVED'
+UPDATE dbo.Ar_WIPLst_Master_History  
 	SET [Specs] = 'Moved to StockLst ID:'+CAST(@nNewID AS CHAR(10))
 	WHERE [ID] = @ID
 	AND [What] = 'DELETE'
@@ -28130,7 +28130,7 @@ AS
 
 --** Recover Deleted PO **
 --select * from dbo.PurchaseOrder where HPApo = 510553
---SELECT * FROM dbo.Ar.PurchaseOrder_hist where HPApo = 510553 AND ItemPO = 1 AND [What] = 'Delete'
+--SELECT * FROM dbo.Ar_PurchaseOrder_hist where HPApo = 510553 AND ItemPO = 1 AND [What] = 'Delete'
 
 --EXEC dbo.[p_PurchaseOrder_ReStore] 510553, 1
 
@@ -28139,7 +28139,7 @@ SET @nItemPO = ISNULL(@nItemPO,1)
 SET @nItemPO = Case When @nItemPO < 1 Then 1 Else @nItemPO end
 
 PRINT 'Find existing PO'
-IF EXISTS( SELECT * FROM dbo.Ar.PurchaseOrder_hist where HPApo = @nHPAPO 
+IF EXISTS( SELECT * FROM dbo.Ar_PurchaseOrder_hist where HPApo = @nHPAPO 
 						and ItemPO = @nItemPO AND [What] = 'Delete' )
 	begin  
 	
@@ -28323,7 +28323,7 @@ IF EXISTS( SELECT * FROM dbo.Ar.PurchaseOrder_hist where HPApo = @nHPAPO
       --,[DescriptID]
       ,[Hold]
       ,(suser_sname()) AS [WhoInsert]
-	  FROM  dbo.Ar.PurchaseOrder_hist 
+	  FROM  dbo.Ar_PurchaseOrder_hist 
 	  WHERE HPApo = 510553
 		and ItemPO = @nItemPO
 		AND [What] = 'Delete'
@@ -31841,11 +31841,11 @@ IF @nCnt > 0
 	SELECT * FROM dbo.AllQuotes WHERE SalesNum = @nSalesNum;
 	end
 
-SELECT @nCnt=COUNT(*) FROM dbo.Ar.AllQuotes_History WHERE SalesNum = @nSalesNum;
+SELECT @nCnt=COUNT(*) FROM dbo.Ar_AllQuotes_History WHERE SalesNum = @nSalesNum;
 IF @nCnt > 0
 	begin
-	print 'DELETE FROM dbo.Ar.AllQuotes_History WHERE SalesNum = '+CAST(@nSalesNum AS CHAR(10))+';';
-	SELECT * FROM dbo.Ar.AllQuotes_History WHERE SalesNum = @nSalesNum;
+	print 'DELETE FROM dbo.Ar_AllQuotes_History WHERE SalesNum = '+CAST(@nSalesNum AS CHAR(10))+';';
+	SELECT * FROM dbo.Ar_AllQuotes_History WHERE SalesNum = @nSalesNum;
 	end
 
 SELECT @nCnt=COUNT(*) FROM dbo.Sales WHERE SalesNum = @nSalesNum;
@@ -31893,11 +31893,11 @@ IF @nCnt > 0
 
 ---------------------------------------------------
 
-SELECT @nCnt=COUNT(*) FROM dbo.Ar.AllQuotes_History WHERE SOitem = @cSoitem
+SELECT @nCnt=COUNT(*) FROM dbo.Ar_AllQuotes_History WHERE SOitem = @cSoitem
 IF @nCnt > 0
 	begin
-	print 'DELETE FROM dbo.Ar.AllQuotes_History WHERE SOitem = '''+@cSoitem+''';'
-	SELECT * FROM dbo.Ar.AllQuotes_History WHERE SOitem = @cSoitem
+	print 'DELETE FROM dbo.Ar_AllQuotes_History WHERE SOitem = '''+@cSoitem+''';'
+	SELECT * FROM dbo.Ar_AllQuotes_History WHERE SOitem = @cSoitem
 	end
 
 SELECT @nCnt=COUNT(*) FROM dbo.Sales WHERE SOitem = @cSoitem
@@ -35257,7 +35257,7 @@ AS
 --and update the non null fields Alloy,Form,[Size],Cond,Heat, PAID,MWeight
 
 DECLARE @ID_Old INT
-SELECT @ID_Old = ID FROM dbo.Ar.StockLst_Master_History WHERE ID_History = @ID_History
+SELECT @ID_Old = ID FROM dbo.Ar_StockLst_Master_History WHERE ID_History = @ID_History
 DECLARE @ID_New INT
 
 IF EXISTS( SELECT * FROM dbo.StockLst_Master WHERE ID = @ID_Old )	
@@ -35282,7 +35282,7 @@ ELSE
 		, @Form = Form
 		, @Size = Size
 		, @Heat = Heat 
-		FROM dbo.Ar.StockLst_Master_History WHERE ID_History = @ID_History
+		FROM dbo.Ar_StockLst_Master_History WHERE ID_History = @ID_History
 
 	DECLARE @Cond VARCHAR(50)
 	DECLARE @Paid MONEY

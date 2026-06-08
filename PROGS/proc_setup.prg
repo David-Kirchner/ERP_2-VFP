@@ -44,11 +44,16 @@ PROCEDURE get_SQLSTRINGCONNECT
 * Return connection handle; sets gGlobalServer via load_ERP_Environment
 
 PRIVATE nReturn, cServer, cDatabaseTable, cAlias
+LOCAL lcAppRoot
 nReturn = 0
 cAlias = ALIAS()
 
-IF NOT FILE(SYS(5)+SYS(2003)+"PROGS\load_ERP_Environment.prg")
-	SET PROCEDURE TO PROGS\load_ERP_Environment ADDITIVE
+lcAppRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+	IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+IF FILE(lcAppRoot + "PROGS\load_ERP_Environment.prg")
+	IF NOT "LOAD_ERP_ENVIRONMENT" $ UPPER(SET("PROCEDURE"))
+		SET PROCEDURE TO (lcAppRoot + "PROGS\load_ERP_Environment.prg") ADDITIVE
+	ENDIF
 ENDIF
 = load_ERP_Environment(.T.)
 
@@ -3454,6 +3459,15 @@ ENDIF
 
 *MESSAGEBOX("RETURN cCaption "+cCaption ,0,"Get_HPAVersion")
 RETURN cCaption
+ENDPROC
+**********************************
+
+PROC Get_ERPPath 
+LOCAL lcRoot
+lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, ;
+	IIF(VARTYPE(LoginAppHome)="C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5)+SYS(2003))))
+*JUSTPATH(SYS(16, 0))
+RETURN lcRoot
 ENDPROC
 **********************************
 

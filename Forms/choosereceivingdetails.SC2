@@ -80,6 +80,7 @@ DEFINE CLASS frmchoosereceivingdetails AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Select the Heat, looks like there is a receive record."
@@ -696,8 +697,8 @@ DEFINE CLASS frmchoosereceivingdetails AS form
 				cSQL = cSQL + ",ISNULL(D.S_PU,dbo.f_Get_nPU_Form(M.Form)) AS Acct_PU "
 				cSQL = cSQL + ",M.PO_Item AS POitem, M.WO_Detail "
 				cSQL = cSQL + ",D.ReceivingID AS RID "
-				cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History] M WITH(NOLOCK) "
-				cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History] D WITH(NOLOCK) ON M.ID=D.ID "
+				cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
+				cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D WITH(NOLOCK) ON M.ID=D.ID "
 				cSQL = cSQL + " WHERE M.PO_item = dbo.f_ProperPOitem('"+cPOitem+"') "
 				cSQL = cSQL + " AND M.[WHAT] = 'DELETE' "
 				cSQL = cSQL + " AND M.[heat] = 'DUE IN' "
@@ -823,8 +824,8 @@ DEFINE CLASS frmchoosereceivingdetails AS form
 				cSQL = cSQL + ",ISNULL(D.S_PU,dbo.f_Get_nPU_Form(M.Form)) AS Acct_PU "
 				cSQL = cSQL + ",M.PO_Item AS POitem, M.WO_Detail "
 				cSQL = cSQL + ",D.ReceivingID AS RID "
-				cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History] M WITH(NOLOCK) "
-				cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History] D WITH(NOLOCK) ON M.ID=D.ID "
+				cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
+				cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D WITH(NOLOCK) ON M.ID=D.ID "
 				cSQL = cSQL + " WHERE M.WO_Detail = "+STR(nWO_Detail)
 		
 				cSQL = cSQL + " UNION "

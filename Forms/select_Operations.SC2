@@ -58,6 +58,7 @@ DEFINE CLASS frmworkorder_select AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Choose Operation ID"
 		DataSession = 2
 		DoCreate = .T.

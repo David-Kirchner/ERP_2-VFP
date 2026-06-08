@@ -195,6 +195,7 @@ DEFINE CLASS modify_stocklst_detail AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Modify StockLst Detail"
 		ControlBox = .F.
@@ -4308,7 +4309,7 @@ DEFINE CLASS modify_stocklst_detail AS form
 			lOK	= .F.
 		ELSE
 		
-			*Add a dbo.WIPLst_Process_Detail for link with dbo.[AR.WIPLst_Detail_History]
+			*Add a dbo.WIPLst_Process_Detail for link with dbo.Ar_WIPlst_Detail_History
 			cSQL = "INSERT INTO dbo.WIPLst_Process_Detail "
 			cSQL = cSQL + "( ID, ID_Detail, ID_Detail_Process, What ) VALUES ("
 			cSQL = cSQL + ""+STR(nNewWIP_ID)+""
@@ -4927,7 +4928,7 @@ DEFINE CLASS modify_stocklst_detail AS form
 					
 					IF ThisForm.txtReceivingID.Value = 0
 		*				TrackError("Bad ReceivingID - Possible Error","nReceivingID=0 TBL="+cTbl+" ID_Detail_Process="+ALLTRIM(STR(ThisForm.nID_Detail_Process)) ,PROGRAM(),LINENO(1))
-						RecordTest("Record Test Data.", PROGRAM(), LINENO(1), "No ReceivingID "+CHR(13)+"nReceivingID=0 TBL="+cTbl+" ID_Detail_Process="+ALLTRIM(STR(ThisForm.nID_Detail_Process))+" "+CHR(13)+cSQLpID+CHR(10)+CHR(13)+"SELECT [When] FROM  dbo.[AR.Stocklst_Detail_History] WHERE [What] = 'ADD' AND ID_Detail_Process = "+ALLTRIM(STR(ThisForm.nID_Detail_Process)) )
+						RecordTest("Record Test Data.", PROGRAM(), LINENO(1), "No ReceivingID "+CHR(13)+"nReceivingID=0 TBL="+cTbl+" ID_Detail_Process="+ALLTRIM(STR(ThisForm.nID_Detail_Process))+" "+CHR(13)+cSQLpID+CHR(10)+CHR(13)+"SELECT [When] FROM  dbo.Ar_Stocklst_Detail_History WHERE [What] = 'ADD' AND ID_Detail_Process = "+ALLTRIM(STR(ThisForm.nID_Detail_Process)) )
 					ENDIF
 					
 					PRIVATE nCostValue, nInvoiceValue, nS_QTY
@@ -5487,7 +5488,7 @@ DEFINE CLASS modify_stocklst_detail AS form
 		
 		IF pID_Detail_Process > 0
 			cSQL = "SELECT SUM(ProcessValue) AS TotProc "
-			cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Detail_History] WITH(NOLOCK) "
+			cSQL = cSQL+" FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) "
 			cSQL = cSQL+" WHERE ID_Detail_Process = "+ STR(pID_Detail_Process)
 			
 			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpDetail_Process_Report' )
@@ -5546,7 +5547,7 @@ DEFINE CLASS modify_stocklst_detail AS form
 				SELECT 0
 				
 				cSQL =  "SELECT SUM(ProcessValue) AS TotProc "
-				cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Detail_History]  WITH(NOLOCK)"
+				cSQL = cSQL+" FROM dbo.Ar_BrokerLst_Detail_History  WITH(NOLOCK)"
 				cSQL = cSQL + " WHERE ID_Detail_Process IN (SELECT ID_Detail_Process FROM dbo.BrokerLst_process "
 				*cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+pSOItem + "'))"
 				cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+pSOItem + "'))"
@@ -5853,7 +5854,7 @@ DEFINE CLASS modify_stocklst_detail AS form
 		
 		IF pID_Detail_Process > 0
 			cSQL =  "SELECT SUM(ProcessValue) AS TotProc "
-			cSQL = cSQL+" FROM dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) "
+			cSQL = cSQL+" FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) "
 			cSQL = cSQL+"  WHERE ID_Detail_Process = "+ STR(pID_Detail_Process)
 			
 			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpDetail_Process_Report' )
@@ -5912,7 +5913,7 @@ DEFINE CLASS modify_stocklst_detail AS form
 			SELECT 0
 			
 			cSQL =  "SELECT SUM(ProcessValue) AS TotProc "
-			cSQL = cSQL+" FROM dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) "
+			cSQL = cSQL+" FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) "
 			cSQL = cSQL+" WHERE ID_Detail_Process IN (SELECT ID_Detail_Process FROM dbo.StockLst_process WITH(NOLOCK) "
 			IF nWO > 0
 				cSQL = cSQL + " WHERE WO = "+STR(nWO)+")"

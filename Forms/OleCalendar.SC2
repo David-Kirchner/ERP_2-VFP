@@ -36,6 +36,7 @@ DEFINE CLASS frmolecalendar AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BorderStyle = 0

@@ -165,6 +165,7 @@ DEFINE CLASS gfm AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BackColor = 0,191,96

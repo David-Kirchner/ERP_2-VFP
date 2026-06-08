@@ -50,6 +50,7 @@ DEFINE CLASS frmsearchstocklst AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Search StockLst Deleted History"
@@ -259,7 +260,7 @@ DEFINE CLASS frmsearchstocklst AS form
 		
 		IF TYPE('pSQL') != "C"
 			WAIT WINDOW "No parameter"
-			pSQL = "SELECT DISTINCT ID FROM dbo.[AR.StockLst_Master_History  WHERE Alloy = 'C-276' AND Form = '10' AND Size=1.875 AND [WHAT] = 'DELETE'"
+			pSQL = "SELECT DISTINCT ID FROM dbo.Ar_Stocklst_Master_History  WHERE Alloy = 'C-276' AND Form = '10' AND Size=1.875 AND [WHAT] = 'DELETE'"
 		ENDIF
 		
 		PUBLIC cCurrentDBF
@@ -493,7 +494,7 @@ DEFINE CLASS frmsearchstocklst AS form
 					SELECT 0
 				ENDIF
 				
-				cSQL= "SELECT TOP 1 ID_History FROM dbo.[AR.StockLst_Master_History WHERE ID = "+ALLTRIM(STR(tmpID.ID))+" AND [WHAT] = 'DELETE    ' ORDER BY ID_History DESC"
+				cSQL= "SELECT TOP 1 ID_History FROM dbo.Ar_Stocklst_Master_History WHERE ID = "+ALLTRIM(STR(tmpID.ID))+" AND [WHAT] = 'DELETE    ' ORDER BY ID_History DESC"
 		
 				nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpID_History')
 				DO WHILE nSQLEXEC = 0
@@ -545,7 +546,7 @@ DEFINE CLASS frmsearchstocklst AS form
 				SELECT 0
 			ENDIF
 			
-			cSQL = "SELECT Alloy,Form,CC,CL,Size,Cond,Specs,Heat,Lot,PO_item,Mill,StkDate,BrandName,ID_History FROM dbo.[AR.StockLst_Master_History "+cHoldID+""
+			cSQL = "SELECT Alloy,Form,CC,CL,Size,Cond,Specs,Heat,Lot,PO_item,Mill,StkDate,BrandName,ID_History FROM dbo.Ar_Stocklst_Master_History "+cHoldID+""
 		
 			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpSearch')
 			DO WHILE nSQLEXEC = 0

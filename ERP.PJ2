@@ -64,8 +64,6 @@ WITH loProject.FILES
 	.ADD('forms\answerform.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\apppermission_maint.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\appsqlrole_maint.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('forms\companybranding_maint.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('forms\companyprofile_maint.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('forms\browsepricetbl.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\cert_conformance.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\checkemailstatus.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -86,6 +84,7 @@ WITH loProject.FILES
 	.ADD('forms\class_workorder.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\class_workorder_detail.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\companyhistory.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('forms\companyprofile_maint.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('forms\connect_orders.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\conversion_log.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\conversionworkorder.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -99,7 +98,6 @@ WITH loProject.FILES
 	.ADD('forms\employeemaint.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\erp_certs.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\erp_menu.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('forms\errors.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\faxman.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\faxnumber.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\filetransfer.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -304,6 +302,9 @@ WITH loProject.FILES
 	.ADD('graphics\calc.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\caldropdown.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\check_ico.gif')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('graphics\company_logo.jpg')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('graphics\erpicon.ico')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('graphics\erphead.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\copy.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\cut.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\cut.msk')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -363,6 +364,7 @@ WITH loProject.FILES
 	.ADD('graphics\smmail.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\sortasc.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\sortdes.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('graphics\spacealloysusa-americas-nb.jpg')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\spacealloysusa-logo-nb.jpg')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\spacealloysusa-logo-nbhrz.jpg')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\spell.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -376,6 +378,8 @@ WITH loProject.FILES
 	.ADD('graphics\wzlocate.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\wznew.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\wzprint.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('mem\Company_Icon.ico')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('mem\Company_BMP.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('help\sql server name.txt')		&& *< FileMetadata: Type="T" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('include\colorcodes.txt')		&& *< FileMetadata: Type="T" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('include\error procedures.txt')		&& *< FileMetadata: Type="T" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -418,6 +422,7 @@ WITH loProject.FILES
 	.ADD('libs\wizstnd.vcx')		&& *< FileMetadata: Type="V" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('libs\wizstyle.vcx')		&& *< FileMetadata: Type="V" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('libs\workorder_lib.vcx')		&& *< FileMetadata: Type="V" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('main.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('menus\quotes.mnx')		&& *< FileMetadata: Type="M" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('menus\quotesc.mnx')		&& *< FileMetadata: Type="M" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('menus\setup_erp.mnx')		&& *< FileMetadata: Type="M" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -426,24 +431,25 @@ WITH loProject.FILES
 	.ADD('progs\apppermission_maint.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\bringbackdeletedstocklst.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\calculate.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('progs\company_branding.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('progs\companybranding_maint.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('progs\companyprofile_maint.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\chemistry1.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\chemistry2.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\chemistry3.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('progs\company_branding.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('progs\company_report.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('progs\companybranding_maint.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('progs\companyprofile_maint.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\createhpadsn.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('progs\erp_environment_ui.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\errorhandlerlog.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\f2math.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\gathersend.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\griddefinition.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('progs\load_companyplants.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\load_companyprofile.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\load_erp_environment.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('progs\main.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\pcuser.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\proc_draw.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\proc_erp.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('progs\proc_hpa.fxp')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\proc_quotes.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\proc_rtr.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\proc_setup.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -488,7 +494,6 @@ WITH loProject.FILES
 	.ADD('reports\faxsalesorder02.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\gfmlog.frx')		&& *< FileMetadata: Type="R" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\hardwood.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\holiday.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\ht_log.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\lakeerie_log.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\line80.frx')		&& *< FileMetadata: Type="R" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -604,7 +609,6 @@ WITH loProject.FILES
 	.ADD('reports\stockreview.frx')		&& *< FileMetadata: Type="R" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\swage_log.frx')		&& *< FileMetadata: Type="R" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\testing_log.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\vacation-allemployees.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\vendor.frx')		&& *< FileMetadata: Type="R" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\vendorlist.frx')		&& *< FileMetadata: Type="R" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\vendorlist2.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -661,7 +665,7 @@ ENDWITH
 
 WITH loProject
 	*<ProjectProperties>
-	.SetMain(lcCurdir + 'progs\main.prg')
+	.SetMain(lcCurdir + 'main.prg')
 
 	.Icon = lcCurdir + 'graphics\earth.ico'
 	.Debug = .T.

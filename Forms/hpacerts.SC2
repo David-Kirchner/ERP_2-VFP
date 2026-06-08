@@ -467,6 +467,7 @@ DEFINE CLASS formset AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 1
 		isediting = .F.
@@ -3074,7 +3075,7 @@ DEFINE CLASS formset AS formset
 		Height = 22, ;
 		Left = 476, ;
 		Name = "cmdEmail", ;
-		Picture = ..\graphics\email_icon_small.gif, ;
+		Picture = GRAPHICS\email_icon_small.gif, ;
 		PicturePosition = 12, ;
 		TabIndex = 216, ;
 		ToolTipText = "Outlook Email with 1 Mechanical Properties.", ;

@@ -1300,7 +1300,7 @@ DEFINE CLASS hpa_log AS form 		&& Log file for GFM, Roll, Press
 		Command1.Height = 55, ;
 		Command1.Left = 5, ;
 		Command1.Name = "Command1", ;
-		Command1.Picture = ..\graphics\calc.bmp, ;
+		Command1.Picture = GRAPHICS\calc.bmp, ;
 		Command1.ReleaseErase = .F., ;
 		Command1.SpecialEffect = 1, ;
 		Command1.TerminateRead = .F., ;
@@ -9962,7 +9962,7 @@ DEFINE CLASS select4order AS form 		&& Select records to post SO and PO
 		Height = 38, ;
 		Left = 72, ;
 		Name = "cmdNext4Order", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		TabIndex = 6, ;
 		ToolTipText = '"Move to Next Record"', ;
 		Top = 70, ;
@@ -9974,7 +9974,7 @@ DEFINE CLASS select4order AS form 		&& Select records to post SO and PO
 		Height = 38, ;
 		Left = 19, ;
 		Name = "cmdPrev4Order", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		TabIndex = 5, ;
 		ToolTipText = '"Move to Previous Record"', ;
 		Top = 70, ;

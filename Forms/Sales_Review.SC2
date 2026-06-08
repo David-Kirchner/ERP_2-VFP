@@ -275,6 +275,7 @@ DEFINE CLASS fssales_review AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 1
 		Name = "fsSales_Review"

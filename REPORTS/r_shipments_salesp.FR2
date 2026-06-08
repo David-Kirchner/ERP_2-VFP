@@ -961,7 +961,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA Shipments Report by Month for Year by SA"]]>
+	<expr><![CDATA["Shipments Report by Month for Year by SA"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

@@ -51,6 +51,7 @@ DEFINE CLASS frmsetserver AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BackColor = 128,255,255
 		Caption = "Set Server"
 		cserver = ''
@@ -294,10 +295,9 @@ DEFINE CLASS frmsetserver AS form
 		************************
 		*Where Am I
 		************************
-		*!*	PRIVATE oAdapters, oWMI
-		*!*	PRIVATE lInWindfall,lInTipton
-		*!*	lInWindfall = .F.
-		*!*	lInTipton	= .F.
+		PRIVATE lInWindfall, lInTipton
+		lInWindfall = .F.
+		lInTipton   = .F.
 		
 		*!*	oWMI = getobject("winmgmts:")
 		*!*	oAdapters = oWMI.ExecQuery("Select * from Win32_NetworkAdapterConfiguration where IPEnabled=True")

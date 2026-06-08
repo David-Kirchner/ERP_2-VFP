@@ -96,7 +96,7 @@ COLLATE=0
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA Sales Order "+ALLTRIM(packingslip.soitem)]]>
+	<expr><![CDATA["ERP Sales Order "+ALLTRIM(packingslip.soitem)]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

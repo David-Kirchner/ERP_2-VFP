@@ -1865,9 +1865,9 @@ ENDIF
 cSQL = "SELECT COUNT(*) AS Cntd FROM"
 DO CASE
 CASE cTBL = "BH"
-	cSQL = cSQL + " dbo.[AR.BrokerLst_Master_History WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) "
 CASE cTBL = "SH"
-	cSQL = cSQL + " dbo.[AR.StockLst_Master_History WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.Ar_Stocklst_Master_History WITH(NOLOCK) "
 CASE cTBL = "B"
 	cSQL = cSQL + " dbo.BrokerLst_Master WITH(NOLOCK) "
 CASE cTBL = "S"
@@ -1953,9 +1953,9 @@ ENDIF
 cSQL = "SELECT COUNT(*) AS Cntd FROM"
 DO CASE
 CASE cTBL = "BH"
-	cSQL = cSQL + " dbo.[AR.BrokerLst_Process_History] WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.Ar_BrokerLst_Process_History WITH(NOLOCK) "
 CASE cTBL = "SH"
-	cSQL = cSQL + " dbo.[AR.StockLst_Process_History] WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.Ar_StockLst_Process_History WITH(NOLOCK) "
 CASE cTBL = "B"
 	cSQL = cSQL + " dbo.BrokerLst_Process WITH(NOLOCK) "
 CASE cTBL = "S"
@@ -4848,9 +4848,9 @@ CASE cTableName = "STOCKLST_MASTER "
 CASE cTableName = "BROKERLST_MASTER "
 	cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.BrokerLst_Master WITH(NOLOCK) WHERE ID = "+ALLTRIM(STR(nID))
 CASE cTableName = "STOCKLST_MASTER_HISTORY"
-	cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) WHERE ID = "+ALLTRIM(STR(nID))+" AND [WHAT] = 'DELETE'"
+	cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) WHERE ID = "+ALLTRIM(STR(nID))+" AND [WHAT] = 'DELETE'"
 CASE cTableName = "BROKERLST_MASTER_HISTORY"
-	cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.[AR.BrokerLst_Master_History] WITH(NOLOCK) WHERE ID = "+ALLTRIM(STR(nID))+" AND [WHAT] = 'DELETE'"
+	cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) WHERE ID = "+ALLTRIM(STR(nID))+" AND [WHAT] = 'DELETE'"
 OTHERWISE
 	cSQL = ""
 ENDCASE
@@ -26898,7 +26898,7 @@ ENDIF
 
 IF lOK 
 	*Update StockLst_Master_History
-	cSQL = "UPDATE dbo.[AR.StockLst_Master_History] SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Ar_Stocklst_Master_History SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -26930,7 +26930,7 @@ ENDIF
 
 IF lOK 
 	*Update BrokerLst_Master_History
-	cSQL = "UPDATE dbo.[AR.BrokerLst_Master_History] SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Ar_BrokerLst_Master_history SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27012,7 +27012,7 @@ ENDIF
 		
 IF lOK 
 	*Update PriceTable_Hist
-	cSQL = "UPDATE dbo.[AR.PriceTable_Hist SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Ar_PriceTable_hist SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27196,7 +27196,7 @@ ENDIF
 
 IF lOK 
 	*Update BrokerLst_Master_history
-	cSQL = "UPDATE dbo.[AR.BrokerLst_Master_History] SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Ar_BrokerLst_Master_history SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27212,7 +27212,7 @@ ENDIF
 
 IF lOK 
 	*Update StockLst_Master_history
-	cSQL = "UPDATE dbo.[AR.StockLst_Master_History] SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Ar_Stocklst_Master_History SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27228,7 +27228,7 @@ ENDIF
 
 IF lOK 
 	*Update PriceTable_hist
-	cSQL = "UPDATE dbo.[AR.PriceTable_hist SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Ar_PriceTable_hist SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27244,7 +27244,7 @@ ENDIF
 
 IF lOK 
 	*Update PurchaseOrder_hist
-	cSQL = "UPDATE dbo.[AR.PurchaseOrder_hist SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Ar_PurchaseOrder_hist SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27260,7 +27260,7 @@ ENDIF
 
 IF lOK 
 	*Update AllQuotes_History
-	cSQL = "UPDATE dbo.[AR.AllQuotes_History] SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
+	cSQL = "UPDATE dbo.Ar_AllQuotes_History SET Alloy = '"+cNewAlloyName+"' WHERE Alloy = '"+cOldAlloy+"'"
 
 	nSQLEXEC = SQLEXEC(nConn, cSQL)
 	DO WHILE nSQLEXEC = 0
@@ -27422,14 +27422,14 @@ ENDIF
 *******************
 *!*	dbo.AllQuotes
 *!*	dbo.StockLst_Master
-*!*	dbo.[AR.StockLst_Master_History]
+*!*	dbo.Ar_Stocklst_Master_History
 *!*	dbo.BrokerLst_Master
-*!*	dbo.[AR.BrokerLst_Master_History]
+*!*	dbo.Ar_BrokerLst_Master_history
 *!*	dbo.StockLst_Mins
 *!*	dbo.PackingSlip
 *!*	dbo.PriceTable
 *!*	dbo.StockLst_Writeoff
-*!*	dbo.[AR.PriceTable_Hist
+*!*	dbo.Ar_PriceTable_hist
 *!*	dbo.Receiving
 *!*	dbo.SourceLst
 *!*	dbo.StartingStock
@@ -27441,11 +27441,11 @@ ENDIF
 *!*	dbo.Sources
 *!*	dbo.NR_StockLst_Totals
 *!*	dbo.NR_Sales_Summary
-*!*	dbo.[AR.BrokerLst_Master_History]
-*!*	dbo.[AR.StockLst_Master_History]
-*!*	dbo.[AR.PriceTable_hist
-*!*	dbo.[AR.PurchaseOrder_hist
-*!*	dbo.[AR.AllQuotes_History]
+*!*	dbo.Ar_BrokerLst_Master_history
+*!*	dbo.Ar_Stocklst_Master_History
+*!*	dbo.Ar_PriceTable_hist
+*!*	dbo.Ar_PurchaseOrder_hist
+*!*	dbo.Ar_AllQuotes_History
 *!*	dbo.Alloy_Spec
 *!*	dbo.Spec_Check
 *!*	dbo.SO_BoilerPlate
@@ -27651,7 +27651,7 @@ ENDIF
 
 IF lOK 
 	*BrokerLst_Master_History
-	cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.[AR.BrokerLst_Master_History] WITH(NOLOCK) WHERE Alloy = '"+cAlloy+"'"
+	cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) WHERE Alloy = '"+cAlloy+"'"
 	SELECT 0
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_Count')
 	DO WHILE nSQLEXEC = 0
@@ -27875,7 +27875,7 @@ ENDIF
 
 IF lOK 
 	*PriceTable_Hist
-	cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.[AR.PriceTable_Hist WITH(NOLOCK) WHERE Alloy = '"+cAlloy+"'"
+	cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.Ar_PriceTable_hist WITH(NOLOCK) WHERE Alloy = '"+cAlloy+"'"
 	SELECT 0
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_Count')
 	DO WHILE nSQLEXEC = 0
@@ -28240,7 +28240,7 @@ ENDIF
 
 IF lOK 
 	*StockLst_Master_History
-	cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) WHERE Alloy = '"+cAlloy+"'"
+	cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) WHERE Alloy = '"+cAlloy+"'"
 	SELECT 0
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_Count')
 	DO WHILE nSQLEXEC = 0
@@ -29451,7 +29451,7 @@ DO CASE
 			uData = 255
 		ENDIF
 	CASE nWholeNumbers = -2
-		*SmallInt –32768 to 32767
+		*SmallInt ï¿½32768 to 32767
 		IF uData > 32767
 			IF NOT lQuite 
 				MESSAGEBOX( cField+" was set to 32767,  '"+ALLTRIM(STR(uData))+"' was too much.",0+64,"SQL Data Overflow prevented.")			
@@ -30723,11 +30723,11 @@ cSQL = cSQL + " UNION "
 cSQL = cSQL + "SELECT ID FROM "
 DO CASE
 CASE cTBL = "B"
-	cSQL = cSQL + " dbo.[AR.BrokerLst_Detail_History] WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) "
 CASE cTBL = "S"
-	cSQL = cSQL + " dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) "
 CASE cTBL = "W"
-	cSQL = cSQL + " dbo.[AR.WIPLst_Detail_History] WITH(NOLOCK) "
+	cSQL = cSQL + " dbo.Ar_WIPlst_Detail_History WITH(NOLOCK) "
 ENDCASE
 cSQL = cSQL + "	WHERE ID_Detail = "+STR(nID_Detail)
 *cSQL = cSQL + "	ORDER BY ID DESC"
@@ -30885,9 +30885,9 @@ IF nID_Master = 0
 	IF nReceivingID > 0
 	
 		cSQL = "            SELECT 'S ' AS [Tbl], ID, ID_Detail FROM dbo.StockLst_Detail WITH(NOLOCK) WHERE ReceivingID ="+STR(nReceivingID)
-		cSQL = cSQL+" UNION SELECT 'SH' AS [Tbl], ID, ID_Detail FROM dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) WHERE ReceivingID ="+STR(nReceivingID)
+		cSQL = cSQL+" UNION SELECT 'SH' AS [Tbl], ID, ID_Detail FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) WHERE ReceivingID ="+STR(nReceivingID)
 		cSQL = cSQL+" UNION SELECT 'S ' AS [Tbl], ID, ID_Detail FROM dbo.BrokerLst_Detail WITH(NOLOCK) WHERE ReceivingID ="+STR(nReceivingID)
-		cSQL = cSQL+" UNION SELECT 'BH' AS [Tbl], ID, ID_Detail FROM dbo.[AR.BrokerLst_Detail_History] WITH(NOLOCK) WHERE ReceivingID ="+STR(nReceivingID)
+		cSQL = cSQL+" UNION SELECT 'BH' AS [Tbl], ID, ID_Detail FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) WHERE ReceivingID ="+STR(nReceivingID)
 		
 		SELECT 0
 		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_CheckTable')
@@ -31000,7 +31000,7 @@ IF cStockTable = "S"
 					ENDIF
 					SELECT 0
 						
-					cSQL = "SELECT TOP 1 ID_Detail FROM dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) WHERE ID ="+STR(nID_Master)+" AND ReceivingID="+STR(nReceivingID) 
+					cSQL = "SELECT TOP 1 ID_Detail FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) WHERE ID ="+STR(nID_Master)+" AND ReceivingID="+STR(nReceivingID) 
 					
 					nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_CheckTable2')
 					
@@ -31030,7 +31030,7 @@ IF cStockTable = "S"
 		USE IN tmpPQSL_CheckTable
 	ELSE
 		*Check History	
-		cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) WHERE ID ="+STR(nID_Master)
+		cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) WHERE ID ="+STR(nID_Master)
 		SELECT 0
 		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_CheckTable')
 
@@ -31055,7 +31055,7 @@ IF cStockTable = "S"
 					ENDIF
 					SELECT 0
 					
-					cSQL = "SELECT TOP 1 ID_Detail FROM dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) WHERE ID ="+STR(nID_Master)+" AND ReceivingID="+STR(nReceivingID) 
+					cSQL = "SELECT TOP 1 ID_Detail FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) WHERE ID ="+STR(nID_Master)+" AND ReceivingID="+STR(nReceivingID) 
 					
 					nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_CheckTable2')
 					
@@ -31208,7 +31208,7 @@ IF cStockTable = "B"
 						USE IN tmpPQSL_CheckTable2
 					ENDIF
 					SELECT 0
-					cSQL = "SELECT TOP 1 ID_Detail FROM dbo.[AR.BrokerLst_Detail_History] WITH(NOLOCK) WHERE ID ="+STR(nID_Master)+" AND ReceivingID="+STR(nReceivingID) 
+					cSQL = "SELECT TOP 1 ID_Detail FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) WHERE ID ="+STR(nID_Master)+" AND ReceivingID="+STR(nReceivingID) 
 					
 					nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_CheckTable2')
 					
@@ -31239,7 +31239,7 @@ IF cStockTable = "B"
 		
 	ELSE
 		*Check History	
-		cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.[AR.BrokerLst_Master_History] WITH(NOLOCK) WHERE ID ="+STR(nID_Master)
+		cSQL = "SELECT COUNT(*) AS CNTD FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) WHERE ID ="+STR(nID_Master)
 		SELECT 0
 		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_CheckTable')
 
@@ -31264,7 +31264,7 @@ IF cStockTable = "B"
 					ENDIF
 					SELECT 0
 					
-					cSQL = "SELECT TOP 1 ID_Detail FROM dbo.[AR.BrokerLst_Detail_History] WITH(NOLOCK) WHERE ID ="+STR(nID_Master)+" AND ReceivingID="+STR(nReceivingID) 
+					cSQL = "SELECT TOP 1 ID_Detail FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) WHERE ID ="+STR(nID_Master)+" AND ReceivingID="+STR(nReceivingID) 
 					SELECT 0
 					nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_CheckTable2')
 					
@@ -43739,11 +43739,11 @@ IF nConn > 0
 	cSQL = "SELECT TOP 1 ReceivingID FROM "
 	DO CASE
 	CASE cTBL = "S"
-		cSQL = cSQL+" dbo.[AR.StockLst_Process_History] WITH(NOLOCK) "
+		cSQL = cSQL+" dbo.Ar_StockLst_Process_History WITH(NOLOCK) "
 	CASE cTBL = "B"
-		cSQL = cSQL+" dbo.[AR.BrokerLst_Process_History] WITH(NOLOCK) "
+		cSQL = cSQL+" dbo.Ar_BrokerLst_Process_History WITH(NOLOCK) "
 	CASE cTBL = "W"
-		cSQL = cSQL+" dbo.[AR.WIPLst_Process_History] WITH(NOLOCK) "
+		cSQL = cSQL+" dbo.Ar_WIPLst_Process_History WITH(NOLOCK) "
 	OTHERWISE
 		RETURN 0
 	ENDCASE

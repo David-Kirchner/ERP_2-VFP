@@ -45,6 +45,7 @@ DEFINE CLASS frmr_salesp AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "SalesP by Quarter"
 		DoCreate = .T.
 		Height = 249

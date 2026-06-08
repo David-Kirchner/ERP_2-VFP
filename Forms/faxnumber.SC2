@@ -43,6 +43,7 @@ DEFINE CLASS frmfaxnumber AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		billto =  
 		Caption = "Choose Phone Number"

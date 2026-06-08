@@ -62,6 +62,7 @@ DEFINE CLASS frmvacation AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Employee Vaction Time"
 		DataSession = 2
 		DoCreate = .T.
@@ -504,8 +505,8 @@ DEFINE CLASS frmvacation AS form
 		ThisForm.lstVacation.rowsourcetype = 3
 		ThisForm.lstVacation.rowsource = "SELECT DISTINCT DTOC(vacadate) AS DaysOff, VacaType AS T, DispName FROM vacation  WHERE MONTH(vacadate) = gMONTH AND YEAR(vacadate) = gYEAR AND !DELETED() ORDER BY vacadate INTO CURSOR TempVacationDays"
 		
-		
-		
+		ThisForm.cmdPrintEmp.Visible = .F.
+		ThisForm.cmdPrintMonth.Visible = .F.
 	ENDPROC
 
 	PROCEDURE isholiday		&& Pass Date/Return -1,0,1
@@ -755,33 +756,9 @@ DEFINE CLASS frmvacation AS form
 	ENDPROC
 
 	PROCEDURE cmdPrintEmp.Click
-		PRIVATE lcEmployee
-		
-		IF NOT USED('Vacation')
-			USE Vacation IN 0
-		ENDIF
-		SELECT Vacation
-		SET ORDER TO Wizard_1
-		lcEmployee = ThisForm.cmbAllEmployees.Value
-		*lcEmployee = "(Select Employee)"
-		IF IsEmployee(lcEmployee)
-			REPORT FORM Reports\Vacation-AllEmployees FOR Vacation.DispName = lcEmployee AND YEAR(vacation.vacadate) = gYear PREVIEW
-			*TO PRINTER PROMPT 
-		ELSE
-			MESSAGEBOX("No Employee")
-		ENDIF
 	ENDPROC
 
 	PROCEDURE cmdPrintMonth.Click
-		IF NOT USED('Vacation')
-			USE Vacation IN 0
-		ENDIF
-		SELECT Vacation
-		
-		SET ORDER TO Wizard_2
-		REPORT FORM Reports\Vacation-AllEmployees FOR MONTH(Vacation.vacadate) = gMonth AND YEAR(vacation.vacadate) = gYear PREVIEW
-		*TO PRINTER PROMPT 
-		
 	ENDPROC
 
 	PROCEDURE OleDatePicker.Click

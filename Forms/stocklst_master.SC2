@@ -1253,13 +1253,13 @@ DEFINE CLASS frmstocklst_master AS embossedform OF "..\libs\wizembss.vcx"
 		DO CASE
 		CASE ThisForm.Lst = "StockLst"
 			cSQL = "SELECT alloy,form,cc,CL,size,cond,mweight,specs,heat,lot,Paid,po_item,poduedate,mill,stkdate,history,num,POStatus,BrandName,MillTrace,FROM_ID,Melt,id"
-			cSQL = cSQL + " FROM dbo.[AR.StockLst_Master_History WHERE ID_History = "+	STR(nID_History)
+			cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History WHERE ID_History = "+	STR(nID_History)
 		CASE ThisForm.Lst = "BrokerLst"
 			cSQL = "SELECT alloy,form,cc,CL,size,cond,mweight,specs,heat,lot,Paid,po_item,poduedate,mill,stkdate,history,num,POStatus,BrandName,MillTrace,FROM_ID,Melt,id"
-			cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Master_History WHERE ID_History = "+	STR(nID_History)
+			cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Master_history WHERE ID_History = "+	STR(nID_History)
 		CASE ThisForm.Lst = "WIPLst"
 			cSQL = "SELECT alloy,form,cc,CL,size,cond,mweight,specs,heat,lot,Paid,po_item,poduedate,mill,stkdate,history,num,POStatus,BrandName,MillTrace,FROM_ID,Melt,id"
-			cSQL = cSQL + " FROM dbo.[AR.WIPLst_Master_History WHERE ID_History = "+	STR(nID_History)
+			cSQL = cSQL + " FROM dbo.Ar_WIPLst_Master_History WHERE ID_History = "+	STR(nID_History)
 		ENDCASE
 		
 		IF USED("tmpStockLst_Master")
@@ -2810,7 +2810,7 @@ DEFINE CLASS frmstocklst_master AS embossedform OF "..\libs\wizembss.vcx"
 		PRIVATE lUsedWhere
 		lUsedWhere = .F.
 		
-		cSQL = "SELECT DISTINCT ID FROM dbo.[AR.StockLst_Master_History "
+		cSQL = "SELECT DISTINCT ID FROM dbo.Ar_Stocklst_Master_History "
 		
 		IF NOT EMPTY(cAlloy)
 			IF lUsedWhere
@@ -3068,7 +3068,7 @@ DEFINE CLASS frmstocklst_master AS embossedform OF "..\libs\wizembss.vcx"
 				
 		*			Check History
 					PRIVATE cSQL
-					cSQL = "SELECT COUNT(*) AS cnt FROM dbo.[AR.StockLst_Master_History WHERE HEAT = '"+cHeat+"' AND [What] = 'DELETE'"
+					cSQL = "SELECT COUNT(*) AS cnt FROM dbo.Ar_Stocklst_Master_History WHERE HEAT = '"+cHeat+"' AND [What] = 'DELETE'"
 					
 					IF USED("tmpStockLst_Master_ID")
 						SELECT tmpStockLst_Master_ID
@@ -3113,8 +3113,8 @@ DEFINE CLASS frmstocklst_master AS embossedform OF "..\libs\wizembss.vcx"
 								  "The 'Search' button has a better selection of the DELETED history.";
 								  ,4+16,"Import found Stock from DELETED history?") = 6
 								  
-		*							cSQL = "SELECT * FROM dbo.[AR.StockLst_Master_History WHERE HEAT = '"+cHeat+"' AND [What] = 'DELETE'"
-									cSQL = "SELECT * FROM dbo.[AR.StockLst_Master_History "
+		*							cSQL = "SELECT * FROM dbo.Ar_Stocklst_Master_History WHERE HEAT = '"+cHeat+"' AND [What] = 'DELETE'"
+									cSQL = "SELECT * FROM dbo.Ar_Stocklst_Master_History "
 									cSQL=cSQL+" WHERE HEAT = '"+cHeat+"'"
 									cSQL=cSQL+" AND ( [What] = 'DELETE' OR dbo.f_ProperPOitem(po_item) != dbo.f_ProperPOitem('0-00') )"
 									cSQL=cSQL+" ORDER BY PO_item DESC, [When] DESC"
@@ -3479,7 +3479,7 @@ DEFINE CLASS frmstocklst_master AS embossedform OF "..\libs\wizembss.vcx"
 						*Check Heat
 						PRIVATE cSQL
 		
-						cSQL = "SELECT DISTINCT Heat FROM dbo.[AR.StockLst_Master_History WHERE LOT = '"+cLot+"' ORDER BY Heat "
+						cSQL = "SELECT DISTINCT Heat FROM dbo.Ar_Stocklst_Master_History WHERE LOT = '"+cLot+"' ORDER BY Heat "
 		
 						IF USED("tmpStockLst_Master_Heat")
 							SELECT tmpStockLst_Master_Heat

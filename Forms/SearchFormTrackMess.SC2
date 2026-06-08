@@ -26,6 +26,7 @@ DEFINE CLASS searchformtrackmess AS form
 	*< OBJECTDATA: ObjPath="Commandgroup1" UniqueID="" Timestamp="" />
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Search"
 		DoCreate = .T.
 		Height = 226

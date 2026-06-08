@@ -109,6 +109,7 @@ DEFINE CLASS frmaccountid AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 571
+		Icon = graphics\earth.ico
 		Left = 0
 		Name = "frmAccountID"
 		nconnhandle = 0

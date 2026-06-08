@@ -129,6 +129,7 @@ DEFINE CLASS frmpoincoming AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 128,255,255
 		Caption = "PO Incoming Stock "

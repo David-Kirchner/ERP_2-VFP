@@ -100,6 +100,7 @@ DEFINE CLASS frmshow AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		Name = "frmShow"

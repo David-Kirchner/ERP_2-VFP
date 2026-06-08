@@ -660,6 +660,7 @@ DEFINE CLASS workorder AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		aforms = .F.
 		AutoRelease = .T.
 		cc = ''
@@ -5272,11 +5273,11 @@ DEFINE CLASS workorder AS formset
 		AutoSize = .F., ;
 		Caption = "", ;
 		Centered = .F., ;
-		DownPicture = ..\graphics\pushpint.bmp, ;
+		DownPicture = GRAPHICS\pushpint.bmp, ;
 		Height = 22, ;
 		Left = 176, ;
 		Name = "chkPinFWeight", ;
-		Picture = ..\graphics\pushpinb.bmp, ;
+		Picture = GRAPHICS\pushpinb.bmp, ;
 		PictureMargin = 0, ;
 		PicturePosition = 14, ;
 		PictureSpacing = 0, ;
@@ -5293,11 +5294,11 @@ DEFINE CLASS workorder AS formset
 		AutoSize = .F., ;
 		Caption = "", ;
 		Centered = .F., ;
-		DownPicture = ..\graphics\pushpint.bmp, ;
+		DownPicture = GRAPHICS\pushpint.bmp, ;
 		Height = 22, ;
 		Left = 182, ;
 		Name = "chkPinSWeight", ;
-		Picture = ..\graphics\pushpinb.bmp, ;
+		Picture = GRAPHICS\pushpinb.bmp, ;
 		PictureMargin = 0, ;
 		PicturePosition = 14, ;
 		PictureSpacing = 0, ;
@@ -5536,7 +5537,7 @@ DEFINE CLASS workorder AS formset
 		Height = 24, ;
 		Left = 113, ;
 		Name = "cmdCalcS", ;
-		Picture = ..\graphics\transform.jpg, ;
+		Picture = GRAPHICS\transform.jpg, ;
 		TabIndex = 33, ;
 		ToolTipText = "Calc Start Weight", ;
 		Top = 61, ;
@@ -5616,7 +5617,7 @@ DEFINE CLASS workorder AS formset
 		Height = 24, ;
 		Left = 108, ;
 		Name = "cmdFcalc", ;
-		Picture = ..\graphics\transform.jpg, ;
+		Picture = GRAPHICS\transform.jpg, ;
 		TabIndex = 80, ;
 		ToolTipText = "Calc Finish Weight", ;
 		Top = 258, ;
@@ -5770,7 +5771,7 @@ DEFINE CLASS workorder AS formset
 		Height = 24, ;
 		Left = 8, ;
 		Name = "cmdResetCW", ;
-		Picture = ..\graphics\transform.jpg, ;
+		Picture = GRAPHICS\transform.jpg, ;
 		TabIndex = 81, ;
 		ToolTipText = "Reset CW, Recalculate", ;
 		Top = 412, ;
@@ -12201,12 +12202,9 @@ DEFINE CLASS workorder AS formset
 		nThck	= PrepareSQLnum(ThisFormset.frmWorkOrder.txtFthck.Value,'Thck',10,4)
 		
 		
-		cSQL = "SELECT StartDia, CWAvg, DiaMax FROM dbo.PriceTable "
-		cSQL = cSQL + " WHERE Alloy = '"+cAlloy+"'"
-		cSQL = cSQL + " AND Form = '"+cForm+"'"
-		cSQL = cSQL + " AND CC = '"+cCC+"'"
-		cSQL = cSQL + " AND CL = '"+cCL+"'"
-		cSQL = cSQL + " AND (Size >= "+STR(nThck-.015,8,3)+" AND Size <= "+STR(nThck +.015,8,3)+" )"
+		cSQL = "SELECT dbo.f_CC_CL_Start('"+cAlloy+"','"+cCC+"','"+cCL+"',"+STR(nThck,8,3)+") AS StartDia "
+		cSQL = cSQL + ",dbo.f_CC_CL_Avg_Cw('"+cAlloy+"','"+cCC+"','"+cCL+"',"+STR(nThck,8,3)+") AS CWAvg "
+		cSQL = cSQL + ",dbo.f_CC_CL_DiaMax('"+cAlloy+"','"+cCC+"','"+cCL+"') AS DiaMax "
 		*cSQL = cSQL + " AND DiaMax > "+STR(nThck,8,3)
 		
 		nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL, 'tmpPriceTbl')
@@ -14313,8 +14311,13 @@ DEFINE CLASS workorder AS formset
 		SELECT 0
 		PRIVATE cSQL, nSQLEXEC 
 		cSQL = "SELECT SP.* "
-		cSQL = cSQL+",ISNULL(PT.CWCnt,0) AS CWCnt, ISNULL(PT.CWMin,0) AS CWMin, ISNULL(PT.CWAvg,0) AS CWAvg "
-		cSQL = cSQL+",ISNULL(PT.CWMedian,0) AS CWMedian, ISNULL(PT.CWMax,0) AS CWMax, ISNULL(PT.StartDia,0) AS StartDia "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Cnt(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWCnt "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Min_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWMin "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Avg_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWAvg "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Median_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWMedian "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Max_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWMax "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Start(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS StartDia "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_DiaMax(SP.Alloy,SP.CC,SP.CL),0) AS DiaMax "
 		cSQL = cSQL+",ISNULL(CL.Text,'') AS CLText "
 		cSQL = cSQL+",ISNULL(CL.Spec,'') AS FSpec "
 		
@@ -14344,8 +14347,6 @@ DEFINE CLASS workorder AS formset
 		
 		cSQL = cSQL+" FROM dbo.Stock_Projected SP "
 		cSQL = cSQL+" LEFT OUTER JOIN dbo.ConditionLevel CL ON CL.CC=SP.Spec_CC AND CL.CL=SP.Spec_CL "
-		cSQL = cSQL+" LEFT OUTER JOIN dbo.PriceTable PT ON SP.Alloy=PT.Alloy "
-		cSQL = cSQL+"	AND SP.Form = PT.Form AND SP.Thck=PT.Size AND SP.CC= PT.CC AND SP.CL=PT.CL "
 		
 		
 		nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL, 'tmpProjStk')
@@ -20041,9 +20042,12 @@ DEFINE CLASS workorder AS formset
 			SELECT 0
 			PRIVATE cSQL, nSQLEXEC 
 			
-			cSQL = "SELECT PT.CWCnt ,PT.CWMin, PT.CWAvg, PT.CWMedian, PT.CWMax "
+			cSQL = "SELECT ISNULL(dbo.f_CC_CL_Cnt(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWCnt "
+			cSQL = cSQL + ",ISNULL(dbo.f_CC_CL_Min_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWMin "
+			cSQL = cSQL + ",ISNULL(dbo.f_CC_CL_Avg_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWAvg "
+			cSQL = cSQL + ",ISNULL(dbo.f_CC_CL_Median_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWMedian "
+			cSQL = cSQL + ",ISNULL(dbo.f_CC_CL_Max_Cw(SP.Alloy,SP.CC,SP.CL,SP.Thck),0) AS CWMax "
 			cSQL = cSQL + " FROM dbo.Stock_Projected SP "
-			cSQL = cSQL + " INNER JOIN dbo.PriceTable PT ON SP.Alloy=PT.Alloy AND SP.Form = PT.Form AND SP.Thck=PT.Size AND SP.CC= PT.CC AND SP.CL=PT.CL "
 			cSQL = cSQL + " WHERE SP.ID = "+ALLTRIM(STR(nStock_Projected_ID ))
 			
 			nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL, 'tmpProjStkAvg')
@@ -28287,7 +28291,6 @@ DEFINE CLASS workorder AS formset
 		ENDIF
 		
 		This.ColumnCount = 2
-		This.NumberOfElements=ALEN(atmpMachine,1)+1	&&Add Blank
 		This.BoundColumn = 1
 		This.ColumnWidths = "70,90"
 		
@@ -28295,7 +28298,11 @@ DEFINE CLASS workorder AS formset
 		this.addListitem("",1,2)
 		
 		PRIVATE nArrayCount
-		nArrayCount = ALEN(atmpMachine,1)
+		nArrayCount = 0
+		IF TYPE('atmpMachine(1,1)') # 'L'
+			nArrayCount = ALEN(atmpMachine,1)
+		ENDIF
+		This.NumberOfElements = nArrayCount + 1
 		FOR I = 1 TO nArrayCount
 			this.addListitem(atmpMachine(I, 1),I+1,1)
 			this.addListitem(atmpMachine(I, 2),I+1,2)
@@ -28350,7 +28357,6 @@ DEFINE CLASS workorder AS formset
 		
 		
 		This.ColumnCount = 2
-		This.NumberOfElements=ALEN(atmpMachine)
 		This.BoundColumn = 1
 		This.ColumnWidths = "70,90"
 		
@@ -28358,7 +28364,11 @@ DEFINE CLASS workorder AS formset
 		this.addListitem("",1,2)
 		
 		PRIVATE nArrayCount
-		nArrayCount = ALEN(atmpMachine,1)
+		nArrayCount = 0
+		IF TYPE('atmpMachine(1,1)') # 'L'
+			nArrayCount = ALEN(atmpMachine,1)
+		ENDIF
+		This.NumberOfElements = nArrayCount + 1
 		FOR I = 1 TO nArrayCount
 			this.addListitem(atmpMachine(I, 1),I+1,1)
 			this.addListitem(atmpMachine(I, 2),I+1,2)
@@ -32477,13 +32487,11 @@ DEFINE CLASS workorder AS formset
 		PRIVATE nCWAvg 
 		nCWAvg = 0
 		
-		cSQL = "SELECT CWMin,CWAvg,CWMedian,CWMax,CWCnt "
-		cSQL = cSQL+" FROM dbo.PriceTable "
-		cSQL = cSQL+" WHERE Alloy = '"+cfAlloy+"'"
-		cSQL = cSQL+" AND Form = '"+cfForm+"'"
-		cSQL = cSQL+" AND CC = '"+cfCC+"'"
-		cSQL = cSQL+" AND CL = '"+cfCL+"'"
-		cSQL = cSQL+" AND Size ="+STR(nFthck,8,3)
+		cSQL = "SELECT ISNULL(dbo.f_CC_CL_Min_Cw('"+cfAlloy+"','"+cfCC+"','"+cfCL+"',"+STR(nFthck,8,3)+"),0) AS CWMin "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Avg_Cw('"+cfAlloy+"','"+cfCC+"','"+cfCL+"',"+STR(nFthck,8,3)+"),0) AS CWAvg "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Median_Cw('"+cfAlloy+"','"+cfCC+"','"+cfCL+"',"+STR(nFthck,8,3)+"),0) AS CWMedian "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Max_Cw('"+cfAlloy+"','"+cfCC+"','"+cfCL+"',"+STR(nFthck,8,3)+"),0) AS CWMax "
+		cSQL = cSQL+",ISNULL(dbo.f_CC_CL_Cnt('"+cfAlloy+"','"+cfCC+"','"+cfCL+"',"+STR(nFthck,8,3)+"),0) AS CWCnt "
 		
 		IF USED("tmp_CW")	
 			USE IN tmp_CW

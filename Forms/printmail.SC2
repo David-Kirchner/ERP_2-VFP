@@ -72,6 +72,7 @@ DEFINE CLASS printmail AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		badc = ""
 		Caption = "Print Mail"

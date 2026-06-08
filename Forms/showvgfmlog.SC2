@@ -198,6 +198,7 @@ DEFINE CLASS gfm AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BackColor = 0,191,96
@@ -417,7 +418,7 @@ DEFINE CLASS gfm AS form
 		Command1.Height = 55, ;
 		Command1.Left = 5, ;
 		Command1.Name = "Command1", ;
-		Command1.Picture = ..\graphics\calc.bmp, ;
+		Command1.Picture = GRAPHICS\calc.bmp, ;
 		Command1.ReleaseErase = .F., ;
 		Command1.SpecialEffect = 1, ;
 		Command1.TabStop = .F., ;

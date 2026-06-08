@@ -958,8 +958,8 @@ ENDPROC && BAR_3_OF_Shortcut_FB2P
 PROCEDURE BAR_4_OF_Shortcut_FB2P
 	*Move Quote.
 	
-	IF NOT "PROC_HPA" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
-		SET PROCEDURE TO Progs\Proc_HPA ADDITIVE
+	IF NOT "Proc_ERP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
+		SET PROCEDURE TO Progs\Proc_ERP ADDITIVE
 	ENDIF
 	
 	PRIVATE INQMAX,RC,m.next_inq,TALKPROP,cUseThisName,nUseThisID, cOldInqNumP, cNewInqNumP

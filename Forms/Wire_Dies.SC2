@@ -73,6 +73,7 @@ DEFINE CLASS frmwire_dies AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Wire Dies"

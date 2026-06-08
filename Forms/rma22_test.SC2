@@ -216,6 +216,7 @@ DEFINE CLASS rma AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		Name = "RMA"
@@ -1759,7 +1760,7 @@ DEFINE CLASS rma AS formset
 		Height = 40, ;
 		Left = 188, ;
 		Name = "cmdRecvMat", ;
-		Picture = ..\graphics\recvin.bmp, ;
+		Picture = GRAPHICS\recvin.bmp, ;
 		TabIndex = 18, ;
 		ToolTipText = "Receive Material from RMA", ;
 		Top = 134, ;

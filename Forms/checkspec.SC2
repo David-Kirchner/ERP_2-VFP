@@ -38,6 +38,7 @@ DEFINE CLASS checkspec AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 1
 		fnspectext = .F.

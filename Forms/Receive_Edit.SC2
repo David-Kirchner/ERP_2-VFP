@@ -192,6 +192,7 @@ DEFINE CLASS frmreceive_edit AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		askedreplacedescrpo = .F.
 		askedreplacedescrso = .F.
@@ -4136,11 +4137,11 @@ DEFINE CLASS frmreceive_edit AS form
 		cSQLi = "SELECT COUNT(*) AS CNTD FROM "
 		DO CASE
 		CASE cStockTable="B"
-			cSQLi = cSQLi + " dbo.[AR.BrokerLst_Process_History "
+			cSQLi = cSQLi + " dbo.Ar_BrokerLst_Process_History "
 		CASE cStockTable="S"
-			cSQLi = cSQLi + " dbo.[AR.StockLst_Process_History "
+			cSQLi = cSQLi + " dbo.Ar_StockLst_Process_History "
 		CASE cStockTable="W"
-			cSQLi = cSQLi + " dbo.[AR.WIPLst_Process_History "
+			cSQLi = cSQLi + " dbo.Ar_WIPLst_Process_History "
 		ENDCASE
 		cSQLi = cSQLi + " WHERE Process_ID	= 'Receiving' "
 		cSQLi = cSQLi + " AND ID_Detail = "+STR(nID_Detail)
@@ -6398,13 +6399,13 @@ DEFINE CLASS frmreceive_edit AS form
 		cSQL = "SELECT TOP 1 [Who],[What],[When],Heat "
 		DO CASE
 		CASE cTBL = "S"
-			cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History WITH(NOLOCK) "
+			cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) "
 		CASE cTBL = "B"
-			cSQL = cSQL + " FROM dbo.[AR.Brokerlst_Master_History WITH(NOLOCK) "
+			cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) "
 		CASE cTBL = "W"
-			cSQL = cSQL + " FROM dbo.[AR.WIPlst_Master_History WITH(NOLOCK) "
+			cSQL = cSQL + " FROM dbo.Ar_WIPLst_Master_History WITH(NOLOCK) "
 		OTHERWISE
-			cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History WITH(NOLOCK) "
+			cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) "
 		ENDCASE		
 		cSQL = cSQL + " WHERE ID = "+STR(nID_Master)
 		cSQL = cSQL + " order by [when] desc"
@@ -7515,14 +7516,14 @@ DEFINE CLASS frmreceive_edit AS form
 		*Stock History
 		cSQL = cSQL + " SELECT TOP 1 "
 		cSQL = cSQL + " (SELECT Count(*) AS CNT "
-		cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History M WITH(NOLOCK) "
+		cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE M.PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 		*cSQL = cSQL + "  AND M.[WHAT] = 'DELETE' 
 		cSQL = cSQL + " AND M.[heat] = 'DUE IN'"
 		cSQL = cSQL + "  ) AS CNT "
 		cSQL = cSQL + ", 'A' AS TBL, M.Heat, M.Lot "
 		cSQL = cSQL + " ,D.ID_Detail ,'' AS Process_ID, 0 AS ID_Detail_Process "
-		cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History M WITH(NOLOCK) "
+		cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
 		cSQL = cSQL + " INNER JOIN dbo.StockLst_Detail D WITH(NOLOCK) ON M.ID = D.ID "
 		cSQL = cSQL + " WHERE M.PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 		*cSQL = cSQL + "  AND M.[WHAT] = 'DELETE' "
@@ -8711,13 +8712,13 @@ DEFINE CLASS frmreceive_edit AS form
 		*--Stock History  - No ID_Detail_Process
 		cSQL = cSQL + " SELECT TOP 1 "
 		cSQL = cSQL + " (SELECT Count(*) AS CNT "
-		cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History M WITH(NOLOCK) "
+		cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE M.PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 		cSQL = cSQL + "  AND M.[WHAT] = 'DELETE' AND M.[heat] != 'DUE IN'"
 		cSQL = cSQL + "  ) AS CNT "
 		cSQL = cSQL + ", 'A' AS TBL, M.Heat, M.Lot, D.ReceivingID  "
 		cSQL = cSQL + " ,D.ID_Detail ,'Stock_M_H' AS Process_ID, 0 AS ID_Detail_Process, M.PO_item "
-		cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History M WITH(NOLOCK) "
+		cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
 		cSQL = cSQL + " INNER JOIN dbo.StockLst_Detail D WITH(NOLOCK) ON M.ID = D.ID "
 		cSQL = cSQL + " WHERE M.PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 		cSQL = cSQL + "  AND M.[WHAT] = 'DELETE' AND M.[heat] != 'DUE IN'"
@@ -9014,14 +9015,14 @@ DEFINE CLASS frmreceive_edit AS form
 		
 		cSQL = cSQL + " SELECT TOP 1 "
 		cSQL = cSQL + " (SELECT Count(*) AS CNT "
-		cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History D WITH(NOLOCK) "
-		cSQL = cSQL + " INNER JOIN dbo.[AR.StockLst_Master_History M WITH(NOLOCK) ON D.ID = M.ID "
+		cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History D WITH(NOLOCK) "
+		cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) ON D.ID = M.ID "
 		cSQL = cSQL + "  WHERE D.ReceivingID = "+STR(nReceivingID)
 		cSQL = cSQL + "  AND M.[WHAT] = 'DELETE' ) AS CNT "
 		cSQL = cSQL + ", 'A' AS TBL, M.Heat, M.Lot, D.ReceivingID "
 		cSQL = cSQL + " ,D.ID_Detail ,'' AS Process_ID, 0 AS ID_Detail_Process, M.PO_item "
-		cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History D WITH(NOLOCK) "
-		cSQL = cSQL + " INNER JOIN dbo.[AR.StockLst_Master_History M WITH(NOLOCK) ON D.ID = M.ID "
+		cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History D WITH(NOLOCK) "
+		cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) ON D.ID = M.ID "
 		cSQL = cSQL + "  WHERE D.ReceivingID = "+STR(nReceivingID)
 		cSQL = cSQL + "  AND M.[WHAT] = 'DELETE' "
 		cSQL = cSQL + " ) t ORDER BY TBL, Heat, Lot "
@@ -10266,12 +10267,12 @@ DEFINE CLASS frmreceive_edit AS form
 			ENDIF
 			
 			cSQL =		  " SELECT COUNT(ID) AS Cntd "
-			cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History "
+			cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History "
 			cSQL = cSQL + " WHERE ReceivingID = "+ALLTRIM(STR( nReceivingID ))
 			cSQL = cSQL + " AND [WHAT] = 'BEFOREEDIT' "
 			cSQL = cSQL + " UNION "
 			cSQL = cSQL + " SELECT COUNT(ID) AS Cntd "
-			cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Detail_History "
+			cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Detail_History "
 			cSQL = cSQL + " WHERE ReceivingID = "+ALLTRIM(STR( nReceivingID ))
 			cSQL = cSQL + " AND [WHAT] = 'BEFOREEDIT' "
 			
@@ -12375,12 +12376,12 @@ DEFINE CLASS frmreceive_edit AS form
 		ENDIF
 		
 		PRIVATE nSQLEXEC, cSQL
-		cSQL = "SELECT ID_Detail FROM dbo.[AR.StockLst_Process_History "
+		cSQL = "SELECT ID_Detail FROM dbo.Ar_StockLst_Process_History "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED     ' OR [WHAT] = 'DELETE    ')"
 		cSQL = cSQL + " ORDER BY [WHAT] DESC "
 		cSQL = cSQL + " UNION "
-		cSQL = cSQL + " SELECT ID_Detail FROM dbo.[AR.BrokerLst_Process_History "
+		cSQL = cSQL + " SELECT ID_Detail FROM dbo.Ar_BrokerLst_Process_History "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED     ' OR [WHAT] = 'DELETE    ')"
 		cSQL = cSQL + " ORDER BY [WHAT] DESC "
@@ -12424,7 +12425,7 @@ DEFINE CLASS frmreceive_edit AS form
 			cTBL = "S"
 		ELSE
 			*Check BrokerLst
-			cSQL = "SELECT ID_Detail FROM dbo.[AR.BrokerLst_Process_History "
+			cSQL = "SELECT ID_Detail FROM dbo.Ar_BrokerLst_Process_History "
 			cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 			cSQL = cSQL + " AND [WHAT] = 'DELETE    '"
 			
@@ -12477,11 +12478,11 @@ DEFINE CLASS frmreceive_edit AS form
 		IF cTBL = "S"
 			cSQL = "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.StockLst_Master WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.[AR.StockLst_Master_History WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.Ar_Stocklst_Master_History WHERE ID = "+STR(nStockLst_ID)
 		ELSE
 			cSQL = "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.BrokerLst_Master WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.[AR.BrokerLst_Master_History WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.Ar_BrokerLst_Master_history WHERE ID = "+STR(nStockLst_ID)
 		ENDIF
 		
 		SELECT 0
@@ -12552,11 +12553,11 @@ DEFINE CLASS frmreceive_edit AS form
 		IF cTBL = "S"
 			cSQL = "SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.StockLst_Detail WHERE ID_Detail ="+STR(nID_Detail)
 			cSQL = cSQL + " Union "
-			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.[AR.StockLst_Detail_History WHERE ID_Detail ="+STR(nID_Detail)
+			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.Ar_Stocklst_Detail_History WHERE ID_Detail ="+STR(nID_Detail)
 		ELSE
 			cSQL = "SELECT PC, dbo.f_ItemDescription(dbo.BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.BrokerLst_Detail WHERE ID_Detail ="+STR(nID_Detail)
 			cSQL = cSQL + " Union "
-			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.[AR.BrokerLst_Detail_History WHERE ID_Detail ="+STR(nID_Detail)
+			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.Ar_BrokerLst_Detail_History WHERE ID_Detail ="+STR(nID_Detail)
 		ENDIF
 		*SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.StockLst_Detail WHERE ID_Detail = 5657
 		
@@ -14638,9 +14639,9 @@ DEFINE CLASS frmreceive_edit AS form
 				ENDIF
 		
 				cSQL = "SELECT DISTINCT 'S' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-				cSQL = cSQL + " FROM dbo.[AR.StockLst_Process_History P "
-				cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-				cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Master_History M ON D.ID = M.ID "
+				cSQL = cSQL + " FROM dbo.Ar_StockLst_Process_History P "
+				cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
+				cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Master_History M ON D.ID = M.ID "
 				cSQL = cSQL + " WHERE ( P.Process_ID = 'INCOMING' OR P.Process_ID = 'NOT2HPA' OR P.Process_ID = 'PARTRECV' )"
 				cSQL = cSQL + " AND P.WHAT = 'DELETE' "
 				IF Proper_PO_Item(cPOitem) <> Proper_PO_item('')
@@ -14704,9 +14705,9 @@ DEFINE CLASS frmreceive_edit AS form
 				ENDIF
 		
 				cSQL = "SELECT DISTINCT 'S' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-				cSQL = cSQL + " FROM dbo.[AR.StockLst_Process_History P "
-				cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-				cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Master_History M ON D.ID = M.ID "
+				cSQL = cSQL + " FROM dbo.Ar_StockLst_Process_History P "
+				cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
+				cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Master_History M ON D.ID = M.ID "
 				cSQL = cSQL + " WHERE ( P.Process_ID = 'INCOMING' OR P.Process_ID = 'NOT2HPA' OR P.Process_ID = 'RECEIVED' OR P.Process_ID = 'PARTRECV')"
 				cSQL = cSQL + " AND P.WHAT = 'DELETE' "
 				cSQL = cSQL + " AND M.ID = "+STR(nID_Master )
@@ -14794,9 +14795,9 @@ DEFINE CLASS frmreceive_edit AS form
 								ENDIF
 		
 								cSQL = "SELECT DISTINCT 'S' AS TBL, P.ID_Detail, P.ID_Detail_Process "
-								cSQL = cSQL + " FROM dbo.[AR.StockLst_Process_History P "
-								cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-								cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Master_History M ON D.ID = M.ID "
+								cSQL = cSQL + " FROM dbo.Ar_StockLst_Process_History P "
+								cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
+								cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Master_History M ON D.ID = M.ID "
 								cSQL = cSQL + " WHERE ( P.Process_ID = 'INCOMING' OR P.Process_ID = 'NOT2HPA' OR P.Process_ID = 'RECEIVED' OR P.Process_ID = 'PARTRECV')"
 								cSQL = cSQL + " AND M.ID = "+STR(nID_Master )
 								
@@ -15973,7 +15974,7 @@ DEFINE CLASS frmreceive_edit AS form
 		cSQL = cSQL + ",SS.Return_ID_Master,SS.Return_ID_Detail "
 		cSQL = cSQL + " ,P.ID AS PID, P.ID_Detail AS PID_Detail "
 		cSQL = cSQL + " FROM dbo.Sales_Stock SS "
-		cSQL = cSQL + " left outer join dbo.[AR.StockLst_Process_Detail_History P "
+		cSQL = cSQL + " left outer join dbo.Ar_StockLst_Process_Detail_History P "
 		cSQL = cSQL + " 	ON SS.ID_Detail_Process = P.ID_Detail_Process AND P.[What]='Sell Stock' "
 		
 		IF Proper_SO_item(cSOitem) <> Proper_SO_item('')

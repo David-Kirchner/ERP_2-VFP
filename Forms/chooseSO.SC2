@@ -82,6 +82,7 @@ DEFINE CLASS frmchooseso AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Choose SO"
 		DataSession = 2
 		DoCreate = .T.

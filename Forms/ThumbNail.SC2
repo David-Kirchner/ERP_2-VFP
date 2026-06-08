@@ -26,6 +26,7 @@ DEFINE CLASS form1 AS form
 	*< OBJECTDATA: ObjPath="Command2" UniqueID="" Timestamp="" />
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Form1"
 		DoCreate = .T.
 		Name = "Form1"

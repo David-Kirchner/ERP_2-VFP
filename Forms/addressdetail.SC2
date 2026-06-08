@@ -45,6 +45,7 @@ DEFINE CLASS addressdetail AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .F.
 		BackColor = 128,255,255

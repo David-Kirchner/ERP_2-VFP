@@ -37,6 +37,7 @@ DEFINE CLASS frmreceive_order_pw AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Shop Receive Paper Work"
 		ControlBox = .F.
 		DoCreate = .T.

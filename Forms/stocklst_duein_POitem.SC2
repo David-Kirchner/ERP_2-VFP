@@ -159,6 +159,7 @@ DEFINE CLASS frmstockdueinwod AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Stock listed as Due In with WO_Detail"
 		DoCreate = .T.
 		Height = 417
@@ -1915,7 +1916,7 @@ DEFINE CLASS frmstockdueinwod AS form
 		cSQL = cSQL+" WHERE dbo.f_ProperLot(Lot)=dbo.f_ProperLot('"+ALLTRIM(cR_Lot)+"')"
 		cSQL = cSQL+" UNION "
 		cSQL = "SELECT ID "
-		cSQL = cSQL+" FROM dbo.[AR.StockLst_Master_History  "
+		cSQL = cSQL+" FROM dbo.Ar_Stocklst_Master_History  "
 		cSQL = cSQL+" WHERE dbo.f_ProperLot(Lot)=dbo.f_ProperLot('"+ALLTRIM(cR_Lot)+"')"
 		cSQL = cSQL+" AND [What] = 'DELETE    '"
 		
@@ -2203,7 +2204,7 @@ DEFINE CLASS frmstockdueinwod AS form
 		cSQL = cSQL+" WHERE dbo.f_ProperLot(Lot)=dbo.f_ProperLot('"+ALLTRIM(cR_Lot)+"')"
 		cSQL = cSQL+" UNION "
 		cSQL = "SELECT ID "
-		cSQL = cSQL+" FROM dbo.[AR.StockLst_Master_History  "
+		cSQL = cSQL+" FROM dbo.Ar_Stocklst_Master_History  "
 		cSQL = cSQL+" WHERE dbo.f_ProperLot(Lot)=dbo.f_ProperLot('"+ALLTRIM(cR_Lot)+"')"
 		cSQL = cSQL+" AND [What] = 'DELETE    '"
 		
@@ -2309,7 +2310,7 @@ DEFINE CLASS frmstockdueinwod AS form
 		cSQL = cSQL+" WHERE ID="+STR(nID_Master)
 		*cSQL = cSQL+" UNION "
 		*cSQL = "SELECT ID "
-		*cSQL = cSQL+" FROM dbo.[AR.StockLst_Master_History  "
+		*cSQL = cSQL+" FROM dbo.Ar_Stocklst_Master_History  "
 		*cSQL = cSQL+" WHERE ID="+STR(nID_Master)
 		
 		nSQLEXEC = SQLEXEC( ThisForm.nConnHandle, cSQL, 'tmp_SM_WD')

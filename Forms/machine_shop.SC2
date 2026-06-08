@@ -138,6 +138,7 @@ DEFINE CLASS fs AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 1
 		Name = "FS"

@@ -2151,7 +2151,7 @@ IF TYPE("m.salesp") !="C"
 		*MESSAGEBOX("Using SalesP:"+cHomeSalesp+CHR(13)+"Proc_HPA:"+PROGRAM(),64,"cHomeSalesP")
 	ELSE
 		IF FILE(SYS(5)+SYS(2003)+"\MEM\SalesP.MEM")
-			RESTORE FROM (SYS(5)+SYS(2003)+"MEM\SalesP.MEM") ADDITIVE
+			RESTORE FROM (SYS(5)+SYS(2003)+"\MEM\SalesP.MEM") ADDITIVE
 			cHomeSalesp = ALLTRIM(m.Salesp)
 		ENDIF
 	ENDIF

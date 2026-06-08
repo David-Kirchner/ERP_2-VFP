@@ -72,6 +72,7 @@ DEFINE CLASS frmrtr_details_class AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		birtr_id = 0
 		Caption = "Router Detail"
 		Closable = .F.

@@ -32,6 +32,7 @@ DEFINE CLASS mathfunc AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 0,128,255
 		BorderStyle = 0

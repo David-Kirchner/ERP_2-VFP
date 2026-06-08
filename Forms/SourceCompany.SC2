@@ -95,6 +95,7 @@ DEFINE CLASS frmsourcecompany AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "SourceCompany"
 		DoCreate = .T.
 		Height = 564

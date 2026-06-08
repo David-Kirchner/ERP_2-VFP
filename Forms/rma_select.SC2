@@ -71,6 +71,7 @@ DEFINE CLASS frmrmaselect AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Select for RMA"
 		creturnkey = ""
 		DataSession = 2

@@ -454,7 +454,7 @@ DEFINE CLASS productionscheduleboard AS form 		&& Generic Production Schedule Po
 		ColumnCount = 2, ;
 		ColumnLines = .T., ;
 		ColumnWidths = "20,100", ;
-		DragIcon = ..\graphics\dragmove.cur, ;
+		DragIcon = GRAPHICS\dragmove.cur, ;
 		Height = 240, ;
 		IntegralHeight = .T., ;
 		Left = 18, ;

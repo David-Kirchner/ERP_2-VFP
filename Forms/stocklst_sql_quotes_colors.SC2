@@ -69,6 +69,7 @@ DEFINE CLASS frmstocklstcolors AS form
 	*< OBJECTDATA: ObjPath="Shape1" UniqueID="" Timestamp="" />
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .F.
 		Caption = "Stock List Colors"

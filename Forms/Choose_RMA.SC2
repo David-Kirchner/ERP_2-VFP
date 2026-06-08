@@ -42,6 +42,7 @@ DEFINE CLASS frmchoose_rma AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Select the RMA"
 		DoCreate = .T.

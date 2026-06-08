@@ -419,6 +419,7 @@ DEFINE CLASS purchaseorder AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cc = ''
 		cl = ''
@@ -3153,7 +3154,7 @@ DEFINE CLASS purchaseorder AS formset
 		Height = 20, ;
 		Left = 227, ;
 		Name = "cmdPOReport", ;
-		Picture = ..\graphics\report.ico, ;
+		Picture = GRAPHICS\report.ico, ;
 		PicturePosition = 14, ;
 		TabStop = .F., ;
 		ToolTipText = "Open PO Report Window", ;
@@ -3178,7 +3179,7 @@ DEFINE CLASS purchaseorder AS formset
 		Height = 20, ;
 		Left = 199, ;
 		Name = "cmdReportUnrecievedConf", ;
-		Picture = ..\graphics\report.ico, ;
+		Picture = GRAPHICS\report.ico, ;
 		PicturePosition = 14, ;
 		TabStop = .F., ;
 		ToolTipText = "Open PO Conformation Report Window", ;

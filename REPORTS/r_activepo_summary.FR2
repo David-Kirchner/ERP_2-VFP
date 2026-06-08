@@ -277,7 +277,7 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA - Active Purchase Orders Summary"]]>
+	<expr><![CDATA["Active Purchase Orders Summary"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

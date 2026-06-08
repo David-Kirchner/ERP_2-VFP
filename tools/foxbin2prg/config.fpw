@@ -1,0 +1,8 @@
+* Same as CONFIG.FPW (some tools reference lowercase name)
+TITLE = FoxBin2Prg Tools
+SCREEN = OFF
+RESOURCE = OFF
+COMMAND = HIDE
+CODEPAGE = AUTO
+DEFAULT = E:\VFP\ERP_2\tools\foxbin2prg
+PATH = E:\VFP\ERP_2\tools\foxbin2prg;E:\VFP\ERP_2\tools;E:\VFP\ERP_2

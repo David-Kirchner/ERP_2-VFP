@@ -577,7 +577,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA Late Shipments with current Status Comments"]]>
+	<expr><![CDATA["Late Shipments with current Status Comments"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

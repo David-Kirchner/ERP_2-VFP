@@ -757,7 +757,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Space Alloys USA"]]>
+	<expr><![CDATA[CompanyReport_Name()]]>
 	<supexpr><![CDATA[!Sales_No.Blind]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

@@ -959,17 +959,17 @@ DEFINE CLASS frmstocklst_detail_history AS embossedform OF "..\libs\wizembss.vcx
 		*ThisForm.ID_Process_History
 		*ThisForm.SOitem
 		IF ThisForm.Lst = "StockLst"
-			cSQL = "SELECT * FROM dbo.[AR.StockLst_Detail_History "
+			cSQL = "SELECT * FROM dbo.Ar_Stocklst_Detail_History "
 		ELSE
-			cSQL = "SELECT * FROM dbo.[AR.BrokerLst_Detail_History "
+			cSQL = "SELECT * FROM dbo.Ar_BrokerLst_Detail_History "
 		ENDIF
 		
 		IF TYPE("THISFORM.ID_Detail_Process")="N"
 		  IF THISFORM.ID_Detail_Process > 0
 		 	IF ThisForm.Lst = "StockLst"
-				cSQL = "SELECT * FROM dbo.[AR.StockLst_Detail_History WHERE ID_Detail_Process = "+STR(ThisForm.ID_Detail_Process)
+				cSQL = "SELECT * FROM dbo.Ar_Stocklst_Detail_History WHERE ID_Detail_Process = "+STR(ThisForm.ID_Detail_Process)
 			ELSE
-				cSQL = "SELECT * FROM dbo.[AR.BrokerLst_Detail_History WHERE ID_Detail_Process = "+STR(ThisForm.ID_Detail_Process)
+				cSQL = "SELECT * FROM dbo.Ar_BrokerLst_Detail_History WHERE ID_Detail_Process = "+STR(ThisForm.ID_Detail_Process)
 			ENDIF
 		  ENDIF
 		ENDIF
@@ -1064,9 +1064,9 @@ DEFINE CLASS frmstocklst_detail_history AS embossedform OF "..\libs\wizembss.vcx
 		
 		cSQL = "SELECT DH.What, DH.ID_Detail_History, PH.ID_Process_History, PH.ID_Detail_Process"
 		IF ThisForm.Lst = "StockLst"
-			cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History DH, dbo.[AR.StockLst_Process_History PH "
+			cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History DH, dbo.Ar_StockLst_Process_History PH "
 		ELSE
-			cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Detail_History DH, dbo.[AR.BrokerLst_Process_History PH "
+			cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Detail_History DH, dbo.Ar_BrokerLst_Process_History PH "
 		ENDIF
 		cSQL = cSQL + " WHERE PH.SOitem = '"+ThisForm.SOitem+"' AND DH.ID_Detail_Process = PH.ID_Detail_Process "
 		cSQL = cSQL + " AND DH.WHAT != 'BEFOREEDIT'"
@@ -1338,17 +1338,17 @@ DEFINE CLASS frmstocklst_detail_history AS embossedform OF "..\libs\wizembss.vcx
 		cWhat = RIGHT(This.Value,LEN(This.Value)-13 )
 		
 		*StockLst_Detail_History from ID_Process_History
-		*select * from dbo.[AR.StockLst_Process_History WHERE ID_Process_History = 
+		*select * from dbo.Ar_StockLst_Process_History WHERE ID_Process_History = 
 		
 		PRIVATE cSQL, nSQLEXEC
 		
 		cSQL = "SELECT DH.*, PH.ID_Process_History "
 		 IF ThisForm.Lst = "StockLst"
-			cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History DH"
+			cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History DH"
 		ELSE
-			cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Detail_History DH"
+			cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Detail_History DH"
 		ENDIF
-		cSQL = cSQL + ",dbo.[AR.StockLst_Process_History PH  "
+		cSQL = cSQL + ",dbo.Ar_StockLst_Process_History PH  "
 		cSQL = cSQL + " WHERE DH.ID_Detail_Process = PH.ID_Detail_Process "
 		cSQL = cSQL + " AND ID_Process_History = "+STR(nID_Process_History)
 		cSQL = cSQL + " AND DH.WHAT = '"+cWhat +"'"

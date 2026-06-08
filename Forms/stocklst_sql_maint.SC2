@@ -308,6 +308,7 @@ DEFINE CLASS frmstocklst_sql_maint AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "StockLst Maintenance "
 		DataSession = 2
 		DoCreate = .T.
@@ -4822,7 +4823,11 @@ DEFINE CLASS frmstocklst_sql_maint AS form
 		ENDFOR
 		
 		*THIS.VALUE = ALLAlloy_LOC
-		THIS.VALUE = aAlloys(1)
+		IF TYPE('aAlloys(1)') = 'C'
+			THIS.VALUE = aAlloys(1)
+		ELSE
+			THIS.VALUE = ''
+		ENDIF
 		
 		*ThisForm.DispAlloyFilter=aAlloys(1)
 	ENDPROC
@@ -5516,7 +5521,7 @@ DEFINE CLASS frmstocklst_sql_maint AS form
 						lCommit = .F.
 					ENDIF
 								
-					cSQLu = "UPDATE dbo.[AR.StockLst_Process_History "
+					cSQLu = "UPDATE dbo.Ar_StockLst_Process_History "
 					cSQLu = cSQLu + " SET Comment = '"+PrepareSQLtxt(StockLst_Process_Selected.NewComment,'Comment',100)+"'"
 					cSQLu = cSQLu + " WHERE ID_Detail_Process = " + m.cID_D_P
 					cSQLu = cSQLu + " AND What = 'DELETE'"
@@ -5546,7 +5551,7 @@ DEFINE CLASS frmstocklst_sql_maint AS form
 						lCommit = .F.
 					ENDIF
 					
-					cSQLu = "UPDATE dbo.[AR.BrokerLst_Process_History "
+					cSQLu = "UPDATE dbo.Ar_BrokerLst_Process_History "
 					cSQLu = cSQLu + " SET Comment = '"+PrepareSQLtxt(StockLst_Process_Selected.NewComment,'Comment',100)+"'"
 					cSQLu = cSQLu + " WHERE ID_Detail_Process = " + m.cID_D_P
 					cSQLu = cSQLu + " AND What = 'DELETE'"

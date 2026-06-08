@@ -27,6 +27,7 @@ DEFINE CLASS frmaccountingcosting AS form
 	*< OBJECTDATA: ObjPath="Label1" UniqueID="" Timestamp="" />
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Accounting Costing - Write down rules."
 		DoCreate = .T.
 		Height = 455

@@ -732,6 +732,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		alfmsccss = ''
 		AutoRelease = .T.
 		cc = ''

@@ -249,6 +249,7 @@ DEFINE CLASS frmpurchase_finalize AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		lreturn = .F.
@@ -2075,7 +2076,7 @@ DEFINE CLASS frmpurchase_finalize AS formset
 		Height = 23, ;
 		Left = 179, ;
 		Name = "cmdPOitemCheck", ;
-		Picture = ..\graphics\check_ico.gif, ;
+		Picture = GRAPHICS\check_ico.gif, ;
 		TabIndex = 18, ;
 		TabStop = .F., ;
 		ToolTipText = "check POitem", ;
@@ -3491,13 +3492,13 @@ DEFINE CLASS frmpurchase_finalize AS formset
 		cSQL = cSQL + " FROM dbo.Sales_Stock SS WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE SS.TBL = 'S' "
 		cSQL = cSQL + " AND SS.StockLst_ID = "
-		cSQL = cSQL + " ( SELECT TOP 1 ID FROM dbo.[AR.StockLst_Master_History] M WHERE M.PO_item = '"+cPOitem+"' AND What = 'DELETE' ) "
+		cSQL = cSQL + " ( SELECT TOP 1 ID FROM dbo.Ar_Stocklst_Master_History M WHERE M.PO_item = '"+cPOitem+"' AND What = 'DELETE' ) "
 		cSQL = cSQL + " UNION ALL "
 		cSQL = cSQL + " SELECT 'BH' AS STK, SS.ID "
 		cSQL = cSQL + " FROM dbo.Sales_Stock WITH(NOLOCK) SS "
 		cSQL = cSQL + " WHERE SS.TBL = 'B' "
 		cSQL = cSQL + " AND SS.StockLst_ID =  "
-		cSQL = cSQL + " ( SELECT TOP 1 ID FROM dbo.[AR.BrokerLst_Master_History] M WHERE M.PO_item = '"+cPOitem+"' AND What = 'DELETE' ) "
+		cSQL = cSQL + " ( SELECT TOP 1 ID FROM dbo.Ar_BrokerLst_Master_history M WHERE M.PO_item = '"+cPOitem+"' AND What = 'DELETE' ) "
 		
 		
 		SELECT 0
@@ -3683,8 +3684,8 @@ DEFINE CLASS frmpurchase_finalize AS formset
 		*!*							cSQLLst = cSQLLst+",D.S_QTY,D.S_P,D.S_PU"
 		*!*							cSQLLst = cSQLLst+",0.0000 AS Units, 0.0000 AS IDDetailUnits, 0.0000 AS IDDetailPerUnit, 0.0000 AS IDDetailTotal"
 		*!*							cSQLLst = cSQLLst+",ID_Detail_Process"
-		*!*							cSQLLst = cSQLLst+" FROM dbo.[AR.StockLst_Detail_History] D"
-		*!*							cSQLLst = cSQLLst+" ,dbo.[AR.StockLst_Master_History] M"
+		*!*							cSQLLst = cSQLLst+" FROM dbo.Ar_Stocklst_Detail_History D"
+		*!*							cSQLLst = cSQLLst+" ,dbo.Ar_Stocklst_Master_History M"
 		*!*							cSQLLst = cSQLLst+" WHERE M.ID = "+STR(tmpReceiveID.ID_Master)
 		*!*							cSQLLst = cSQLLst+" AND M.ID = D.ID "
 		*!*							cSQLLst = cSQLLst+" AND M.[What] = 'Delete'"
@@ -3720,8 +3721,8 @@ DEFINE CLASS frmpurchase_finalize AS formset
 		*!*							cSQLLst = cSQLLst+",D.S_QTY,D.S_P,D.S_PU"
 		*!*							cSQLLst = cSQLLst+",0.0000 AS Units, 0.0000 AS IDDetailUnits, 0.0000 AS IDDetailPerUnit, 0.0000 AS IDDetailTotal"
 		*!*							cSQLLst = cSQLLst+",ID_Detail_Process"
-		*!*							cSQLLst = cSQLLst+" FROM dbo.[AR.BrokerLst_Detail_History D"
-		*!*							cSQLLst = cSQLLst+" ,dbo.[AR.BrokerLst_Master_History M"
+		*!*							cSQLLst = cSQLLst+" FROM dbo.Ar_BrokerLst_Detail_History D"
+		*!*							cSQLLst = cSQLLst+" ,dbo.Ar_BrokerLst_Master_history M"
 		*!*							cSQLLst = cSQLLst+" WHERE M.ID = "+STR(tmpReceiveID.ID_Master)
 		*!*							cSQLLst = cSQLLst+" AND M.ID = D.ID "
 		*!*							cSQLLst = cSQLLst+" AND M.[What] = 'Delete'"

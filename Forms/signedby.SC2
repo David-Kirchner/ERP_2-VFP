@@ -33,6 +33,7 @@ DEFINE CLASS frmsignedby AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Sign Cert"
 		DoCreate = .T.
 		Height = 141

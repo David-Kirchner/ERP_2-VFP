@@ -1,192 +1,150 @@
 '---------------------------------------------------------------------------------------------------
-'	Convert_VFP9_BIN_2_PRG.vbs (VFPx: https://vfpx.codeplex.com/wikipage?title=FoxBin2Prg)
-'	03/01/2014 - Fernando D. Bozzo (fdbozzo@gmail.com - Blog: http://fdbozzo.blogspot.com.es/)
+'	Convert_VFP9_BIN_2_PRG.vbs (SCX/FRX/VCX -> SC2/FR2/VC2)
+'	Launches VFP with -cNULL via foxbin2prg_b2p.prg (no CONFIG.FPW / COM issues)
 '---------------------------------------------------------------------------------------------------
-'	ENGLISH:
-'		- Copy this file in the same directory of FoxBin2prg and create a shortcut
-'		on user's "SendTo" folder
-'		- Now you can select files or directories, right click and "SendTo" FoxBin2prg for batch conversion
-'
-'	ESPA�OL:
-'		- Copie este archivo en el mismo directorio que FoxBin2prg y cree un acceso directo
-'		en la carpeta "SendTo" del usuario
-'		- Ahora puede seleccionar archivos o directorios, pulsar click derecho y "Enviar a" FoxBin2prg para conversiones batch
-'---------------------------------------------------------------------------------------------------
-Const ForReading = 1 
-Dim WSHShell, FileSystemObject, cEndOfProcessMsg, cWithErrorsMsg, cConvCancelByUserMsg, nProcessedFilesCount
-Dim oVFP9, nExitCode, cEXETool, cCMD, nDebug, lcExt, foxbin2prg_cfg, aFiles(), nFile_Count
-Dim i, x, str_cfg, aConf, cErrMsg, cFlagGenerateLog, cFlagDontShowErrMsg, cFlagJustShowCall, cFlagRecompile, cFlagNoTimestamps, cErrFile
-'' 2016.04.05 DH: added next line
-dim fileToProcess
+Dim WSHShell, FileSystemObject, aFiles(), nFile_Count, i, nExitCode, nErrors
+Dim vfpPath, scriptDir, runnerPrg, shellCmd, fileToProcess
+
 Set WSHShell = WScript.CreateObject("WScript.Shell")
 Set FileSystemObject = WScript.CreateObject("Scripting.FileSystemObject")
-Set oVFP9 = CreateObject("VisualFoxPro.Application.9")
-foxbin2prg_cfg	= Replace(WScript.ScriptFullName, WScript.ScriptName, "foxbin2prg.cfg")
+
 nExitCode = 0
-'---------------------------------------------------------------------------------------------------
-'Cumulative Flags:
-' 0=OFF
-' 1=Create FoxBin2prg LOG
-' 2=Only show script calls (for testing without executing)
-' 4=Don't show FoxBin2prg error modal messages
-' 8=Show end of process message
-' 16=Empty timestamps
-nDebug = 1+0+4+8+16
-'---------------------------------------------------------------------------------------------------
+nErrors = 0
+scriptDir = FileSystemObject.GetParentFolderName(WScript.ScriptFullName)
+runnerPrg = scriptDir & "\foxbin2prg_b2p.prg"
 
 If WScript.Arguments.Count = 0 Then
-	'SIN PAR�METROS
-	nExitCode = 1
-	cErrMsg = "nDebug = " & nDebug
-	If GetBit(nDebug, 1) Then
-		cErrMsg	= cErrMsg & Chr(13) & "Bit 0 ON: (1) Create FoxBin2prg LOG"
-	End If
-	If GetBit(nDebug, 2) Then
-		cErrMsg	= cErrMsg & Chr(13) & "Bit 1 ON: (2) Only show script calls"
-	End If
-	If GetBit(nDebug, 3) Then
-		cErrMsg	= cErrMsg & Chr(13) & "Bit 2 ON: (4) Don't show FoxBin2prg error modal messages"
-	End If
-	If GetBit(nDebug, 4) Then
-		cErrMsg	= cErrMsg & Chr(13) & "Bit 3 ON: (8) Show End of Process message"
-	End If
-	If GetBit(nDebug, 5) Then
-		cErrMsg	= cErrMsg & Chr(13) & "Bit 4 ON: (16) Empty timestamps"
-	End If
-	MsgBox cErrMsg, 64, "No parameters - Debug Status"
-Else
-	'CON PAR�METROS
-	cEXETool	= Replace(WScript.ScriptFullName, WScript.ScriptName, "foxbin2prg.prg")
-	If Not FileSystemObject.FileExists(cEXETool) Then
-		cEXETool = Replace(WScript.ScriptFullName, WScript.ScriptName, "foxbin2prg.exe")
-	End If
-	nFile_Count = 0
-	oVFP9.DoCmd( "SET PROCEDURE TO '" & cEXETool & "'" )
-	oVFP9.DoCmd( "PUBLIC oFoxBin2prg" )
-	oVFP9.DoCmd( "oFoxBin2prg = CREATEOBJECT('c_foxbin2prg')" )
-	oVFP9.DoCmd( "oFoxBin2prg.loadProgressbarForm()" )
-	oVFP9.DoCmd( "oFoxBin2prg.o_frm_avance.Caption = '" & FileSystemObject.GetBaseName( WScript.ScriptName ) & " - ' + oFoxBin2Prg.c_loc_process_progress" )
-	
-	For i = 0 To WScript.Arguments.Count-1
-		scanDirs( WScript.Arguments(i) )
-	Next
-
-	cFlagGenerateLog		= "'0'"
-	cFlagDontShowErrMsg		= "'0'"
-	'' 2016.04.05 DH: fixed incorrectly named variable
-	cFlagJustShowCall		= "'0'"
-	cFlagRecompile			= "'1'"
-	'' 2016.04.05 DH: added missing assignment
-	cFlagNoTimestamps		= "'0'"
-
-	If GetBit(nDebug, 1) Then
-		cFlagGenerateLog	= "'1'"
-	End If
-	If GetBit(nDebug, 2) Then
-		cFlagJustShowCall	= "1"
-	End If
-	If GetBit(nDebug, 3) Then
-		cFlagDontShowErrMsg	= "'1'"
-	End If
-	If GetBit(nDebug, 5) Then
-		cFlagNoTimestamps	= "'1'"
-	End If
-	
-	oVFP9.DoCmd( "oFoxBin2prg.o_frm_avance.Caption = '" & FileSystemObject.GetBaseName( WScript.ScriptName ) & " - ' + oFoxBin2Prg.c_loc_process_progress + '  (Press Esc to Cancel)'" )
-
-	For i = 1 To nFile_Count
-		'' 2016.04.05 DH: put double quotes around path in case in contains single quote
-		fileToProcess = Chr(34) + aFiles(i) + Chr(34)
-		oVFP9.DoCmd( "oFoxBin2Prg.updateProgressbar(oFoxBin2Prg.c_loc_processing_file + " & fileToProcess & ", " & i & ", " & nFile_Count & ", 0)" )
-		cFlagRecompile	= Chr(34) + FileSystemObject.GetParentFolderName( aFiles(i) ) + Chr(34)
-		'' 2016.04.05 DH: end of change
-		If nDebug = 0 Or nDebug = 2 Then
-			'' 2016.04.05 DH: use new variable
-			cCMD	= "oFoxBin2prg.execute(" & fileToProcess & ")"
-		Else
-			'' 2016.04.05 DH: use new variable
-			cCMD	= "oFoxBin2prg.execute(" & fileToProcess & ",'BIN2PRG','0','0'," _
-				& cFlagDontShowErrMsg & "," & cFlagGenerateLog & ",'1','','',.F.,''," _
-				& cFlagRecompile & "," & cFlagNoTimestamps & " )"
-		End If
-		
-		If cFlagJustShowCall = "1" Then
-			MsgBox cCMD, 64, "PARAMETERS"
-		Else
-			nExitCode = oVFP9.Eval(cCMD)
-		End If
-		
-		If nExitCode = 1799 Then 'Conversion cancelled by user
-			Exit For
-		End If
-	Next
-
-	If GetBit(nDebug, 4) Then
-		cEndOfProcessMsg		= oVFP9.Eval("_SCREEN.o_FoxBin2Prg_Lang.C_END_OF_PROCESS_LOC")
-		cWithErrorsMsg			= oVFP9.Eval("_SCREEN.o_FoxBin2Prg_Lang.C_WITH_ERRORS_LOC")
-		cConvCancelByUserMsg	= oVFP9.Eval("_SCREEN.o_FoxBin2Prg_Lang.C_CONVERSION_CANCELLED_BY_USER_LOC")
-		nProcessedFilesCount	= oVFP9.Eval("oFoxBin2prg.n_ProcessedFilesCount")
-
-		If nExitCode = 1799 Then
-			MsgBox cConvCancelByUserMsg & "! [p:" & nProcessedFilesCount & "]", 48+4096, WScript.ScriptName & " (" & oVFP9.Eval("oFoxBin2prg.c_FB2PRG_EXE_Version") & ")"
-			oVFP9.DoCmd("oFoxBin2prg.writeErrorLog_Flush()")
-			cErrFile = oVFP9.Eval("oFoxBin2prg.c_ErrorLogFile")
-			WSHShell.run cErrFile,3
-
-		ElseIf oVFP9.Eval("oFoxBin2prg.l_Error") Then
-			MsgBox cEndOfProcessMsg & "! (" & cWithErrorsMsg & ") [p:" & nProcessedFilesCount & "]", 48+4096, WScript.ScriptName & " (" & oVFP9.Eval("oFoxBin2prg.c_FB2PRG_EXE_Version") & ")"
-			oVFP9.DoCmd("oFoxBin2prg.writeErrorLog_Flush()")
-			cErrFile = oVFP9.Eval("oFoxBin2prg.c_ErrorLogFile")
-			WSHShell.run cErrFile,3
-		Else
-			MsgBox cEndOfProcessMsg & "! [p:" & nProcessedFilesCount & "]", 64+4096, WScript.ScriptName & " (" & oVFP9.Eval("oFoxBin2prg.c_FB2PRG_EXE_Version") & ")"
-		End If
-	End If
-
-	oVFP9.DoCmd( "oFoxBin2prg = NULL" )
-	oVFP9.DoCmd( "CLEAR ALL" )
-	Set oVFP9 = Nothing
+	MsgBox "No files or folders selected!", 48, "FoxBin2Prg BIN2PRG"
+	WScript.Quit 1
 End If
 
-WScript.Quit nExitCode
+If Not FileSystemObject.FileExists(scriptDir & "\foxbin2prg.prg") And Not FileSystemObject.FileExists(scriptDir & "\foxbin2prg.exe") Then
+	MsgBox "FoxBin2Prg not found in:" & vbCrLf & scriptDir, 16, "FoxBin2Prg BIN2PRG"
+	WScript.Quit 1
+End If
+
+If Not FileSystemObject.FileExists(runnerPrg) Then
+	MsgBox "Missing runner:" & vbCrLf & runnerPrg, 16, "FoxBin2Prg BIN2PRG"
+	WScript.Quit 1
+End If
+
+vfpPath = FindVfpExe()
+If vfpPath = "" Then
+	MsgBox "Visual FoxPro 9 (vfp9.exe) not found." & vbCrLf & vbCrLf & _
+		"Install VFP9 or set path in BIN2PRG.bat / this script.", 16, "FoxBin2Prg BIN2PRG"
+	WScript.Quit 1
+End If
+
+nFile_Count = 0
+For i = 0 To WScript.Arguments.Count - 1
+	scanDirs WScript.Arguments(i)
+Next
+
+If nFile_Count = 0 Then
+	MsgBox "No files to convert.", 48, "FoxBin2Prg BIN2PRG"
+	WScript.Quit 1
+End If
+
+For i = 1 To nFile_Count
+	fileToProcess = aFiles(i)
+	If Not RunOneFile(fileToProcess) Then
+		nErrors = nErrors + 1
+	End If
+Next
+
+If nErrors > 0 Then
+	Notify "BIN2PRG finished with " & nErrors & " error(s) out of " & nFile_Count & " file(s).", True
+	WScript.Quit 1
+Else
+	Notify "BIN2PRG finished OK - " & nFile_Count & " file(s).", False
+	WScript.Quit 0
+End If
 
 
-Private Sub scanDirs( tcArgument )
-	Dim omFolder, oFolder
-	If FileSystemObject.FolderExists( tcArgument ) Then
-		'-- Es un directorio
-		oVFP9.DoCmd( "oFoxBin2Prg.updateProgressbar('Scanning file and directory information on " & tcArgument & "...', 0, 0, 0)" )
-		Set omFolder = FileSystemObject.GetFolder( tcArgument )
-		For Each oFile IN omFolder.Files
-			evaluateFile( oFile.Path )
+Function RunOneFile(tcFile)
+	Dim errFile, ext
+	RunOneFile = False
+	ext = LCase(FileSystemObject.GetExtensionName(tcFile))
+	errFile = FileSystemObject.GetParentFolderName(tcFile) & "\" & FileSystemObject.GetBaseName(tcFile) & "." & ext & ".ERR"
+
+	If FileSystemObject.FileExists(errFile) Then
+		On Error Resume Next
+		FileSystemObject.DeleteFile errFile, True
+		On Error Goto 0
+	End If
+
+	WSHShell.CurrentDirectory = scriptDir
+	shellCmd = Chr(34) & vfpPath & Chr(34) & " -cNULL " & Chr(34) & runnerPrg & Chr(34) & " " & Chr(34) & tcFile & Chr(34)
+
+	nExitCode = WSHShell.Run(shellCmd, 1, True)
+
+	If FileSystemObject.FileExists(errFile) Then
+		Notify "ERROR: " & tcFile & " - see " & errFile, True
+		Exit Function
+	End If
+
+	If nExitCode <> 0 Then
+		Notify "ERROR: VFP exit code " & nExitCode & " for " & tcFile, True
+		Exit Function
+	End If
+
+	RunOneFile = True
+End Function
+
+
+Sub Notify(tcMessage, tlError)
+	On Error Resume Next
+	WScript.StdOut.WriteLine tcMessage
+	If Err.Number <> 0 Then
+		Err.Clear
+		MsgBox tcMessage, IIf(tlError, 48, 64), "FoxBin2Prg BIN2PRG"
+	End If
+	On Error Goto 0
+End Sub
+
+
+Function IIf(Condition, TruePart, FalsePart)
+	If Condition Then IIf = TruePart Else IIf = FalsePart
+End Function
+
+
+Function FindVfpExe()
+	Dim candidates, c
+	candidates = Array( _
+		"C:\Program Files (x86)\Microsoft Visual FoxPro 9\vfp9.exe", _
+		"C:\Program Files\Microsoft Visual FoxPro 9\vfp9.exe" _
+	)
+	For Each c In candidates
+		If FileSystemObject.FileExists(c) Then
+			FindVfpExe = c
+			Exit Function
+		End If
+	Next
+	FindVfpExe = ""
+End Function
+
+
+Private Sub scanDirs(tcArgument)
+	Dim omFolder, oFile, oFolder, ext
+	If FileSystemObject.FolderExists(tcArgument) Then
+		Set omFolder = FileSystemObject.GetFolder(tcArgument)
+		For Each oFile In omFolder.Files
+			ext = LCase(FileSystemObject.GetExtensionName(oFile.Path))
+			If ext = "scx" Or ext = "frx" Or ext = "vcx" Or ext = "mnx" Or ext = "lbx" Or ext = "pjx" Then
+				evaluateFile oFile.Path
+			End If
 		Next
-		For Each oFolder IN omFolder.SubFolders
-			scanDirs( oFolder.Path )
+		For Each oFolder In omFolder.SubFolders
+			scanDirs oFolder.Path
 		Next
 	Else
-		'-- Es un archivo
-		evaluateFile( tcArgument )
+		evaluateFile tcArgument
 	End If
 End Sub
 
 
-Private Sub evaluateFile( tcFile )
-	'lcExt = UCase( FileSystemObject.GetExtensionName( tcFile ) )
-	'oVFP9.DoCmd( "oFoxBin2prg.evaluateConfiguration( '1', '1', '', '', '', '', '', '', '" & tcFile & "' )" )
-	
-	'PROCEDURE evaluateConfiguration
-	'	LPARAMETERS tcDontShowProgress, tcDontShowErrors, tcFlagNoTimestamps, tcDebug, tcRecompile, tcExtraBackupLevels ;
-	'		, tcClearUniqueID, tcOptimizeByFilestamp, tc_InputFile
-	'If oVFP9.Eval("oFoxBin2prg.hasSupport_Bin2Prg('" & lcExt & "')") Then
-		nFile_Count = nFile_Count + 1
-		ReDim Preserve aFiles(nFile_Count)
-		aFiles(nFile_Count) = tcFile
-	'End If
+Private Sub evaluateFile(tcFile)
+	nFile_Count = nFile_Count + 1
+	ReDim Preserve aFiles(nFile_Count)
+	aFiles(nFile_Count) = tcFile
 End Sub
-
-
-Function GetBit(lngValue, BitNum)
-     Dim BitMask
-     If BitNum < 32 Then BitMask = 2 ^ (BitNum - 1) Else BitMask = "&H80000000"
-     GetBit = CBool(lngValue AND BitMask)
-End Function

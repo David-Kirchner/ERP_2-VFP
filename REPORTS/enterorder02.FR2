@@ -483,7 +483,7 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[IIF(SalesQuote.Cert=1,"Mill Test Results Only",IIF(SalesQuote.Cert=2,"LAB Certs OK" ,IIF(SalesQuote.Cert=3,"HPA Certs",IIF(SalesQuote.Cert=4,"C of C",IIF(SalesQuote.Cert=5,"OTHER",IIF(SalesQuote.Cert=6,"NO CERT","")))))) +SPACE(100)]]>
+	<expr><![CDATA[IIF(SalesQuote.Cert=1,"Mill Test Results Only",IIF(SalesQuote.Cert=2,"LAB Certs OK" ,IIF(SalesQuote.Cert=3,"Company Certs",IIF(SalesQuote.Cert=4,"C of C",IIF(SalesQuote.Cert=5,"OTHER",IIF(SalesQuote.Cert=6,"NO CERT","")))))) +SPACE(100)]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[ ]]>
 	<user><![CDATA[]]>
@@ -543,7 +543,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["OrderSpecs"]]>
+	<expr><![CDATA["Order
+Specs"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -555,7 +556,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Sales Order"]]>
+	<expr><![CDATA["Sales 
+Order"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -567,7 +569,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Item #/Total"]]>
+	<expr><![CDATA["Item #
+/Total"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -579,7 +582,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Description/Services"]]>
+	<expr><![CDATA["Description
+/Services"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -591,7 +595,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["No. of Pieces"]]>
+	<expr><![CDATA["No. of 
+Pieces"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -627,7 +632,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Ship Duedate range"]]>
+	<expr><![CDATA["Ship Due
+date range"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -639,7 +645,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["DateShipped"]]>
+	<expr><![CDATA["Date
+Shipped"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -687,7 +694,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPAPO1"]]>
+	<expr><![CDATA["Company
+PO1"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -747,7 +755,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPAPO2"]]>
+	<expr><![CDATA["Company
+PO2"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -891,7 +900,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[" InspStatus"]]>
+	<expr><![CDATA[" Insp
+Status"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1143,7 +1153,9 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Final Inspection: I certify that materialsprovided met the stated customer requirementsand specifications posted on this page."]]>
+	<expr><![CDATA["Final Inspection: I certify that materials
+provided met the stated customer requirements
+and specifications posted on this page."]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -2127,7 +2139,8 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["SpecialInstruction"]]>
+	<expr><![CDATA["Special
+Instruction"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

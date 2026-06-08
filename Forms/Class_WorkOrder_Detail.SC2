@@ -95,6 +95,7 @@ DEFINE CLASS frmwod_class AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Production WO Detail Information."
 		Closable = .F.
 		ControlBox = .F.

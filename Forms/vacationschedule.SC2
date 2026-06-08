@@ -69,6 +69,7 @@ DEFINE CLASS frmvacationsched AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Employee Vaction Time"
 		DataSession = 2
 		DoCreate = .T.
@@ -176,7 +177,7 @@ DEFINE CLASS frmvacationsched AS form
 		Height = 48, ;
 		Left = 53, ;
 		Name = "cmdMonthLess", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		Top = 216, ;
 		Width = 48
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -186,7 +187,7 @@ DEFINE CLASS frmvacationsched AS form
 		Height = 48, ;
 		Left = 264, ;
 		Name = "cmdMonthMore", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		Top = 216, ;
 		Width = 48
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -214,7 +215,7 @@ DEFINE CLASS frmvacationsched AS form
 		Height = 48, ;
 		Left = 84, ;
 		Name = "cmdYearLess", ;
-		Picture = ..\graphics\arw01lt.ico, ;
+		Picture = GRAPHICS\arw01lt.ico, ;
 		Top = 0, ;
 		Width = 48
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -224,7 +225,7 @@ DEFINE CLASS frmvacationsched AS form
 		Height = 48, ;
 		Left = 233, ;
 		Name = "cmdYearMore", ;
-		Picture = ..\graphics\arw01rt.ico, ;
+		Picture = GRAPHICS\arw01rt.ico, ;
 		Top = 0, ;
 		Width = 48
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -544,6 +545,9 @@ DEFINE CLASS frmvacationsched AS form
 		
 		ThisForm.SetCalendar()
 		*ThisForm.cmbMonth.Value = CMONTH(gDate)
+		
+		ThisForm.cmdPrintEmp.Visible = .F.
+		ThisForm.cmdPrintMonth.Visible = .F.
 	ENDPROC
 
 	PROCEDURE Load
@@ -998,29 +1002,9 @@ DEFINE CLASS frmvacationsched AS form
 	ENDPROC
 
 	PROCEDURE cmdPrintEmp.Click
-		PRIVATE lcEmployee
-		
-		IF NOT USED('Vacation')
-			USE Vacation IN 0
-		ENDIF
-		SELECT Vacation
-		
-		lcEmployee = ThisForm.cmbAllEmployees.Value
-		IF IsEmployee(lcEmployee)
-			REPORT FORM Reports\Vacation-AllEmployees FOR Vacation.DispName = lcEmployee AND YEAR(vacation.vacadate) = gYear PREVIEW
-			*TO PRINTER PROMPT 
-		ENDIF
 	ENDPROC
 
 	PROCEDURE cmdPrintMonth.Click
-		IF NOT USED('Vacation')
-			USE Vacation IN 0
-		ENDIF
-		SELECT Vacation
-		
-		REPORT FORM Reports\Vacation-AllEmployees FOR MONTH(Vacation.vacadate) = gMonth AND YEAR(vacation.vacadate) = gYear PREVIEW
-		*TO PRINTER PROMPT 
-		
 	ENDPROC
 
 	PROCEDURE cmdYearLess.Click

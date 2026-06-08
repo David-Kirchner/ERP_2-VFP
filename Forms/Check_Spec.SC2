@@ -46,6 +46,7 @@ DEFINE CLASS frmcheckspec AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 0,0,255
 		Caption = "Check Spec."

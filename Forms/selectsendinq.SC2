@@ -88,6 +88,7 @@ DEFINE CLASS frmsendinqsources AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Send Inquire using Sources data."
 		creturnvalue = ""
 		DataSession = 2

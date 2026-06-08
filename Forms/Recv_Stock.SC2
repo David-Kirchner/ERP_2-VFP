@@ -179,6 +179,7 @@ DEFINE CLASS frmrecv_stock AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Receive Stock "
 		cc = ''
@@ -2881,7 +2882,7 @@ DEFINE CLASS frmrecv_stock AS form
 		
 				cSQL = "SELECT ID,Alloy,Form,CC,CL,Size,Cond,MWeight,Specs,Heat,Lot,Paid,PO_item,PoDueDate,Mill,StkDate,History,Num,POStatus,BrandName,FROM_ID,Melt"
 				cSQL = cSQL + ",MillTrace "
-				cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History "
+				cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History "
 				cSQL = cSQL + " WHERE ID = "+STR(nID_Master )
 				
 						
@@ -3064,8 +3065,8 @@ DEFINE CLASS frmrecv_stock AS form
 		SELECT 0
 		
 		cSQL = "SELECT TOP 1 D.* "
-		cSQL = cSQL + " FROM dbo.[AR.Stocklst_Process_History ph "
-		cSQL = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History D on D.ID_Detail = ph.ID_Detail "
+		cSQL = cSQL + " FROM dbo.Ar_StockLst_Process_History ph "
+		cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D on D.ID_Detail = ph.ID_Detail "
 		cSQL = cSQL + " 	AND CONVERT (CHAR(17), D.[WHEN]) = CONVERT (CHAR(17), ph.[WHEN]) "
 		cSQL = cSQL + " WHERE ph.[What] = 'DELETE' "
 		cSQL = cSQL + " AND ( ph.Process_ID = 'SELECTED' OR ph.Process_ID='PARTSELECT' )"
@@ -3476,17 +3477,17 @@ DEFINE CLASS frmrecv_stock AS form
 			cSQL = cSQL + ",PoDueDate,Mill,StkDate,History,Num,POStatus,BrandName,FROM_ID,Melt"
 			cSQL = cSQL + ",MillTrace "
 		*	IF LEN(cTBL_RMA)=0
-		*		cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History WITH(NOLOCk) "
+		*		cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCk) "
 		*	ELSE
 				DO CASE
 				CASE cTBL_RMA = "S"
-					cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History WITH(NOLOCk) "
+					cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCk) "
 				CASE cTBL_RMA = "B"
-					cSQL = cSQL + " FROM dbo.[AR.Brokerlst_Master_History WITH(NOLOCk) "
+					cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCk) "
 				CASE cTBL_RMA = "W"
-					cSQL = cSQL + " FROM dbo.[AR.WIPlst_Master_History WITH(NOLOCk) "
+					cSQL = cSQL + " FROM dbo.Ar_WIPLst_Master_History WITH(NOLOCk) "
 				OTHERWISE			
-					cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History WITH(NOLOCk) "
+					cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCk) "
 				ENDCASE			
 		*	ENDIF
 		
@@ -3606,7 +3607,7 @@ DEFINE CLASS frmrecv_stock AS form
 				cSQL = cSQL + " ,[Descript],[Length],[Location],[FloorStatus],[Class],[RandLen],[S_P],[Prime]"
 				cSQL = cSQL + " , TBL = 'SH' "
 				cSQL = cSQL + " ,ID_Detail_Process, ReceivingID "
-				cSQL = cSQL + " FROM dbo.[AR.Stocklst_Detail_History WITH(NOLOCK) "
+				cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) "
 				cSQL = cSQL + " WHERE ID_Detail = "+ STR(nUseID_Detail)
 				cSQL = cSQL + " ORDER BY ID_Detail_Process DESC"
 			ELSE
@@ -3626,7 +3627,7 @@ DEFINE CLASS frmrecv_stock AS form
 					cSQL = cSQL + " ,[Descript],[Length],[Location],[FloorStatus],[Class],[RandLen],[S_P],[Prime] "
 					cSQL = cSQL + " , TBL = 'SH' "
 					cSQL = cSQL + " ,ID_Detail_Process, ReceivingID "
-					cSQL = cSQL + " FROM dbo.[AR.Stocklst_Detail_History WITH(NOLOCK) "
+					cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) "
 					cSQL = cSQL + " WHERE ID_Detail = "+STR(nUseID_Detail)
 					cSQL = cSQL + " ORDER BY ID_Detail_Process DESC"
 				CASE cTBL_RMA = "B"
@@ -3643,7 +3644,7 @@ DEFINE CLASS frmrecv_stock AS form
 					cSQL = cSQL + " ,[Descript],[Length],[Location],[FloorStatus],[Class],[RandLen],[S_P],[Prime] "
 					cSQL = cSQL + " , TBL = 'BH' "
 					cSQL = cSQL + " ,ID_Detail_Process, ReceivingID "
-					cSQL = cSQL + " FROM dbo.[AR.Brokerlst_Detail_History WITH(NOLOCK) "
+					cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) "
 					cSQL = cSQL + " WHERE ID_Detail = "+STR(nUseID_Detail)
 					cSQL = cSQL + " ORDER BY ID_Detail_Process DESC"
 				CASE cTBL_RMA = "W"
@@ -3660,7 +3661,7 @@ DEFINE CLASS frmrecv_stock AS form
 					cSQL = cSQL + " ,[Descript],[Length],[Location],[FloorStatus],[Class],[RandLen],[S_P],[Prime] "
 					cSQL = cSQL + " , TBL = 'WH' "
 					cSQL = cSQL + " ,ID_Detail_Process, ReceivingID "
-					cSQL = cSQL + " FROM dbo.[AR.WIPlst_Detail_History WITH(NOLOCK) "
+					cSQL = cSQL + " FROM dbo.Ar_WIPlst_Detail_History WITH(NOLOCK) "
 					cSQL = cSQL + " WHERE ID_Detail = "+STR(nUseID_Detail)
 					cSQL = cSQL + " ORDER BY ID_Detail_Process DESC"	
 				OTHERWISE
@@ -3677,7 +3678,7 @@ DEFINE CLASS frmrecv_stock AS form
 					cSQL = cSQL + " ,[Descript],[Length],[Location],[FloorStatus],[Class],[RandLen],[S_P],[Prime] "
 					cSQL = cSQL + " , TBL = 'SH' "
 					cSQL = cSQL + " ,ID_Detail_Process, ReceivingID "
-					cSQL = cSQL + " FROM dbo.[AR.Stocklst_Detail_History WITH(NOLOCK) "
+					cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) "
 					cSQL = cSQL + " WHERE ID_Detail = "+STR(nUseID_Detail)
 					cSQL = cSQL + " ORDER BY ID_Detail_Process DESC"
 				ENDCASE
@@ -4565,8 +4566,8 @@ DEFINE CLASS frmrecv_stock AS form
 		cHeat = ALLTRIM(ThisForm.Heat)
 		
 		IF NOT EMPTY(cHeat)
-			cSQL = "SELECT * FROM dbo.[AR.Stocklst_Master_History M "
-			cSQL  = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History D "
+			cSQL = "SELECT * FROM dbo.Ar_Stocklst_Master_History M "
+			cSQL  = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D "
 			cSQL  = cSQL + " ON D.ID = M.ID "
 			cSQL  = cSQL + " WHERE m.Heat = '"+cHeat+"'"
 		*	cSQL  = cSQL + " AND M.What = 'DELETE'"
@@ -4578,8 +4579,8 @@ DEFINE CLASS frmrecv_stock AS form
 			ENDIF
 			
 			cSQL  = cSQL + " UNION "
-			cSQL  = cSQL + " SELECT * FROM dbo.[AR.Brokerlst_Master_History M "
-			cSQL  = cSQL + " INNER JOIN dbo.[AR.Stocklst_Detail_History D "
+			cSQL  = cSQL + " SELECT * FROM dbo.Ar_BrokerLst_Master_history M "
+			cSQL  = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History D "
 			cSQL  = cSQL + " ON D.ID = M.ID "
 			cSQL  = cSQL + " WHERE m.Heat = '"+cHeat+"'"
 		*	cSQL  = cSQL + " AND M.What = 'DELETE'"
@@ -5237,15 +5238,15 @@ DEFINE CLASS frmrecv_stock AS form
 										*Not found here either! - Revert to Orig
 										cMasterTbl = TableName_TBL(ThisForm.txtTableName1.Value)
 										
-										*Check to see if in history *dbo.[AR.StockLstLst_Detail_history dbo.[AR.BrokerLst_Detail_history
+										*Check to see if in history *dbo.Ar_Stocklst_Detail_History dbo.Ar_BrokerLst_Detail_History
 										cSQL = "SELECT COUNT(*) AS Cnt FROM "
 										DO CASE
 										CASE UPPER(LEFT(ThisForm.txtTableName1.Value,1)) = "S"
-											cSQL = cSQL + " dbo.[AR.StockLst_Detail_History "
+											cSQL = cSQL + " dbo.Ar_Stocklst_Detail_History "
 										CASE UPPER(LEFT(ThisForm.txtTableName1.Value,1)) = "B"
-											cSQL = cSQL + " dbo.[AR.BrokerLst_Detail_History "
+											cSQL = cSQL + " dbo.Ar_BrokerLst_Detail_History "
 										CASE UPPER(LEFT(ThisForm.txtTableName1.Value,1)) = "W"
-											cSQL = cSQL + " dbo.[AR.WIPLst_Detail_History "
+											cSQL = cSQL + " dbo.Ar_WIPlst_Detail_History "
 										ENDCASE
 										cSQL = cSQL + " WHERE ReceivingID = "+STR(pnReceivingID)
 										cSQL = cSQL + " AND [WHAT] = 'DELETE'"
@@ -5565,7 +5566,7 @@ DEFINE CLASS frmrecv_stock AS form
 						cSQL = cSQL + " WHERE ID = "+STR(nID_Master)
 						cSQL = cSQL + "UNION "
 						cSQL = cSQL + "SELECT TOP 1 ID_Detail, TBL = 'SH' "
-						cSQL = cSQL + "FROM dbo.[AR.Stocklst_Detail_History WITH(NOLOCK) "
+						cSQL = cSQL + "FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) "
 						cSQL = cSQL + " WHERE ID = "+STR(nID_Master)
 						cSQL = cSQL + " AND [What] = 'AFTEREDIT '"
 						cSQL = cSQL + " AND ReceivingID = "+STR(pnReceivingID)
@@ -5649,7 +5650,7 @@ DEFINE CLASS frmrecv_stock AS form
 					IF lUsed_Detail_History 
 						
 						cSQL = "SELECT TOP 1 * "
-						cSQL = cSQL + "FROM dbo.[AR.Stocklst_Detail_History WITH(NOLOCK) "
+						cSQL = cSQL + "FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) "
 						cSQL = cSQL + " WHERE ID = "+STR(nID_Master)
 						cSQL = cSQL + " AND [What] = 'AFTEREDIT '"
 						cSQL = cSQL + " AND ReceivingID = "+STR(pnReceivingID)
@@ -7387,11 +7388,11 @@ DEFINE CLASS frmrecv_stock AS form
 			cSQL = "SELECT COUNT(*) AS CNTD FROM "
 			DO CASE
 			CASE ThisForm.cTBL = "S"
-				cSQL = cSQL + " dbo.[AR.StockLst_Detail_History  WITH(NOLOCK) "
+				cSQL = cSQL + " dbo.Ar_Stocklst_Detail_History  WITH(NOLOCK) "
 			CASE ThisForm.cTBL = "B"
-				cSQL = cSQL + "  dbo.[AR.BrokerLst_Detail_History  WITH(NOLOCK) "
+				cSQL = cSQL + "  dbo.Ar_BrokerLst_Detail_History  WITH(NOLOCK) "
 			CASE ThisForm.cTBL = "W"
-				cSQL = cSQL + "  dbo.[AR.WIPLst_Detail_History  WITH(NOLOCK) "
+				cSQL = cSQL + "  dbo.Ar_WIPlst_Detail_History  WITH(NOLOCK) "
 			ENDCASE
 			cSQL = cSQL + " WHERE ReceivingID = "+ALLTRIM(STR(nReceivingID))
 			*cSQL = cSQL + " AND [WHAT]='DELETE'"
@@ -7781,11 +7782,11 @@ DEFINE CLASS frmrecv_stock AS form
 			cSQL = cSQL + " SELECT DISTINCT ProcessValue "
 			DO CASE
 			CASE ThisForm.cTBL = "S"
-				cSQL = cSQL +" FROM dbo.[AR.StockLst_Detail_History  WITH(NOLOCK) "
+				cSQL = cSQL +" FROM dbo.Ar_Stocklst_Detail_History  WITH(NOLOCK) "
 			CASE ThisForm.cTBL = "B"
-				cSQL = cSQL +" FROM dbo.[AR.BrokerLst_Detail_History  WITH(NOLOCK) "
+				cSQL = cSQL +" FROM dbo.Ar_BrokerLst_Detail_History  WITH(NOLOCK) "
 			CASE ThisForm.cTBL = "W"
-				cSQL = cSQL +" FROM dbo.[AR.WIPLst_Detail_History  WITH(NOLOCK) "
+				cSQL = cSQL +" FROM dbo.Ar_WIPlst_Detail_History  WITH(NOLOCK) "
 			ENDCASE
 			cSQL = cSQL+ " WHERE ReceivingID = "+ALLTRIM(STR(nReceivingID))
 			cSQL = cSQL + " AND [WHAT]='BEFOREEDIT'"

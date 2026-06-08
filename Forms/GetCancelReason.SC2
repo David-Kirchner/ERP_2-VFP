@@ -30,6 +30,7 @@ DEFINE CLASS frmcancelcomment AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Enter cancel  reason."
 		Closable = .F.

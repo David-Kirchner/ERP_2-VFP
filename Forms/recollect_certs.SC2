@@ -74,6 +74,7 @@ DEFINE CLASS frmrecollect AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cunsalloydrw = ''
 		DataSession = 2

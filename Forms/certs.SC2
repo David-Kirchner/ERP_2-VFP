@@ -473,6 +473,7 @@ DEFINE CLASS hpacert AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		csearchheat = <fb2p_value>''&#13;</fb2p_value>
 		DataSession = 2

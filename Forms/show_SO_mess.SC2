@@ -48,6 +48,7 @@ DEFINE CLASS frmshow_so_mess AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 128,128,255
 		Caption = "Show SO Messages"

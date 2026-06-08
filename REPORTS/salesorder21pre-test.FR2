@@ -736,7 +736,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPAlloy"]]>
+	<expr><![CDATA[CompanyReport_LegalName()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1603,7 +1603,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["please email your resale certificate to RESALECERTS@hpalloys.com"]]>
+	<expr><![CDATA["please email your resale certificate to " + CompanyReport_ResaleCertEmail()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

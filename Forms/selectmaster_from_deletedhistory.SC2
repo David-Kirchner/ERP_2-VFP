@@ -33,6 +33,7 @@ DEFINE CLASS frmselectfromdeletedmaster AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Deleteted StockLst Master records."
 		closeconn = .F.
 		DataSession = 1

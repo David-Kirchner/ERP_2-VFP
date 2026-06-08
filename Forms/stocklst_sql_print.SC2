@@ -97,6 +97,7 @@ DEFINE CLASS frmstocklst_sql_print AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "StockLst Print"
 		DataSession = 2
 		DoCreate = .T.

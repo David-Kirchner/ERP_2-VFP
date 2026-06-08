@@ -80,6 +80,7 @@ DEFINE CLASS frmreport_m_sales AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Sales Total for Month"
 		csalesp = ''
 		DataSession = 2
@@ -1451,10 +1452,10 @@ DEFINE CLASS frmreport_m_sales AS form
 	PROCEDURE pgfAll.pgSearch.cmbYear.Init
 		this.clear
 		
-		LOCAL aYEARS, nYEARS
-		DIMENSION aYEARS[1]
+		LOCAL aYEARS[1], i, nYearVal, nDefaultYear, cSQL, nSQLEXEC
 		
-		*
+		nDefaultYear = YEAR(DATE())
+		
 		IF USED('Year_Sales')
 			USE IN Year_Sales
 		ENDIF
@@ -1486,18 +1487,24 @@ DEFINE CLASS frmreport_m_sales AS form
 		IF nSQLEXEC < 0
 			SQLExecError(cSQL, ThisForm.nConnHandle, nSQLEXEC, 'Year_Sales')
 		ENDIF
-		IF USED('Year_Sales')
+		IF USED('Year_Sales') AND RECCOUNT('Year_Sales') > 0
 			SELECT YearShipped FROM Year_Sales INTO ARRAY aYEARS
-			FOR EACH m.nYEARS IN aYEARS
-				IF !EMPTY(m.nYEARS)
-						this.additem(ALLTRIM(STR(m.nYEARS)))
+			FOR i = 1 TO ALEN(aYEARS, 1)
+				IF ALEN(aYEARS, 2) > 0
+					nYearVal = aYEARS[i, 1]
+				ELSE
+					nYearVal = aYEARS[i]
+				ENDIF
+				IF TYPE("nYearVal") = "N" AND !EMPTY(nYearVal)
+					this.additem(ALLTRIM(STR(nYearVal)))
+					nDefaultYear = nYearVal
 				ENDIF
 			ENDFOR
 			USE IN Year_Sales
 		ENDIF
 		
 		This.AddItem("Not")
-		THIS.VALUE = ALLTRIM(STR(m.nYEARS))
+		THIS.VALUE = ALLTRIM(STR(nDefaultYear))
 		
 		
 	ENDPROC

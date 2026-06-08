@@ -269,6 +269,7 @@ DEFINE CLASS frmstocklst_detail_cost AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 240,240,240
 		Caption = "StockLst Detail Cost"
@@ -294,7 +295,7 @@ DEFINE CLASS frmstocklst_detail_cost AS form
 		Height = 30, ;
 		Left = 89, ;
 		Name = "cmdPrint", ;
-		Picture = ..\graphics\printer_ico.gif, ;
+		Picture = GRAPHICS\printer_ico.gif, ;
 		ToolTipText = "Print", ;
 		Top = 468, ;
 		Visible = .F., ;
@@ -3568,18 +3569,18 @@ DEFINE CLASS frmstocklst_detail_cost AS form
 		cSQL = cSQL + " ,CAST(MH.[stkdate] AS DATE) AS stkdate,MH.ID "
 		DO CASE
 		CASE ThisForm.cTBL = "S"
-			cSQL = cSQL + " FROM dbo.[AR.StockLst_Master_History MH "
-			cSQL = cSQL + " INNER JOIN dbo.[AR.StockLst_Detail_History "
+			cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History MH "
+			cSQL = cSQL + " INNER JOIN dbo.Ar_Stocklst_Detail_History "
 			cSQL = cSQL + " ON MH.ID = StockLst_Detail_History.ID "
 			cSQL = cSQL + " WHERE StockLst_Detail_History.ID_Detail ="+STR(nID_Detail)
 		CASE ThisForm.cTBL = "B"
-			cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Master_History MH "
-			cSQL = cSQL + " INNER JOIN dbo.[AR.BrokerLst_Detail_History "
+			cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Master_history MH "
+			cSQL = cSQL + " INNER JOIN dbo.Ar_BrokerLst_Detail_History "
 			cSQL = cSQL + " ON MH.ID = BrokerLst_Detail_History.ID "
 			cSQL = cSQL + " WHERE BrokerLst_Detail_History.ID_Detail ="+STR(nID_Detail)
 		CASE ThisForm.cTBL = "W"
-			cSQL = cSQL + " FROM dbo.[AR.WIPLst_Master_History MH "
-			cSQL = cSQL + " INNER JOIN dbo.[AR.WIPLst_Detail_History "
+			cSQL = cSQL + " FROM dbo.Ar_WIPLst_Master_History MH "
+			cSQL = cSQL + " INNER JOIN dbo.Ar_WIPlst_Detail_History "
 			cSQL = cSQL + " ON MH.ID = WIPLst_Detail_History.ID "
 			cSQL = cSQL + " WHERE WIPLst_Detail_History.ID_Detail ="+STR(nID_Detail)
 		ENDCASE
@@ -3835,14 +3836,14 @@ DEFINE CLASS frmstocklst_detail_cost AS form
 		*!*	cSQL = cSQL+"length, weight, costvalue, descript, location, floorstatus, "
 		*!*	cSQL = cSQL+"[class], RandLen, unit, [id], id_detail, ID_Detail_History "
 		*!*	*IF ThisForm.ogTBL.Value=1  &&Does not Exists in LOAD
-		*!*		cSQL = cSQL+" FROM dbo.[AR.StockLst_Detail_History "
+		*!*		cSQL = cSQL+" FROM dbo.Ar_Stocklst_Detail_History "
 		*!*	*ELSE
-		*!*	*	cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Detail_History "
+		*!*	*	cSQL = cSQL+" FROM dbo.Ar_BrokerLst_Detail_History "
 		*!*	*ENDIF
 		*!*	cSQL = cSQL+" WHERE 0!=0"
 		*!*	cSQL = cSQL+" ORDER BY ID_Detail_Process DESC, [When] DESC"
 		*!*		
-		*!*	*cSQL = "SELECT * FROM dbo.[AR.StockLst_Detail_History WHERE 0!=0"
+		*!*	*cSQL = "SELECT * FROM dbo.Ar_Stocklst_Detail_History WHERE 0!=0"
 		*!*	IF USED("StockLst_Detail")
 		*!*		SELECT StockLst_Detail
 		*!*	ELSE
@@ -3877,9 +3878,9 @@ DEFINE CLASS frmstocklst_detail_cost AS form
 		*!*	cSQL = cSQL+"[Validated],[Valid_When],"
 		*!*	cSQL = cSQL+" [ID_Process_History] "
 		*!*	*IF ThisForm.ogTBL.Value=1
-		*!*		cSQL = cSQL+" FROM dbo.[AR.StockLst_Process_History "
+		*!*		cSQL = cSQL+" FROM dbo.Ar_StockLst_Process_History "
 		*!*	*ELSE
-		*!*	*	cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Process_History "
+		*!*	*	cSQL = cSQL+" FROM dbo.Ar_BrokerLst_Process_History "
 		*!*	*ENDIF
 		*!*	cSQL = cSQL+" WHERE 0!=0 ORDER BY [When] DESC"
 		*!*	IF USED("StockLst_History")

@@ -327,6 +327,7 @@ DEFINE CLASS receipts AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		Name = "Receipts"

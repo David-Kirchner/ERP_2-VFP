@@ -311,7 +311,7 @@ SELECT @nCount = COUNT(*) FROM dbo.BrokerLst_Master WHERE ID = @ID
 IF @nCount > 0
 	SELECT @Form = Form FROM dbo.BrokerLst_Master WHERE ID = @ID
 ELSE
-	SELECT @Form = Form FROM dbo.Ar.BrokerLst_Master_History WHERE ID = @ID
+	SELECT @Form = Form FROM dbo.Ar_BrokerLst_Master_History WHERE ID = @ID
 
 RETURN @Form 
 END
@@ -9389,21 +9389,21 @@ IF @cTBL = ''S''
 	begin
 	SELECT @nReturnPrice=ISNULL(S_P,0) FROM dbo.StockLst_Detail WHERE ID_Detail = @nID_Detail
 	IF @nReturnPrice=0
-		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar.StockLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
+		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar_StockLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
 	end
 ELSE
 IF @cTBL = ''B''
 	begin
 	SELECT @nReturnPrice=ISNULL(S_P,0) FROM dbo.BrokerLst_Detail WHERE ID_Detail = @nID_Detail
 	IF @nReturnPrice=0
-		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar.BrokerLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
+		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar_BrokerLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
 	end
 ELSE
 IF @cTBL = ''W''
 	begin
 	SELECT @nReturnPrice=ISNULL(S_P,0) FROM dbo.StockLst_Detail WHERE ID_Detail = @nID_Detail
 	IF @nReturnPrice=0
-		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar.StockLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
+		SELECT TOP 1 @nReturnPrice=ISNULL(S_P,0) FROM dbo.Ar_StockLst_Detail_History WHERE ID_Detail = @nID_Detail AND S_P>0
 	end
 
 
@@ -10975,7 +10975,7 @@ BEGIN
 		AND ISNULL(ID,0) > 0
 
 	IF ISNULL(@nID,0) = 0
-		SELECT TOP 1 @nID = ID FROM dbo.Ar.StockLst_Detail_History WHERE ID_Detail = @nID_Detail 
+		SELECT TOP 1 @nID = ID FROM dbo.Ar_StockLst_Detail_History WHERE ID_Detail = @nID_Detail 
 
 	RETURN ISNULL(@nID, 0)
 
@@ -20508,7 +20508,7 @@ BEGIN
 		AND ISNULL(ID,0) > 0
 
 	IF ISNULL(@nID,0) = 0
-		SELECT TOP 1 @nID = ID FROM dbo.Ar.StockLst_Detail_History WHERE ID_Detail = @nID_Detail 
+		SELECT TOP 1 @nID = ID FROM dbo.Ar_StockLst_Detail_History WHERE ID_Detail = @nID_Detail 
 
 	RETURN ISNULL(@nID, 0)
 
@@ -29484,7 +29484,7 @@ SELECT @nCount = COUNT(*) FROM dbo.StockLst_Master WHERE ID = @ID
 IF @nCount > 0
 	SELECT @Form = Form FROM dbo.StockLst_Master WHERE ID = @ID
 ELSE
-	SELECT @Form = Form FROM dbo.Ar.StockLst_Master_History WHERE ID = @ID
+	SELECT @Form = Form FROM dbo.Ar_StockLst_Master_History WHERE ID = @ID
 
 RETURN @Form 
 END
@@ -30390,7 +30390,7 @@ SELECT @nCount = COUNT(*) FROM dbo.WIPLst_Master WHERE ID = @ID
 IF @nCount > 0
 	SELECT @Form = Form FROM dbo.WIPLst_Master WHERE ID = @ID
 ELSE
-	SELECT @Form = Form FROM dbo.Ar.WIPLst_Master_History WHERE ID = @ID
+	SELECT @Form = Form FROM dbo.Ar_WIPLst_Master_History WHERE ID = @ID
 
 RETURN @Form 
 END
@@ -32729,7 +32729,7 @@ SELECT @nCount = COUNT(*) FROM dbo.StockLst_Master WHERE ID = @ID
 IF @nCount > 0
 	SELECT @Form = Form FROM dbo.StockLst_Master WHERE ID = @ID
 ELSE
-	SELECT @Form = Form FROM dbo.Ar.StockLst_Master_History WHERE ID = @ID
+	SELECT @Form = Form FROM dbo.Ar_StockLst_Master_History WHERE ID = @ID
 
 RETURN @Form 
 END

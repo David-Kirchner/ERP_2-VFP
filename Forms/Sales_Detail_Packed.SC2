@@ -65,6 +65,7 @@ DEFINE CLASS frmsales_detail_packed AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .F.
 		Caption = "Items that have already been Packed"
 		DataSession = 2

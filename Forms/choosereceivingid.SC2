@@ -42,6 +42,7 @@ DEFINE CLASS frmchoosereceingid AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Select the Receiving ID to Edit"

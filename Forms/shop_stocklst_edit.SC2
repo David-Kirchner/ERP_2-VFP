@@ -593,6 +593,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		alfmsccss = ''
 		AutoRelease = .T.
 		cc = ''
@@ -10285,11 +10286,11 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 		cSQL = "SELECT ID "
 		DO CASE 
 			CASE cTBL = "S"
-				cSQL = cSQL + " FROM dbo.[AR.StockLst_Detail_History WITH(NOLOCK) "
+				cSQL = cSQL + " FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) "
 			CASE cTBL = "B"
-				cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Detail_History WITH(NOLOCK) "
+				cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) "
 			CASE cTBL = "W"
-				cSQL = cSQL + " FROM dbo.[AR.WIPLst_Detail_History WITH(NOLOCK) "
+				cSQL = cSQL + " FROM dbo.Ar_WIPlst_Detail_History WITH(NOLOCK) "
 		ENDCASE
 		cSQL = cSQL + " WHERE ID_Detail = "+STR(nID_Detail)
 		
@@ -10752,7 +10753,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 		
 		IF pID_Detail_Process > 0
 			cSQL = "SELECT SUM(ProcessValue) AS TotProc "
-			cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Detail_History WITH(NOLOCK) "
+			cSQL = cSQL+" FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) "
 			cSQL = cSQL+" WHERE ID_Detail_Process = "+ STR(pID_Detail_Process)
 			
 			SELECT 0
@@ -10808,7 +10809,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 		IF TYPE("pSOitem") = "C"
 			IF !EMPTY(pSOItem)
 		
-				cSQL = "SELECT SUM(ProcessValue) AS TotProc FROM dbo.[AR.BrokerLst_Detail_History WITH(NOLOCK) "
+				cSQL = "SELECT SUM(ProcessValue) AS TotProc FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) "
 				cSQL = cSQL+" WHERE ID_Detail_Process IN "
 				cSQL = cSQL+" (SELECT ID_Detail_Process FROM dbo.BrokerLst_process WITH(NOLOCK) "
 				*cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+pSOItem + "'))"
@@ -12052,14 +12053,14 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 			cSQL2 = cSQL2 +" ,Size,SM.CC,SM.CL "
 			DO CASE
 			CASE cTBL = "S"
-				cSQL2 = cSQL2 +" FROM dbo.[AR.Stocklst_Detail_History SD WITH(NOLOCK) "
-				cSQL2 = cSQL2 +" INNER JOIN dbo.[AR.StockLst_Master_History SM WITH(NOLOCK) ON SD.ID = SM.ID "
+				cSQL2 = cSQL2 +" FROM dbo.Ar_Stocklst_Detail_History SD WITH(NOLOCK) "
+				cSQL2 = cSQL2 +" INNER JOIN dbo.Ar_Stocklst_Master_History SM WITH(NOLOCK) ON SD.ID = SM.ID "
 			CASE cTBL = "B"
-				cSQL2 = cSQL2 +" FROM dbo.[AR.Brokerlst_Detail_History SD WITH(NOLOCK) "
-				cSQL2 = cSQL2 +" INNER JOIN dbo.[AR.BrokerLst_Master_History SM WITH(NOLOCK) ON SD.ID = SM.ID "
+				cSQL2 = cSQL2 +" FROM dbo.Ar_BrokerLst_Detail_History SD WITH(NOLOCK) "
+				cSQL2 = cSQL2 +" INNER JOIN dbo.Ar_BrokerLst_Master_history SM WITH(NOLOCK) ON SD.ID = SM.ID "
 			CASE cTBL = "W"
-				cSQL2 = cSQL2 +" FROM dbo.[AR.WIPlst_Detail_History SD WITH(NOLOCK) "
-				cSQL2 = cSQL2 +" INNER JOIN dbo.[AR.WIPLst_Master_History SM WITH(NOLOCK) ON SD.ID = SM.ID "
+				cSQL2 = cSQL2 +" FROM dbo.Ar_WIPlst_Detail_History SD WITH(NOLOCK) "
+				cSQL2 = cSQL2 +" INNER JOIN dbo.Ar_WIPLst_Master_History SM WITH(NOLOCK) ON SD.ID = SM.ID "
 			ENDCASE
 			cSQL2 = cSQL2 +" INNER JOIN dbo.ConditionCode AS C WITH(NOLOCK) ON SM.CC = C.CC "
 			cSQL2 = cSQL2 +" INNER JOIN dbo.Forms WITH(NOLOCK) ON SM.Form = Forms.FormNumber "
@@ -15522,7 +15523,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 						ENDIF
 						IF nSQLEXEC > 0
 							*Update History with 'SUBED'
-							cSQLd = "UPDATE dbo.[AR."+IIF(cTBL = "S","StockLst","BrokerLst")+"_Process_History SET [WHAT]='SUBED' WHERE ID_Detail = "+ALLTRIM(STR(pID_Detail))+ " AND [What] = 'DELETE' "+" AND Process_ID = 'CORRECTION'"
+							cSQLd = "UPDATE dbo.Ar_"+IIF(cTBL = "S","StockLst","BrokerLst")+"_Process_History SET [WHAT]='SUBED' WHERE ID_Detail = "+ALLTRIM(STR(pID_Detail))+ " AND [What] = 'DELETE' "+" AND Process_ID = 'CORRECTION'"
 							nSQLEXEC = SQLEXEC(THISFORMSET.nConnHandle, cSQLd )
 							DO WHILE nSQLEXEC = 0
 								WAIT WINDOW 'SQL' TIMEOUT 1
@@ -19926,11 +19927,11 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 						
 						DO CASE
 						CASE cTBL = "S"
-							cSQLd = "UPDATE dbo.[AR.StockLst_Process_History "
+							cSQLd = "UPDATE dbo.Ar_StockLst_Process_History "
 						CASE cTBL = "B"
-							cSQLd = "UPDATE dbo.[AR.BrokerLst_Process_History "
+							cSQLd = "UPDATE dbo.Ar_BrokerLst_Process_History "
 						CASE cTBL = "W"
-							cSQLd = "UPDATE dbo.[AR.WIPLst_Process_History "
+							cSQLd = "UPDATE dbo.Ar_WIPLst_Process_History "
 						ENDCASE
 						cSQLd = cSQLd + " SET [WHAT]='SUBED' WHERE ID_Detail_Process = "+ALLTRIM(STR(nID_Detail_Process))+ " AND [What] = 'DELETE' "
 						

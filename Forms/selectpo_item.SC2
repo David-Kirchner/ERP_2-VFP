@@ -48,6 +48,7 @@ DEFINE CLASS frmselectpo_item AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Purchase Orders - Only showing last 1000."
 		clocatefor = ''
 		closeconn = .F.

@@ -50,6 +50,7 @@ DEFINE CLASS frmlatepo AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Late PO"
 		DoCreate = .T.
 		Height = 453
@@ -301,9 +302,9 @@ DEFINE CLASS frmlatepo AS form
 			SELECT 0
 			PRIVATE cSQL, nSQLEXEC
 		
-			cSQL = "SELECT LEFT([Who],20) AS [Who],[What],[When],'Stock ' AS STK FROM dbo.[AR.StockLst_Master_History] WHERE po_item = '"+cPOItem+"'"
+			cSQL = "SELECT LEFT([Who],20) AS [Who],[What],[When],'Stock ' AS STK FROM dbo.Ar_Stocklst_Master_History WHERE po_item = '"+cPOItem+"'"
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT LEFT([Who],20) AS [Who],[What],[When],'Broker' AS STK FROM dbo.[AR.BrokerLst_Master_History] WHERE po_item = '"+cPOItem+"'"
+			cSQL = cSQL + "SELECT LEFT([Who],20) AS [Who],[What],[When],'Broker' AS STK FROM dbo.Ar_BrokerLst_Master_history WHERE po_item = '"+cPOItem+"'"
 		
 		
 			nSQLEXEC = SQLEXEC(THISFORM.nconnhandle, cSQL, 'StockHistory')
@@ -564,8 +565,8 @@ DEFINE CLASS frmlatepo AS form
 		
 			cSQL = "SELECT DISTINCT ID_Detail FROM ("
 			cSQL = cSQL+" SELECT DISTINCT D.ID_Detail "
-			cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Master_History] M"
-			cSQL = cSQL+"  LEFT OUTER JOIN dbo.[AR.BrokerLst_Detail_History] D ON D.ID = M.ID"
+			cSQL = cSQL+" FROM dbo.Ar_BrokerLst_Master_history M"
+			cSQL = cSQL+"  LEFT OUTER JOIN dbo.Ar_BrokerLst_Detail_History D ON D.ID = M.ID"
 			cSQL = cSQL+"  WHERE M.PO_item ='"+cPOItem+"'"
 			cSQL = cSQL+"  AND D.ID_Detail > 0 "
 			cSQL = cSQL+" UNION"
@@ -641,8 +642,8 @@ DEFINE CLASS frmlatepo AS form
 		
 			cSQL = "SELECT DISTINCT ID_Detail FROM ("
 			cSQL = cSQL+" SELECT DISTINCT D.ID_Detail "
-			cSQL = cSQL+" FROM dbo.[AR.StockLst_Master_History] M"
-			cSQL = cSQL+"  LEFT OUTER JOIN dbo.[AR.StockLst_Detail_History] D ON D.ID = M.ID"
+			cSQL = cSQL+" FROM dbo.Ar_Stocklst_Master_History M"
+			cSQL = cSQL+"  LEFT OUTER JOIN dbo.Ar_Stocklst_Detail_History D ON D.ID = M.ID"
 			cSQL = cSQL+"  WHERE M.PO_item ='"+cPOItem+"'"
 			cSQL = cSQL+"  AND D.ID_Detail > 0 "
 			cSQL = cSQL+" UNION"
@@ -754,8 +755,8 @@ DEFINE CLASS frmlatepo AS form
 		
 			cSQL = "SELECT DISTINCT ID_Detail FROM ("
 			cSQL = cSQL+" SELECT DISTINCT D.ID_Detail "
-			cSQL = cSQL+" FROM dbo.[AR.BrokerLst_Master_History] M"
-			cSQL = cSQL+"  LEFT OUTER JOIN dbo.[AR.BrokerLst_Detail_History] D ON D.ID = M.ID"
+			cSQL = cSQL+" FROM dbo.Ar_BrokerLst_Master_history M"
+			cSQL = cSQL+"  LEFT OUTER JOIN dbo.Ar_BrokerLst_Detail_History D ON D.ID = M.ID"
 			cSQL = cSQL+"  WHERE M.PO_item ='"+cPOItem+"'"
 			cSQL = cSQL+"  AND D.ID_Detail > 0 "
 			cSQL = cSQL+" UNION"
@@ -781,7 +782,7 @@ DEFINE CLASS frmlatepo AS form
 					IF VARTYPE(tmpCntBroker.ID_Detail) ="N"
 						SCAN
 							*Add Reason to BrokerLst Process
-							cSQLi = "INSERT INTO dbo.[AR.BrokerLst_Process_History] (What,SOitem,PO_Item,SalesPerson"
+							cSQLi = "INSERT INTO dbo.Ar_BrokerLst_Process_History (What,SOitem,PO_Item,SalesPerson"
 							cSQLi = cSQLi + ",Comment,process_id,processor,ID_Detail,Validated,ReceivingID) VALUES ("
 							cSQLi = cSQLi + "'RECEIVED'"
 							cSQLi = cSQLi + ",''" &&SOitem
@@ -819,8 +820,8 @@ DEFINE CLASS frmlatepo AS form
 		
 			cSQL = "SELECT DISTINCT ID_Detail FROM ("
 			cSQL = cSQL+" SELECT DISTINCT D.ID_Detail "
-			cSQL = cSQL+" FROM dbo.[AR.StockLst_Master_History] M"
-			cSQL = cSQL+"  LEFT OUTER JOIN dbo.[AR.StockLst_Detail_History] D ON D.ID = M.ID"
+			cSQL = cSQL+" FROM dbo.Ar_Stocklst_Master_History M"
+			cSQL = cSQL+"  LEFT OUTER JOIN dbo.Ar_Stocklst_Detail_History D ON D.ID = M.ID"
 			cSQL = cSQL+"  WHERE M.PO_item ='"+cPOItem+"'"
 			cSQL = cSQL+"  AND D.ID_Detail > 0 "
 			cSQL = cSQL+" UNION"
@@ -846,7 +847,7 @@ DEFINE CLASS frmlatepo AS form
 					IF VARTYPE(tmpCntStock.ID_Detail) ="N"
 						SCAN
 							*Add Reason to StockLst Process
-							cSQLi = "INSERT INTO dbo.[AR.StockLst_Process_History] (What,SOitem,PO_Item,SalesPerson"
+							cSQLi = "INSERT INTO dbo.Ar_StockLst_Process_History (What,SOitem,PO_Item,SalesPerson"
 							cSQLi = cSQLi + ",Comment,Process_ID,Processor,QTY"
 							cSQLi = cSQLi + ",ID_Detail,Validated,ReceivingID) VALUES ("
 							cSQLi = cSQLi + "'RECEIVED'"

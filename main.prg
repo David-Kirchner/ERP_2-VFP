@@ -15,7 +15,6 @@ lcLastSetCentury=SET("CENTURY")	&&Century was not in QuotesSet untill 3-2009
 SET CENTURY ON
 
 lcAppPath = JUSTPATH(SYS(16, 0))
-? lcAppPath 
 
 *Strip lcAppPath to ERP_2
 DO CASE
@@ -35,9 +34,7 @@ DO CASE
         lcAppPath = JUSTPATH(lcAppPath)
 ENDCASE
 
-? SET("DEFAULT")
 SET DEFAULT TO (lcAppPath)
-? SET("DEFAULT")
 
 *SET DEFAULT TO "E:\VFP\ERP_2"
 
@@ -208,22 +205,22 @@ SET PATH TO (LoginAppHome)+"REPORTS\" ADDITIVE
 ************************************************
 
 IF NOT "PROC_ERP" $ SET("PROCEDURE")
-	SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_ERP.prg") ADDITIVE
+	SET PROCEDURE TO (gERPAppHome + "PROGS\Proc_ERP.prg") ADDITIVE
 ENDIF
 IF NOT "PROC_QUOTES" $ SET("PROCEDURE")
-	SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_Quotes.prg") ADDITIVE
+	SET PROCEDURE TO (gERPAppHome + "PROGS\Proc_Quotes.prg") ADDITIVE
 ENDIF
 IF NOT "PROC_SETUP" $ SET("PROCEDURE")
-	SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_Setup.prg") ADDITIVE
+	SET PROCEDURE TO (gERPAppHome + "PROGS\Proc_Setup.prg") ADDITIVE
 ENDIF
 IF NOT "PROC_SQL" $ SET("PROCEDURE")
-	SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\Proc_SQL.prg") ADDITIVE
+	SET PROCEDURE TO (gERPAppHome + "PROGS\Proc_SQL.prg") ADDITIVE
 ENDIF
 IF NOT "PROC_STOCKLST" $ SET("PROCEDURE")
-	SET PROCEDURE TO (SYS(5)+SYS(2003)+"\Progs\Proc_StockLst.prg") ADDITIVE
+	SET PROCEDURE TO (gERPAppHome + "PROGS\Proc_StockLst.prg") ADDITIVE
 ENDIF
 IF NOT "PROC_WO" $ SET("PROCEDURE")
-	SET PROCEDURE TO (SYS(5)+SYS(2003)+"\Progs\Proc_WO.prg") ADDITIVE
+	SET PROCEDURE TO (gERPAppHome + "PROGS\Proc_WO.prg") ADDITIVE
 ENDIF
 
 *SET PROCEDURE TO (SYS(5)+SYS(2003)+"\PROGS\utilityReportListener.prg") ADDITIVE
@@ -275,9 +272,8 @@ ON ERROR DO errorhandlerlog WITH ERROR(),MESSAGE(1),MESSAGE(),PROGRAM(),LINENO()
 *SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 AppSetup_HomeDir(LoginAppHome)
 
-ON KEY LABEL F2 DO Prog\F2Math
+ON KEY LABEL F2 DO (gERPAppHome + "PROGS\f2Math")
 
-_SCREEN.Icon = "\GRAPHICS\Earth.ICO"
 _SCREEN.Caption="ERP App"
 
 *? "Set Screen"
@@ -310,14 +306,15 @@ ELSE
 	ENDIF
 ENDIF
 
-************************************
-IF NOT "\MEM" $ SYS(2003)
-	SET DEFAULT TO ( SYS(5)+SYS(2003)+"\MEM\" )
-	SET DEFAULT TO (LoginAppHome+"MEM\") 
-ENDIF
-*add the MEM hear so the SYS(2003) works with SET PROC code block and ON ERROR.
-*This Changes the SYS(2003)!!
-
+*!*	************************************
+*!*	IF NOT "\MEM" $ SYS(2003)
+*!*		SET DEFAULT TO ( SYS(5)+SYS(2003)+"\MEM\" )
+*!*		SET DEFAULT TO (LoginAppHome+"MEM\") 
+*!*	ENDIF
+*!*	*add the MEM hear so the SYS(2003) works with SET PROC code block and ON ERROR.
+*!*	*This Changes the SYS(2003)!!
+*Note: keep Default to to one below \MEM\  
+*When looking to save to mem, make sure MEM is added to file location.
 
 **************************************************
 * Run the main form and establish the event loop
@@ -350,35 +347,40 @@ ENDIF
 PUBLIC gGlobalTable
 gGlobalTable	= ""
 
-IF FILE(SYS(5)+SYS(2003)+"Progs\Proc_Setup.prg")
-	SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
-	SET PROCEDURE TO Progs\Proc_Quotes ADDITIVE
-	IF FILE(SYS(5)+SYS(2003)+"Progs\load_ERP_Environment.prg")
-		SET PROCEDURE TO Progs\load_ERP_Environment ADDITIVE
+IF FILE(gERPAppHome + "PROGS\Proc_Setup.prg")
+	SET PROCEDURE TO (gERPAppHome + "PROGS\Proc_Setup.prg") ADDITIVE
+	SET PROCEDURE TO (gERPAppHome + "PROGS\Proc_Quotes.prg") ADDITIVE
+	IF FILE(gERPAppHome + "PROGS\load_ERP_Environment.prg")
+		SET PROCEDURE TO (gERPAppHome + "PROGS\load_ERP_Environment.prg") ADDITIVE
 	ENDIF
-	IF FILE(SYS(5)+SYS(2003)+"Progs\load_CompanyProfile.prg")
-		SET PROCEDURE TO Progs\load_CompanyProfile ADDITIVE
+	IF FILE(gERPAppHome + "PROGS\load_CompanyProfile.prg")
+		SET PROCEDURE TO (gERPAppHome + "PROGS\load_CompanyProfile.prg") ADDITIVE
 	ENDIF
-	IF FILE(SYS(5)+SYS(2003)+"Progs\company_branding.prg")
-		SET PROCEDURE TO Progs\company_branding ADDITIVE
+	IF FILE(gERPAppHome + "PROGS\company_branding.prg")
+		SET PROCEDURE TO (gERPAppHome + "PROGS\company_branding.prg") ADDITIVE
 	ENDIF
 	= get_SQLSTRINGCONNECT()		&&Sets gGlobalServer via ERP_Environment.xml
-	IF FILE(SYS(5)+SYS(2003)+"Progs\load_CompanyProfile.prg")
+	IF FILE(gERPAppHome + "PROGS\load_CompanyProfile.prg")
 		DO load_CompanyProfile
 	ENDIF
-	IF FILE(SYS(5)+SYS(2003)+"Progs\load_CompanyPlants.prg")
-		SET PROCEDURE TO Progs\load_CompanyPlants ADDITIVE
+	IF FILE(gERPAppHome + "PROGS\load_CompanyPlants.prg")
+		SET PROCEDURE TO (gERPAppHome + "PROGS\load_CompanyPlants.prg") ADDITIVE
 		DO load_CompanyPlants
 	ENDIF
-	IF FILE(SYS(5)+SYS(2003)+"Progs\company_report.prg")
-		SET PROCEDURE TO Progs\company_report ADDITIVE
+	IF FILE(gERPAppHome + "PROGS\company_report.prg")
+		SET PROCEDURE TO (gERPAppHome + "PROGS\company_report.prg") ADDITIVE
 	ENDIF
-	IF FILE(SYS(5)+SYS(2003)+"Progs\company_branding.prg")
+	IF FILE(gERPAppHome + "PROGS\company_branding.prg")
 		= InitCompanyBranding()
-	ENDIF
-	IF VARTYPE(gGlobalServer)="C" AND !EMPTY(gGlobalServer)
-		_SCREEN.Caption = "ERP [" + ALLTRIM(gGlobalServer) ;
-			+ IIF(VARTYPE(gGlobalDatabase)="C" AND !EMPTY(gGlobalDatabase), " / " + ALLTRIM(gGlobalDatabase), "") + "]"
+		lcCompanyIcon = GetCompanyIconPath()
+		IF !EMPTY(lcCompanyIcon) AND FILE(lcCompanyIcon)
+			_SCREEN.Icon = lcCompanyIcon
+		ENDIF
+	ELSE
+		IF VARTYPE(gGlobalServer)="C" AND !EMPTY(gGlobalServer)
+			_SCREEN.Caption = "ERP [" + ALLTRIM(gGlobalServer) ;
+				+ IIF(VARTYPE(gGlobalDatabase)="C" AND !EMPTY(gGlobalDatabase), " / " + ALLTRIM(gGlobalDatabase), "") + "]"
+		ENDIF
 	ENDIF
 ELSE
 	IF "\MEM" $ SYS(2003)

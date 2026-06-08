@@ -92,6 +92,7 @@ DEFINE CLASS frmstocklst_process_review AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BackColor = 240,240,240
 		Caption = "StockLst Process Review"
 		DoCreate = .T.

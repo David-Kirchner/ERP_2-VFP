@@ -374,6 +374,7 @@ DEFINE CLASS purchase_stock AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cc = ''
 		cl = ''

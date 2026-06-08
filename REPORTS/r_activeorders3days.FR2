@@ -565,7 +565,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA Active Sales Orders Due in 3 Days"]]>
+	<expr><![CDATA["Active Sales Orders Due in 3 Days"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

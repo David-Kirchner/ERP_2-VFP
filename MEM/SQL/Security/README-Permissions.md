@@ -58,17 +58,17 @@ On **Server26**, expect **`Server26\Admin`** in **`ERP_AppAdmin`** after running
 
 Without Layer 1, VFP gets connection errors — no permission screen will help.
 
-### Archive and NR tables (AR.* / NR_*)
+### Archive and NR tables (Ar_* / NR_*)
 
 ERP naming (all in schema **`dbo`**, dot is part of the **table name**):
 
 | Pattern | Meaning | Every app user needs |
 |---------|---------|----------------------|
-| **`AR.*`** (e.g. `[dbo].[AR.StockLst_Master_History]`) | Archive / history | **SELECT** (read history in reports and screens); **INSERT** (live-table triggers copy rows here under the **caller's** login) |
+| **`Ar_*`** (e.g. `[dbo].Ar_Stocklst_Master_History`) | Archive / history | **SELECT** (read history in reports and screens); **INSERT** (live-table triggers copy rows here under the **caller's** login) |
 | **`NR_*`** (e.g. `NR_Vendor`, `NR_Sales_Summary`) | No replication | **SELECT** |
 | **`NR_UserTrack`** | Audit / track messages | **SELECT** + **INSERT** (`TrackMess` in VFP; triggers add `ServerName`) |
 
-**Script:** `03_GrantArchiveAndNR_Permissions.sql` — run on **SuperMicro + Server26** after `02_CreateDB_Roles.sql`. Re-run after adding new `AR.*` or `NR_*` tables.
+**Script:** `03_GrantArchiveAndNR_Permissions.sql` — run on **SuperMicro + Server26** after `02_CreateDB_Roles.sql`. Re-run after adding new `Ar_*` or `NR_*` tables.
 
 **Why `04` if `01` already grants database-wide SELECT?**  
 `01` gives `ERP_AppRead` only **SELECT** at database scope. Archive **INSERT** from triggers and **`NR_UserTrack`** inserts require explicit **INSERT** on those objects for read-only role members. `04` applies object-level grants to all three app roles.
@@ -76,14 +76,14 @@ ERP naming (all in schema **`dbo`**, dot is part of the **table name**):
 **Verify:**
 
 ```sql
-SELECT name FROM sys.tables WHERE name LIKE N'AR.%' ORDER BY name;
+SELECT name FROM sys.tables WHERE name LIKE N'Ar[_]%' ESCAPE N'\' ORDER BY name;
 SELECT name FROM sys.tables WHERE name LIKE N'NR[_]%' ESCAPE N'\' ORDER BY name;
 
 SELECT OBJECT_NAME(p.major_id) AS TableName, dp.name AS RoleOrUser, p.permission_name
 FROM sys.database_permissions AS p
 JOIN sys.database_principals AS dp ON p.grantee_principal_id = dp.principal_id
 WHERE dp.name IN (N'ERP_AppRead', N'ERP_AppWrite', N'ERP_AppAdmin')
-  AND (OBJECT_NAME(p.major_id) LIKE N'AR.%' OR OBJECT_NAME(p.major_id) LIKE N'NR[_]%' ESCAPE N'\')
+  AND (OBJECT_NAME(p.major_id) LIKE N'Ar[_]%' ESCAPE N'\' OR OBJECT_NAME(p.major_id) LIKE N'NR[_]%' ESCAPE N'\')
 ORDER BY TableName, dp.name, p.permission_name;
 ```
 
@@ -203,7 +203,7 @@ Coarse `AppUsers.AppRole` can later map to default permission bundles (e.g. Sale
 ```
 Security\01_CreateRoles.sql
 Security\02_CreateDB_Roles.sql
-Security\03_GrantArchiveAndNR_Permissions.sql    (re-run after 02 or new AR./NR_* tables)
+Security\03_GrantArchiveAndNR_Permissions.sql    (re-run after 02 or new Ar_/NR_* tables)
 Security\05_GrantCurrentUser_Admin.sql          (each admin, each server)
 Config\03_CreateAppUsers.sql
 Config\04_AppPermission_Schema.sql

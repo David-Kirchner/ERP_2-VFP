@@ -45,6 +45,7 @@ DEFINE CLASS frmqterms AS form
 	*< OBJECTDATA: ObjPath="chkHDPlasma" UniqueID="" Timestamp="" />
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BackColor = 128,128,192
 		BorderStyle = 0
 		Caption = "Quote Terms"
@@ -264,7 +265,7 @@ DEFINE CLASS frmqterms AS form
 		Height = 22, ;
 		Left = 192, ;
 		Name = "cmdCustomerTerms", ;
-		Picture = ..\graphics\terms.bmp, ;
+		Picture = GRAPHICS\terms.bmp, ;
 		TabIndex = 2, ;
 		TabStop = .F., ;
 		ToolTipText = '"Pop up Customer Terms"', ;

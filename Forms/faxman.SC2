@@ -50,6 +50,7 @@ DEFINE CLASS frmfaxman AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "FaxMan"
 		closesetup = .F.
 		ctable =  
@@ -565,13 +566,13 @@ DEFINE CLASS frmfaxman AS form
 		ThisForm.FaxManJr1.UserVoiceNumber 	= "765-675-8871" &&voice phone number of sender
 		
 		IF NOT EMPTY(ThisForm.FaxName)
-			ThisForm.FaxManJr1.FaxName = ThisForm.FaxName &&name of the person you’re faxing to
+			ThisForm.FaxManJr1.FaxName = ThisForm.FaxName &&name of the person youï¿½re faxing to
 		ENDIF
 		IF NOT EMPTY(ThisForm.FaxSubject)
 			ThisForm.FaxManJr1.FaxSubject = ThisForm.FaxSubject &&subject of the fax
 		ENDIF
 		IF NOT EMPTY(ThisForm.FaxCompany)
-			ThisForm.FaxManJr1.FaxCompany = ThisForm.FaxCompany &&name of company you’re sending the fax to
+			ThisForm.FaxManJr1.FaxCompany = ThisForm.FaxCompany &&name of company youï¿½re sending the fax to
 		ENDIF
 		*put your own phone number in here
 		ThisForm.FaxManJr1.FaxNumber = " "+ALLTRIM(ThisForm.FaxPrefix) +" "+ ALLTRIM(ThisForm.FaxNumber)

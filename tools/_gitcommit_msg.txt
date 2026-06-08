@@ -1,1 +1,1 @@
-Add AppSqlRole/AppPermission to project; quotes NR_OT fix; rebuild - 05/26/2026 08:27:12 PM
+More Company Settings: - 06/07/2026 10:08:40 AM

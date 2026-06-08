@@ -65,6 +65,7 @@ DEFINE CLASS frmchoosesoitem AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Select the SO Item"
 		DoCreate = .T.

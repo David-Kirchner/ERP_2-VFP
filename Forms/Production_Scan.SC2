@@ -49,6 +49,7 @@ DEFINE CLASS production_scan AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BorderStyle = 0
 		Caption = "Select Order"
 		ClipControls = .F.

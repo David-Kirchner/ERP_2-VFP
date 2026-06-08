@@ -325,7 +325,7 @@ COLOR=1
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA - Late Purchase Orders Summary"]]>
+	<expr><![CDATA["Late Purchase Orders Summary"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

@@ -359,6 +359,7 @@ DEFINE CLASS packingslip AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		bill3addr = 0
 		caddr_ref = ''
 		Caption = "Packing Slip"

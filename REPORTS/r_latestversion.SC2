@@ -272,38 +272,49 @@ DEFINE CLASS frmlatestversion AS form
 		
 		
 		PRIVATE nArraySize, aArrayName, cHPAFile
-		IF FILE("C:\Program Files\HPA\ERP.EXE")
-			nArraySize = aGETFILEVERSION(aArrayName, "C:\Program Files\HPA\ERP.EXE")
+		nArraySize = 0
+		DIMENSION aArrayName(1, 1)
+		aArrayName(1, 1) = ''
+		IF FILE("C:\Program Files (x86)\HPA\ERP.EXE")
+			nArraySize = aGETFILEVERSION(aArrayName, "C:\Program Files (x86)\HPA\ERP.EXE")
 		ELSE
-			IF FILE("ERP.EXE")
-				nArraySize = aGETFILEVERSION(aArrayName, "ERP.EXE")
+			IF FILE("C:\Program Files\HPA\ERP.EXE")
+				nArraySize = aGETFILEVERSION(aArrayName, "C:\Program Files\HPA\ERP.EXE")
 			ELSE
-				cHPAFile = ALLTRIM(HOME())+"ERP.EXE" 
-				IF FILE(cHPAFile)
-					nArraySize = aGETFILEVERSION(aArrayName, (cHPAFile))
+				IF FILE("ERP.EXE")
+					nArraySize = aGETFILEVERSION(aArrayName, "ERP.EXE")
+				ELSE
+					cHPAFile = ALLTRIM(HOME())+"ERP.EXE"
+					IF FILE(cHPAFile)
+						nArraySize = aGETFILEVERSION(aArrayName, cHPAFile)
+					ENDIF
 				ENDIF
 			ENDIF
 		ENDIF
 		
 		IF nArraySize > 0
-			cVersion = aArrayName(1,4)
+			cVersion = aArrayName(1, 4)
 			nVersion  = VAL(LEFT(cVersion,AT(".",cVersion)))*10000000 +VAL(RIGHT(cVersion,LEN(cVersion)-AT(".",cVersion)))*10000
 			naVersion  = VAL(LEFT(cVersion,AT(".",cVersion)))*10000000 +INT(VAL(RIGHT(cVersion,LEN(cVersion)-AT(".",cVersion))))*10000+VAL(RIGHT(cVersion,LEN(cVersion)-AT(".",cVersion,2 )))
 			cCaption = "Your version "+cVersion
 		ELSE
-			*could not read ERP.EXE
+			* No ERP.EXE — development .APP or missing install
 			cVersion = ''
 			nVersion  = 0
 			naVersion  = 0
-			cCaption = "Your version NOT read"	
+			cCaption = "Development (.APP) "+DTOC(DATE())
 		ENDIF
 		
 		ThisForm.lblVersion.Caption = cCaption 
 		
 		PRIVATE cLastVersion, nLastVersion, naLastVersion
 		cLastVersion = AppSetup_get_LatestVersion()
-		nLastVersion = VAL(LEFT(cLastVersion,AT(".",cLastVersion)))*10000000 +VAL(RIGHT(cLastVersion,LEN(cLastVersion)-AT(".",cLastVersion)))*10000
-		naLastVersion = VAL(LEFT(cLastVersion,AT(".",cLastVersion)))*10000000 +INT(VAL(RIGHT(cLastVersion,LEN(cLastVersion)-AT(".",cLastVersion))))*10000+VAL(RIGHT(cLastVersion,LEN(cLastVersion)-AT(".",cLastVersion,2 )))
+		nLastVersion = 0
+		naLastVersion = 0
+		IF !EMPTY(ALLTRIM(cLastVersion)) AND "." $ cLastVersion
+			nLastVersion = VAL(LEFT(cLastVersion,AT(".",cLastVersion)))*10000000 +VAL(RIGHT(cLastVersion,LEN(cLastVersion)-AT(".",cLastVersion)))*10000
+			naLastVersion = VAL(LEFT(cLastVersion,AT(".",cLastVersion)))*10000000 +INT(VAL(RIGHT(cLastVersion,LEN(cLastVersion)-AT(".",cLastVersion))))*10000+VAL(RIGHT(cLastVersion,LEN(cLastVersion)-AT(".",cLastVersion,2 )))
+		ENDIF
 		ThisForm.nLastVersion  = nLastVersion 
 		
 		IF naLastVersion > naVersion  

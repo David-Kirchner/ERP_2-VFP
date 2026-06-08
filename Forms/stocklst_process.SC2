@@ -161,6 +161,7 @@ DEFINE CLASS frmstocklst_process AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 250,245,253
 		Caption = "STOCKLST PROCESS"
@@ -1833,11 +1834,11 @@ DEFINE CLASS frmstocklst_process AS form
 		*!*						cSQLd = ""
 		*!*						DO CASE
 		*!*						CASE ThisForm.cTBL = "S"
-		*!*							cSQLd = cSQLd + "UPDATE dbo.[AR.StockLst_Process_History "
+		*!*							cSQLd = cSQLd + "UPDATE dbo.Ar_StockLst_Process_History "
 		*!*						CASE ThisForm.cTBL = "B"
-		*!*							cSQLd = cSQLd + "UPDATE dbo.[AR.BrokerLst_Process_History "
+		*!*							cSQLd = cSQLd + "UPDATE dbo.Ar_BrokerLst_Process_History "
 		*!*						CASE ThisForm.cTBL = "W"
-		*!*							cSQLd = cSQLd + "UPDATE dbo.[AR.WIPLst_Process_History "
+		*!*							cSQLd = cSQLd + "UPDATE dbo.Ar_WIPLst_Process_History "
 		*!*						ENDCASE
 		*!*						*cSQLd = cSQLd + " SET [WHAT]='SUBED' "
 		*!*						*cSQLd = cSQLd + " WHERE SOitem = dbo.ProperSO('"+cSOitem+"')"
@@ -1878,11 +1879,11 @@ DEFINE CLASS frmstocklst_process AS form
 								cSQLd = ""
 								DO CASE
 								CASE ThisForm.cTBL = "S"
-									cSQLd = cSQLd + "UPDATE dbo.[AR.StockLst_Process_History "
+									cSQLd = cSQLd + "UPDATE dbo.Ar_StockLst_Process_History "
 								CASE ThisForm.cTBL = "B"
-									cSQLd = cSQLd + "UPDATE dbo.[AR.BrokerLst_Process_History "
+									cSQLd = cSQLd + "UPDATE dbo.Ar_BrokerLst_Process_History "
 								CASE ThisForm.cTBL = "W"
-									cSQLd = cSQLd + "UPDATE dbo.[AR.WIPLst_Process_History "
+									cSQLd = cSQLd + "UPDATE dbo.Ar_WIPLst_Process_History "
 								ENDCASE
 								cSQLd = cSQLd + " SET [WHAT]='SUBED' "
 								*cSQLd = cSQLd + " WHERE SOitem = dbo.ProperSO('"+cSOitem+"')"

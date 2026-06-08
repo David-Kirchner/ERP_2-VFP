@@ -835,6 +835,7 @@ DEFINE CLASS editsalesorder AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .F.
 		cc = ''
 		cl = ''
@@ -2247,7 +2248,7 @@ DEFINE CLASS editsalesorder AS formset
 		Left = 43, ;
 		Name = "lblControln", ;
 		TabIndex = 16, ;
-		ToolTipText = "The CVV Number ('Card Verification Value') on your credit card or debit card is a 3 digit number on VISA®, MasterCard® and Discover® branded credit and debit cards. On your American Express® branded credit or debit card it is a 4 digit numeric code.", ;
+		ToolTipText = "The CVV Number ('Card Verification Value') on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards. On your American Express branded credit or debit card it is a 4 digit numeric code.", ;
 		Top = 177, ;
 		Width = 25, ;
 		WordWrap = .T.
@@ -6552,7 +6553,7 @@ DEFINE CLASS editsalesorder AS formset
 		Height = 40, ;
 		Left = 163, ;
 		Name = "cmdPeach", ;
-		Picture = ..\graphics\peach.gif, ;
+		Picture = GRAPHICS\peach.gif, ;
 		PicturePosition = 14, ;
 		TabIndex = 2, ;
 		TabStop = .F., ;
@@ -14752,7 +14753,7 @@ DEFINE CLASS editsalesorder AS formset
 			lFoundSOCC = FoundCCforSO(nCCSO,ThisFormSet.nConnHandle)
 			
 			IF LEN(ALLTRIM(lccCCV))=0
-				MESSAGEBOX("The CVV Number ('Card Verification Value') on your credit card or debit card is a 3 digit number on VISA®, MasterCard® and Discover® branded credit and debit cards. On your American Express® branded credit or debit card it is a 4 digit numeric code.",64,"CCV is empty!")
+				MESSAGEBOX("The CVV Number ('Card Verification Value') on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards. On your American Express branded credit or debit card it is a 4 digit numeric code.",64,"CCV is empty!")
 				lccCCV='0'
 			ENDIF
 			
@@ -14807,7 +14808,7 @@ DEFINE CLASS editsalesorder AS formset
 		
 			ELSE
 				IF LEN(ALLTRIM(lccCCV))=0
-					MESSAGEBOX("The CVV Number ('Card Verification Value') on your credit card or debit card is a 3 digit number on VISA®, MasterCard® and Discover® branded credit and debit cards. On your American Express® branded credit or debit card it is a 4 digit numeric code.",64,"CCV is empty!")
+					MESSAGEBOX("The CVV Number ('Card Verification Value') on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards. On your American Express branded credit or debit card it is a 4 digit numeric code.",64,"CCV is empty!")
 					lccCCV='0'
 				ENDIF
 		
@@ -29135,7 +29136,7 @@ DEFINE CLASS editsalesorder AS formset
 	ENDPROC
 
 	PROCEDURE frmEO.pf1.pgCreditCard.lblControln.Click
-		MESSAGEBOX("The CVV Number ('Card Verification Value') on your credit card or debit card is a 3 digit number on VISA®, MasterCard® and Discover® branded credit and debit cards. On your American Express® branded credit or debit card it is a 4 digit numeric code.",64,"CCV is empty!")
+		MESSAGEBOX("The CVV Number ('Card Verification Value') on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards. On your American Express branded credit or debit card it is a 4 digit numeric code.",64,"CCV is empty!")
 	ENDPROC
 
 	PROCEDURE frmEO.pf1.pgCreditCard.lblExpire.Click

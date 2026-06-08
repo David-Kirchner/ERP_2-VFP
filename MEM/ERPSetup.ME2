@@ -4,6 +4,8 @@
 *< FOXBIN2PRG: Version="1.21" SourceFile="erpsetup.mem" CPID="1252" /> (Solo para binarios VFP 9 / Only for VFP 9 binaries)
 *
 LOGINAPPHOME       C             "E:\VFP\ERP_2\"
-LOGINHOME          C             ""
-LOGINPC            C             "VFP-VM "
-LOGINUN            C             "David Kirchner"
+LOGINDATABASE      C             "ERP_2"
+LOGINHOME          C             "E:\VFP\ERP_2\"
+LOGINPC            C             "SUPERMICRO "
+LOGINSERVER        C             "SuperMicro"
+LOGINUN            C             "talkt"

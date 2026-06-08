@@ -60,6 +60,7 @@ DEFINE CLASS frmpoinvoices AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .F.
 		Caption = "Invoices for Purchase Order"
 		DataSession = 2

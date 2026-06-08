@@ -91,6 +91,7 @@ DEFINE CLASS frmmatchcustomerid AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Match Accounting Customer ID with HPA SQL Quick Company"
 		DataSession = 2
 		DoCreate = .T.
@@ -178,7 +179,7 @@ DEFINE CLASS frmmatchcustomerid AS form
 		Height = 37, ;
 		Left = 680, ;
 		Name = "cmdFindCompany", ;
-		Picture = ..\graphics\search.ico, ;
+		Picture = GRAPHICS\search.ico, ;
 		Top = 22, ;
 		Width = 48
 		*< END OBJECT: BaseClass="commandbutton" />

@@ -193,6 +193,7 @@ DEFINE CLASS frmstocklst_sql_quotes AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BackColor = 192,192,192

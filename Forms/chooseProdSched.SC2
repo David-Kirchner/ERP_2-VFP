@@ -60,6 +60,7 @@ DEFINE CLASS frmchooseprodsched AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Choose Production Schedule to view"
 		cordernum = ''
 		cotype_num = ''

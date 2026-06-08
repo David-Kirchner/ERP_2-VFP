@@ -101,6 +101,7 @@ DEFINE CLASS frmwo_detail_view_notes AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .F.
 		AutoCenter = .F.
 		Caption = "WO_Detail Edit"

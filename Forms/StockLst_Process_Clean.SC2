@@ -29,6 +29,7 @@ DEFINE CLASS stocklst_process_clean AS form
 	*< OBJECTDATA: ObjPath="Label3" UniqueID="" Timestamp="" />
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "StockLst Process Clean -  Unmarked records will be removed!"
 		DoCreate = .T.

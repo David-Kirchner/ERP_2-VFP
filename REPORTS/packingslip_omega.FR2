@@ -61,7 +61,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA Sales Order "+ALLTRIM(PackingSlipItem.SOitem)]]>
+	<expr><![CDATA["ERP Sales Order "+ALLTRIM(PackingSlipItem.SOitem)]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -97,7 +97,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Space Alloys USA"]]>
+	<expr><![CDATA[CompanyReport_Name()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

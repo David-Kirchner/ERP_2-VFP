@@ -150,6 +150,7 @@ DEFINE CLASS frmhtlog AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BackColor = 255,128,128
 		Caption = "Space Alloys USA"
 		DataSession = 2

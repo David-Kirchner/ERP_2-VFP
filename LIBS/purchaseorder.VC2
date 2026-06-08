@@ -15049,17 +15049,17 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		
 			PRIVATE cSQL, nSQLEXEC
 			cSQL = "SELECT M.ID,'S' AS TBL "
-			cSQL = cSQL + " FROM dbo.[AR.StockLst_Master_History M "
+			cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History M "
 			cSQL = cSQL + " WHERE M.PO_Item = dbo.f_ProperPOitem('"+cPoItem+"') "
 			
 			cSQL = cSQL + " UNION "
 			cSQL = cSQL + " SELECT M.ID,'B' AS TBL "
-			cSQL = cSQL + " FROM dbo.[AR.BrokerLst_Master_History M "
+			cSQL = cSQL + " FROM dbo.Ar_BrokerLst_Master_history M "
 			cSQL = cSQL + " WHERE M.PO_Item = dbo.f_ProperPOitem('"+cPoItem+"') "
 			
 			cSQL = cSQL + " UNION "
 			cSQL = cSQL + " SELECT M.ID,'W' AS TBL "
-			cSQL = cSQL + " FROM dbo.[AR.WIPLst_Master_History M "
+			cSQL = cSQL + " FROM dbo.Ar_WIPLst_Master_History M "
 			cSQL = cSQL + " WHERE M.PO_Item = dbo.f_ProperPOitem('"+cPoItem+"') "
 			
 			SELECT 0
@@ -15152,16 +15152,16 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		ENDIF
 		
 		cSQL_cPO = 		      " SELECT TOP 1 'S Mast' AS TBL, M.ID "
-		cSQL_cPO = cSQL_cPO + " FROM dbo.[AR.StockLst_Master_History M "
+		cSQL_cPO = cSQL_cPO + " FROM dbo.Ar_Stocklst_Master_History M "
 		cSQL_cPO = cSQL_cPO + " WHERE M.PO_Item = dbo.f_ProperPOitem('"+cPoItem+"') "
 		cSQL_cPO = cSQL_cPO + " AND M.[What] = 'DELETE'"
 		
 		cSQL_cPO = cSQL_cPO + " UNION "
 		
 		cSQL_cPO = cSQL_cPO + " SELECT TOP 1 'S Proc' AS TBL, M.ID "
-		cSQL_cPO = cSQL_cPO + " FROM dbo.[AR.StockLst_Process_History P "
-		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.[AR.StockLst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.[AR.StockLst_Master_History M ON D.ID = M.ID "
+		cSQL_cPO = cSQL_cPO + " FROM dbo.Ar_StockLst_Process_History P "
+		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.Ar_Stocklst_Detail_History D ON P.ID_Detail = D.ID_Detail "
+		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.Ar_Stocklst_Master_History M ON D.ID = M.ID "
 		cSQL_cPO = cSQL_cPO + " WHERE P.PO_Item = dbo.f_ProperPOitem('"+cPoItem+"') "
 		cSQL_cPO = cSQL_cPO + " AND NOT P.Process_ID = 'INCOMING'"
 		cSQL_cPO = cSQL_cPO + " AND P.[What] = 'DELETE'"
@@ -15169,16 +15169,16 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		cSQL_cPO = cSQL_cPO + " UNION "
 		
 		cSQL_cPO = cSQL_cPO + " SELECT TOP 1 'B Mast' AS TBL, M.ID "
-		cSQL_cPO = cSQL_cPO + " FROM dbo.[AR.BrokerLst_Master_History M "
+		cSQL_cPO = cSQL_cPO + " FROM dbo.Ar_BrokerLst_Master_history M "
 		cSQL_cPO = cSQL_cPO + " WHERE M.PO_Item = dbo.f_ProperPOitem('"+cPoItem+"') "
 		cSQL_cPO = cSQL_cPO + " AND M.[What] = 'DELETE'"
 		
 		cSQL_cPO = cSQL_cPO + " UNION "
 		
 		cSQL_cPO = cSQL_cPO + " SELECT TOP 1 'B Proc' AS TBL, M.ID "
-		cSQL_cPO = cSQL_cPO + " FROM dbo.[AR.BrokerLst_Process_History P "
-		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.[AR.BrokerLst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.[AR.BrokerLst_Master_History M ON D.ID = M.ID "
+		cSQL_cPO = cSQL_cPO + " FROM dbo.Ar_BrokerLst_Process_History P "
+		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.Ar_BrokerLst_Detail_History D ON P.ID_Detail = D.ID_Detail "
+		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.Ar_BrokerLst_Master_history M ON D.ID = M.ID "
 		cSQL_cPO = cSQL_cPO + " WHERE P.PO_Item = dbo.f_ProperPOitem('"+cPoItem+"') "
 		cSQL_cPO = cSQL_cPO + " AND NOT P.Process_ID = 'INCOMING'"
 		cSQL_cPO = cSQL_cPO + " AND P.[What] = 'DELETE'"
@@ -15186,16 +15186,16 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		cSQL_cPO = cSQL_cPO + " UNION "
 		
 		cSQL_cPO = cSQL_cPO + " SELECT TOP 1 'W Mast' AS TBL, M.ID "
-		cSQL_cPO = cSQL_cPO + " FROM dbo.[AR.WIPLst_Master_History M "
+		cSQL_cPO = cSQL_cPO + " FROM dbo.Ar_WIPLst_Master_History M "
 		cSQL_cPO = cSQL_cPO + " WHERE M.PO_Item = dbo.f_ProperPOitem('"+cPoItem+"') "
 		cSQL_cPO = cSQL_cPO + " AND M.[What] = 'DELETE'"
 		
 		cSQL_cPO = cSQL_cPO + " UNION "
 		
 		cSQL_cPO = cSQL_cPO + " SELECT TOP 1 'W Proc' AS TBL, M.ID "
-		cSQL_cPO = cSQL_cPO + " FROM dbo.[AR.WIPLst_Process_History P "
-		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.[AR.WIPLst_Detail_History D ON P.ID_Detail = D.ID_Detail "
-		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.[AR.WIPLst_Master_History M ON D.ID = M.ID "
+		cSQL_cPO = cSQL_cPO + " FROM dbo.Ar_WIPLst_Process_History P "
+		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.Ar_WIPlst_Detail_History D ON P.ID_Detail = D.ID_Detail "
+		cSQL_cPO = cSQL_cPO + " INNER JOIN dbo.Ar_WIPLst_Master_History M ON D.ID = M.ID "
 		cSQL_cPO = cSQL_cPO + " WHERE P.PO_Item = dbo.f_ProperPOitem('"+cPoItem+"') "
 		cSQL_cPO = cSQL_cPO + " AND NOT P.Process_ID = 'INCOMING'"
 		cSQL_cPO = cSQL_cPO + " AND P.[What] = 'DELETE'"
@@ -15680,11 +15680,11 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		*!*		cSQL_Detail_DEL_cnt="SELECT COUNT(*) AS counted FROM "
 		*!*		DO CASE
 		*!*		CASE cTBL = "S"
-		*!*			cSQL_Detail_DEL_cnt=cSQL_Detail_DEL_cnt+" dbo.[AR.StockLst_Detail_History "
+		*!*			cSQL_Detail_DEL_cnt=cSQL_Detail_DEL_cnt+" dbo.Ar_Stocklst_Detail_History "
 		*!*		CASE cTBL = "B"
-		*!*			cSQL_Detail_DEL_cnt=cSQL_Detail_DEL_cnt+" dbo.[AR.BrokerLst_Detail_History "
+		*!*			cSQL_Detail_DEL_cnt=cSQL_Detail_DEL_cnt+" dbo.Ar_BrokerLst_Detail_History "
 		*!*		CASE cTBL = "W"
-		*!*			cSQL_Detail_DEL_cnt=cSQL_Detail_DEL_cnt+" dbo.[AR.WIPLst_Detail_History "
+		*!*			cSQL_Detail_DEL_cnt=cSQL_Detail_DEL_cnt+" dbo.Ar_WIPlst_Detail_History "
 		*!*		ENDCASE
 		*!*		cSQL_Detail_DEL_cnt=cSQL_Detail_DEL_cnt+" WHERE ID = "+ALLTRIM(STR(nMaster_ID ))
 		*!*		

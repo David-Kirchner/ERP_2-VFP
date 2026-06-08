@@ -50,6 +50,7 @@ DEFINE CLASS frmchoosealloyspec AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		alloy = ''
 		AlwaysOnTop = .T.
 		AutoCenter = .T.

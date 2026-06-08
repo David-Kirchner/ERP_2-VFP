@@ -22,7 +22,7 @@ IF USED('tmpMissingID')
 ENDIF
 SELECT 0
 
-cSQL = "SELECT ID_Detail FROM dbo.[AR.StockLst_Process_History] WITH(NOLOCK) WHERE [When] > '2008-05-22' AND [Who] = 'WINDFALL\David Kirchner' AND [WHAT]='DELETE' AND Process_ID = 'CORRECTION'"
+cSQL = "SELECT ID_Detail FROM dbo.Ar_StockLst_Process_History WITH(NOLOCK) WHERE [When] > '2008-05-22' AND [Who] = 'WINDFALL\David Kirchner' AND [WHAT]='DELETE' AND Process_ID = 'CORRECTION'"
 
 nSQLEXEC = SQLEXEC(pConn, cSQL, 'tmpMissingID' )
 DO WHILE nSQLEXEC = 0
@@ -66,7 +66,7 @@ IF USED('tmpMissingID')
 		
 		IF nMasterID = 0
 			*Get Master ID From History
-			cSQL =  "SELECT ID FROM dbo.[AR.StockLst_Detail_History] WITH(NOLOCK) WHERE ID_Detail = "+STR( nID_Detail )
+			cSQL =  "SELECT ID FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) WHERE ID_Detail = "+STR( nID_Detail )
 			
 			nSQLEXEC = SQLEXEC(pConn, cSQL, 'tmpMasterID' )
 			DO WHILE nSQLEXEC = 0
@@ -192,7 +192,7 @@ IF USED('tmpMissingID')
 						ENDIF
 						SELECT 0
 						
-						cSQL = " SELECT COUNT(*) AS CNTD FROM dbo.[AR.StockLst_Master_History] WITH(NOLOCK) WHERE [ID] = "+STR(nMasterID)
+						cSQL = " SELECT COUNT(*) AS CNTD FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) WHERE [ID] = "+STR(nMasterID)
 						cSQL = cSQL + " AND [WHAT] = 'ADD    '"
 						nSQLEXEC = SQLEXEC(pConn, cSQL, 'tmpMasterID4Hist' )
 						DO WHILE nSQLEXEC = 0
@@ -232,7 +232,7 @@ IF USED('tmpMissingID')
 							
 							*********
 							**Check - It found the Wrong data to update! 
-							**Use Hpalloy4.dbo.StockLst_Master over dbo.[AR.StockLst_MASTER_History] SMH WITH (NOLOCK) "
+							**Use Hpalloy4.dbo.StockLst_Master over dbo.Ar_Stocklst_Master_History SMH WITH (NOLOCK) "
 							**  AND SMH.[WHAT] = 'DELETE    '
 							
 							cSQL = "UPDATE dbo.StockLst_Master SET "

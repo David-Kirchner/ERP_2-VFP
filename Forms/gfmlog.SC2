@@ -223,6 +223,7 @@ DEFINE CLASS gfm AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BackColor = 0,191,96
 		Caption = "Space Alloys USA"
 		DataSession = 2
@@ -544,7 +545,7 @@ DEFINE CLASS gfm AS form
 		Height = 20, ;
 		Left = 416, ;
 		Name = "cmdSrvcPOReport", ;
-		Picture = ..\graphics\report.ico, ;
+		Picture = GRAPHICS\report.ico, ;
 		PicturePosition = 14, ;
 		TabIndex = 175, ;
 		TabStop = .F., ;
@@ -568,7 +569,7 @@ DEFINE CLASS gfm AS form
 		Height = 20, ;
 		Left = 416, ;
 		Name = "cmdTestPOReport", ;
-		Picture = ..\graphics\report.ico, ;
+		Picture = GRAPHICS\report.ico, ;
 		PicturePosition = 14, ;
 		TabIndex = 174, ;
 		TabStop = .F., ;
@@ -626,7 +627,7 @@ DEFINE CLASS gfm AS form
 		Command1.Height = 55, ;
 		Command1.Left = 5, ;
 		Command1.Name = "Command1", ;
-		Command1.Picture = ..\graphics\calc.bmp, ;
+		Command1.Picture = GRAPHICS\calc.bmp, ;
 		Command1.ReleaseErase = .F., ;
 		Command1.SpecialEffect = 1, ;
 		Command1.TabStop = .F., ;

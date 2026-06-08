@@ -361,7 +361,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Space Alloys USA"]]>
+	<expr><![CDATA[CompanyReport_Name()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -373,7 +373,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Space Alloys USA"]]>
+	<expr><![CDATA[CompanyReport_Name()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1069,7 +1069,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Space Alloys USA"]]>
+	<expr><![CDATA[CompanyReport_Name()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1141,7 +1141,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Space Alloys USA Purchase Order Acknowledgement"]]>
+	<expr><![CDATA[CompanyReport_Name()+" Purchase Order Acknowledgement"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1172,7 +1172,7 @@ COLOR=2
 </Reportes>
 <Reportes 
 	platform="WINDOWS " uniqueid="" timestamp="0" objtype="17" objcode="0" name="" vpos="3645.833" hpos="1458.333" height="8958.333" width="20104.167" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="0" fillgreen="0" fillblue="0" pensize="0" penpat="0" fillpat="0" fontface="" fontstyle="0" fontsize="0" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="1" spacing="0" double=".F." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="0" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="6" supvalchng=".F." 
-	<picture><![CDATA["..\graphics\ERP_logo_small.BMP"]]>
+	<picture><![CDATA["graphics\erphead.bmp"]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
@@ -1537,7 +1537,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["1. Alloy material supplied to Space Alloys USA MUST conform to the following:"]]>
+	<expr><![CDATA["1. Alloy material supplied to "+CompanyReport_LegalName()+" MUST conform to the following:"]]>
 	<supexpr><![CDATA[NOT (PurchaseOrder.Services or PurchaseOrder.Equipment)]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

@@ -305,6 +305,7 @@ DEFINE CLASS frmreceiving AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Receiving"
 		DataSession = 2
@@ -382,7 +383,7 @@ DEFINE CLASS frmreceiving AS form
 		Height = 59, ;
 		Left = 175, ;
 		Name = "cmdReportReceiving", ;
-		Picture = ..\graphics\report.ico, ;
+		Picture = GRAPHICS\report.ico, ;
 		TabIndex = 3, ;
 		ToolTipText = "Open Raptor Report of this Receive", ;
 		Top = 318, ;
@@ -4254,17 +4255,17 @@ DEFINE CLASS frmreceiving AS form
 		ENDIF
 		
 		PRIVATE nSQLEXEC, cSQL
-		cSQL = "SELECT ID_Detail, 'S' AS TBL FROM dbo.[AR.StockLst_Process_History WITH(NOLOCK) "
+		cSQL = "SELECT ID_Detail, 'S' AS TBL FROM dbo.Ar_StockLst_Process_History WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED     ' OR [WHAT] = 'DELETE')"
 		
 		cSQL = cSQL + " UNOIN "
-		cSQL = cSQL + " SELECT ID_Detail, 'B' AS TBL FROM dbo.[AR.StockLst_Process_History WITH(NOLOCK) "
+		cSQL = cSQL + " SELECT ID_Detail, 'B' AS TBL FROM dbo.Ar_StockLst_Process_History WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED     ' OR [WHAT] = 'DELETE')"
 		
 		cSQL = cSQL + " UNOIN "
-		cSQL = cSQL + " SELECT ID_Detail, 'W' AS TBL FROM dbo.[AR.WIPLst_Process_History WITH(NOLOCK) "
+		cSQL = cSQL + " SELECT ID_Detail, 'W' AS TBL FROM dbo.Ar_WIPLst_Process_History WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED     ' OR [WHAT] = 'DELETE')"
 		
@@ -4321,15 +4322,15 @@ DEFINE CLASS frmreceiving AS form
 		CASE cTBL = "S"
 			cSQL = "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.StockLst_Master WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.[AR.StockLst_Master_History WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.Ar_Stocklst_Master_History WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 		CASE cTBL = "B"
 			cSQL = "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.BrokerLst_Master WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.[AR.BrokerLst_Master_History WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.Ar_BrokerLst_Master_history WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 		CASE cTBL = "W"
 			cSQL = "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.WIPLst_Master WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.[AR.WIPLst_Master_History WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.Ar_WIPLst_Master_History WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 		OTHERWISE
 			RETURN .F.
 		ENDCASE
@@ -4403,15 +4404,15 @@ DEFINE CLASS frmreceiving AS form
 		CASE cTBL = "S"
 			cSQL = "SELECT PC, dbo.f_ItemDescription(dbo.f_StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.StockLst_Detail WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 			cSQL = cSQL + " Union "
-			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.f_StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.[AR.StockLst_Detail_History WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
+			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.f_StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.Ar_Stocklst_Detail_History WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 		CASE cTBL = "B"
 			cSQL = "SELECT PC, dbo.f_ItemDescription(dbo.f_BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.BrokerLst_Detail WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 			cSQL = cSQL + " Union "
-			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.f_BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.[AR.BrokerLst_Detail_History WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
+			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.f_BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.Ar_BrokerLst_Detail_History WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 		CASE cTBL = "W"
 			cSQL = "SELECT PC, dbo.f_ItemDescription(dbo.f_WIPLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.WIPLst_Detail WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 			cSQL = cSQL + " Union "
-			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.f_WIPLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.[AR.WIPLst_Detail_History WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
+			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.f_WIPLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.Ar_WIPlst_Detail_History WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 		ENDCASE
 		*SELECT PC, dbo.f_ItemDescription(dbo.f_StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.StockLst_Detail WITH (NOLOCK) WHERE ID_Detail = 5657
 		
@@ -5476,15 +5477,15 @@ DEFINE CLASS frmreceiving AS form
 		ENDIF
 		
 		PRIVATE nSQLEXEC, cSQL
-		cSQL = "SELECT ID_Detail, 'S' AS TBL, [What] FROM dbo.[AR.StockLst_Process_History  WITH(NOLOCK) "
+		cSQL = "SELECT ID_Detail, 'S' AS TBL, [What] FROM dbo.Ar_StockLst_Process_History  WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED ' OR [WHAT] = 'DELETE')"
 		cSQL = cSQL + " UNION "
-		cSQL = cSQL + " SELECT ID_Detail, 'B' AS TBL, [What] FROM dbo.[AR.BrokerLst_Process_History  WITH(NOLOCK) "
+		cSQL = cSQL + " SELECT ID_Detail, 'B' AS TBL, [What] FROM dbo.Ar_BrokerLst_Process_History  WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED ' OR [WHAT] = 'DELETE')"
 		cSQL = cSQL + " UNION "
-		cSQL = cSQL + " SELECT ID_Detail, 'W' AS TBL, [What] FROM dbo.[AR.WIPLst_Process_History  WITH(NOLOCK) "
+		cSQL = cSQL + " SELECT ID_Detail, 'W' AS TBL, [What] FROM dbo.Ar_WIPLst_Process_History  WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 		cSQL = cSQL + " AND ([WHAT] = 'SUBED ' OR [WHAT] = 'DELETE')"
 		cSQL = cSQL + " ORDER BY [WHAT] DESC "
@@ -5541,15 +5542,15 @@ DEFINE CLASS frmreceiving AS form
 		CASE cTBL = "S"
 			cSQL = "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.StockLst_Master  WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.[AR.StockLst_Master_History  WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.Ar_Stocklst_Master_History  WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 		CASE cTBL = "B"
 			cSQL = "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.BrokerLst_Master  WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.[AR.BrokerLst_Master_History  WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.Ar_BrokerLst_Master_history  WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 		CASE cTBL = "W"
 			cSQL = "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.WIPLst_Master  WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 			cSQL = cSQL + " UNION "
-			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.[AR.WIPLst_Master_History  WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
+			cSQL = cSQL + "SELECT Alloy,Heat,Lot,Specs,Mill FROM dbo.Ar_WIPLst_Master_History  WITH(NOLOCK) WHERE ID = "+STR(nStockLst_ID)
 		ENDCASE
 		
 		SELECT 0
@@ -5622,11 +5623,11 @@ DEFINE CLASS frmreceiving AS form
 		IF cTBL = "S"
 			cSQL = "SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.StockLst_Detail  WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 			cSQL = cSQL + " Union "
-			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.[AR.StockLst_Detail_History  WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
+			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.Ar_Stocklst_Detail_History  WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 		ELSE
 			cSQL = "SELECT PC, dbo.f_ItemDescription(dbo.BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.BrokerLst_Detail  WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 			cSQL = cSQL + " Union "
-			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.[AR.BrokerLst_Detail_History  WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
+			cSQL = cSQL + "SELECT PC, dbo.f_ItemDescription(dbo.BrokerLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.Ar_BrokerLst_Detail_History  WITH(NOLOCK) WHERE ID_Detail ="+STR(nID_Detail)
 		ENDIF
 		*SELECT PC, dbo.f_ItemDescription(dbo.StockLstIDform(ID),dim1,dim2,dim3,Weight,RandLen) AS Description FROM dbo.StockLst_Detail WHERE ID_Detail = 5657
 		
@@ -5954,13 +5955,13 @@ DEFINE CLASS frmreceiving AS form
 					*Stock History
 					cSQL = cSQL + " SELECT TOP 1 "
 					cSQL = cSQL + " (SELECT Count(*) AS CNT "
-					cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History M WITH(NOLOCK) "
+					cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
 					cSQL = cSQL + " WHERE M.PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 					cSQL = cSQL + "  AND M.[WHAT] = 'DELETE' AND M.[heat] != 'DUE IN'"
 					cSQL = cSQL + "  ) AS CNT "
 					cSQL = cSQL + ", 'A' AS TBL, M.Heat, M.Lot "
 					cSQL = cSQL + " ,D.ID_Detail ,'Stock_M_H' AS Process_ID, 0 AS ID_Detail_Process "
-					cSQL = cSQL + " FROM dbo.[AR.Stocklst_Master_History M WITH(NOLOCK) "
+					cSQL = cSQL + " FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK) "
 					cSQL = cSQL + " INNER JOIN dbo.StockLst_Detail D WITH(NOLOCK) ON M.ID = D.ID "
 					cSQL = cSQL + " WHERE M.PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
 					cSQL = cSQL + "  AND M.[WHAT] = 'DELETE' AND M.[heat] != 'DUE IN'"

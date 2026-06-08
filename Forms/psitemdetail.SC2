@@ -111,6 +111,7 @@ DEFINE CLASS packingslipitemdetail AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BackColor = 209,212,216
 		Caption = "Packing Slip Item Detail"
 		DoCreate = .T.

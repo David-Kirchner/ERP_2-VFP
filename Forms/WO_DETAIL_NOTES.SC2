@@ -139,6 +139,7 @@ DEFINE CLASS frmwo_detail_notes AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .F.
 		AutoCenter = .F.
 		Caption = "WO_Detail View Notes"
@@ -198,11 +199,11 @@ DEFINE CLASS frmwo_detail_notes AS form
 		AutoSize = .F., ;
 		Caption = "", ;
 		Centered = .F., ;
-		DownPicture = ..\graphics\pushpint.bmp, ;
+		DownPicture = GRAPHICS\pushpint.bmp, ;
 		Height = 22, ;
 		Left = 188, ;
 		Name = "chkPinFWeight", ;
-		Picture = ..\graphics\pushpinb.bmp, ;
+		Picture = GRAPHICS\pushpinb.bmp, ;
 		PictureMargin = 0, ;
 		PicturePosition = 14, ;
 		PictureSpacing = 0, ;
@@ -361,7 +362,7 @@ DEFINE CLASS frmwo_detail_notes AS form
 		Height = 24, ;
 		Left = 120, ;
 		Name = "cmdFcalc", ;
-		Picture = ..\graphics\transform.jpg, ;
+		Picture = GRAPHICS\transform.jpg, ;
 		TabIndex = 80, ;
 		ToolTipText = "Calc Finish Weight", ;
 		Top = 94, ;
@@ -424,7 +425,7 @@ DEFINE CLASS frmwo_detail_notes AS form
 		Height = 24, ;
 		Left = 20, ;
 		Name = "cmdResetCW", ;
-		Picture = ..\graphics\transform.jpg, ;
+		Picture = GRAPHICS\transform.jpg, ;
 		TabIndex = 81, ;
 		ToolTipText = "Reset CW, Recalculate", ;
 		Top = 248, ;

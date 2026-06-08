@@ -241,7 +241,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[IIF(Cert=1,"Mill Test Results Only",IIF(Cert=2,"LAB Certs OK" ,IIF(Cert=3,"HPA Certs",IIF(Cert=4,"C of C",IIF(Cert=5,"OTHER",IIF(Cert=6,"NO CERT","")))))) +SPACE(100)]]>
+	<expr><![CDATA[IIF(Cert=1,"Mill Test Results Only",IIF(Cert=2,"LAB Certs OK" ,IIF(Cert=3,"Company Certs",IIF(Cert=4,"C of C",IIF(Cert=5,"OTHER",IIF(Cert=6,"NO CERT","")))))) +SPACE(100)]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

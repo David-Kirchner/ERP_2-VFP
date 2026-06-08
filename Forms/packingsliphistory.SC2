@@ -466,6 +466,7 @@ DEFINE CLASS fsps_hist AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		close_allquotes = .F.
 		close_bill3addr = .F.

@@ -29,6 +29,7 @@ DEFINE CLASS frmcheck_text AS form
 	*< OBJECTDATA: ObjPath="grdSpecText.Column1.Text1" UniqueID="" Timestamp="" />
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Spec Check Text"
 		DoCreate = .T.
 		Height = 357

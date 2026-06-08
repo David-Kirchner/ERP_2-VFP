@@ -48,6 +48,7 @@ DEFINE CLASS frmcompanyid AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Found Company, but not persons name."

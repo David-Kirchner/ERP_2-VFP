@@ -71,11 +71,11 @@ DEFINE CLASS frmpreviewoptions AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BorderStyle = 2
 		Caption = "Preview options"
 		DoCreate = .T.
 		Height = 496
-		Icon = ('..\ico\options.ico')
 		Left = 10
 		MaxButton = .F.
 		MinButton = .F.

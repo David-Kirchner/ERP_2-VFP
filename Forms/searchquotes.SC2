@@ -181,6 +181,7 @@ DEFINE CLASS frmsearchquotes AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Search Table:"

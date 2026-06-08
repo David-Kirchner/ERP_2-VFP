@@ -88,6 +88,7 @@ DEFINE CLASS frmcofc AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Certificate of Conformance"
 		DataSession = 2
 		DoCreate = .T.

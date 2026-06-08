@@ -32,6 +32,7 @@ DEFINE CLASS frmsqlblocking AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "Locks and Blocking Process"
 		DataSession = 2
 		DoCreate = .T.

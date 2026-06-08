@@ -46,6 +46,7 @@ DEFINE CLASS frmapppermission_maint AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Program Permissions (AppSetup PRP=YES)"
 		cselecteduser = ""

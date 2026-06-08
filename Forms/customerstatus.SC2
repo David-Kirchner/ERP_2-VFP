@@ -49,6 +49,7 @@ DEFINE CLASS frmcustomerstatus AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Customer Status"

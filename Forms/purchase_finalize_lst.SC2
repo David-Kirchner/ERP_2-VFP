@@ -92,6 +92,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Save Invoice totals to a second StockLst Value table."
@@ -838,8 +839,8 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 		cSQLLst = cSQLLst+", 0.0000 AS IDDetailPerUnit, 0.0000 AS IDDetailTotal,0 AS ID_Detail_Process"
 		cSQLLst = cSQLLst+" ,CAST(D.Weight AS INT) AS RcvUnits, D.CostValue AS RcvPerUnit"
 		cSQLLst = cSQLLst+" ,M.ID "
-		cSQLLst = cSQLLst+" FROM dbo.[AR.StockLst_Master_History M WITH(NOLOCK)"
-		cSQLLst = cSQLLst+", dbo.[AR.StockLst_Detail_History D WITH(NOLOCK) "
+		cSQLLst = cSQLLst+" FROM dbo.Ar_Stocklst_Master_History M WITH(NOLOCK)"
+		cSQLLst = cSQLLst+", dbo.Ar_Stocklst_Detail_History D WITH(NOLOCK) "
 		cSQLLst = cSQLLst+" WHERE 0>0"
 		
 		IF USED('tmpToInvoice')
@@ -1017,7 +1018,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 				cSQLLstLive = cSQLLstLive+", 0.0000 AS IDDetailPerUnit, 0.0000 AS IDDetailTotal,0 AS ID_Detail_Process"
 				cSQLLstLive = cSQLLstLive+" ,CAST(D.Weight AS INT) AS RcvUnits, D.CostValue AS RcvPerUnit"
 				cSQLLstLive = cSQLLstLive+" ,M.ID "
-				cSQLLstLive = cSQLLstLive+" FROM dbo.[AR.StockLst_Master_History M, dbo.[AR.StockLst_Detail_History D"
+				cSQLLstLive = cSQLLstLive+" FROM dbo.Ar_Stocklst_Master_History M, dbo.Ar_Stocklst_Detail_History D"
 				cSQLLstLive = cSQLLstLive+" WHERE M.PO_item = '"+cPOitem+"'"
 				cSQLLstLive = cSQLLstLive+" AND M.ID = D.ID "
 		*		cSQLLstLive = cSQLLstLive+" AND M.[WHAT] = 'DELETE'"
@@ -1031,7 +1032,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 				cSQLLstLive = cSQLLstLive+", 0.0000 AS IDDetailPerUnit, 0.0000 AS IDDetailTotal,0 AS ID_Detail_Process"
 				cSQLLstLive = cSQLLstLive+" ,CAST(D.Weight AS INT) AS RcvUnits, D.CostValue AS RcvPerUnit"
 				cSQLLstLive = cSQLLstLive+" ,M.ID "
-				cSQLLstLive = cSQLLstLive+" FROM dbo.[AR.BrokerLst_Master_History M, dbo.[AR.BrokerLst_Detail_History D"
+				cSQLLstLive = cSQLLstLive+" FROM dbo.Ar_BrokerLst_Master_history M, dbo.Ar_BrokerLst_Detail_History D"
 				cSQLLstLive = cSQLLstLive+" WHERE M.PO_item = '"+cPOitem+"'"
 				cSQLLstLive = cSQLLstLive+" AND M.ID = D.ID "
 		*		cSQLLstLive = cSQLLstLive+" AND M.[WHAT] = 'DELETE'"
@@ -1372,11 +1373,11 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 		*!*	Start Ttrigger [StockLst_Detail_After_Update]
 		*!*	 
 		*!*	Updated records Counted =1         
-		*!*	INSERT dbo.[AR.StockLst_Detail_History from deleted.
-		*!*	INSERT dbo.[AR.StockLst_Detail_History from inserted.
+		*!*	INSERT dbo.Ar_Stocklst_Detail_History from deleted.
+		*!*	INSERT dbo.Ar_Stocklst_Detail_History from inserted.
 		*!*	get WeightChange,PcChange,SOitem
-		*!*	INSERT dbo.[AR.StockLst_Process_GS_History 
-		*!*	INSERT dbo.[AR.StockLst_Process_GS_History 
+		*!*	INSERT dbo.Ar_StockLst_Process_GS_History 
+		*!*	INSERT dbo.Ar_StockLst_Process_GS_History 
 		*!*	End Ttrigger [StockLst_Detail_After_Update]
 		*!*	END: Update Lst_Detail with InvoiceValue,CostValue
 		*!*	UPDATE dbo.StockLst_Value InvoiceValue,CurrUnitPrice,CurrUnits,CurrTotal
@@ -1877,7 +1878,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 						ENDIF
 						SELECT 0
 						
-						cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.[AR.StockLst_Detail_History "
+						cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.Ar_Stocklst_Detail_History "
 						cSQL = cSQL + " WHERE ID_Detail = "+STR(nID_Detail)
 						cSQL = cSQL + " AND ID_Detail_Process = "+STR(nID_Detail_Process)
 						
@@ -1925,7 +1926,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 			*!*						SELECT 0
 			*!*					ENDIF
 			*!*					
-			*!*					cSQL = "UPDATE dbo.[AR.StockLst_Detail_History "
+			*!*					cSQL = "UPDATE dbo.Ar_Stocklst_Detail_History "
 			*!*					cSQL = cSQL + " SET InvoiceValue = "+STR(nIDDetailPerUnit,10,4)
 			*!*					cSQL = cSQL + " WHERE ID_Detail = "+STR(nID_Detail)
 			*!*					cSQL = cSQL + " AND ID_Detail_Process = "+STR(nID_Detail_Process)
@@ -1998,7 +1999,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 							ENDIF
 						ENDIF			
 						****
-						cSQL = "UPDATE dbo.[AR.StockLst_Master_History "
+						cSQL = "UPDATE dbo.Ar_Stocklst_Master_History "
 						cSQL = cSQL + " SET PAID = "+STR(nIDDetailPerUnit,10,4)
 						cSQL = cSQL + " WHERE ID = "+STR(nID)
 						cSQL = cSQL + " AND POStatus = 'W' "
@@ -2135,7 +2136,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 						ENDIF
 						SELECT 0
 						
-						cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.[AR.BrokerLst_Detail_History "
+						cSQL = "SELECT COUNT(*) AS Cntd FROM dbo.Ar_BrokerLst_Detail_History "
 						cSQL = cSQL + " WHERE ID_Detail = "+STR(nID_Detail)
 						cSQL = cSQL + " AND ID_Detail_Process = "+STR(nID_Detail_Process)
 						
@@ -2183,7 +2184,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 							SELECT 0
 						ENDIF
 						
-						cSQL = "UPDATE dbo.[AR.BrokerLst_Detail_History "
+						cSQL = "UPDATE dbo.Ar_BrokerLst_Detail_History "
 						cSQL = cSQL + " SET InvoiceValue = "+STR(nIDDetailPerUnit,10,4)
 						cSQL = cSQL + " WHERE ID_Detail = "+STR(nID_Detail)
 						cSQL = cSQL + " AND ID_Detail_Process = "+STR(nID_Detail_Process)
@@ -2252,7 +2253,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 							ENDIF
 						ENDIF			
 						***
-						cSQL = "UPDATE dbo.[AR.BrokerLst_Master_History "
+						cSQL = "UPDATE dbo.Ar_BrokerLst_Master_history "
 						cSQL = cSQL + " SET PAID = "+STR(nIDDetailPerUnit,10,4)
 						cSQL = cSQL + " WHERE ID = "+STR(nID)
 						cSQL = cSQL + " AND POStatus = 'W' "
@@ -2286,7 +2287,7 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 			*!*	  		***************************************
 			*!*			IF NOT lFailTrans 
 			*!*				
-			*!*				cSQL = "INSERT INTO dbo.[AR.StockLst_Process_GS_History "
+			*!*				cSQL = "INSERT INTO dbo.Ar_StockLst_Process_GS_History "
 			*!*				cSQL = cSQL + "(SOitem,POitem,[comment],Process_ID,PWeight,PPc,InvoiceValue,ID_Detail,ID_Detail_Process"
 			*!*				*cSQL = cSQL + ",Validated"
 			*!*				cSQL = cSQL + ",Valid_When )"
@@ -2614,13 +2615,13 @@ DEFINE CLASS frmpurchase_finalize_lst AS form
 			
 			IF tmpToInvoice.Lst = "S"
 				*"SELECT InvoiceValue,CurrUnitPrice,CurrUnits FROM dbo.StockLst_Value WHERE ID_Detail = "+STR(nID_Detail)+" AND TBL = 'S'"
-				cSQL_Insert = "SELECT pWeight, pPc, S_QTY,S_P FROM dbo.[AR.StockLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT] = 'INSERT' AND [Comment] = 'StockLst_Detail Insert'"
-				cSQL_PODiff = "SELECT pWeight, pPc, S_QTY,S_P FROM dbo.[AR.StockLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT]='UPDATE' AND SOitem IS NULL"
-				cSQL_Sold   = "SELECT SOitem, pWeight, pPc,S_QTY,S_P FROM dbo.[AR.StockLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT]='UPDATE' AND SOitem IS NOT NULL"
+				cSQL_Insert = "SELECT pWeight, pPc, S_QTY,S_P FROM dbo.Ar_StockLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT] = 'INSERT' AND [Comment] = 'StockLst_Detail Insert'"
+				cSQL_PODiff = "SELECT pWeight, pPc, S_QTY,S_P FROM dbo.Ar_StockLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT]='UPDATE' AND SOitem IS NULL"
+				cSQL_Sold   = "SELECT SOitem, pWeight, pPc,S_QTY,S_P FROM dbo.Ar_StockLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT]='UPDATE' AND SOitem IS NOT NULL"
 			ELSE
-				cSQL_Insert = "SELECT pWeight, pPc, S_QTY,S_P FROM dbo.[AR.BrokerLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT] = 'INSERT' AND [Comment] = 'StockLst_Detail Insert'"
-				cSQL_PODiff = "SELECT pWeight, pPc, S_QTY,S_P FROM dbo.[AR.BrokerLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT]='UPDATE' AND SOitem IS NULL"
-				cSQL_Sold   = "SELECT SOitem, pWeight, pPc,S_QTY,S_P FROM dbo.[AR.BrokerLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT]='UPDATE' AND SOitem IS NOT NULL"
+				cSQL_Insert = "SELECT pWeight, pPc, S_QTY,S_P FROM dbo.Ar_BrokerLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT] = 'INSERT' AND [Comment] = 'StockLst_Detail Insert'"
+				cSQL_PODiff = "SELECT pWeight, pPc, S_QTY,S_P FROM dbo.Ar_BrokerLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT]='UPDATE' AND SOitem IS NULL"
+				cSQL_Sold   = "SELECT SOitem, pWeight, pPc,S_QTY,S_P FROM dbo.Ar_BrokerLst_Process_GS_History WHERE ID_Detail = "+STR(nID_Detail)+" AND [WHAT]='UPDATE' AND SOitem IS NOT NULL"
 			ENDIF	  
 			
 			IF USED('tmpInsert')

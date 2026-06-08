@@ -76,6 +76,7 @@ DEFINE CLASS frmsoitem_status AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		Caption = "SO Item Status"
 		closeconn = .F.
 		creturnvalue = ""

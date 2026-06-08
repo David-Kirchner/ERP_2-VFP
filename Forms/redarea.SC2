@@ -97,6 +97,7 @@ DEFINE CLASS frsredarea1 AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		Name = "frsRedarea1"

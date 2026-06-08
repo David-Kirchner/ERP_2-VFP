@@ -228,6 +228,7 @@ DEFINE CLASS frmspec_edit AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
 		Name = "frmSpec_Edit"

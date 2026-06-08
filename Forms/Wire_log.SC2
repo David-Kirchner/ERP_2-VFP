@@ -173,6 +173,7 @@ DEFINE CLASS frmwirelog AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
+		Icon = graphics\earth.ico
 		BackColor = 200,228,192
 		Caption = "Space Alloys USA"
 		DataSession = 2
@@ -472,7 +473,7 @@ DEFINE CLASS frmwirelog AS form
 		Command1.Height = 55, ;
 		Command1.Left = 5, ;
 		Command1.Name = "Command1", ;
-		Command1.Picture = ..\graphics\calc.bmp, ;
+		Command1.Picture = GRAPHICS\calc.bmp, ;
 		Command1.ReleaseErase = .F., ;
 		Command1.SpecialEffect = 1, ;
 		Command1.TerminateRead = .F., ;
