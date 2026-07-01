@@ -61,13 +61,13 @@ DEFINE CLASS frmchoosepoitem AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Mark all of the Packing Slip numbers for the RMA and Select"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 281
 		holdnumber = ""
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		MDIForm = .T.
 		MinHeight = 281

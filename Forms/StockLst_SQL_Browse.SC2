@@ -629,4 +629,10 @@ DEFINE CLASS fsstk_browse AS formset
 		*MODIFY FORM "c:\program files (x86)\hpa\forms\stocklst_sql_modal.scx" is the Other screen.
 	ENDPROC
 
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
 ENDDEFINE

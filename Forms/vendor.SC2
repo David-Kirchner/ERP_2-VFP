@@ -218,7 +218,7 @@ DEFINE CLASS vendor AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		AutoRelease = .T.
 		DataSession = 1
 		editing = .F.
@@ -5149,4 +5149,10 @@ DEFINE CLASS vendor AS formset
 		This.parent.grdVendor.Refresh
 	ENDPROC
 
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
 ENDDEFINE

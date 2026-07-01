@@ -80,12 +80,12 @@ DEFINE CLASS frmreport_m_sales AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Sales Total for Month"
 		csalesp = ''
 		DataSession = 2
 		DoCreate = .T.
 		Height = 443
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		LockScreen = .F.
 		MDIForm = .T.
@@ -573,6 +573,10 @@ DEFINE CLASS frmreport_m_sales AS form
 		IF USED('Ship') AND close_Ship
 			USE IN Ship
 		EndIf
+		
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
 		
 	ENDPROC
 

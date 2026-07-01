@@ -37,11 +37,11 @@ DEFINE CLASS frmreceive_order_pw AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Shop Receive Paper Work"
 		ControlBox = .F.
 		DoCreate = .T.
 		Height = 195
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmReceive_Order_PW"
 		nconnhandle = 0
@@ -136,6 +136,12 @@ DEFINE CLASS frmreceive_order_pw AS form
 		Width = 100
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Load
 		IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_SQL ADDITIVE

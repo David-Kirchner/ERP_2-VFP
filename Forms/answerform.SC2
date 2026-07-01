@@ -17,7 +17,6 @@ DEFINE CLASS answerform AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BorderStyle = 0
@@ -28,6 +27,7 @@ DEFINE CLASS answerform AS form
 		creturn =  
 		DoCreate = .T.
 		Height = 87
+		Icon = graphics\earth-globe.ico
 		Name = "answerform"
 		Width = 254
 		WindowType = 1

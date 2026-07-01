@@ -60,11 +60,11 @@ DEFINE CLASS frmquotebody AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Build Quote Body"
 		DoCreate = .T.
 		Height = 222
+		Icon = graphics\earth-globe.ico
 		isediting = .F.
 		Left = 83
 		Name = "frmQuoteBody"

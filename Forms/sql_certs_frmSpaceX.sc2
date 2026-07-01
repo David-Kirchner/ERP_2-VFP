@@ -1,0 +1,1858 @@
+*--------------------------------------------------------------------------------------------------------------------------------------------------------
+* sql_certs_frmSpaceX - SpaceX hardness profile (split from SQL_certs formset)
+*--------------------------------------------------------------------------------------------------------------------------------------------------------
+*< FOXBIN2PRG: Version="1.21" SourceFile="sql_certs_frmSpaceX.scx" CPID="1252" />
+*
+DEFINE CLASS dataenvironment AS dataenvironment
+ 	*< CLASSDATA: Baseclass="dataenvironment" Timestamp="" Scale="" Uniqueid="" ClassIcon="2" />
+	*<PropValue>
+		DataSource = .NULL.
+		Height = 200
+		Left = 1
+		Name = "Dataenvironment"
+		Top = 220
+		Width = 520
+	*</PropValue>
+ENDDEFINE
+
+DEFINE CLASS sql_certs_frmSpaceX AS form
+ 	*< CLASSDATA: Baseclass="form" Timestamp="" Scale="" Uniqueid="" />
+
+	*<DefinedPropArrayMethod>
+		*p: oCertFormSet
+	*</DefinedPropArrayMethod>
+
+	*< OBJECTDATA: ObjPath="frmSpaceX" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label67" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label17" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label66" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label65" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN3875" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN3750" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN3625" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN3500" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN3375" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN3250" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN3125" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN3000" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN2875" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label9" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label10" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label11" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label12" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label13" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label14" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label15" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label16" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN2750" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN2625" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN2500" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN2375" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN2250" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN2125" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label18" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label19" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label20" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label21" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label22" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label23" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label24" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN2000" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN1875" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label25" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label26" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label27" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label28" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label29" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label30" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label31" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label32" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN1750" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN1625" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN1500" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN1375" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN1250" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN1125" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN1000" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN0875" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label33" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label34" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label35" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label36" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label37" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label38" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label39" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label40" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN0750" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN0625" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN0500" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN0375" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN0250" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtN0125" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txt0000" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP0125" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label3" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label4" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label5" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label6" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label7" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label8" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP0250" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP0375" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP0500" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP0625" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP0750" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP0875" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP1000" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP1125" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label41" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label42" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label43" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label44" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label45" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label46" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label47" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label48" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP1250" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP1375" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP1500" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP1625" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP1750" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP1875" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP2000" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP2125" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label49" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label50" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label51" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label52" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label53" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label54" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label55" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label56" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP2250" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP2375" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP2500" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP2625" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP2750" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP2875" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP3000" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP3125" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label57" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label58" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label59" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label60" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label61" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label62" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label63" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label64" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP3250" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP3375" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP3500" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP3625" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP3750" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtP3875" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="cmdSpaceXEdit" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="cmdSpaceXExit" UniqueID="" Timestamp="" />
+
+	*<PropValue>
+		Caption = "SpaceX required Hardness profile"
+		Closable = .F.
+		ControlBox = .F.
+		DoCreate = .T.
+		HalfHeightCaption = .T.
+		Height = 245
+		Left = 657
+		Name = "frmSpaceX"
+		ShowTips = .T.
+		Top = 11
+		Visible = .F.
+		Width = 620
+		WindowState = 0
+	*</PropValue>
+
+		Caption = "SpaceX required Hardness profile", ;
+		Closable = .F., ;
+		ControlBox = .F., ;
+		DoCreate = .T., ;
+		HalfHeightCaption = .T., ;
+		Height = 245, ;
+		Left = 657, ;
+		MDIForm = .T., ;
+		Name = "frmSpaceX", ;
+		ShowTips = .T., ;
+		Top = 11, ;
+		Visible = .F., ;
+		Width = 620, ;
+		WindowState = 0
+		*< END OBJECT: BaseClass="form" />
+
+	ADD OBJECT 'cmdSpaceXEdit' AS commandbutton WITH ;
+		Caption = "Edit", ;
+		Height = 27, ;
+		Left = 222, ;
+		Name = "cmdSpaceXEdit", ;
+		Top = 214, ;
+		Width = 84
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'cmdSpaceXExit' AS commandbutton WITH ;
+		Caption = "Exit", ;
+		Height = 27, ;
+		Left = 366, ;
+		Name = "cmdSpaceXExit", ;
+		Top = 214, ;
+		Width = 84
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'Label1' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		BackColor = 128,255,128, ;
+		Caption = "0.000", ;
+		Height = 17, ;
+		Left = 315, ;
+		Name = "Label1", ;
+		TabIndex = 65, ;
+		Top = 19, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label10' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-2.875", ;
+		Height = 17, ;
+		Left = 87, ;
+		Name = "Label10", ;
+		TabIndex = 11, ;
+		Top = 43, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label11' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-2.750", ;
+		Height = 17, ;
+		Left = 87, ;
+		Name = "Label11", ;
+		TabIndex = 12, ;
+		Top = 67, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label12' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-2.625", ;
+		Height = 17, ;
+		Left = 87, ;
+		Name = "Label12", ;
+		TabIndex = 13, ;
+		Top = 91, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label13' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-2.500", ;
+		Height = 17, ;
+		Left = 87, ;
+		Name = "Label13", ;
+		TabIndex = 14, ;
+		Top = 115, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label14' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-2.375", ;
+		Height = 17, ;
+		Left = 87, ;
+		Name = "Label14", ;
+		TabIndex = 15, ;
+		Top = 139, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label15' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-2.250", ;
+		Height = 17, ;
+		Left = 87, ;
+		Name = "Label15", ;
+		TabIndex = 16, ;
+		Top = 163, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label16' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-2.125", ;
+		Height = 17, ;
+		Left = 87, ;
+		Name = "Label16", ;
+		TabIndex = 17, ;
+		Top = 187, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label17' AS label WITH ;
+		Caption = "Left of Center", ;
+		Height = 17, ;
+		Left = 169, ;
+		Name = "Label17", ;
+		Top = 2, ;
+		Width = 84
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label18' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "-3.875", ;
+		Height = 17, ;
+		Left = 10, ;
+		Name = "Label18", ;
+		TabIndex = 26, ;
+		Top = 44, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label19' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "-3.750", ;
+		Height = 17, ;
+		Left = 10, ;
+		Name = "Label19", ;
+		TabIndex = 27, ;
+		Top = 68, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label2' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "0.125", ;
+		Height = 17, ;
+		Left = 315, ;
+		Name = "Label2", ;
+		TabIndex = 66, ;
+		Top = 43, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label20' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "-3.625", ;
+		Height = 17, ;
+		Left = 10, ;
+		Name = "Label20", ;
+		TabIndex = 28, ;
+		Top = 92, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label21' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "-3.500", ;
+		Height = 17, ;
+		Left = 10, ;
+		Name = "Label21", ;
+		TabIndex = 29, ;
+		Top = 116, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label22' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "-3.375", ;
+		Height = 17, ;
+		Left = 10, ;
+		Name = "Label22", ;
+		TabIndex = 30, ;
+		Top = 140, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label23' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "-3.250", ;
+		Height = 17, ;
+		Left = 10, ;
+		Name = "Label23", ;
+		TabIndex = 31, ;
+		Top = 164, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label24' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "-3.125", ;
+		Height = 17, ;
+		Left = 10, ;
+		Name = "Label24", ;
+		TabIndex = 32, ;
+		Top = 188, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label25' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-2.000", ;
+		Height = 17, ;
+		Left = 162, ;
+		Name = "Label25", ;
+		TabIndex = 33, ;
+		Top = 19, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label26' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-1.875", ;
+		Height = 17, ;
+		Left = 162, ;
+		Name = "Label26", ;
+		TabIndex = 34, ;
+		Top = 43, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label27' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-1.750", ;
+		Height = 17, ;
+		Left = 162, ;
+		Name = "Label27", ;
+		TabIndex = 35, ;
+		Top = 67, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label28' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-1.625", ;
+		Height = 17, ;
+		Left = 162, ;
+		Name = "Label28", ;
+		TabIndex = 36, ;
+		Top = 91, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label29' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-1.500", ;
+		Height = 17, ;
+		Left = 162, ;
+		Name = "Label29", ;
+		TabIndex = 37, ;
+		Top = 115, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label3' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "0.250", ;
+		Height = 17, ;
+		Left = 315, ;
+		Name = "Label3", ;
+		TabIndex = 67, ;
+		Top = 67, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label30' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-1.375", ;
+		Height = 17, ;
+		Left = 162, ;
+		Name = "Label30", ;
+		TabIndex = 38, ;
+		Top = 139, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label31' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-1.250", ;
+		Height = 17, ;
+		Left = 162, ;
+		Name = "Label31", ;
+		TabIndex = 39, ;
+		Top = 163, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label32' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-1.125", ;
+		Height = 17, ;
+		Left = 162, ;
+		Name = "Label32", ;
+		TabIndex = 40, ;
+		Top = 187, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label33' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-1.000", ;
+		Height = 17, ;
+		Left = 238, ;
+		Name = "Label33", ;
+		TabIndex = 49, ;
+		Top = 19, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label34' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-0.875", ;
+		Height = 17, ;
+		Left = 238, ;
+		Name = "Label34", ;
+		TabIndex = 50, ;
+		Top = 43, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label35' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-0.750", ;
+		Height = 17, ;
+		Left = 238, ;
+		Name = "Label35", ;
+		TabIndex = 51, ;
+		Top = 67, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label36' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-0.625", ;
+		Height = 17, ;
+		Left = 238, ;
+		Name = "Label36", ;
+		TabIndex = 52, ;
+		Top = 91, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label37' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-0.500", ;
+		Height = 17, ;
+		Left = 238, ;
+		Name = "Label37", ;
+		TabIndex = 53, ;
+		Top = 115, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label38' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-0.375", ;
+		Height = 17, ;
+		Left = 238, ;
+		Name = "Label38", ;
+		TabIndex = 54, ;
+		Top = 139, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label39' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-0.250", ;
+		Height = 17, ;
+		Left = 238, ;
+		Name = "Label39", ;
+		TabIndex = 55, ;
+		Top = 163, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label4' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "0.375", ;
+		Height = 17, ;
+		Left = 315, ;
+		Name = "Label4", ;
+		TabIndex = 68, ;
+		Top = 91, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label40' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-0.125", ;
+		Height = 17, ;
+		Left = 238, ;
+		Name = "Label40", ;
+		TabIndex = 56, ;
+		Top = 187, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label41' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "1.000", ;
+		Height = 17, ;
+		Left = 390, ;
+		Name = "Label41", ;
+		TabIndex = 81, ;
+		Top = 19, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label42' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "1.125", ;
+		Height = 17, ;
+		Left = 390, ;
+		Name = "Label42", ;
+		TabIndex = 82, ;
+		Top = 43, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label43' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "1.250", ;
+		Height = 17, ;
+		Left = 390, ;
+		Name = "Label43", ;
+		TabIndex = 83, ;
+		Top = 67, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label44' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "1.375", ;
+		Height = 17, ;
+		Left = 390, ;
+		Name = "Label44", ;
+		TabIndex = 84, ;
+		Top = 91, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label45' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "1.500", ;
+		Height = 17, ;
+		Left = 390, ;
+		Name = "Label45", ;
+		TabIndex = 85, ;
+		Top = 115, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label46' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "1.625", ;
+		Height = 17, ;
+		Left = 390, ;
+		Name = "Label46", ;
+		TabIndex = 86, ;
+		Top = 139, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label47' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "1.750", ;
+		Height = 17, ;
+		Left = 390, ;
+		Name = "Label47", ;
+		TabIndex = 87, ;
+		Top = 163, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label48' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "1.875", ;
+		Height = 17, ;
+		Left = 390, ;
+		Name = "Label48", ;
+		TabIndex = 88, ;
+		Top = 187, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label49' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "2.000", ;
+		Height = 17, ;
+		Left = 466, ;
+		Name = "Label49", ;
+		TabIndex = 97, ;
+		Top = 19, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label5' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "0.500", ;
+		Height = 17, ;
+		Left = 315, ;
+		Name = "Label5", ;
+		TabIndex = 69, ;
+		Top = 115, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label50' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "2.125", ;
+		Height = 17, ;
+		Left = 466, ;
+		Name = "Label50", ;
+		TabIndex = 98, ;
+		Top = 43, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label51' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "2.250", ;
+		Height = 17, ;
+		Left = 466, ;
+		Name = "Label51", ;
+		TabIndex = 99, ;
+		Top = 67, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label52' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "2.375", ;
+		Height = 17, ;
+		Left = 466, ;
+		Name = "Label52", ;
+		TabIndex = 100, ;
+		Top = 91, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label53' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "2.500", ;
+		Height = 17, ;
+		Left = 466, ;
+		Name = "Label53", ;
+		TabIndex = 101, ;
+		Top = 115, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label54' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "2.625", ;
+		Height = 17, ;
+		Left = 466, ;
+		Name = "Label54", ;
+		TabIndex = 102, ;
+		Top = 139, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label55' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "2.750", ;
+		Height = 17, ;
+		Left = 466, ;
+		Name = "Label55", ;
+		TabIndex = 103, ;
+		Top = 163, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label56' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "2.875", ;
+		Height = 17, ;
+		Left = 466, ;
+		Name = "Label56", ;
+		TabIndex = 104, ;
+		Top = 187, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label57' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "3.000", ;
+		Height = 17, ;
+		Left = 542, ;
+		Name = "Label57", ;
+		TabIndex = 113, ;
+		Top = 19, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label58' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "3.125", ;
+		Height = 17, ;
+		Left = 542, ;
+		Name = "Label58", ;
+		TabIndex = 114, ;
+		Top = 43, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label59' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "3.250", ;
+		Height = 17, ;
+		Left = 542, ;
+		Name = "Label59", ;
+		TabIndex = 115, ;
+		Top = 67, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label6' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "0.625", ;
+		Height = 17, ;
+		Left = 315, ;
+		Name = "Label6", ;
+		TabIndex = 70, ;
+		Top = 139, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label60' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "3.375", ;
+		Height = 17, ;
+		Left = 542, ;
+		Name = "Label60", ;
+		TabIndex = 116, ;
+		Top = 91, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label61' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "3.500", ;
+		Height = 17, ;
+		Left = 542, ;
+		Name = "Label61", ;
+		TabIndex = 117, ;
+		Top = 115, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label62' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "3.625", ;
+		Height = 17, ;
+		Left = 542, ;
+		Name = "Label62", ;
+		TabIndex = 118, ;
+		Top = 139, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label63' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "3.750", ;
+		Height = 17, ;
+		Left = 542, ;
+		Name = "Label63", ;
+		TabIndex = 119, ;
+		Top = 163, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label64' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "3.875", ;
+		Height = 17, ;
+		Left = 542, ;
+		Name = "Label64", ;
+		TabIndex = 120, ;
+		Top = 187, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label65' AS label WITH ;
+		Caption = "Center", ;
+		Height = 17, ;
+		Left = 316, ;
+		Name = "Label65", ;
+		Top = 2, ;
+		Width = 47
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label66' AS label WITH ;
+		Caption = "Right of Center", ;
+		Height = 17, ;
+		Left = 408, ;
+		Name = "Label66", ;
+		Top = 2, ;
+		Width = 96
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label67' AS label WITH ;
+		Caption = "Rockwell C Hardness", ;
+		Height = 17, ;
+		Left = 12, ;
+		Name = "Label67", ;
+		Top = 2, ;
+		Width = 132
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label7' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "0.750", ;
+		Height = 17, ;
+		Left = 315, ;
+		Name = "Label7", ;
+		TabIndex = 71, ;
+		Top = 163, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label8' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "0.875", ;
+		Height = 17, ;
+		Left = 315, ;
+		Name = "Label8", ;
+		TabIndex = 72, ;
+		Top = 187, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label9' AS label WITH ;
+		Alignment = 1, ;
+		Anchor = 0, ;
+		Caption = "-3.000", ;
+		Height = 17, ;
+		Left = 87, ;
+		Name = "Label9", ;
+		TabIndex = 10, ;
+		Top = 19, ;
+		Width = 36
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'txt0000' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 353, ;
+		Name = "txt0000", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 63, ;
+		Top = 15, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN0125' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 276, ;
+		Name = "txtN0125", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 62, ;
+		Top = 183, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN0250' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 276, ;
+		Name = "txtN0250", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 61, ;
+		Top = 159, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN0375' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 276, ;
+		Name = "txtN0375", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 60, ;
+		Top = 135, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN0500' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 276, ;
+		Name = "txtN0500", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 59, ;
+		Top = 111, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN0625' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 276, ;
+		Name = "txtN0625", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 58, ;
+		Top = 87, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN0750' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 276, ;
+		Name = "txtN0750", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 57, ;
+		Top = 63, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN0875' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 276, ;
+		Name = "txtN0875", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 48, ;
+		Top = 39, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN1000' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 276, ;
+		Name = "txtN1000", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 47, ;
+		Top = 15, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN1125' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 200, ;
+		Name = "txtN1125", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 46, ;
+		Top = 183, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN1250' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 200, ;
+		Name = "txtN1250", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 45, ;
+		Top = 159, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN1375' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 200, ;
+		Name = "txtN1375", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 44, ;
+		Top = 135, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN1500' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 200, ;
+		Name = "txtN1500", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 43, ;
+		Top = 111, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN1625' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 200, ;
+		Name = "txtN1625", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 42, ;
+		Top = 87, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN1750' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 200, ;
+		Name = "txtN1750", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 41, ;
+		Top = 63, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN1875' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 200, ;
+		Name = "txtN1875", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 25, ;
+		Top = 39, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN2000' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 200, ;
+		Name = "txtN2000", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 24, ;
+		Top = 15, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN2125' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 125, ;
+		Name = "txtN2125", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 23, ;
+		Top = 183, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN2250' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 125, ;
+		Name = "txtN2250", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 22, ;
+		Top = 159, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN2375' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 125, ;
+		Name = "txtN2375", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 21, ;
+		Top = 135, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN2500' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 125, ;
+		Name = "txtN2500", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 20, ;
+		Top = 111, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN2625' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 125, ;
+		Name = "txtN2625", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 19, ;
+		Top = 87, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN2750' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 125, ;
+		Name = "txtN2750", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 18, ;
+		Top = 63, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN2875' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 125, ;
+		Name = "txtN2875", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 9, ;
+		Top = 39, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN3000' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 125, ;
+		Name = "txtN3000", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 8, ;
+		Top = 15, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN3125' AS textbox WITH ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 49, ;
+		Name = "txtN3125", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 7, ;
+		Top = 183, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN3250' AS textbox WITH ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 49, ;
+		Name = "txtN3250", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 6, ;
+		Top = 159, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN3375' AS textbox WITH ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 49, ;
+		Name = "txtN3375", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 5, ;
+		Top = 135, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN3500' AS textbox WITH ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 49, ;
+		Name = "txtN3500", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 4, ;
+		Top = 111, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN3625' AS textbox WITH ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 49, ;
+		Name = "txtN3625", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 3, ;
+		Top = 87, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN3750' AS textbox WITH ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 49, ;
+		Name = "txtN3750", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 2, ;
+		Top = 63, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtN3875' AS textbox WITH ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 49, ;
+		Name = "txtN3875", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 1, ;
+		Top = 39, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP0125' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 353, ;
+		Name = "txtP0125", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 64, ;
+		Top = 39, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP0250' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 353, ;
+		Name = "txtP0250", ;
+		NullDisplay = "", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 73, ;
+		Top = 63, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP0375' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 353, ;
+		Name = "txtP0375", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 74, ;
+		Top = 87, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP0500' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 353, ;
+		Name = "txtP0500", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 75, ;
+		Top = 111, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP0625' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 353, ;
+		Name = "txtP0625", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 76, ;
+		Top = 135, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP0750' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 353, ;
+		Name = "txtP0750", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 77, ;
+		Top = 159, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP0875' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 353, ;
+		Name = "txtP0875", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 78, ;
+		Top = 183, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP1000' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 428, ;
+		Name = "txtP1000", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 79, ;
+		Top = 15, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP1125' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 428, ;
+		Name = "txtP1125", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 80, ;
+		Top = 39, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP1250' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 428, ;
+		Name = "txtP1250", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 89, ;
+		Top = 63, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP1375' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 428, ;
+		Name = "txtP1375", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 90, ;
+		Top = 87, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP1500' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 428, ;
+		Name = "txtP1500", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 91, ;
+		Top = 111, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP1625' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 428, ;
+		Name = "txtP1625", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 92, ;
+		Top = 135, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP1750' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 428, ;
+		Name = "txtP1750", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 93, ;
+		Top = 159, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP1875' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 428, ;
+		Name = "txtP1875", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 94, ;
+		Top = 183, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP2000' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 504, ;
+		Name = "txtP2000", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 95, ;
+		Top = 15, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP2125' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 504, ;
+		Name = "txtP2125", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 96, ;
+		Top = 39, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP2250' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 504, ;
+		Name = "txtP2250", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 105, ;
+		Top = 63, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP2375' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 504, ;
+		Name = "txtP2375", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 106, ;
+		Top = 87, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP2500' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 504, ;
+		Name = "txtP2500", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 107, ;
+		Top = 111, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP2625' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 504, ;
+		Name = "txtP2625", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 108, ;
+		Top = 135, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP2750' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 504, ;
+		Name = "txtP2750", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 109, ;
+		Top = 159, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP2875' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 504, ;
+		Name = "txtP2875", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 110, ;
+		Top = 183, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP3000' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 580, ;
+		Name = "txtP3000", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 111, ;
+		Top = 15, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP3125' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 580, ;
+		Name = "txtP3125", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 112, ;
+		Top = 39, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP3250' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 580, ;
+		Name = "txtP3250", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 121, ;
+		Top = 63, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP3375' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 580, ;
+		Name = "txtP3375", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 122, ;
+		Top = 87, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP3500' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 580, ;
+		Name = "txtP3500", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 123, ;
+		Top = 111, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP3625' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 580, ;
+		Name = "txtP3625", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 124, ;
+		Top = 135, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP3750' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 580, ;
+		Name = "txtP3750", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 125, ;
+		Top = 159, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtP3875' AS textbox WITH ;
+		Anchor = 0, ;
+		Enabled = .F., ;
+		Height = 23, ;
+		InputMask = "99.9", ;
+		Left = 580, ;
+		Name = "txtP3875", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 126, ;
+		Top = 183, ;
+		Width = 35
+		*< END OBJECT: BaseClass="textbox" />
+
+	PROCEDURE Init
+		LPARAMETERS toFormSet
+		IF VARTYPE(toFormSet) = "O"
+			ThisForm.oCertFormSet = toFormSet
+		ENDIF
+	ENDPROC
+
+	PROCEDURE cmdSpaceXEdit.Click
+		IF This.Caption = "Edit"
+			ThisForm.oCertFormSet.EnableSpaceXHardness(.T.)
+			ThisForm.cmdSpaceXExit.Caption = "Abort"
+			This.Caption = "Save"
+			ThisForm.txt0000.SetFocus
+		ELSE
+			IF This.Caption = "Save"
+				IF ThisForm.oCertFormSet.SaveSpacexHardness()
+					ThisForm.oCertFormSet.EnableSpaceXHardness(.F.)
+					ThisForm.cmdSpaceXExit.Caption = "Exit"
+					This.Caption = "Edit"
+				ENDIF
+			ENDIF
+		ENDIF
+	ENDPROC
+
+	PROCEDURE cmdSpaceXExit.Click
+		IF This.Caption = "Exit"
+			ThisForm.Visible = .F.
+		ELSE
+			IF This.Caption = "Abort"
+				ThisForm.oCertFormSet.EnableSpaceXHardness(.F.)
+				ThisForm.oCertFormSet.ShowSpaceXHardness()
+				This.Caption = "Exit"
+				ThisForm.cmdSpaceXEdit.Caption = "Edit"
+			ENDIF
+		ENDIF
+	ENDPROC
+
+ENDDEFINE

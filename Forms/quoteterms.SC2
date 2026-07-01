@@ -45,7 +45,6 @@ DEFINE CLASS frmqterms AS form
 	*< OBJECTDATA: ObjPath="chkHDPlasma" UniqueID="" Timestamp="" />
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 128,128,192
 		BorderStyle = 0
 		Caption = "Quote Terms"
@@ -53,6 +52,7 @@ DEFINE CLASS frmqterms AS form
 		Closable = .F.
 		DoCreate = .T.
 		Height = 340
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "FRMQTERMS"
 		SizeBox = .T.

@@ -1,6 +1,6 @@
 *       *********************************************************
 *       *                                                         
-*       * 06/07/2026           SETUP_ERP.MPR            18:52:21  
+*       * 06/18/2026           SETUP_ERP.MPR            15:32:25  
 *       *                                                         
 *       *********************************************************
 *       *                                                         
@@ -26,15 +26,15 @@
 SET SYSMENU TO
 SET SYSMENU AUTOMATIC
 
-DEFINE PAD _7hg14g8d5 OF _MSYSMENU PROMPT "\<File" COLOR SCHEME 3 ;
+DEFINE PAD _7hr0xb3px OF _MSYSMENU PROMPT "\<File" COLOR SCHEME 3 ;
 	KEY ALT+F, ""
-DEFINE PAD _7hg14g8d6 OF _MSYSMENU PROMPT "\<Edit" COLOR SCHEME 3 ;
+DEFINE PAD _7hr0xb3py OF _MSYSMENU PROMPT "\<Edit" COLOR SCHEME 3 ;
 	KEY ALT+E, ""
-DEFINE PAD _7hg14g8d7 OF _MSYSMENU PROMPT "\<Help" COLOR SCHEME 3 ;
+DEFINE PAD _7hr0xb3pz OF _MSYSMENU PROMPT "\<Help" COLOR SCHEME 3 ;
 	KEY ALT+H, ""
-ON PAD _7hg14g8d5 OF _MSYSMENU ACTIVATE POPUP file
-ON PAD _7hg14g8d6 OF _MSYSMENU ACTIVATE POPUP edit
-ON PAD _7hg14g8d7 OF _MSYSMENU ACTIVATE POPUP help
+ON PAD _7hr0xb3px OF _MSYSMENU ACTIVATE POPUP file
+ON PAD _7hr0xb3py OF _MSYSMENU ACTIVATE POPUP edit
+ON PAD _7hr0xb3pz OF _MSYSMENU ACTIVATE POPUP help
 
 DEFINE POPUP file MARGIN RELATIVE SHADOW COLOR SCHEME 4
 DEFINE BAR _mfi_close OF file PROMPT "\<Close" ;

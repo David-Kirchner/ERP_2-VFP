@@ -206,7 +206,7 @@ DEFINE CLASS frmstock_history AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		AlwaysOnTop = .T.
 		BackColor = 240,240,240
 		Caption = "Stock History"
@@ -5761,4 +5761,10 @@ DEFINE CLASS frmstock_history AS form
 		ENDIF
 	ENDPROC
 
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
 ENDDEFINE

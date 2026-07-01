@@ -5272,7 +5272,7 @@ DEFINE CLASS gfmlog AS form 		&& GFM log
 		*!*		SET SAFETY ON
 			ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH gfmlog.Heat, gfmlog.Lot, "GFM"
+			DO FORM 'Forms\SQL_certs' WITH gfmlog.Heat, gfmlog.Lot, "GFM"
 		*	ThisForm.AlwaysOnBottom = .F.
 		*!*	RELEASE ALL LIKE STOR*
 		IF USED('GFMlog')
@@ -11199,7 +11199,7 @@ DEFINE CLASS lakeerielog AS form
 		SELECT LakeErie_log
 		ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH LakeErie_log.Heat, LakeErie_log.Lot, "Roll"
+			DO FORM 'Forms\SQL_certs' WITH LakeErie_log.Heat, LakeErie_log.Lot, "Roll"
 		*	ThisForm.AlwaysOnBottom = .F.
 		
 		SELECT LakeErie_log

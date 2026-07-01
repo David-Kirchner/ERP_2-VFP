@@ -95,12 +95,12 @@ DEFINE CLASS frmselect_so_item AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "View SO items"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 337
 		holdnumber = 0
+		Icon = graphics\earth-globe.ico
 		Left = 5
 		LockScreen = .F.
 		MDIForm = .T.
@@ -884,6 +884,12 @@ DEFINE CLASS frmselect_so_item AS form
 		Width = 72
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		PARAMETERS pSO
 		*DO FORM Forms\Select_SO-item WITH nSO TO cSOitem

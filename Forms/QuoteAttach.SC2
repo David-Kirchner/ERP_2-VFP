@@ -43,7 +43,6 @@ DEFINE CLASS frmquoteattach AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 255,255,0
 		BorderStyle = 3
@@ -52,6 +51,7 @@ DEFINE CLASS frmquoteattach AS form
 		Closable = .T.
 		DoCreate = .T.
 		Height = 264
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		MDIForm = .T.
 		MinHeight = 100

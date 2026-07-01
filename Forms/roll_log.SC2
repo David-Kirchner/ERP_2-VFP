@@ -193,13 +193,13 @@ DEFINE CLASS frmrolllog AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 209,208,192
 		Caption = "Space Alloys USA"
 		DataSession = 2
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 457
+		Icon = graphics\earth-globe.ico
 		Left = 22
 		lopenship = .F.
 		lseeall = .F.
@@ -2931,6 +2931,10 @@ DEFINE CLASS frmrolllog AS form
 		IF ThisForm.lOpenShip AND USED('Ship')
 			USE IN Ship
 		ENDIF
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+		
 	ENDPROC
 
 	PROCEDURE duplots		&& Count the number of within this lot
@@ -4414,7 +4418,7 @@ DEFINE CLASS frmrolllog AS form
 		SELECT ROLL_Log
 		ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH ROLL_Log.Heat, ROLL_Log.Lot, "Roll"
+			DO FORM 'Forms\SQL_certs' WITH ROLL_Log.Heat, ROLL_Log.Lot, "Roll"
 		*	ThisForm.AlwaysOnBottom = .F.
 		
 		SELECT ROLL_Log

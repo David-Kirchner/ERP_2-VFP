@@ -60,12 +60,12 @@ DEFINE CLASS frmpoinvoices AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .F.
 		Caption = "Invoices for Purchase Order"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 280
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		LockScreen = .F.
 		MDIForm = .T.

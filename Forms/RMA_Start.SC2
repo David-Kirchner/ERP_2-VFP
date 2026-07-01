@@ -103,11 +103,11 @@ DEFINE CLASS frmrma_start AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Start an RMA"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 324
+		Icon = graphics\earth-globe.ico
 		insertrma = .F.
 		Left = 10
 		MDIForm = .T.

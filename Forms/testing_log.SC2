@@ -127,7 +127,7 @@ DEFINE CLASS frmwirelog AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		BackColor = 158,220,255
 		Caption = "Space Alloys USA"
 		DataSession = 2
@@ -2942,7 +2942,7 @@ DEFINE CLASS frmwirelog AS form
 		SELECT tmpTesting_Log
 		ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH tmpTesting_Log.Heat, tmpTesting_Log.Lot, "WireDraw"
+			DO FORM 'Forms\SQL_certs' WITH tmpTesting_Log.Heat, tmpTesting_Log.Lot, "WireDraw"
 		*	ThisForm.AlwaysOnBottom = .F.
 		
 		SELECT tmpTesting_Log

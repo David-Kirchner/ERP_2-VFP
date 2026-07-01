@@ -473,10 +473,10 @@ DEFINE CLASS hpacert AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		csearchheat = <fb2p_value>''&#13;</fb2p_value>
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		isediting = .F.
 		lfiltered = .F.
 		Name = "HPACert"
@@ -11231,7 +11231,7 @@ DEFINE CLASS hpacert AS formset
 				
 				cSQL = "UPDATE dbo.Cert SET "
 				cSQL = cSQL +" Signed=0"
-				cSQL = cSQL +",Signature=''"
+				cSQL = cSQL +",Sig_ID=NULL"
 				cSQL = cSQL +",SignUser=''"
 				cSQL = cSQL +",SignDate=''" 
 				cSQL = cSQL +" WHERE ID="+STR(nID)

@@ -84,7 +84,6 @@ DEFINE CLASS frmbrowsepricetable AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Browse Price Table"
 		cc = ''
@@ -92,6 +91,7 @@ DEFINE CLASS frmbrowsepricetable AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 291
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		MaxHeight = -1
 		MaxWidth = 888

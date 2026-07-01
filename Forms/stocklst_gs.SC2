@@ -257,7 +257,7 @@ DEFINE CLASS frmstocklst_report AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		Caption = "Green Sheet"
 		DataSession = 2
 		DoCreate = .T.

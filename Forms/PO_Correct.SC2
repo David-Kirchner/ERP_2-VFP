@@ -179,7 +179,6 @@ DEFINE CLASS frmpo_correct AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		askedreplacedescrpo = .F.
 		askedreplacedescrso = .F.
@@ -201,6 +200,7 @@ DEFINE CLASS frmpo_correct AS form
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 386
+		Icon = graphics\earth-globe.ico
 		lclone = .F.
 		Left = 16
 		lran_recv_stock = .F.

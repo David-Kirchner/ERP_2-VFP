@@ -46,7 +46,6 @@ DEFINE CLASS frmsearchform AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Search Table:"
@@ -57,6 +56,7 @@ DEFINE CLASS frmsearchform AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 389
+		Icon = graphics\earth-globe.ico
 		MinHeight = 300
 		MinWidth = 600
 		Name = "FRMSEARCHFORM"

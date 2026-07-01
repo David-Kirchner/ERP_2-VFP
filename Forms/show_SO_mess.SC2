@@ -48,7 +48,6 @@ DEFINE CLASS frmshow_so_mess AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 128,128,255
 		Caption = "Show SO Messages"
@@ -56,6 +55,7 @@ DEFINE CLASS frmshow_so_mess AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 316
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		MinHeight = 300
 		MinWidth = 627

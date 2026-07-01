@@ -57,7 +57,7 @@ DEFINE CLASS frmtruckroute AS form
 	*< OBJECTDATA: ObjPath="_RESIZABLE1" UniqueID="" Timestamp="" />
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		Caption = "Get Truck Rate"
 		DoCreate = .T.
 		Height = 276

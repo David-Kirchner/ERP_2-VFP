@@ -32,11 +32,11 @@ DEFINE CLASS frmsqlblocking AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Locks and Blocking Process"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 253
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		MinHeight = 253
 		MinWidth = 692
@@ -77,6 +77,12 @@ DEFINE CLASS frmsqlblocking AS form
 		Width = 863
 		*< END OBJECT: BaseClass="grid" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE getsqldata
 		*ThisForm.GetSQLData()
 		

@@ -211,7 +211,7 @@ DEFINE CLASS swage_log AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		BackColor = 60,220,20
 		Caption = "Space Alloys USA"
 		DataSession = 2
@@ -5350,7 +5350,7 @@ DEFINE CLASS swage_log AS form
 		*!*		SET SAFETY ON
 			ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH Swage_Log.Heat, Swage_Log.Lot, "SWAGE"
+			DO FORM 'Forms\SQL_certs' WITH Swage_Log.Heat, Swage_Log.Lot, "SWAGE"
 			ThisForm.AlwaysOnBottom = .F.
 		*!*	RELEASE ALL LIKE STOR*
 		
@@ -5798,7 +5798,7 @@ DEFINE CLASS swage_log AS form
 		*ThisForm.AlwaysOnTop = .F.
 		*ThisForm.AlwaysOnBottom = .T.
 		
-		*	DO FORM 'Forms\ERP_CERTS' WITH Swage_Log.Heat, Swage_Log.Lot, "SWAGE"
+		*	DO FORM 'Forms\SQL_certs' WITH Swage_Log.Heat, Swage_Log.Lot, "SWAGE"
 		
 		*ThisForm.AlwaysOnTop = .T.
 		*ThisForm.AlwaysOnBottom = .F.

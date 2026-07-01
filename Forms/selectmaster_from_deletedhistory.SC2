@@ -33,12 +33,12 @@ DEFINE CLASS frmselectfromdeletedmaster AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Deleteted StockLst Master records."
 		closeconn = .F.
 		DataSession = 1
 		DoCreate = .T.
 		Height = 282
+		Icon = graphics\earth-globe.ico
 		Left = 4
 		LockScreen = .F.
 		MDIForm = .T.

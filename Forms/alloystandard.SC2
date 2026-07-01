@@ -1134,6 +1134,12 @@ DEFINE CLASS frmalloystandard AS embossedform OF "..\libs\wizstyle.vcx"
 	PROCEDURE alloysedit
 	ENDPROC
 
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE getalloys		&& refreshes tmpAlloys for sent Alloy
 		PARAMETER pAlloy
 		*ThisForm.GetAlloys( Alloy )

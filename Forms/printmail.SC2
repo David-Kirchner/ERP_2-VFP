@@ -72,7 +72,6 @@ DEFINE CLASS printmail AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		badc = ""
 		Caption = "Print Mail"
@@ -82,6 +81,7 @@ DEFINE CLASS printmail AS form
 		eadc = ""
 		ForeColor = 255,0,0
 		Height = 281
+		Icon = graphics\earth-globe.ico
 		labelform = ""
 		LockScreen = .F.
 		Name = "PRINTMAIL"

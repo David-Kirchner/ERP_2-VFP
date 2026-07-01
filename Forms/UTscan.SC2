@@ -46,7 +46,7 @@ DEFINE CLASS frmutscan AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "UT Scan:"

@@ -565,6 +565,12 @@ DEFINE CLASS frmemployeemaint AS embossedform OF "..\libs\wizembss.vcx"
 		Width = 48
 		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		PARAMETER cDisplayName
 		

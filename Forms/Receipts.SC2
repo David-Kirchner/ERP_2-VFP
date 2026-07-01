@@ -327,9 +327,9 @@ DEFINE CLASS receipts AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		Name = "Receipts"
 		salesnum = 0
 		sales_detail_id = 0
@@ -347,7 +347,7 @@ DEFINE CLASS receipts AS formset
 		Height = 241, ;
 		Left = -2, ;
 		Name = "frmInvoice", ;
-		Picture = ..\, ;
+		Picture = "", ;
 		ScaleMode = 3, ;
 		ScrollBars = 3, ;
 		ShowTips = .T., ;

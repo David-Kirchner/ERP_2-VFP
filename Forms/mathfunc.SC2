@@ -32,7 +32,6 @@ DEFINE CLASS mathfunc AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		BackColor = 0,128,255
 		BorderStyle = 0
@@ -41,6 +40,7 @@ DEFINE CLASS mathfunc AS form
 		ControlBox = .F.
 		DoCreate = .T.
 		Height = 46
+		Icon = graphics\earth-globe.ico
 		Left = 13
 		MaxButton = .F.
 		MDIForm = .T.

@@ -169,7 +169,7 @@ DEFINE CLASS stockcheck AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		AutoRelease = .T.
 		DataSession = 2
 		lst = StockLst
@@ -3689,4 +3689,10 @@ DEFINE CLASS stockcheck AS formset
 		ENDIF
 	ENDPROC
 
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
 ENDDEFINE

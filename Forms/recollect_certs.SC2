@@ -74,10 +74,10 @@ DEFINE CLASS frmrecollect AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cunsalloydrw = ''
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		Name = "frmRecollect"
 		ncurrentpage = 0
 		nstocklst_id = 0
@@ -947,7 +947,7 @@ DEFINE CLASS frmrecollect AS formset
 			
 			
 		*DO FORMS\Certs WITH cHEAT, nLOT, cType
-		DO FORM forms\ERP_CERTS.scx WITH cHEAT, cLOT, cType
+		DO FORM forms\SQL_certs.scx WITH cHEAT, cLOT, cType
 		
 		
 		

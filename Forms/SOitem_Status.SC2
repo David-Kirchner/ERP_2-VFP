@@ -76,7 +76,6 @@ DEFINE CLASS frmsoitem_status AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "SO Item Status"
 		closeconn = .F.
 		creturnvalue = ""
@@ -84,6 +83,7 @@ DEFINE CLASS frmsoitem_status AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 338
+		Icon = graphics\earth-globe.ico
 		lar = .F.
 		lcstr = .F.
 		Left = 28

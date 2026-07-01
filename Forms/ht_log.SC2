@@ -150,13 +150,13 @@ DEFINE CLASS frmhtlog AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 255,128,128
 		Caption = "Space Alloys USA"
 		DataSession = 2
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 382
+		Icon = graphics\earth-globe.ico
 		Left = 22
 		lopenship = .F.
 		lseeall = .F.
@@ -2034,6 +2034,10 @@ DEFINE CLASS frmhtlog AS form
 		IF ThisForm.lOpenShip AND USED('Ship')
 			USE IN Ship
 		ENDIF
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+		
 	ENDPROC
 
 	PROCEDURE duplots		&& Count the number of within this lot
@@ -3349,7 +3353,7 @@ DEFINE CLASS frmhtlog AS form
 	PROCEDURE cmdCert.Valid
 		SELECT HT_Log
 		ThisForm.AlwaysOnTop = .F.
-		DO FORM 'Forms\ERP_CERTS' WITH HT_Log.Heat, HT_Log.Lot, "HT"
+		DO FORM 'Forms\SQL_certs' WITH HT_Log.Heat, HT_Log.Lot, "HT"
 		
 		SELECT HT_Log
 		

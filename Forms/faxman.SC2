@@ -50,7 +50,6 @@ DEFINE CLASS frmfaxman AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "FaxMan"
 		closesetup = .F.
 		ctable =  
@@ -64,6 +63,7 @@ DEFINE CLASS frmfaxman AS form
 		faxprefix =  
 		faxsubject =  
 		Height = 298
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmFaxMan"
 		palias =  

@@ -34,7 +34,6 @@ DEFINE CLASS frmselectpo_item AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Country"
 		closeconn = .F.
 		country = ''
@@ -42,6 +41,7 @@ DEFINE CLASS frmselectpo_item AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 282
+		Icon = graphics\earth-globe.ico
 		Left = 4
 		LockScreen = .F.
 		MDIForm = .T.

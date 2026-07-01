@@ -50,7 +50,6 @@ DEFINE CLASS frmsearchstocklst AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Search StockLst Deleted History"
@@ -59,6 +58,7 @@ DEFINE CLASS frmsearchstocklst AS form
 		csql = <fb2p_value> &#13;</fb2p_value>
 		DoCreate = .T.
 		Height = 389
+		Icon = graphics\earth-globe.ico
 		MinHeight = 389
 		MinWidth = 617
 		Name = "frmSearchStockLst"

@@ -78,12 +78,12 @@ DEFINE CLASS frmsales_finalize AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 236,233,216
 		Caption = "Choose Sales Order to Finalize - Accounting  (Sales_Detail_Edit)"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 329
+		Icon = graphics\earth-globe.ico
 		Left = 13
 		LockScreen = .F.
 		Name = "frmSales_Finalize"

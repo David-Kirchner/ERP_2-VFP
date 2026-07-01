@@ -42,7 +42,6 @@ DEFINE CLASS frmchoosereceingid AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Select the Receiving ID to Edit"
@@ -52,6 +51,7 @@ DEFINE CLASS frmchoosereceingid AS form
 		DoCreate = .T.
 		Height = 239
 		holdnumber = 0
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		MDIForm = .T.
 		Name = "frmChooseReceingID"

@@ -419,11 +419,11 @@ DEFINE CLASS purchaseorder AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cc = ''
 		cl = ''
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		itemnumber = 0
 		Name = "PurchaseOrder"
 		salesnum = 0

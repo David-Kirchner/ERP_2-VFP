@@ -56,11 +56,11 @@ DEFINE CLASS frmsql_alloy AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "SQL Alloy"
 		connhandle = 0
 		DoCreate = .T.
 		Height = 323
+		Icon = graphics\earth-globe.ico
 		Left = 1
 		MDIForm = .T.
 		Name = "frmSQL_Alloy"

@@ -367,8 +367,14 @@ IF FILE(gERPAppHome + "PROGS\Proc_Setup.prg")
 		SET PROCEDURE TO (gERPAppHome + "PROGS\load_CompanyPlants.prg") ADDITIVE
 		DO load_CompanyPlants
 	ENDIF
-	IF FILE(gERPAppHome + "PROGS\company_report.prg")
-		SET PROCEDURE TO (gERPAppHome + "PROGS\company_report.prg") ADDITIVE
+	IF FILE(gERPAppHome + "REPORTS\company_report.prg")
+		SET PROCEDURE TO (gERPAppHome + "REPORTS\company_report.prg") ADDITIVE
+	ENDIF
+	IF FILE(gERPAppHome + "PROGS\cert_sig.prg")
+		SET PROCEDURE TO (gERPAppHome + "PROGS\cert_sig.prg") ADDITIVE
+	ENDIF
+	IF FILE(gERPAppHome + "REPORTS\cert_report.prg")
+		SET PROCEDURE TO (gERPAppHome + "REPORTS\cert_report.prg") ADDITIVE
 	ENDIF
 	IF FILE(gERPAppHome + "PROGS\company_branding.prg")
 		= InitCompanyBranding()

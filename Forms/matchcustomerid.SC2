@@ -91,11 +91,11 @@ DEFINE CLASS frmmatchcustomerid AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Match Accounting Customer ID with HPA SQL Quick Company"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 617
+		Icon = graphics\earth-globe.ico
 		Left = -1
 		MDIForm = .T.
 		Name = "frmMatchCustomerID"

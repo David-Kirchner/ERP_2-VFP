@@ -706,6 +706,12 @@ DEFINE CLASS frmsoldaddr AS embossedform OF "..\libs\wizembss.vcx"
 		ZOrderSet = 21
 		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE getallrecords
 		
 		*ThisForm.GetAllRecords()

@@ -192,7 +192,6 @@ DEFINE CLASS frmreceive_edit AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		askedreplacedescrpo = .F.
 		askedreplacedescrso = .F.
@@ -214,6 +213,7 @@ DEFINE CLASS frmreceive_edit AS form
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 386
+		Icon = graphics\earth-globe.ico
 		lclone = .F.
 		Left = 16
 		lran_recv_stock = .F.
@@ -4301,9 +4301,9 @@ DEFINE CLASS frmreceive_edit AS form
 	ENDPROC
 
 	PROCEDURE Destroy
-		*!*	IF VARTYPE(ERP_Menu) = "O"  &&
-		*!*		ERP_Menu.WindowState = 0
-		*!*	ENDIF
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
 	ENDPROC
 
 	PROCEDURE getby_nwo

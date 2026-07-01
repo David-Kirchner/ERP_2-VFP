@@ -222,13 +222,13 @@ DEFINE CLASS draw AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 0,140,140
 		Caption = "Space Alloys USA"
 		DataSession = 2
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 509
+		Icon = graphics\earth-globe.ico
 		Left = 2
 		lopenship = .F.
 		lseeall = .F.
@@ -5960,7 +5960,7 @@ DEFINE CLASS draw AS form
 		*!*		SET SAFETY ON
 		*	ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH Draw_log.Heat, Draw_log.Lot, "DRAW"
+			DO FORM 'Forms\SQL_certs' WITH Draw_log.Heat, Draw_log.Lot, "DRAW"
 		*	ThisForm.AlwaysOnTop = .T.
 		*	ThisForm.AlwaysOnBottom = .F.
 		*!*	RELEASE ALL LIKE STOR*
@@ -6691,7 +6691,7 @@ DEFINE CLASS draw AS form
 			
 			ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH Draw_log.Heat, Draw_log.Lot, "DRAW"
+			DO FORM 'Forms\SQL_certs' WITH Draw_log.Heat, Draw_log.Lot, "DRAW"
 			ThisForm.AlwaysOnTop = .T.
 		*	ThisForm.AlwaysOnBottom = .F.
 			

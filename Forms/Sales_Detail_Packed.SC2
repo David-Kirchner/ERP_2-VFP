@@ -65,13 +65,13 @@ DEFINE CLASS frmsales_detail_packed AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .F.
 		Caption = "Items that have already been Packed"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 281
 		holdnumber = ""
+		Icon = graphics\earth-globe.ico
 		Left = 26
 		LockScreen = .F.
 		MDIForm = .T.

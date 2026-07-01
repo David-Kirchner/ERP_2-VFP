@@ -37,10 +37,10 @@ DEFINE CLASS frmfiletransfer AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "File Transfer"
 		DoCreate = .T.
 		Height = 272
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmFileTransfer"
 		nconnhandle = 0

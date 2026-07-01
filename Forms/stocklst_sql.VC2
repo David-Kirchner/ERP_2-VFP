@@ -5077,7 +5077,7 @@ DEFINE CLASS stocklst_sql AS form 		&& Browse or Select Stock
 		ENDIF
 		
 		IF cLot = "HPA"
-			DO FORM "Forms\ERP_CERTS" WITH cHeat, cLot, '' &&pcType(GFM ROLL LakeErie WIRE)
+			DO FORM "Forms\SQL_certs" WITH cHeat, cLot, '' &&pcType(GFM ROLL LakeErie WIRE)
 		ELSE	
 			*IF MESSAGEBOX("Do you want to use the new Scanned MTR screen?"+CHR(13)+"Answer No to view HPA Certs",4+32,"MTR")=6
 			*	DO FORM "forms\MTR.scx" WITH cALLOY,cForm,nThck,cHeat,cLot,nID,ThisForm.nConnHandle

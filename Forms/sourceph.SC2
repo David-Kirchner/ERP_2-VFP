@@ -293,6 +293,10 @@ DEFINE CLASS frmsourcesph AS embossedform OF "..\libs\wizstyle.vcx"
 	
 	PROCEDURE Destroy
 		SQLDISCONNECT(ThisForm.nConnHandle)
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+		
 	ENDPROC
 
 	PROCEDURE Init

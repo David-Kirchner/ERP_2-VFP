@@ -29,10 +29,10 @@ DEFINE CLASS frmspectext AS form
 	*< OBJECTDATA: ObjPath="cmdReturn" UniqueID="" Timestamp="" />
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Spec Text"
 		DoCreate = .T.
 		Height = 353
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmSpecText"
 		Top = 0

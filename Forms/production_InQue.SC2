@@ -55,7 +55,6 @@ DEFINE CLASS production_inque AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BorderStyle = 3
 		Caption = "Select InQue for Production Board."
 		ClipControls = .T.
@@ -64,6 +63,7 @@ DEFINE CLASS production_inque AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 334
+		Icon = graphics\earth-globe.ico
 		Left = 26
 		LockScreen = .F.
 		MaxButton = .F.

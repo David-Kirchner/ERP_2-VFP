@@ -280,6 +280,12 @@ DEFINE CLASS frmhardwood AS embossedform OF "..\libs\wizembss.vcx"
 		Width = 485
 		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="editbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Load
 		IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_Setup ADDITIVE

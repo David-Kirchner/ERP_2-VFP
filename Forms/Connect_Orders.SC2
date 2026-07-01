@@ -95,7 +95,6 @@ DEFINE CLASS frmconnect_orders AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Connect Orders: Please select from the following Options:"
 		cfromwhere = ''
@@ -104,6 +103,7 @@ DEFINE CLASS frmconnect_orders AS form
 		DoCreate = .T.
 		Height = 281
 		holdnumber = ""
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		MDIForm = .T.
 		MinHeight = 281

@@ -275,9 +275,9 @@ DEFINE CLASS fssales_review AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 1
+		Icon = graphics\earth-globe.ico
 		Name = "fsSales_Review"
 		namendment = .F.
 		nrtr_id = 0
@@ -3899,6 +3899,10 @@ DEFINE CLASS fssales_review AS formset
 		ENDIF
 		IF VARTYPE(ThisFormSet.frmRouterDetailOrder) = "O"
 			ThisFormSet.frmRouterDetailOrder.Release
+		ENDIF
+		
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
 		ENDIF
 		
 	ENDPROC

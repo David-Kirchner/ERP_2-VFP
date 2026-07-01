@@ -20820,18 +20820,21 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		
 		This.Clear
 		This.ColumnCount = 1
-		This.NumberOfElements=ALEN(aRemoteStock)
 		This.BoundColumn = 1
 		This.ColumnWidths = "115"
 		
 		
 		PRIVATE nArrayCount
-		nArrayCount = ALEN(aRemoteStock,1)
+		nArrayCount = 0
+		IF TYPE('aRemoteStock(1)') # 'L'
+			nArrayCount = ALEN(aRemoteStock,1)
+		ENDIF
 		FOR I = 1 TO nArrayCount
 			this.addListitem(aRemoteStock(I, 1),I,1)
 		ENDFOR
 		
-		this.addListitem("*",I+1,1)
+		this.addListitem("*",nArrayCount+1,1)
+		This.NumberOfElements = nArrayCount + 1
 		
 		This.Value = "*"
 		*This.Value = "1"

@@ -37,7 +37,6 @@ DEFINE CLASS frmproduction AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 1
 		Name = "frmProduction"
@@ -46,9 +45,9 @@ DEFINE CLASS frmproduction AS formset
 
 	ADD OBJECT 'frmGen_Prod' AS productionscheduleboard WITH ;
 		DoCreate = .T., ;
-		Left = 189, ;
+		Left = 391, ;
 		Name = "frmGen_Prod", ;
-		Top = 17, ;
+		Top = 22, ;
 		Label17.Name = "Label17", ;
 		cmdReturn.Name = "cmdReturn", ;
 		lstBoard.Name = "lstBoard", ;
@@ -104,10 +103,10 @@ DEFINE CLASS frmproduction AS formset
 		ControlBox = .F., ;
 		DoCreate = .T., ;
 		Height = 384, ;
-		Left = 9, ;
+		Left = 216, ;
 		Name = "frmProd_Schedule", ;
 		ShowTips = .T., ;
-		Top = 6, ;
+		Top = 17, ;
 		Width = 158
 		*< END OBJECT: BaseClass="form" />
 

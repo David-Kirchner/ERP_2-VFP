@@ -42,7 +42,6 @@ DEFINE CLASS frmsalesp_customer AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		BackColor = 1,255,230
 		BorderStyle = 0
@@ -54,6 +53,7 @@ DEFINE CLASS frmsalesp_customer AS form
 		DoCreate = .T.
 		Height = 140
 		holdnumber = ""
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		MDIForm = .T.
 		Name = "frmSalesP_Customer"

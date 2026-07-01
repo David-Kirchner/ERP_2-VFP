@@ -50,7 +50,6 @@ DEFINE CLASS frmchoosealloyspec AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		alloy = ''
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
@@ -65,6 +64,7 @@ DEFINE CLASS frmchoosealloyspec AS form
 		form = ''
 		Height = 300
 		holdnumber = 0
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		MDIForm = .T.
 		Name = "frmChooseAlloySpec"

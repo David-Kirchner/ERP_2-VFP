@@ -60,7 +60,7 @@ DEFINE CLASS frmstocklst_location AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		Caption = "StockLst Location"
 		cwhat = ''
 		DataSession = 2
@@ -1102,4 +1102,10 @@ DEFINE CLASS frmstocklst_location AS form
 		*This.Value = MaxLBS_Location(cLocation,ThisForm.nConnHandle) 
 	ENDPROC
 
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
 ENDDEFINE

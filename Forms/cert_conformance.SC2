@@ -88,13 +88,13 @@ DEFINE CLASS frmcofc AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Certificate of Conformance"
 		DataSession = 2
 		DoCreate = .T.
 		fntmpcoc = .F.
 		fntmpcoc_no = .F.
 		Height = 494
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmCofC"
 		nconnhandle = 0

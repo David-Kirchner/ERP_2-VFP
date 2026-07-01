@@ -998,6 +998,12 @@ DEFINE CLASS sources AS embossedform OF "..\libs\wizstyle.vcx"
 		*ThisForm.SetCaption()
 	ENDPROC
 
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE filteralloyrefresh
 		*ThisForm.FilterAlloyRefresh()
 		

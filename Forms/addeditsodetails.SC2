@@ -49,13 +49,13 @@ DEFINE CLASS frmselectpo_item AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Edited SO"
 		closeconn = .F.
 		creturnvalue = ""
 		DataSession = 2
 		DoCreate = .T.
 		Height = 293
+		Icon = graphics\earth-globe.ico
 		Left = 28
 		LockScreen = .F.
 		MDIForm = .T.

@@ -145,7 +145,6 @@ DEFINE CLASS frmship AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		allrecords = .F.
 		AutoCenter = .T.
 		Caption = "SHIP"
@@ -156,6 +155,7 @@ DEFINE CLASS frmship AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 374
+		Icon = graphics\earth-globe.ico
 		Name = "FRMSHIP"
 		nconnhandle = <fb2p_value>0&#13;</fb2p_value>
 		oledate = 
@@ -169,7 +169,7 @@ DEFINE CLASS frmship AS form
 		Height = 22, ;
 		Left = 41, ;
 		Name = "cmdEdit", ;
-		Picture = ..\..\, ;
+		Picture = "", ;
 		TabIndex = 3, ;
 		TabStop = .F., ;
 		ToolTipText = "Special Edit Mode", ;
@@ -1351,6 +1351,12 @@ DEFINE CLASS frmship AS form
 		Width = 145
 		*< END OBJECT: BaseClass="shape" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		RELEASE m.gncmbFind, m.gShipFindText
 		PUBLIC  m.gncmbFind, m.gShipFindText

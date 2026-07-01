@@ -221,13 +221,13 @@ DEFINE CLASS frmactionrequest AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Action Request"
 		DataSession = 2
 		DoCreate = .T.
 		findtext = 0
 		Height = 351
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		Name = "frmActionRequest"
 		ncmbfind = 1
@@ -3044,6 +3044,12 @@ DEFINE CLASS frmactionrequest AS form
 		
 		
 		RETURN lSave
+	ENDPROC
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
 	ENDPROC
 
 	PROCEDURE editar		&& EditAR

@@ -139,7 +139,7 @@ DEFINE CLASS frmstocklst_process AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		AlwaysOnTop = .T.
 		BackColor = 250,245,253
 		Caption = "STOCKLST PROCESS"

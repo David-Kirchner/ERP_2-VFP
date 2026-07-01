@@ -69,12 +69,12 @@ DEFINE CLASS frmgathersend AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 0,255,255
 		Caption = "Send To:"
 		ccover = ''
 		DoCreate = .T.
 		Height = 286
+		Icon = graphics\earth-globe.ico
 		Left = 13
 		MDIForm = .T.
 		Name = "frmGatherSend"

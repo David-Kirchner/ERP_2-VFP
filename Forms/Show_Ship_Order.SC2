@@ -126,7 +126,6 @@ DEFINE CLASS frmshow_ship_order AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BackColor = 125,125,125
@@ -144,6 +143,7 @@ DEFINE CLASS frmshow_ship_order AS form
 		Desktop = .T.
 		DoCreate = .T.
 		Height = 470
+		Icon = graphics\earth-globe.ico
 		MaxButton = .F.
 		MDIForm = .T.
 		Name = "frmShow_Ship_Order"

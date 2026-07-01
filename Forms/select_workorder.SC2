@@ -58,12 +58,12 @@ DEFINE CLASS frmselect_wo AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Select Work Order"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 337
+		Icon = graphics\earth-globe.ico
 		Left = 26
 		LockScreen = .F.
 		Name = "frmSelect_WO"

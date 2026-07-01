@@ -198,7 +198,6 @@ DEFINE CLASS gfm AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BackColor = 0,191,96
@@ -208,6 +207,7 @@ DEFINE CLASS gfm AS form
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 513
+		Icon = graphics\earth-globe.ico
 		lopenship = .F.
 		lseeall = .F.
 		MDIForm = .T.
@@ -4367,7 +4367,7 @@ DEFINE CLASS gfm AS form
 		cHeat	= PrepareSQLtxt(ThisForm.txtHeat.Value,'Heat',50)
 		cLot	= PrepareSQLtxt(ThisForm.txtLot.Value,'Lot',-3)
 		
-		DO FORMS\ERP_CERTS WITH cHEAT, cLOT, "GFM"
+		DO FORMS\SQL_certs WITH cHEAT, cLOT, "GFM"
 		
 	ENDPROC
 

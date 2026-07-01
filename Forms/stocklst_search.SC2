@@ -44,7 +44,7 @@ DEFINE CLASS frmstocklst_search AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		BorderStyle = 3
 		Caption = "Search StockLst, BrokerLst then History"
 		ClipControls = .T.

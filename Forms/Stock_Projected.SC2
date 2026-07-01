@@ -192,6 +192,10 @@ DEFINE CLASS stock_projected AS formset
 			RELEASE CLASSLIB "LIBS\RA_CALC"
 		ENDIF
 		
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+
 	ENDPROC
 
 	PROCEDURE Init

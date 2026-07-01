@@ -466,7 +466,6 @@ DEFINE CLASS fsps_hist AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		close_allquotes = .F.
 		close_bill3addr = .F.
@@ -481,6 +480,7 @@ DEFINE CLASS fsps_hist AS formset
 		close_soldaddr = .F.
 		close_upstracking = .F.
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		Name = "fsPS_Hist"
 		nconnhandle = 0
 		setdeleted =  

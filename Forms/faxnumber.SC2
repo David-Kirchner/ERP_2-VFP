@@ -43,7 +43,6 @@ DEFINE CLASS frmfaxnumber AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		billto =  
 		Caption = "Choose Phone Number"
@@ -53,6 +52,7 @@ DEFINE CLASS frmfaxnumber AS form
 		DoCreate = .T.
 		Height = 163
 		holdtype =  
+		Icon = graphics\earth-globe.ico
 		Name = "frmFaxNumber"
 		quote =  
 		shipto =  

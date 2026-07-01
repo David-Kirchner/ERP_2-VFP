@@ -732,7 +732,6 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		alfmsccss = ''
 		AutoRelease = .T.
 		cc = ''
@@ -740,6 +739,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 		closesales = .F.
 		cunsalloydrw = ''
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		id_detail_process = 0
 		id_detail_process_name =  
 		modifystocklstafterreceive = .F.

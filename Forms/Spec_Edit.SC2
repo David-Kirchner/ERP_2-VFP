@@ -228,9 +228,9 @@ DEFINE CLASS frmspec_edit AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		Name = "frmSpec_Edit"
 		WindowType = 1
 	*</PropValue>
@@ -3061,6 +3061,12 @@ DEFINE CLASS frmspec_edit AS formset
 		*ThisForm.CheckData()
 		
 		RETURN .T.
+	ENDPROC
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
 	ENDPROC
 
 	PROCEDURE Load

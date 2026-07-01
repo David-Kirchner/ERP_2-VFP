@@ -180,13 +180,13 @@ DEFINE CLASS frmlakeerielog AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 192,192,192
 		Caption = "Space Alloys USA"
 		DataSession = 2
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 412
+		Icon = graphics\earth-globe.ico
 		Left = 13
 		lopenship = .F.
 		lseeall = .F.
@@ -2689,6 +2689,10 @@ DEFINE CLASS frmlakeerielog AS form
 		IF ThisForm.lOpenShip AND USED('Ship')
 			USE IN Ship
 		ENDIF
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+		
 	ENDPROC
 
 	PROCEDURE duplots		&& Count the number of within this lot
@@ -4075,7 +4079,7 @@ DEFINE CLASS frmlakeerielog AS form
 		SELECT LakeErie_log
 		ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH LakeErie_log.Heat, LakeErie_log.Lot, "Roll"
+			DO FORM 'Forms\SQL_certs' WITH LakeErie_log.Heat, LakeErie_log.Lot, "Roll"
 		*	ThisForm.AlwaysOnBottom = .F.
 		
 		SELECT LakeErie_log

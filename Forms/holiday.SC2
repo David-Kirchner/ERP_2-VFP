@@ -212,6 +212,7 @@ DEFINE CLASS frmholiday AS embossedform OF "..\libs\wizembss.vcx"
 	ENDPROC
 
 	PROCEDURE BUTTONSET1.CMDPRINT.Click
+		
 	ENDPROC
 
 	PROCEDURE cmbYear.Init

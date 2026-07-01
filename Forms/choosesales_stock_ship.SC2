@@ -57,7 +57,6 @@ DEFINE CLASS frmchoosesales_stock_ship AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Choose the Sales Detail  Record that is Shipping"
@@ -67,6 +66,7 @@ DEFINE CLASS frmchoosesales_stock_ship AS form
 		DoCreate = .T.
 		Height = 239
 		holdnumber = 0
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		MDIForm = .T.
 		Name = "frmChooseSales_Stock_Ship"

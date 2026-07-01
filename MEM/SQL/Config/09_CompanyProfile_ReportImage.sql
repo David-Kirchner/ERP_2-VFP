@@ -8,5 +8,5 @@ IF COL_LENGTH('dbo.CompanyProfile','ReportMime') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD ReportMime NVARCHAR(40) NULL;
 GO
 
-PRINT 'CompanyProfile ReportImage/ReportMime ready. Cached at MEM\Company_BMP.bmp on upload.';
+PRINT 'CompanyProfile ReportImage/ReportMime ready. Cached at MEM\Company_Rpt_Logo.bmp on upload.';
 GO

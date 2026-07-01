@@ -50,10 +50,10 @@ DEFINE CLASS frmlatepo AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Late PO"
 		DoCreate = .T.
 		Height = 453
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmLatePO"
 		nconnhandle = 0

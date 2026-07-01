@@ -48,12 +48,12 @@ DEFINE CLASS frmappsqlrole_maint AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "SQL Database Roles (ERP_* Layer 1)"
 		cselectedlogin = ""
 		DoCreate = .T.
 		Height = 540
+		Icon = graphics\earth-globe.ico
 		Name = "frmAppSqlRole_maint"
 		nappuserid = 0
 		nconnhandle = 0
@@ -244,6 +244,10 @@ DEFINE CLASS frmappsqlrole_maint AS form
 		IF USED("csrAppUsers")
 			USE IN csrAppUsers
 		ENDIF
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+		
 	ENDPROC
 
 	PROCEDURE EnsureRoleCursor

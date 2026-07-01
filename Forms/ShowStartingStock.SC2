@@ -51,10 +51,10 @@ DEFINE CLASS frmshowstartingstock AS form
 	*< OBJECTDATA: ObjPath="Command1" UniqueID="" Timestamp="" />
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Starting Stock"
 		DoCreate = .T.
 		Height = 194
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmShowStartingStock"
 		Top = 0

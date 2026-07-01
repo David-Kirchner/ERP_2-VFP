@@ -186,14 +186,14 @@ DEFINE CLASS frmstockdueinwod AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		Caption = "Stock listed as Due In with WO_Detail"
 		DoCreate = .T.
 		Height = 417
 		Left = 0
 		Name = "frmStockDueInWOD"
 		nconnhandle = .F.
-		OLEDragPicture = ..\
+		OLEDragPicture = ""
 		OLEDropEffects = 1
 		OLEDropMode = 1
 		ShowTips = .T.

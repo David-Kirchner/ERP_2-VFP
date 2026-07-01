@@ -165,7 +165,6 @@ DEFINE CLASS gfm AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BackColor = 0,191,96
@@ -175,6 +174,7 @@ DEFINE CLASS gfm AS form
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 545
+		Icon = graphics\earth-globe.ico
 		lopenship = .F.
 		lseeall = .F.
 		MDIForm = .T.

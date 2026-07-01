@@ -467,9 +467,9 @@ DEFINE CLASS formset AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 1
+		Icon = graphics\earth-globe.ico
 		isediting = .F.
 		isediting_co = .F.
 		Name = "Formset"
@@ -11338,7 +11338,7 @@ DEFINE CLASS formset AS formset
 				
 				cSQL = "UPDATE dbo.Cert SET "
 				cSQL = cSQL +" Signed=0"
-				cSQL = cSQL +",Signature=''"
+				cSQL = cSQL +",Sig_ID=NULL"
 				cSQL = cSQL +",SignUser=''"
 				cSQL = cSQL +",SignDate=''" 
 				cSQL = cSQL +" WHERE ID="+STR(nID)

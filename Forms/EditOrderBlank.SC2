@@ -22,10 +22,10 @@ DEFINE CLASS frmenterorder AS form
  	*< CLASSDATA: Baseclass="form" Timestamp="" Scale="" Uniqueid="" />
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Form1"
 		DoCreate = .T.
 		Height = 429
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		MDIForm = .T.
 		Name = "frmEnterOrder"

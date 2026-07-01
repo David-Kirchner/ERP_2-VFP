@@ -374,13 +374,13 @@ DEFINE CLASS purchase_stock AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cc = ''
 		cl = ''
 		cvendor =  
 		DataSession = 2
 		excessstock = .F.
+		Icon = graphics\earth-globe.ico
 		iseditingstocklst_mins = .F.
 		iseditingstocklst_review = .F.
 		iseditingstocklst_vendor = .F.

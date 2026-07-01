@@ -1237,7 +1237,6 @@ DEFINE CLASS frmquotes AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		autoname = .T.
 		AutoRelease = .T.
 		cc = ''
@@ -1254,6 +1253,7 @@ DEFINE CLASS frmquotes AS formset
 		holdcomments = ''
 		homedir = ""
 		iadjuststocklstsum = 0
+		Icon = graphics\earth-globe.ico
 		isinit = .T.
 		machine = ""
 		metricgotfocus = ""

@@ -102,7 +102,7 @@
 *Email_PS_SOi_NotComplete Email_PS_SONotComplete Email_PS_SO_Not_Complete 
 *FoundCCforSO INSERT_Customer_List_Date  GetCustomerID_with_SoldCode getSalesP_Customer getSalesP_POitem
 *get_RMA_Detail_SameReason Is_RMA_Detail_RMA_N0andSO_item Cancel_RMA_Detail RMA_Exists
-*Count_ActionRequest GetMaxAR_No Count_Cert_Heat Sign_Cert Sign_Cert_Check Cert_Registered_Signature 
+*Count_ActionRequest GetMaxAR_No Count_Cert_Heat Sign_Cert Sign_Cert_Check Cert_Registered_Signature (returns Sig_ID)
 * SQLExecError  Edit_Cert_Check
 *UTresult getIND_Type ReceiveDesc_LstID ReceiveDesc_POitem getSOitemfromReceiving getHeat_from_RID getReceivingIDHistory_ID_Detail 
 *getDate_AS_Int isSalesP_Customer Is_CustID_NotFirst
@@ -8379,13 +8379,16 @@ CREATE CURSOR CUSTOMER_TERMS_and_List (;
 SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
 
 *\\RAPTOR\HPAData\Quotes\
-IF FILE(get_SQL_Path()+"CUSTOMER TERMS and List.CSV")
-	*APPEND FROM get_SQL_Path()+"CUSTOMER TERMS and List.CSV" CSV 
-	WAIT WINDOW "APPEND FROM "+get_SQL_Path()+"HPA App Export.CSV" TIMEOUT 2
-	APPEND FROM get_SQL_Path()+"HPA App Export.CSV" CSV 
+PRIVATE cImportPath
+cImportPath = GetCustomerTermsImportPath()
+
+IF FILE(cImportPath+"CUSTOMER TERMS and List.CSV")
+	*APPEND FROM cImportPath+"CUSTOMER TERMS and List.CSV" CSV 
+	WAIT WINDOW "APPEND FROM "+cImportPath+"HPA App Export.CSV" TIMEOUT 2
+	APPEND FROM cImportPath+"HPA App Export.CSV" CSV 
 ELSE
-	MESSAGEBOX("Could not find File."+CHR(13)+get_SQL_Path()+"CUSTOMER TERMS and List.CSV"+CHR(13)+CHR(13)+"No records imported!",16,"Cannot get starting data!")
-	TrackError("Did not get the records from Sage. "+get_SQL_Path()+"CUSTOMER TERMS and List.CSV","Did not get the records from Sage.","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+	MESSAGEBOX("Could not find File."+CHR(13)+cImportPath+"CUSTOMER TERMS and List.CSV"+CHR(13)+CHR(13)+"No records imported!",16,"Cannot get starting data!")
+	TrackError("Did not get the records from Sage. "+cImportPath+"CUSTOMER TERMS and List.CSV","Did not get the records from Sage.","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 	RETURN .F.
 ENDIF
 
@@ -8393,8 +8396,8 @@ ENDIF
 PRIVATE nCountCustomers
 nCountCustomers = RECCOUNT('CUSTOMER_TERMS_and_List')
 IF nCountCustomers = 0
-	MESSAGEBOX("Did not get the records from Sage!"++CHR(13)+"Export from Sage to create file."+CHR(13)+get_SQL_Path()+"CUSTOMER TERMS and List.CSV",4+16,"Error with CSV")
-	TrackError("Did not get the records from Sage. "+get_SQL_Path()+"CUSTOMER TERMS and List.CSV","Did not get the records from Sage.","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+	MESSAGEBOX("Did not get the records from Sage!"++CHR(13)+"Export from Sage to create file."+CHR(13)+cImportPath+"CUSTOMER TERMS and List.CSV",4+16,"Error with CSV")
+	TrackError("Did not get the records from Sage. "+cImportPath+"CUSTOMER TERMS and List.CSV","Did not get the records from Sage.","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 	RETURN .F.
 ENDIF
 
@@ -8621,7 +8624,7 @@ ENDIF
 IF USED('CUSTOMER_TERMS_and_List')
 	USE IN CUSTOMER_TERMS_and_List
 	
-	cSQL = "DELETE FROM dbo.[CUSTOMER TERMS and List]"
+	cSQL = "DELETE FROM dbo.[CUSTOMER TERMS]"
 
 	PRIVATE nSQLEXEC 
 	nSQLEXEC = SQLEXEC(nConn, cSQL )
@@ -8646,7 +8649,7 @@ IF USED('CUSTOMER_TERMS_and_List')
 	IF nSQLEXEC < 0
 		IF NOT SQLEXECError(cSQL ,nConn, nSQLEXEC)
 			RecordError(nSQLEXEC,"SQL Error","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
-			MESSAGEBOX("The table dbo.[CUSTOMER TERMS and List] could not be emptied."+CHR(13)+"Emptied to show the import worked!"+CHR(13)+"Alert David.",0+48,"Not an fatal error!")
+			MESSAGEBOX("The table dbo.[CUSTOMER TERMS] could not be emptied."+CHR(13)+"Emptied to show the import worked!"+CHR(13)+"Alert David.",0+48,"Not an fatal error!")
 		ENDIF
 	ENDIF	
 ENDIF
@@ -42501,9 +42504,9 @@ ENDPROC
 *****************************************
 
 PROCEDURE Sign_Cert 
-PARAMETERS lSign, nID, nConn
-*Sign_Cert(lcSignature,ldSignDate,lcSignUser,.T.,Certs.ID,ThisFormSet.nConnHandle)	
+PARAMETERS lSign, nID, nConn, tnSig_ID
 *Sign_Cert(.T.,Certs.ID,ThisFormSet.nConnHandle)	
+*Sign_Cert(.T.,Certs.ID,ThisFormSet.nConnHandle, lnSig_ID)	&& optional signer from signedby combo
 
 
 
@@ -42522,6 +42525,12 @@ IF VARTYPE(nConn) != "N"
 ENDIF
 nConn = CheckSQLConnection(nConn)
 
+IF !"CERT_SIG" $ UPPER(SET("PROCEDURE"))
+	IF FILE("PROGS\cert_sig.prg")
+		SET PROCEDURE TO PROGS\cert_sig.prg ADDITIVE
+	ENDIF
+ENDIF
+
 IF lSign
 	ldSignDate = DATE()
 ELSE
@@ -42533,28 +42542,21 @@ cMachineID = ID()
 cUser = RIGHT(cMachineID, LEN(cMachineID)-AT('#',cMachineID)-1 )
 cUser = ALLTRIM(cUser)
 
-lcSignature = ''
-*Look for a Registered Signature.
-*lcSignature	= Cert_Registered_Signature()  -- Do not use, Print QA manager only
-DO CASE
-CASE cUser = "Russell Kirchner"
-	lcSignature = 'rustykirch'
-CASE cUser = "Russ Kirchner"
-	lcSignature = 'rustykirch'
-CASE cUser = "Russ Kirchner 3rd"
-	lcSignature = 'rustykirch'
-CASE cUser = "Russell Kirchner 3rd"
-	lcSignature = 'rustykirch'
-CASE cUser = "John Corra"
-	lcSignature = 'JohnCorra'
-CASE cUser = "Alnita Galloway"
-	lcSignature = 'AlnitaGall'
-CASE cUser = "Dave Morrow"
-	lcSignature = 'DaveMorrow'
-OTHERWISE
-	lcSignature = 'rustykirch'
-ENDCASE
-*lcSignature	= PrepareSQLtxt(lcSignature,'Signature',10)
+PRIVATE lnSig_ID
+lnSig_ID = 0
+IF lSign
+	IF VARTYPE(tnSig_ID) = "N" AND tnSig_ID > 0
+		lnSig_ID = tnSig_ID
+	ELSE
+		lnSig_ID = Cert_Sig_LookupForCurrentUser(nConn)
+	ENDIF
+	IF lnSig_ID < 1
+		MESSAGEBOX("No registered signature found for "+cUser+CHR(13)+ ;
+			"Ask IT to add your row in dbo.Cert_Sig.", 48, "Cannot Sign Cert")
+		RETURN .F.
+	ENDIF
+	= CacheCertSigFile(lnSig_ID, nConn, .T.)
+ENDIF
 
 *lcSignUser
 lcSignUser	= PrepareSQLtxt(ID(),'SignUser',50,.F.,.T.)
@@ -42570,7 +42572,7 @@ IF lSign
 	*Check Sign Permission
 
 	cSQL = "UPDATE dbo.Cert SET "
-	cSQL = cSQL + " Signature = '"+lcSignature+"'"
+	cSQL = cSQL + " Sig_ID = " + STR(lnSig_ID)
 	cSQL = cSQL + ", SignUser = '"+lcSignUser+"'"
 	cSQL = cSQL + ", SignDate = '"+IIF(ISNULL(ldSignDate),'',DTOC(ldSignDate))+"'"
 	cSQL = cSQL + ", Signed = '"+IIF(lSign,'1','0')+"'"
@@ -42590,7 +42592,7 @@ IF lSign
 ELSE
 	*Un Sign
 	cSQL = "UPDATE dbo.Cert SET "
-	cSQL = cSQL + " Signature = ''"
+	cSQL = cSQL + " Sig_ID = NULL"
 	cSQL = cSQL + ", SignUser = ''"
 	cSQL = cSQL + ", SignDate = ''"
 	cSQL = cSQL + ", Signed = '0'"
@@ -42689,53 +42691,30 @@ ENDPROC
 ***************************************** 
 
 PROCEDURE Cert_Registered_Signature 
-*RETURNS cCertSig 
+*RETURNS lnSig_ID (0 = none / unsigned)
 
 PRIVATE cMachineID, cUser
 cMachineID = ID()
 cUser = RIGHT(cMachineID, LEN(cMachineID)-AT('#',cMachineID)-1 )
 
-* INSERT INTO dbo.AppSetup (UN,PRP,ANS) VALUES ('David Kirchner      ','CertSig','davidkirch')
-
-PRIVATE nConn, lNewConn, cSQL, lAllow
+PRIVATE nConn, lNewConn, cSQL, lnSig_ID
 nConn = get_SQLSTRINGCONNECT()
 lNewConn = .T.
 nConn = CheckSQLConnection(nConn)
 
-PRIVATE cCertSig
-cCertSig = "DaveMorrow"
+lnSig_ID = 0
 
 PRIVATE cAlias
 cAlias = ALIAS()
 
-IF USED('tmpPQSL_SignCertCheck')
-	USE IN tmpPQSL_SignCertCheck
+IF !"CERT_SIG" $ UPPER(SET("PROCEDURE"))
+	IF FILE("PROGS\cert_sig.prg")
+		SET PROCEDURE TO PROGS\cert_sig.prg ADDITIVE
+	ENDIF
 ENDIF
-SELECT 0
 
 IF nConn > 0
-	cSQL = "SELECT ANS FROM dbo.AppSetup WITH(NOLOCK) "
-	cSQL = cSQL + " WHERE [UN] = '"+cUser+"'"
-	cSQL = cSQL + " AND ([PRP] = 'CertSig')"
-	* OR [PRP] = 'Sign Cert' "
-
-	
-	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_SignCertCheck' )
-	DO WHILE nSQLEXEC = 0
-		WAIT WINDOW 'SQL' TIMEOUT 1
-		nSQLEXEC = SQLEXEC(nConn,  cSQL, 'tmpPQSL_SignCertCheckaa' )
-	ENDDO
-	IF nSQLEXEC < 0
-		SQLEXECError(cSQL, nConn, nSQLEXEC, 'tmpPQSL_SignCertCheck')
-		RecordError(nSQLEXEC,"SQL Error","Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL )
-	ENDIF
-	
-	IF USED('tmpPQSL_SignCertCheck')
-		IF RECCOUNT('tmpPQSL_SignCertCheck') > 0
-			cCertSig = PrepareSQLtxt(tmpPQSL_SignCertCheck.ANS,'CertSig',10)
-		ENDIF
-		USE IN tmpPQSL_SignCertCheck
-	ENDIF
+	lnSig_ID = Cert_Sig_LookupForCurrentUser(nConn)
 
 	IF lNewConn 
 		SQLDISCONNECT(nConn )
@@ -42754,7 +42733,7 @@ IF NOT EMPTY(cAlias)
 ENDIF
 
 
-RETURN cCertSig 
+RETURN lnSig_ID 
 ENDPROC
 
 ***************************************** 

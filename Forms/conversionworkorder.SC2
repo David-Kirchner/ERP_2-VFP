@@ -85,11 +85,11 @@ DEFINE CLASS frmconvworkorder AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Conversion Workorder"
 		co_id = 0
 		DoCreate = .T.
 		Height = 399
+		Icon = graphics\earth-globe.ico
 		Left = 11
 		Name = "frmConvWorkorder"
 		nconnhandle = .F.

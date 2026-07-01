@@ -1734,7 +1734,7 @@ SELECT        (SELECT        TOP (1) AQ.Thck
                           WHERE        (CO.ID = dbo.Cert.ID) AND (dbo.f_ProperSOitem(CO.SOitem) <> dbo.f_ProperSOitem('''')) AND (AQ.Thck IS NOT NULL)) AS THCK, CAST(ROUND(Ult1 / 1000, 0) AS INT) AS ULT_K, CAST(ROUND(Yield1 / 1000, 0) AS INT) 
                          AS YLD_K, Alloy_HPA AS Alloy, Heat, Lot, DateCert, Spec, Cond_Fin, SpecLMA, UNS, Ult1, Yield1, Elong1, ElonInches, RA1, tLoc1, Hardness, BHN, Ult2, Yield2, Elong2, ElonInches2, RA2, tLoc2, Hardness2, BHN2, Ult3, Yield3, 
                          Elong3, ElonInches3, RA3, tLoc3, Hardness3, BHN3, Ult4, Yield4, Elong4, ElonInches4, RA4, tLoc4, Hardness4, BHN4, Ult5, Yield5, Elong5, ElonInches5, RA5, tLoc5, Hardness5, BHN5, Ult6, Yield6, Elong6, ElonInches6, RA6, 
-                         tLoc6, Ult7, Yield7, Elong7, ElonInches7, RA7, tLoc7, CorrosionR, GrainSize, TestPO, LabUsed, Signature, SignUser, ID, StockLst_ID, dbo.f_RC_Loc(ID, ''P0000'') AS P0000, dbo.f_RC_Loc(ID, ''P0125'') AS P0125, dbo.f_RC_Loc(ID, 
+                         tLoc6, Ult7, Yield7, Elong7, ElonInches7, RA7, tLoc7, CorrosionR, GrainSize, TestPO, LabUsed, Sig_ID, SignUser, ID, StockLst_ID, dbo.f_RC_Loc(ID, ''P0000'') AS P0000, dbo.f_RC_Loc(ID, ''P0125'') AS P0125, dbo.f_RC_Loc(ID, 
                          ''P0250'') AS P0250, dbo.f_RC_Loc(ID, ''P0375'') AS P0375, dbo.f_RC_Loc(ID, ''P0500'') AS P0500, dbo.f_RC_Loc(ID, ''P0625'') AS P0625, dbo.f_RC_Loc(ID, ''P0750'') AS P0750, dbo.f_RC_Loc(ID, ''P0875'') AS P0875, dbo.f_RC_Loc(ID, 
                          ''P1000'') AS P1000, dbo.f_RC_Loc(ID, ''P1125'') AS P1125, dbo.f_RC_Loc(ID, ''P1250'') AS P1250, dbo.f_RC_Loc(ID, ''P1375'') AS P1375, dbo.f_RC_Loc(ID, ''P1500'') AS P1500, dbo.f_RC_Loc(ID, ''P1625'') AS P1625, dbo.f_RC_Loc(ID, 
                          ''P1750'') AS P1750, dbo.f_RC_Loc(ID, ''P1875'') AS P1875, dbo.f_RC_Loc(ID, ''P2000'') AS P2000, dbo.f_RC_Loc(ID, ''P2125'') AS P2125, dbo.f_RC_Loc(ID, ''P2250'') AS P2250, dbo.f_RC_Loc(ID, ''P2375'') AS P2375, dbo.f_RC_Loc(ID, 
@@ -1794,7 +1794,7 @@ SELECT        (SELECT        TOP (1) AQ.Thck
                                                     dbo.AllQuotes AS AQ ON CO.SOitem = AQ.SOitem
                           WHERE        (CO.ID = dbo.Cert.ID) AND (dbo.f_ProperSOitem(CO.SOitem) <> dbo.f_ProperSOitem('''')) AND (AQ.Thck IS NOT NULL)) AS THCK, CAST(ROUND(dbo.Cert.Ult1 / 1000, 0) AS INT) AS ULT_K, 
                          CAST(ROUND(dbo.Cert.Yield1 / 1000, 0) AS INT) AS YLD_K, dbo.Cert.Alloy_HPA AS Alloy, dbo.Cert.Heat, dbo.Cert.Lot, dbo.Cert.DateCert, dbo.Cert.Spec, dbo.Cert.Cond_Fin, dbo.Cert.SpecLMA, dbo.Cert.UNS, dbo.Cert.Ult1, 
-                         dbo.Cert.Yield1, dbo.Cert.Elong1, dbo.Cert.ElonInches, dbo.Cert.RA1, dbo.Cert.tLoc1, dbo.Cert.Hardness, dbo.Cert.BHN, dbo.Cert.TestPO, dbo.Cert.LabUsed, dbo.Cert.Signature, dbo.Cert.SignUser, dbo.Cert.ID, 
+                         dbo.Cert.Yield1, dbo.Cert.Elong1, dbo.Cert.ElonInches, dbo.Cert.RA1, dbo.Cert.tLoc1, dbo.Cert.Hardness, dbo.Cert.BHN, dbo.Cert.TestPO, dbo.Cert.LabUsed, dbo.Cert.Sig_ID, dbo.Cert.SignUser, dbo.Cert.ID, 
                          dbo.Cert.StockLst_ID, dbo.Cert.SpecSpaceX, RC.Inch, RC.RockC
 FROM            dbo.Cert INNER JOIN
                          dbo.Cert_RC_profile AS RC ON dbo.Cert.ID = RC.CertID AND RC.Inch >= 0

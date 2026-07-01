@@ -833,7 +833,6 @@ DEFINE CLASS editsalesorder AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .F.
 		cc = ''
 		cl = ''
@@ -843,6 +842,7 @@ DEFINE CLASS editsalesorder AS formset
 		fnsalestotal = .F.
 		gotfocuslast = ''
 		gotfocusnow = ''
+		Icon = graphics\earth-globe.ico
 		lchangingso = .F.
 		lprintedso = .F.
 		lshoprecvso = .F.

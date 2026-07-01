@@ -1,0 +1,42 @@
+---
+description: FoxBin2Prg sync — refresh text before SC2 edits; rebuild bin after
+globs: "**/*.{sc2,vc2,fr2,mn2,lb2,pj2,scx,vcx,frx}"
+alwaysApply: false
+---
+
+# FoxBin2Prg text ↔ binary sync
+
+Applies to FoxBin2Prg pairs: `SC2↔SCX`, `VC2↔VCX`, `FR2↔FRX`, `MN2↔MNX`, `LB2↔LBX`, `PJ2↔PJX`.
+
+## Before editing text (SC2 / VC2 / FR2 / …)
+
+1. Compare the **binary** timestamp to the **text** timestamp.
+2. If the binary is **newer** (or text is missing), run **BIN2PRG** first and edit the refreshed text — do not edit stale SC2.
+3. Use a **fresh VFP session** per conversion (avoids “Script is out of range” on large forms).
+
+```
+cmd /c E:\VFP\ERP_2\tools\run_ensure_text_current.bat Forms\quotes.sc2
+```
+
+Or from VFP: `DO tools\ensure_foxbin_text_current.prg WITH "Forms\quotes.sc2"`
+
+## After editing text
+
+Always run **PRG2BIN** so runtime uses the updated binary.
+
+```
+cmd /c E:\VFP\ERP_2\tools\run_prg2bin_one.bat Forms\quotes.sc2
+```
+
+Or from VFP: `DO tools\prg2bin_one.prg WITH "Forms\quotes.sc2"`
+
+## Agent workflow (required)
+
+When you change any `*.SC2` (or other FoxBin2Prg text file):
+
+1. **Before** first edit → `ensure_foxbin_text_current` if binary may be newer.
+2. Edit the text file.
+3. **After** edits → `prg2bin_one` for that file (mandatory).
+4. Do **not** loop `DO foxbin2prg … PRG2BIN` many times in one VFP session.
+
+Runners live in `tools\foxbin2prg\foxbin2prg_b2p.prg` (BIN2PRG) and `foxbin2prg_p2b.prg` (PRG2BIN).

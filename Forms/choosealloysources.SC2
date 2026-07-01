@@ -33,7 +33,6 @@ DEFINE CLASS frmchoosealloysources AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Choose the Alloy"
@@ -42,6 +41,7 @@ DEFINE CLASS frmchoosealloysources AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 83
+		Icon = graphics\earth-globe.ico
 		MaxButton = .F.
 		MDIForm = .T.
 		MinButton = .F.

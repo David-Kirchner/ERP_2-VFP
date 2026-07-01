@@ -223,13 +223,13 @@ DEFINE CLASS gfm AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 0,191,96
 		Caption = "Space Alloys USA"
 		DataSession = 2
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 509
+		Icon = graphics\earth-globe.ico
 		Left = 2
 		lopenship = .F.
 		lseeall = .F.
@@ -5628,7 +5628,7 @@ DEFINE CLASS gfm AS form
 		*!*		SET SAFETY ON
 			ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH gfmlog.Heat, gfmlog.Lot, "GFM"
+			DO FORM 'Forms\SQL_certs' WITH gfmlog.Heat, gfmlog.Lot, "GFM"
 			ThisForm.AlwaysOnTop = .T.
 		*	ThisForm.AlwaysOnBottom = .F.
 		*!*	RELEASE ALL LIKE STOR*
@@ -6331,7 +6331,7 @@ DEFINE CLASS gfm AS form
 			
 			ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH gfmlog.Heat, gfmlog.Lot, "GFM"
+			DO FORM 'Forms\SQL_certs' WITH gfmlog.Heat, gfmlog.Lot, "GFM"
 			ThisForm.AlwaysOnTop = .T.
 		*	ThisForm.AlwaysOnBottom = .F.
 			

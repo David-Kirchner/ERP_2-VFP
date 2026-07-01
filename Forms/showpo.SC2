@@ -1300,6 +1300,12 @@ DEFINE CLASS frmshowpo AS embossedform OF "..\..\hpa_dk\libs\wizstyle.vcx"
 		ZOrderSet = 28
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		PARAMETER pPOitem
 		*DO FORM Forms\ShowPO WITH POitem

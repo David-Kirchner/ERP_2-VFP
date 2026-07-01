@@ -1,0 +1,298 @@
+timestamp,form,phase,result,detail,sct_bytes
+06/18/2026 08:21:51 PM,accountid.scx,COMPILE_PASS,PASS,,79034
+06/18/2026 08:21:51 PM,accountingcosting.scx,COMPILE_PASS,PASS,,7766
+06/18/2026 08:21:52 PM,acctcosting.scx,COMPILE_PASS,PASS,,62647
+06/18/2026 08:21:52 PM,actionrequest.scx,COMPILE_PASS,PASS,,119459
+06/18/2026 08:21:53 PM,addeditsodetails.scx,COMPILE_PASS,PASS,,13934
+06/18/2026 08:21:53 PM,addressdetail.scx,COMPILE_PASS,PASS,,14881
+06/18/2026 08:21:54 PM,addrhist.scx,COMPILE_PASS,PASS,,14397
+06/18/2026 08:21:55 PM,alloy_commonspec.scx,COMPILE_PASS,PASS,,88425
+06/18/2026 08:21:55 PM,alloy_surcharge.scx,COMPILE_PASS,PASS,,15403
+06/18/2026 08:21:56 PM,alloystandard.scx,COMPILE_PASS,PASS,,110405
+06/18/2026 08:21:56 PM,answerform.scx,COMPILE_PASS,PASS,,3194
+06/18/2026 08:21:57 PM,apppermission_maint.scx,COMPILE_PASS,PASS,,26047
+06/18/2026 08:21:57 PM,appsqlrole_maint.scx,COMPILE_PASS,PASS,,22440
+06/18/2026 08:21:58 PM,browsepricetbl.scx,COMPILE_PASS,PASS,,52035
+06/18/2026 08:21:58 PM,cert_conformance.scx,COMPILE_PASS,PASS,,72207
+06/18/2026 08:21:59 PM,checkemailstatus.scx,COMPILE_PASS,PASS,,11590
+06/18/2026 08:21:59 PM,checkspec.scx,COMPILE_PASS,PASS,,190140
+06/18/2026 08:22:00 PM,choose_rma.scx,COMPILE_PASS,PASS,,16226
+06/18/2026 08:22:00 PM,choosealloysources.scx,COMPILE_PASS,PASS,,5211
+06/18/2026 08:22:01 PM,choosepoitem.scx,COMPILE_PASS,PASS,,22645
+06/18/2026 08:22:01 PM,chooseprodsched.scx,COMPILE_PASS,PASS,,20502
+06/18/2026 08:22:02 PM,choosereceivingdetails.scx,COMPILE_PASS,PASS,,62279
+06/18/2026 08:22:02 PM,choosereceivingid.scx,COMPILE_PASS,PASS,,13164
+06/18/2026 08:22:03 PM,choosesales_detail_ship.scx,COMPILE_PASS,PASS,,21549
+06/18/2026 08:22:03 PM,choosesales_stock_ship.scx,COMPILE_PASS,PASS,,30538
+06/18/2026 08:22:04 PM,choosesd_packingsli.scx,COMPILE_PASS,PASS,,22935
+06/18/2026 08:22:05 PM,chooseso.scx,COMPILE_PASS,PASS,,41312
+06/18/2026 08:22:05 PM,choosesoitem.scx,COMPILE_PASS,PASS,,27505
+06/18/2026 08:22:06 PM,class_rtr_details.scx,COMPILE_PASS,PASS,,22039
+06/18/2026 08:22:06 PM,class_sql_details.scx,COMPILE_PASS,PASS,,93623
+06/18/2026 08:22:07 PM,class_workorder.scx,COMPILE_PASS,PASS,,71313
+06/18/2026 08:22:07 PM,class_workorder_detail.scx,COMPILE_PASS,PASS,,61822
+06/18/2026 08:22:08 PM,companyhistory.scx,COMPILE_PASS,PASS,,15553
+06/18/2026 08:22:08 PM,companyprofile_maint.scx,COMPILE_PASS,PASS,,25946
+06/18/2026 08:22:09 PM,connect_orders.scx,COMPILE_PASS,PASS,,67625
+06/18/2026 08:22:09 PM,conversion_log.scx,COMPILE_PASS,PASS,,200092
+06/18/2026 08:22:10 PM,conversionworkorder.scx,COMPILE_PASS,PASS,,63413
+06/18/2026 08:22:10 PM,customerstatus.scx,COMPILE_PASS,PASS,,25218
+06/18/2026 08:22:11 PM,customerterms.scx,COMPILE_PASS,PASS,,62386
+06/18/2026 08:22:12 PM,deadcert.scx,COMPILE_PASS,PASS,,11532
+06/18/2026 08:22:12 PM,directship.scx,COMPILE_PASS,PASS,,8661
+06/18/2026 08:22:13 PM,draw_log.scx,COMPILE_PASS,PASS,,338977
+06/18/2026 08:22:13 PM,draw_sched.scx,COMPILE_PASS,PASS,,161317
+06/18/2026 08:22:14 PM,editsalesorder.scx,COMPILE_PASS,PASS,,1692060
+06/18/2026 08:22:14 PM,employeemaint.scx,COMPILE_PASS,PASS,,16342
+06/18/2026 08:22:15 PM,erp_menu.scx,COMPILE_PASS,PASS,,80561
+06/18/2026 08:22:16 PM,faxman.scx,COMPILE_PASS,PASS,,21559
+06/18/2026 08:22:16 PM,faxnumber.scx,COMPILE_PASS,PASS,,10152
+06/18/2026 08:22:17 PM,filetransfer.scx,COMPILE_PASS,PASS,,22006
+06/18/2026 08:22:17 PM,findquotes.scx,COMPILE_PASS,PASS,,35067
+06/18/2026 08:22:18 PM,foreignmail.scx,COMPILE_PASS,PASS,,17102
+06/18/2026 08:22:18 PM,gathersend.scx,COMPILE_PASS,PASS,,94639
+06/18/2026 08:22:19 PM,getcancelreason.scx,COMPILE_PASS,PASS,,3099
+06/18/2026 08:22:19 PM,getnumber.scx,COMPILE_PASS,PASS,,24478
+06/18/2026 08:22:20 PM,getreason.scx,COMPILE_PASS,PASS,,3990
+06/18/2026 08:22:20 PM,gfmlog report.scx,COMPILE_PASS,PASS,,44416
+06/18/2026 08:22:21 PM,gfmlog.scx,COMPILE_PASS,PASS,,312748
+06/18/2026 08:22:22 PM,greensheet.scx,COMPILE_PASS,PASS,,107209
+06/18/2026 08:22:22 PM,hardwood.scx,COMPILE_PASS,PASS,,26137
+06/18/2026 08:22:23 PM,holiday.scx,COMPILE_PASS,PASS,,9774
+06/18/2026 08:22:23 PM,ht_log.scx,COMPILE_PASS,PASS,,169973
+06/18/2026 08:22:24 PM,ind_type.scx,COMPILE_PASS,PASS,,22215
+06/18/2026 08:22:24 PM,inventorysearch.scx,COMPILE_PASS,PASS,,41090
+06/18/2026 08:22:25 PM,lake_erie_log.scx,COMPILE_PASS,PASS,,213775
+06/18/2026 08:22:25 PM,late_po-item.scx,COMPILE_PASS,PASS,,89468
+06/18/2026 08:22:26 PM,late_so-item.scx,COMPILE_PASS,PASS,,128664
+06/18/2026 08:22:26 PM,latepo.scx,COMPILE_PASS,PASS,,42932
+06/18/2026 08:22:27 PM,log_detail.scx,COMPILE_PASS,PASS,,45369
+06/18/2026 08:22:27 PM,lst_search.scx,COMPILE_PASS,PASS,,57364
+06/18/2026 08:22:28 PM,machine_shop.scx,COMPILE_PASS,PASS,,96473
+06/18/2026 08:22:28 PM,matchacctid.scx,COMPILE_PASS,PASS,,78543
+06/18/2026 08:22:29 PM,matchcustomerid.scx,COMPILE_PASS,PASS,,78543
+06/18/2026 08:22:30 PM,mathfunc.scx,COMPILE_PASS,PASS,,7906
+06/18/2026 08:22:30 PM,modify_stock4order.scx,COMPILE_PASS,PASS,,849461
+06/18/2026 08:22:31 PM,modify_stocklst_detail.scx,COMPILE_PASS,PASS,,707184
+06/18/2026 08:22:31 PM,mtr.scx,COMPILE_PASS,PASS,,72137
+06/18/2026 08:22:32 PM,nace2003.scx,COMPILE_PASS,PASS,,11848
+06/18/2026 08:22:32 PM,names1.scx,COMPILE_PASS,PASS,,37370
+06/18/2026 08:22:33 PM,olecalendar.scx,COMPILE_PASS,PASS,,11448
+06/18/2026 08:22:33 PM,outputoptions.scx,COMPILE_PASS,PASS,,19207
+06/18/2026 08:22:34 PM,packingslip.scx,COMPILE_PASS,PASS,,713520
+06/18/2026 08:22:34 PM,packingsliphistory.scx,COMPILE_PASS,PASS,,394140
+06/18/2026 08:22:35 PM,po_correct.scx,COMPILE_PASS,PASS,,868082
+06/18/2026 08:22:35 PM,poduedate.scx,COMPILE_PASS,PASS,,62462
+06/18/2026 08:22:36 PM,popupdate.scx,COMPILE_PASS,PASS,,6628
+06/18/2026 08:22:37 PM,porecvstock.scx,COMPILE_PASS,PASS,,507996
+06/18/2026 08:22:37 PM,prc_equipment.scx,COMPILE_PASS,PASS,,10823
+06/18/2026 08:22:38 PM,price_fixer_tool.scx,COMPILE_PASS,PASS,,9482
+06/18/2026 08:22:38 PM,pricetable.scx,COMPILE_PASS,PASS,,537074
+06/18/2026 08:22:39 PM,printmail.scx,COMPILE_PASS,PASS,,36227
+06/18/2026 08:22:39 PM,prod_costing.scx,COMPILE_PASS,PASS,,6646
+06/18/2026 08:22:40 PM,production.scx,COMPILE_PASS,PASS,,24777
+06/18/2026 08:22:40 PM,production_inque.scx,COMPILE_PASS,PASS,,28680
+06/18/2026 08:22:41 PM,production_scan.scx,COMPILE_PASS,PASS,,25231
+06/18/2026 08:22:41 PM,psitemdetail.scx,COMPILE_PASS,PASS,,93365
+06/18/2026 08:22:42 PM,purchase_finalize.scx,COMPILE_PASS,PASS,,258913
+06/18/2026 08:22:43 PM,purchase_finalize_lst.scx,COMPILE_PASS,PASS,,138557
+06/18/2026 08:22:43 PM,purchase_invoices.scx,COMPILE_PASS,PASS,,15302
+06/18/2026 08:22:44 PM,purchase_stock.scx,COMPILE_PASS,PASS,,551391
+06/18/2026 08:22:44 PM,purchaseorder.scx,COMPILE_PASS,PASS,,651089
+06/18/2026 08:22:45 PM,purchaseorder_modal.scx,COMPILE_PASS,PASS,,497927
+06/18/2026 08:22:45 PM,qcompany.scx,COMPILE_PASS,PASS,,33652
+06/18/2026 08:22:46 PM,qcompanyid.scx,COMPILE_PASS,PASS,,15418
+06/18/2026 08:22:46 PM,qcompanyidn.scx,COMPILE_PASS,PASS,,7988
+06/18/2026 08:22:47 PM,qdbsendto.scx,COMPILE_PASS,PASS,,6427
+06/18/2026 08:22:47 PM,quoteattach.scx,COMPILE_PASS,PASS,,14896
+06/18/2026 08:22:48 PM,quotebody.scx,COMPILE_PASS,PASS,,24662
+06/18/2026 08:22:49 PM,quotes.scx,COMPILE_PASS,PASS,,2148667
+06/18/2026 08:22:49 PM,quoteterms.scx,COMPILE_PASS,PASS,,43876
+06/18/2026 08:22:50 PM,r_sales.scx,COMPILE_PASS,PASS,,157373
+06/18/2026 08:22:50 PM,r_sales_month.scx,COMPILE_PASS,PASS,,73195
+06/18/2026 08:22:51 PM,r_salesp.scx,COMPILE_PASS,PASS,,14109
+06/18/2026 08:22:51 PM,r_sqlblocking.scx,COMPILE_PASS,PASS,,9940
+06/18/2026 08:22:52 PM,receive_edit.scx,COMPILE_PASS,PASS,,1024818
+06/18/2026 08:22:52 PM,receive_edit_fs.scx,COMPILE_PASS,PASS,,1280661
+06/18/2026 08:22:53 PM,receive_order_pw.scx,COMPILE_PASS,PASS,,31493
+06/18/2026 08:22:54 PM,receiving.scx,COMPILE_PASS,PASS,,366333
+06/18/2026 08:22:54 PM,recollect_certs.scx,COMPILE_PASS,PASS,,83041
+06/18/2026 08:22:55 PM,recv_stock.scx,COMPILE_PASS,PASS,,581865
+06/18/2026 08:22:55 PM,redarea.scx,COMPILE_PASS,PASS,,62939
+06/18/2026 08:22:56 PM,removeduplicate.scx,COMPILE_PASS,PASS,,72430
+06/18/2026 08:22:56 PM,reportconsumed_ordered.scx,COMPILE_PASS,PASS,,6196
+06/18/2026 08:22:57 PM,reportreceived_ordered.scx,COMPILE_PASS,PASS,,6619
+06/18/2026 08:22:57 PM,rma.scx,COMPILE_PASS,PASS,,280915
+06/18/2026 08:22:58 PM,rma_select.scx,COMPILE_PASS,PASS,,25392
+06/18/2026 08:22:58 PM,rma_start.scx,COMPILE_PASS,PASS,,126452
+06/18/2026 08:22:59 PM,rma22_test.scx,COMPILE_PASS,PASS,,233583
+06/18/2026 08:23:00 PM,roll_log.scx,COMPILE_PASS,PASS,,224919
+06/18/2026 08:23:00 PM,router.scx,COMPILE_PASS,PASS,,36445
+06/18/2026 08:23:01 PM,rtr_operation.scx,COMPILE_PASS,PASS,,17621
+06/18/2026 08:23:01 PM,sales_detail_edit.scx,COMPILE_PASS,PASS,,471758
+06/18/2026 08:23:02 PM,sales_detail_packed.scx,COMPILE_PASS,PASS,,16138
+06/18/2026 08:23:02 PM,sales_finalize.scx,COMPILE_PASS,PASS,,33091
+06/18/2026 08:23:03 PM,sales_review.scx,COMPILE_PASS,PASS,,438736
+06/18/2026 08:23:03 PM,salesp_customer.scx,COMPILE_PASS,PASS,,20424
+06/18/2026 08:23:04 PM,scan.scx,COMPILE_PASS,PASS,,26745
+06/18/2026 08:23:04 PM,searchform.scx,COMPILE_PASS,PASS,,37567
+06/18/2026 08:23:05 PM,searchformtrackmess.scx,COMPILE_PASS,PASS,,5857
+06/18/2026 08:23:06 PM,searchquotes.scx,COMPILE_PASS,PASS,,97778
+06/18/2026 08:23:06 PM,select_country.scx,COMPILE_PASS,PASS,,6770
+06/18/2026 08:23:07 PM,select_customerid.scx,COMPILE_PASS,PASS,,18341
+06/18/2026 08:23:07 PM,select_operations.scx,COMPILE_PASS,PASS,,18734
+06/18/2026 08:23:08 PM,select_so-item.scx,COMPILE_PASS,PASS,,56733
+06/18/2026 08:23:08 PM,select_workorder.scx,COMPILE_PASS,PASS,,18041
+06/18/2026 08:23:09 PM,select_workorder_detail.scx,COMPILE_PASS,PASS,,25548
+06/18/2026 08:23:09 PM,selectemail.scx,COMPILE_PASS,PASS,,10145
+06/18/2026 08:23:10 PM,selectmaster_from_deletedhistory.scx,COMPILE_PASS,PASS,,4071
+06/18/2026 08:23:11 PM,selectmasterid.scx,COMPILE_PASS,PASS,,24327
+06/18/2026 08:23:11 PM,selectpo_item.scx,COMPILE_PASS,PASS,,33410
+06/18/2026 08:23:12 PM,selectsendinq.scx,COMPILE_PASS,PASS,,31781
+06/18/2026 08:23:12 PM,selectsourcecompany.scx,COMPILE_PASS,PASS,,17277
+06/18/2026 08:23:13 PM,setserver.scx,COMPILE_PASS,PASS,,19950
+06/18/2026 08:23:13 PM,setuperp.scx,COMPILE_PASS,PASS,,45218
+06/18/2026 08:23:14 PM,ship.scx,COMPILE_PASS,PASS,,145763
+06/18/2026 08:23:14 PM,shipaddr.scx,COMPILE_PASS,PASS,,75107
+06/18/2026 08:23:15 PM,shipments.scx,COMPILE_PASS,PASS,,21817
+06/18/2026 08:23:15 PM,shop_stocklst_edit.scx,COMPILE_PASS,PASS,,888136
+06/18/2026 08:23:16 PM,show_proc_order.scx,COMPILE_PASS,PASS,,175281
+06/18/2026 08:23:16 PM,show_recv_order.scx,COMPILE_PASS,PASS,,309611
+06/18/2026 08:23:17 PM,show_ship_order.scx,COMPILE_PASS,PASS,,242517
+06/18/2026 08:23:17 PM,show_so_mess.scx,COMPILE_PASS,PASS,,23532
+06/18/2026 08:23:18 PM,show_user_permission.scx,COMPILE_PASS,PASS,,10090
+06/18/2026 08:23:18 PM,show_vendor_invoice.scx,COMPILE_PASS,PASS,,9357
+06/18/2026 08:23:19 PM,showpo.scx,COMPILE_PASS,PASS,,64793
+06/18/2026 08:23:19 PM,showprocess.scx,COMPILE_PASS,PASS,,67558
+06/18/2026 08:23:20 PM,showreceiving.scx,COMPILE_PASS,PASS,,76801
+06/18/2026 08:23:21 PM,showvgfmlog.scx,COMPILE_PASS,PASS,,172553
+06/18/2026 08:23:21 PM,showvlakelog.scx,COMPILE_PASS,PASS,,28982
+06/18/2026 08:23:22 PM,showvrolllog.scx,COMPILE_PASS,PASS,,28730
+06/18/2026 08:23:22 PM,showvsoitem.scx,COMPILE_PASS,PASS,,63075
+06/18/2026 08:23:23 PM,showvswagelog.scx,COMPILE_PASS,PASS,,155142
+06/18/2026 08:23:23 PM,showvwire_log.scx,COMPILE_PASS,PASS,,26111
+06/18/2026 08:23:24 PM,signedby.scx,COMPILE_PASS,PASS,,9153
+06/18/2026 08:23:24 PM,so_shipped.scx,COMPILE_PASS,PASS,,31048
+06/18/2026 08:23:25 PM,soitem_shipped.scx,COMPILE_PASS,PASS,,91797
+06/18/2026 08:23:26 PM,soitem_status.scx,COMPILE_PASS,PASS,,38503
+06/18/2026 08:23:26 PM,soitem_stocklst_detail_history.scx,COMPILE_PASS,PASS,,47887
+06/18/2026 08:23:27 PM,soldaddr.scx,COMPILE_PASS,PASS,,74853
+06/18/2026 08:23:27 PM,sourcecompany.scx,COMPILE_PASS,PASS,,70609
+06/18/2026 08:23:28 PM,sourceph.scx,COMPILE_PASS,PASS,,38537
+06/18/2026 08:23:28 PM,sourcequotes.scx,COMPILE_PASS,PASS,,16235
+06/18/2026 08:23:29 PM,sources.scx,COMPILE_PASS,PASS,,77886
+06/18/2026 08:23:29 PM,sourcesalloy.scx,COMPILE_PASS,PASS,,14452
+06/18/2026 08:23:30 PM,spec_edit.scx,COMPILE_PASS,PASS,,214691
+06/18/2026 08:23:30 PM,spec_text.scx,COMPILE_PASS,PASS,,4532
+06/18/2026 08:23:31 PM,spectext.scx,COMPILE_PASS,PASS,,2402
+06/18/2026 08:23:31 PM,sql_alloy.scx,COMPILE_PASS,PASS,,11443
+06/18/2026 08:23:31 PM,sql_certs.scx,COMPILE_FAIL,FAIL,Memo file E:\VFP\ERP_2\forms\sql_certs.SCT is missing or is invalid.,973566
+06/18/2026 08:23:32 PM,sql_certs_frmCustomer.scx,COMPILE_PASS,PASS,,31437
+06/18/2026 08:23:32 PM,sql_certs_frmSpaceX.scx,COMPILE_PASS,PASS,,31610
+06/18/2026 08:23:33 PM,stock_projected.scx,COMPILE_PASS,PASS,,18633
+06/18/2026 08:23:34 PM,stocklst_detail.scx,COMPILE_PASS,PASS,,252248
+06/18/2026 08:23:34 PM,stocklst_detail_cost.scx,COMPILE_PASS,PASS,,141195
+06/18/2026 08:23:35 PM,stocklst_detail_history.scx,COMPILE_PASS,PASS,,43156
+06/18/2026 08:23:35 PM,stocklst_duein_poitem.scx,COMPILE_PASS,PASS,,128528
+06/18/2026 08:23:36 PM,stocklst_duein_wod.scx,COMPILE_PASS,PASS,,137839
+06/18/2026 08:23:36 PM,stocklst_gs.scx,COMPILE_PASS,PASS,,163646
+06/18/2026 08:23:37 PM,stocklst_heat_search.scx,COMPILE_PASS,PASS,,9701
+06/18/2026 08:23:37 PM,stocklst_history.scx,COMPILE_PASS,PASS,,221777
+06/18/2026 08:23:38 PM,stocklst_inv_check.scx,COMPILE_PASS,PASS,,131381
+06/18/2026 08:23:38 PM,stocklst_location.scx,COMPILE_PASS,PASS,,45265
+06/18/2026 08:23:39 PM,stocklst_master.scx,COMPILE_PASS,PASS,,167650
+06/18/2026 08:23:39 PM,stocklst_proc_report.scx,COMPILE_PASS,PASS,,209157
+06/18/2026 08:23:40 PM,stocklst_process.scx,COMPILE_PASS,PASS,,249440
+06/18/2026 08:23:40 PM,stocklst_process_clean.scx,COMPILE_PASS,PASS,,2857
+06/18/2026 08:23:41 PM,stocklst_process_review.scx,COMPILE_PASS,PASS,,76648
+06/18/2026 08:23:42 PM,stocklst_search.scx,COMPILE_PASS,PASS,,47210
+06/18/2026 08:23:42 PM,stocklst_sql_browse.scx,COMPILE_PASS,PASS,,26766
+06/18/2026 08:23:43 PM,stocklst_sql_maint.scx,COMPILE_PASS,PASS,,272712
+06/18/2026 08:23:43 PM,stocklst_sql_modal.scx,COMPILE_PASS,PASS,,25044
+06/18/2026 08:23:44 PM,stocklst_sql_print.scx,COMPILE_PASS,PASS,,104764
+06/18/2026 08:23:44 PM,stocklst_sql_quotes.scx,COMPILE_PASS,PASS,,286454
+06/18/2026 08:23:45 PM,stocklst_sql_quotes_colors.scx,COMPILE_PASS,PASS,,12028
+06/18/2026 08:23:45 PM,stocklst_sql_quotes_old.scx,COMPILE_PASS,PASS,,251386
+06/18/2026 08:23:46 PM,stocklst_vendor_edit.scx,COMPILE_PASS,PASS,,43855
+06/18/2026 08:23:46 PM,swage_log.scx,COMPILE_PASS,PASS,,292112
+06/18/2026 08:23:47 PM,testing_log.scx,COMPILE_PASS,PASS,,151430
+06/18/2026 08:23:48 PM,thermalcouplename.scx,COMPILE_PASS,PASS,,20648
+06/18/2026 08:23:48 PM,thermalcouplenamebrowse.scx,COMPILE_PASS,PASS,,6363
+06/18/2026 08:23:49 PM,thermalcoupleuse.scx,COMPILE_PASS,PASS,,24466
+06/18/2026 08:23:49 PM,thermalcoupleuseadd.scx,COMPILE_PASS,PASS,,15605
+06/18/2026 08:23:50 PM,thumbnail.scx,COMPILE_PASS,PASS,,2706
+06/18/2026 08:23:50 PM,upsstdshiproute.scx,COMPILE_PASS,PASS,,6657
+06/18/2026 08:23:51 PM,user_dbprofile.scx,COMPILE_PASS,PASS,,33394
+06/18/2026 08:23:51 PM,userinfo.scx,COMPILE_PASS,PASS,,46705
+06/18/2026 08:23:52 PM,utscan.scx,COMPILE_PASS,PASS,,16623
+06/18/2026 08:23:52 PM,vacationadmin.scx,COMPILE_PASS,PASS,,31732
+06/18/2026 08:23:53 PM,vacationmaint.scx,COMPILE_PASS,PASS,,35090
+06/18/2026 08:23:54 PM,vacationschedule.scx,COMPILE_PASS,PASS,,39133
+06/18/2026 08:23:54 PM,vacationset.scx,COMPILE_PASS,PASS,,6705
+06/18/2026 08:23:55 PM,vendor.scx,COMPILE_PASS,PASS,,182429
+06/18/2026 08:23:55 PM,wire_dies.scx,COMPILE_PASS,PASS,,25667
+06/18/2026 08:23:56 PM,wire_log.scx,COMPILE_PASS,PASS,,196831
+06/18/2026 08:23:56 PM,wo_detail_notes.scx,COMPILE_PASS,PASS,,223104
+06/18/2026 08:23:57 PM,wo_detail_so.scx,COMPILE_PASS,PASS,,20871
+06/18/2026 08:23:57 PM,wo_detail_view_notes.scx,COMPILE_PASS,PASS,,67918
+06/18/2026 08:23:58 PM,workorder.scx,COMPILE_PASS,PASS,,1635569
+06/18/2026 08:23:58 PM,workorder_process.scx,COMPILE_PASS,PASS,,88460
+06/18/2026 08:23:59 PM,wpipe.scx,COMPILE_PASS,PASS,,6665
+06/18/2026 08:46:54 PM,accountid.scx,EXE_FAIL,FAIL,err=1981 Compile error in file e:\vfp\erp_2\erp_test.app. Compiling e:\vfp\erp_2\forms\accountid.scx  D  Error in line 2: Unrecognized command verb.  ž  Error in line 6: Unrecognized command verb.  ¸  Error in line 7: Unrecognized command verb.    ,79034
+Thu 06/18/2026 20:51:50.01,actionrequest.scx,EXE_CRASH,vfp_exit=1
+06/18/2026 08:55:26 PM,addeditsodetails.scx,EXE_FAIL,FAIL,err=1981 Compile error in file e:\vfp\erp_2\erp_test.app. Compiling e:\vfp\erp_2\forms\accountid.scx  D  Error in line 2: Unrecognized command verb.  ž  Error in line 6: Unrecognized command verb.  ¸  Error in line 7: Unrecognized command verb.    ,13934
+Thu 06/18/2026 20:51:50.01,addressdetail.scx,EXE_CRASH,vfp_exit=1769108
+06/18/2026 08:55:39 PM,sql_certs.scx,PJX_FAIL,FAIL,could not add to ERP_Test.pjx,466557
+Thu 06/18/2026 20:51:50.01,addrhist.scx,EXE_CRASH,vfp_exit=1769108
+06/18/2026 08:55:57 PM,alloy_commonspec.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\erp_test.PJT is missing or is invalid.,88425
+06/18/2026 08:55:59 PM,alloy_surcharge.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\erp_test.PJT is missing or is invalid.,15403
+06/18/2026 08:56:00 PM,alloystandard.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\erp_test.PJT is missing or is invalid.,110405
+06/18/2026 09:02:43 PM,answerform.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,3194
+06/18/2026 09:03:27 PM,apppermission_maint.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,26047
+06/18/2026 09:03:37 PM,appsqlrole_maint.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,22440
+06/18/2026 09:03:38 PM,browsepricetbl.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,52035
+06/18/2026 09:03:40 PM,cert_conformance.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,72207
+06/18/2026 09:03:41 PM,checkemailstatus.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,11590
+06/18/2026 09:03:43 PM,checkspec.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,190140
+06/18/2026 09:03:45 PM,choose_rma.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,16226
+06/18/2026 09:03:46 PM,choosealloysources.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,5211
+06/18/2026 09:03:48 PM,choosepoitem.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,22645
+06/18/2026 09:03:50 PM,chooseprodsched.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,20502
+06/18/2026 09:03:51 PM,choosereceivingdetails.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,62279
+06/18/2026 09:05:10 PM,accountid.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,79034
+06/18/2026 09:05:12 PM,accountingcosting.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,7766
+06/18/2026 09:05:14 PM,acctcosting.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,62647
+06/18/2026 09:05:15 PM,actionrequest.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,119459
+06/18/2026 09:05:17 PM,addeditsodetails.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,13934
+06/18/2026 09:05:19 PM,addressdetail.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,14881
+06/18/2026 09:05:20 PM,addrhist.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,14397
+06/18/2026 09:05:22 PM,alloy_commonspec.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,88425
+06/18/2026 09:05:24 PM,alloy_surcharge.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,15403
+06/18/2026 09:05:25 PM,alloystandard.scx,EXE_FAIL,FAIL,err=41 Memo file e:\vfp\erp_2\forms\sql_certs21.sct is missing or is invalid.,110405
+Thu 06/18/2026 21:06:14.02,accountid.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:06:14.02,accountingcosting.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:06:14.02,acctcosting.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:06:14.02,actionrequest.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:06:14.02,addeditsodetails.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:06:14.02,addressdetail.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:06:14.02,addrhist.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:06:14.02,alloy_commonspec.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:06:14.02,alloy_surcharge.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:06:14.02,alloystandard.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,accountid.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,accountingcosting.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,acctcosting.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,actionrequest.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,addeditsodetails.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,addressdetail.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,addrhist.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,alloy_commonspec.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,alloy_surcharge.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:12:47.27,alloystandard.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:15:31.98,answerform.scx,EXE_PASS,PASS,app built; vfp_exit=1769108
+Thu 06/18/2026 21:19:16.34,accountid.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:19:53.54,accountid.scx,EXE_CRASH,vfp_exit=1769108
+Thu 06/18/2026 21:20:25.39,accountid.scx,EXE_CRASH,vfp_exit=1769108
+06/18/2026 09:21:33 PM,accountid.scx,EXE_FAIL,FAIL,,0
+06/18/2026 09:22:26 PM,accountid.scx,EXE_PASS,PASS,bytes=48821099,0
+06/18/2026 09:45:13 PM,accountingcosting.scx,EXE_PASS,PASS,bytes=48821099,0

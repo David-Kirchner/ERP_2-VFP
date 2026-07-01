@@ -90,7 +90,6 @@ DEFINE CLASS frmcustomerterms AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Customer Terms"
@@ -101,6 +100,7 @@ DEFINE CLASS frmcustomerterms AS form
 		DoCreate = .T.
 		ForeColor = 128,0,128
 		Height = 375
+		Icon = graphics\earth-globe.ico
 		Name = "FRMCUSTOMERTERMS"
 		nconnhandle = 0
 		ShowTips = .T.
@@ -268,7 +268,7 @@ DEFINE CLASS frmcustomerterms AS form
 		Left = 528, ;
 		Name = "cmdUpdateTable", ;
 		TabIndex = 29, ;
-		ToolTipText = "Import Sage file at \\SQL Server\HPAData\Quotes\CUSTOMER TERMS and List.CSV", ;
+		ToolTipText = "Import Sage CUSTOMER TERMS CSV from folder set in Company Profile (Contact / Paths)", ;
 		Top = 314, ;
 		Visible = .F., ;
 		Width = 84
@@ -894,6 +894,12 @@ DEFINE CLASS frmcustomerterms AS form
 		
 	ENDPROC
 
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE importpeachcustomer_list
 		**code is used in CustomerTerms.prg in CustomerTerms.pjx at My Projects\Visual FoxPro Projects\CusstomerTerms
 		**also in HPA\Forms\CustomerTerms.scx Method ImportPeachCustomerTerms
@@ -909,7 +915,7 @@ DEFINE CLASS frmcustomerterms AS form
 		PRIVATE lReturn
 		lReturn = ImportPeachtreeCustomerTerms_SQL(ThisForm.nConnHandle) &&Proc_SQL
 		IF NOT lReturn
-			MESSAGEBOX("The table [CUSTOMER TERMS and List] is empty.",0+48,"Nothing to import")
+			MESSAGEBOX("The table dbo.[CUSTOMER TERMS] is empty.",0+48,"Nothing to import")
 			RETURN .F.
 		ENDIF
 		
@@ -1004,8 +1010,8 @@ DEFINE CLASS frmcustomerterms AS form
 			ENDIF
 		ENDIF
 		
-		IF FILE(get_SQL_Path()+"CUSTOMER TERMS and List.CSV")	
-			ThisForm.Caption = ThisForm.Caption + " - Accounting: "+ DtoC(FDATE(get_SQL_Path()+"CUSTOMER TERMS and List.CSV",0))
+		IF FILE(GetCustomerTermsImportPath()+"CUSTOMER TERMS and List.CSV")	
+			ThisForm.Caption = ThisForm.Caption + " - Accounting: "+ DtoC(FDATE(GetCustomerTermsImportPath()+"CUSTOMER TERMS and List.CSV",0))
 		ENDIF
 		
 		
@@ -1014,8 +1020,8 @@ DEFINE CLASS frmcustomerterms AS form
 		*	ThisForm.cmdUpdateTable.Visible = .F.
 		*	ThisForm.shpUpdateTable.Visible = .F.
 		ELSE
-			IF FILE(get_SQL_Path()+"CUSTOMER TERMS and List.CSV")	
-				dCustomerTerms = FDATE(get_SQL_Path()+"CUSTOMER TERMS and List.CSV",0)
+			IF FILE(GetCustomerTermsImportPath()+"CUSTOMER TERMS and List.CSV")	
+				dCustomerTerms = FDATE(GetCustomerTermsImportPath()+"CUSTOMER TERMS and List.CSV",0)
 				IF ThisForm.dCUSTOMER_ListDate > dCustomerTerms 
 		*			ThisForm.cmdUpdateTable.Visible = .F.
 					ThisForm.shpUpdateTable.Visible = .F.
@@ -1023,10 +1029,10 @@ DEFINE CLASS frmcustomerterms AS form
 			ENDIF
 		ENDIF
 		
-		IF FILE(get_SQL_Path()+"CUSTOMER TERMS and List.CSV")
-			ThisForm.lblSQLdata.Caption = get_SQL_Path()+CHR(13)+"CUSTOMER TERMS and List.CSV"
+		IF FILE(GetCustomerTermsImportPath()+"CUSTOMER TERMS and List.CSV")
+			ThisForm.lblSQLdata.Caption = GetCustomerTermsImportPath()+CHR(13)+"CUSTOMER TERMS and List.CSV"
 		ELSE
-			ThisForm.lblSQLdata.Caption = get_SQL_Path()+"CUSTOMER TERMS and List.CSV"+" --not FOUND!"
+			ThisForm.lblSQLdata.Caption = GetCustomerTermsImportPath()+"CUSTOMER TERMS and List.CSV"+" --not FOUND!"
 		ENDIF
 			
 		ThisForm.lblExportDate.Caption = "Last Accounting EXPORT was "+ TtoC(ThisForm.dCUSTOMER_ListDate)
@@ -1097,33 +1103,33 @@ DEFINE CLASS frmcustomerterms AS form
 		WAIT CLEAR
 		
 		IF RECCOUNT('Customer_List') = 0
-			MESSAGEBOX("Customer_List data is invalid, Please wait while it is imported from Accounting",0+48,"Any key to imoprt Customer Terms")
-			IF ThisForm.ImportPeachCustomer_List()
-				*Try to reload
-				
-				nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'Customer_List')
-				DO WHILE nSQLEXEC = 0
-					WAIT WINDOW 'SQL' TIMEOUT 1
+			IF FILE(GetCustomerTermsImportPath()+"CUSTOMER TERMS and List.CSV") .OR. FILE(GetCustomerTermsImportPath()+"HPA App Export.CSV")
+				IF ThisForm.ImportPeachCustomer_List()
+					*Try to reload
+					
 					nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'Customer_List')
-				ENDDO
-				IF nSQLEXEC < 0 &&Try again!
-					nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, "Customer_List")
 					DO WHILE nSQLEXEC = 0
-						WAIT WINDOW 'SQL 2' TIMEOUT 1
-						nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, "Customer_List")
-		
-						IF nSQLEXEC < 0
-							IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
-								nSQLEXEC = 0
-							ENDIF
-						ENDIF
+						WAIT WINDOW 'SQL' TIMEOUT 1
+						nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'Customer_List')
 					ENDDO
+					IF nSQLEXEC < 0 &&Try again!
+						nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, "Customer_List")
+						DO WHILE nSQLEXEC = 0
+							WAIT WINDOW 'SQL 2' TIMEOUT 1
+							nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, "Customer_List")
+			
+							IF nSQLEXEC < 0
+								IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+									nSQLEXEC = 0
+								ENDIF
+							ENDIF
+						ENDDO
+					ENDIF
+					IF nSQLEXEC < 0
+						SQLExecError( cSQL, ThisForm.nConnHandle, nSQLEXEC, 'Customer_List' )
+						MESSAGEBOX("SQL Error"+CHR(13)+"Could not load Data!",0,"SQL Error")
+					ENDIF
 				ENDIF
-				IF nSQLEXEC < 0
-					SQLExecError( cSQL, ThisForm.nConnHandle, nSQLEXEC, 'Customer_List' )
-					MESSAGEBOX("SQL Error"+CHR(13)+"Could not load Data!",0,"SQL Error")
-				ENDIF
-				
 			ENDIF
 		ENDIF
 		
@@ -1134,7 +1140,7 @@ DEFINE CLASS frmcustomerterms AS form
 		ENDIF
 		SELECT 0
 		
-		cSQL="SELECT TOP 1 dtDate FROM [CUSTOMER_List]"
+		cSQL="SELECT TOP 1 dtDATE AS dtDate FROM dbo.Customer_List"
 		
 		SELECT 0
 		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpCUSTOMER_ListDate')
@@ -1182,12 +1188,28 @@ DEFINE CLASS frmcustomerterms AS form
 		
 		
 		****************
+		PRIVATE lHasTermsTbl
+		lHasTermsTbl = .F.
+		IF USED('tmpHasTermsTbl')
+			USE IN tmpHasTermsTbl
+		ENDIF
+		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, ;
+			"SELECT CASE WHEN OBJECT_ID(N'dbo.[CUSTOMER TERMS]','U') IS NOT NULL THEN 1 ELSE 0 END AS ok", ;
+			'tmpHasTermsTbl')
+		IF nSQLEXEC > 0 AND USED('tmpHasTermsTbl') AND tmpHasTermsTbl.ok = 1
+			lHasTermsTbl = .T.
+		ENDIF
+		IF USED('tmpHasTermsTbl')
+			USE IN tmpHasTermsTbl
+		ENDIF
+		
+		IF lHasTermsTbl
 		IF USED('tmpCustomerDate')
 			USE IN tmpCustomerDate
 		ENDIF
 		SELECT 0
 		
-		cSQL="SELECT TOP 1 dtDate FROM dbo.[CUSTOMER TERMS and List]"
+		cSQL="SELECT TOP 1 dtDate FROM dbo.[CUSTOMER TERMS]"
 		
 		SELECT 0
 		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpCustomerDate')
@@ -1226,6 +1248,8 @@ DEFINE CLASS frmcustomerterms AS form
 				ENDIF
 			ENDIF	
 			USE IN tmpCustomerDate
+		ENDIF
+		
 		ENDIF
 		
 		SELECT Customer_List

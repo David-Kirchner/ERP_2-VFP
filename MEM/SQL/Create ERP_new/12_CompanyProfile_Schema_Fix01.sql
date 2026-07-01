@@ -67,6 +67,10 @@ IF COL_LENGTH('dbo.CompanyProfile','CertCertifyText')   IS NULL ALTER TABLE dbo.
 IF COL_LENGTH('dbo.CompanyProfile','CertFooterText')    IS NULL ALTER TABLE dbo.CompanyProfile ADD CertFooterText    NVARCHAR(MAX) NULL;
 IF COL_LENGTH('dbo.CompanyProfile','CertDisclaimerText') IS NULL ALTER TABLE dbo.CompanyProfile ADD CertDisclaimerText NVARCHAR(MAX) NULL;
 
+-- Sage CUSTOMER TERMS import folder (UNC path, trailing backslash optional) --------
+IF COL_LENGTH('dbo.CompanyProfile','CustomerTermsImportPath') IS NULL
+    ALTER TABLE dbo.CompanyProfile ADD CustomerTermsImportPath NVARCHAR(500) NULL;
+
 -- Audit ---------------------------------------------------------------------
 IF COL_LENGTH('dbo.CompanyProfile','ModifiedBy') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD ModifiedBy NVARCHAR(80) NOT NULL CONSTRAINT DF_CompanyProfile_ModBy DEFAULT SUSER_SNAME();

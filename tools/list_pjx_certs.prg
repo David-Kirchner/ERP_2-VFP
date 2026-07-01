@@ -1,0 +1,6 @@
+USE E:\VFP\ERP_2\ERP.PJX IN 0 SHARED
+SCAN FOR "cert" $ LOWER(name)
+	? ALLTRIM(name), exclude
+ENDSCAN
+USE IN ERP.PJX
+QUIT

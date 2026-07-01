@@ -498,6 +498,12 @@ DEFINE CLASS frmsourcequotes AS embossedform OF "..\libs\wizstyle.vcx"
 		Width = 134
 		*< END OBJECT: ClassLib="..\libs\wizstyle.vcx" BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Load
 		Thisform.Currdbf = ALIAS()
 		

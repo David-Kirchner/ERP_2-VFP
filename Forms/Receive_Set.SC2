@@ -287,9 +287,9 @@ DEFINE CLASS formset AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		Name = "Formset"
 	*</PropValue>
 

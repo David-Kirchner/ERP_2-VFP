@@ -39,7 +39,6 @@ DEFINE CLASS frmcheckemail AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Checking your Email sent status"
 		cemailto = ''
@@ -47,6 +46,7 @@ DEFINE CLASS frmcheckemail AS form
 		DoCreate = .T.
 		dtstart = 
 		Height = 246
+		Icon = graphics\earth-globe.ico
 		Left = 12
 		Name = "frmCheckEmail"
 		nconnhandle = 0

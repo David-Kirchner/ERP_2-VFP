@@ -49,10 +49,10 @@ DEFINE CLASS frmoperation AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Router Operation"
 		DoCreate = .T.
 		Height = 271
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmOperation"
 		nconnhandle = .F.

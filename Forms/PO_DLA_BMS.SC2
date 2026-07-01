@@ -31,10 +31,10 @@ DEFINE CLASS frmpo_dla AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "PO DLA BMS QC"
 		DoCreate = .T.
 		Height = 250
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmPO_DLA"
 		nconnhandle = 0

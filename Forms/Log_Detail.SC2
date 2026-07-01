@@ -57,13 +57,13 @@ DEFINE CLASS frmlog_detail AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BorderStyle = 1
 		Caption = "Log_Detail"
 		ClipControls = .T.
 		ControlBox = .T.
 		DoCreate = .T.
 		Height = 230
+		Icon = graphics\earth-globe.ico
 		Left = 8
 		MaxButton = .F.
 		MinButton = .F.

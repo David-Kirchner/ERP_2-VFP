@@ -50,6 +50,24 @@ BEGIN
         QualityEmail        NVARCHAR(120)  NULL,
         Website             NVARCHAR(120)  NULL,
 
+        -- Default billing / ship-to (company row; customer addresses are dbo.ShipAddr)
+        BillToCompany       NVARCHAR(100)  NULL,
+        BillToAddr1         NVARCHAR(80)   NULL,
+        BillToAddr2         NVARCHAR(80)   NULL,
+        BillToCity          NVARCHAR(60)   NULL,
+        BillToState         NVARCHAR(50)   NULL,
+        BillToPostal        NVARCHAR(15)   NULL,
+        BillToCountry       NVARCHAR(40)   NULL,
+        BillToPhone         NVARCHAR(25)   NULL,
+        ShipToCompany       NVARCHAR(100)  NULL,
+        ShipToAddr1         NVARCHAR(80)   NULL,
+        ShipToAddr2         NVARCHAR(80)   NULL,
+        ShipToCity          NVARCHAR(60)   NULL,
+        ShipToState         NVARCHAR(50)   NULL,
+        ShipToPostal        NVARCHAR(15)   NULL,
+        ShipToCountry       NVARCHAR(40)   NULL,
+        ShipToPhone         NVARCHAR(25)   NULL,
+
         -- Regulatory / contractor IDs --------------------------------------
         CageCode            NVARCHAR(10)   NULL,
         DunsNumber          NVARCHAR(15)   NULL,

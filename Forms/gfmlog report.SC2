@@ -81,13 +81,13 @@ DEFINE CLASS gfmlogreport AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "GFM Log Report"
 		DataSession = 2
 		DoCreate = .T.
 		falloy = ""
 		Height = 287
+		Icon = graphics\earth-globe.ico
 		Name = "GFMlogReport"
 		nconnhandle = 0
 		openedalloys = .F.

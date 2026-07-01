@@ -148,7 +148,6 @@ DEFINE CLASS frmmaster_detail AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Master and Detail"
 		Closable = .F.
 		ControlBox = .F.
@@ -157,6 +156,7 @@ DEFINE CLASS frmmaster_detail AS form
 		HalfHeightCaption = .T.
 		Height = 455
 		holdreturn = .F.
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmMaster_Detail"
 		nconnhandle = .F.

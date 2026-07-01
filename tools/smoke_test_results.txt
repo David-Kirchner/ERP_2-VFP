@@ -1,0 +1,30 @@
+ERP smoke tests 
+Started: Wed 06/10/2026  8:37:54.95 
+ 
+=== SQL checks (sqlcmd) === 
+Sales_Update Ar_ PASS
+No CWCnt col PASS
+No dbo.Ar. PASS
+
+ 
+=== VFP headless smoke (smoke_test_erp.prg) === 
+=== VFP headless smoke ===
+Started: 06/10/2026 08:37:59 AM
+PASS   | COMPILE PROGS\company_branding.prg
+PASS   | COMPILE PROGS\company_report.prg
+PASS   | COMPILE PROGS\RecordError.prg
+PASS   | COMPILE PROGS\load_ERP_Environment.prg
+PASS   | COMPILE PROGS\load_CompanyProfile.prg
+PASS   | COMPILE PROGS\CompanyProfile_maint.prg
+PASS   | COMPILE PROGS\CompanyBranding_maint.prg
+PASS   | SET PROCEDURE core libs
+PASS   | SQL connect ERP_2 - SuperMicro
+PASS   | Sales_Update uses Ar_Sales_History
+PASS   | PriceTable has no CWCnt column
+PASS   | InitProjStock CW function SQL
+PASS   | No dbo.Ar. in SQL modules
+PASS   | SetERPAppCaption() - ERP [SuperMicro / ERP_2]
+SKIP   | load_CompanyProfile - headless - run manually in ERP
+------------------------------------------------------------
+PASS: 14  FAIL: 0
+Finished: 06/10/2026 08:38:00 AM

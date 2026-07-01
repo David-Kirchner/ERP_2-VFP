@@ -56,12 +56,12 @@ DEFINE CLASS frmsalesorder_select AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Sales Order Select  - Choose SO"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 337
 		holdnumber = 0
+		Icon = graphics\earth-globe.ico
 		Left = 3
 		LockScreen = .F.
 		Name = "frmSalesOrder_Select"

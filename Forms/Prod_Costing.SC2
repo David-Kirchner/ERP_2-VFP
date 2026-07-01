@@ -47,10 +47,10 @@ DEFINE CLASS form1 AS form
 	*< OBJECTDATA: ObjPath="cmdCancel" UniqueID="" Timestamp="" />
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Form1"
 		DoCreate = .T.
 		Height = 446
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "Form1"
 		Top = 0

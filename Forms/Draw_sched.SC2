@@ -145,7 +145,6 @@ DEFINE CLASS frmdraw_sched AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 192,192,192
 		Caption = "Draw Schedule"
 		cmach = ''
@@ -153,6 +152,7 @@ DEFINE CLASS frmdraw_sched AS form
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 382
+		Icon = graphics\earth-globe.ico
 		Left = 20
 		Name = "frmDraw_Sched"
 		nconnhandle = 0
@@ -1915,6 +1915,10 @@ DEFINE CLASS frmdraw_sched AS form
 		*!*		SET DATABASE TO ERPCert
 		*!*		CLOSE DATABASES 
 		*!*	ENDIF
+		
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
 		
 	ENDPROC
 

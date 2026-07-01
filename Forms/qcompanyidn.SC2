@@ -42,11 +42,11 @@ DEFINE CLASS fmrcompnameid AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Is this Company already in the system? - Helpfull to link with Accounting records."
 		cpasscompany = ''
 		DoCreate = .T.
 		Height = 187
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		LockScreen = .F.
 		Name = "fmrCompNameID"

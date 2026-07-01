@@ -35,10 +35,10 @@ DEFINE CLASS frmvendor_invoice AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Show Vendor Invoice"
 		DoCreate = .T.
 		Height = 471
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmVendor_Invoice"
 		nconnhandle = 0

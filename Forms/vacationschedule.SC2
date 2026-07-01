@@ -69,7 +69,7 @@ DEFINE CLASS frmvacationsched AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		Caption = "Employee Vaction Time"
 		DataSession = 2
 		DoCreate = .T.
@@ -512,6 +512,10 @@ DEFINE CLASS frmvacationsched AS form
 			USE IN TempVacationDays
 		ENDIF
 		
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+
 	ENDPROC
 
 	PROCEDURE Init

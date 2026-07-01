@@ -136,12 +136,12 @@ DEFINE CLASS inventorysearch AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Inventory "
 		connhandle = 0
 		DataSession = 2
 		DoCreate = .T.
 		Height = 446
+		Icon = graphics\earth-globe.ico
 		Left = 2
 		MinHeight = 430
 		MinWidth = 620
@@ -1010,6 +1010,12 @@ DEFINE CLASS inventorysearch AS form
 		Width = 100
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE detailbuttons
 		Parameter lcPass
 		

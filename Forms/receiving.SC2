@@ -305,12 +305,12 @@ DEFINE CLASS frmreceiving AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Receiving"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 371
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		MinHeight = 300
 		MinWidth = 600

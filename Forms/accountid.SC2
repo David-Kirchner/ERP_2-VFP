@@ -109,7 +109,7 @@ DEFINE CLASS frmaccountid AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 571
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmAccountID"
 		nconnhandle = 0
@@ -886,6 +886,12 @@ DEFINE CLASS frmaccountid AS form
 		Width = 180
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		WAIT WINDOW 'Customer_List' NOWAIT
 		ThisForm.Refresh_Customer_List()

@@ -3,9 +3,8 @@
 *
 * Logo source: dbo.CompanyProfile.LogoImage (cached to MEM\company_logo.*)
 * Icon source: dbo.CompanyProfile.IconImage (cached to MEM\Company_Icon.ico)
-* Reports:    CompanyReport_Bmp() -> MEM\Company_BMP.bmp (upload via Company Profile)
-*             FRX picture: graphics\erphead.bmp (synced from MEM cache on upload)
-* Forms/ERP:  GetCompanyIconPath() -> MEM\Company_Icon.ico (default ICO\EARTH.ICO)
+* Report Logo: MEM\Company_Rpt_Logo.bmp (SQL source); FRX: ..\MEM\Company_Rpt_Logo.bmp
+* Forms/ERP:  GetCompanyIconPath() -> MEM\Company_Icon.ico (default ICO\earth-globe.ico)
 *
 * DO InitCompanyBranding   && called from main.prg after load_CompanyProfile
 *====================================================================
@@ -15,10 +14,15 @@
 #DEFINE BRANDING_ICON_FILENAME   "Company_Icon.ico"
 #DEFINE BRANDING_FALLBACK_JPG    "graphics\spacealloysusa-logo-nbhrz.jpg"
 #DEFINE BRANDING_FALLBACK_JPG2   "graphics\spacealloysusa-logo-nb.jpg"
-#DEFINE BRANDING_FALLBACK_ICON   "ICO\EARTH.ICO"
-#DEFINE BRANDING_COMPANY_BMP     "Company_BMP.bmp"
-#DEFINE BRANDING_GRAPHICS_ICON   "graphics\earth.ico"
-#DEFINE BRANDING_GRAPHICS_BMP    "graphics\erphead.bmp"
+#DEFINE BRANDING_FALLBACK_ICON   "ICO\earth-globe.ico"
+#DEFINE BRANDING_REPORT_LOGO_FILE  "Company_Rpt_Logo.bmp"
+#DEFINE BRANDING_REPORT_LOGO_FILE_LEGACY1 "Report_Logo.bmp"
+#DEFINE BRANDING_REPORT_LOGO_FILE_LEGACY2 "Company_BMP.bmp"
+#DEFINE BRANDING_GRAPHICS_BMP_LEGACY "graphics\erphead.bmp"
+#DEFINE BRANDING_PLACEHOLDER_LOGO  "graphics\company_logo_placeholder.png"
+#DEFINE BRANDING_GRAPHICS_ICON   "graphics\earth-globe.ico"
+#DEFINE BRANDING_GRAPHICS_BMP    "graphics\Company_Rpt_Logo.bmp"
+#DEFINE BRANDING_REPORT_LOGO_FRX "..\MEM\Company_Rpt_Logo.bmp"
 
 PUBLIC gCompanyLogoPath
 PUBLIC gCompanyIconPath
@@ -27,6 +31,202 @@ PUBLIC gCompanyReportBmpPath
 gCompanyLogoPath = ""
 gCompanyIconPath = ""
 gCompanyReportBmpPath = ""
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_PsSingleQuotedPath
+	LPARAMETERS tcPath
+	LOCAL lcQ
+	lcQ = CHR(39)
+	RETURN lcQ + STRTRAN(ALLTRIM(EVL(tcPath, "")), lcQ, lcQ + lcQ) + lcQ
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_ReportLogoMemPath
+	LOCAL lcRoot, lcPath, laLegacy[2], i
+
+	lcRoot = CompanyBranding_AppHome()
+	lcPath = lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE
+	IF FILE(lcPath)
+		RETURN lcPath
+	ENDIF
+	laLegacy[1] = BRANDING_REPORT_LOGO_FILE_LEGACY1
+	laLegacy[2] = BRANDING_REPORT_LOGO_FILE_LEGACY2
+	FOR i = 1 TO ALEN(laLegacy)
+		lcPath = lcRoot + BRANDING_LOGO_DIR + "\" + laLegacy[i]
+		IF FILE(lcPath)
+			RETURN lcPath
+		ENDIF
+	ENDFOR
+	RETURN lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE
+
+*--------------------------------------------------------------------
+* One-time copy from older report-logo filenames (erphead, Report_Logo, etc.).
+FUNCTION CompanyBranding_MigrateReportLogoFiles
+	LOCAL lcRoot, lcNewGfx, lcOldGfx, lcNewMem, lcPath, laLegacy[2], i
+
+	lcRoot = CompanyBranding_AppHome()
+	lcNewGfx = lcRoot + BRANDING_GRAPHICS_BMP
+	IF !FILE(lcNewGfx)
+		lcOldGfx = lcRoot + BRANDING_GRAPHICS_BMP_LEGACY
+		IF FILE(lcOldGfx)
+			= CompanyBranding_CopyFile(lcOldGfx, lcNewGfx)
+		ENDIF
+	ENDIF
+
+	lcNewMem = CompanyBranding_ReportLogoMemPath()
+	IF !FILE(lcNewMem)
+		laLegacy[1] = lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE_LEGACY1
+		laLegacy[2] = lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE_LEGACY2
+		FOR i = 1 TO ALEN(laLegacy)
+			lcPath = laLegacy[i]
+			IF FILE(lcPath)
+				= CompanyBranding_CopyFile(lcPath, lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE)
+				EXIT
+			ENDIF
+		ENDFOR
+	ENDIF
+
+	IF FILE(lcNewGfx)
+		lcPath = lcRoot + "REPORTS\" + BRANDING_GRAPHICS_BMP
+		IF !FILE(lcPath)
+			IF !DIRECTORY(lcRoot + "REPORTS\graphics")
+				MKDIR (lcRoot + "REPORTS\graphics")
+			ENDIF
+			= CompanyBranding_CopyFile(lcNewGfx, lcPath)
+		ENDIF
+	ENDIF
+	RETURN FILE(lcNewGfx)
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_EnsureMapBinary
+	CURSORSETPROP("MapBinary", .T., 0)
+	RETURN .T.
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_BlobHasData
+	LPARAMETERS xData
+	IF ISNULL(xData)
+		RETURN .F.
+	ENDIF
+	DO CASE
+	CASE TYPE("xData") = "Q"
+		RETURN LEN(xData) > 0
+	CASE TYPE("xData") = "M" OR TYPE("xData") = "C"
+		RETURN !EMPTY(xData)
+	OTHERWISE
+		RETURN !EMPTY(xData)
+	ENDCASE
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_ReadBinaryFile
+	LPARAMETERS tcPath
+	LOCAL nH, nSize, cData
+
+	IF EMPTY(tcPath) OR !FILE(tcPath)
+		RETURN ""
+	ENDIF
+	nH = FOPEN(tcPath, 0)
+	IF nH < 0
+		RETURN ""
+	ENDIF
+	nSize = FSEEK(nH, 0, 2)
+	FSEEK(nH, 0, 0)
+	cData = SPACE(nSize)
+	= FREAD(nH, @cData)
+	FCLOSE(nH)
+	RETURN cData
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_BlobMatchesFile
+	LPARAMETERS xData, tcPath
+	LOCAL cFile
+
+	IF !CompanyBranding_BlobHasData(xData) OR EMPTY(tcPath) OR !FILE(tcPath)
+		RETURN .F.
+	ENDIF
+	IF TYPE("xData") # "Q"
+		RETURN .F.
+	ENDIF
+	IF LEN(xData) # CompanyBranding_FileSize(tcPath)
+		RETURN .F.
+	ENDIF
+	cFile = CompanyBranding_ReadBinaryFile(tcPath)
+	RETURN (LEN(cFile) = LEN(xData) AND cFile == xData)
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_FileSize
+	LPARAMETERS tcPath
+	LOCAL la[1]
+
+	IF EMPTY(tcPath) OR !FILE(tcPath)
+		RETURN 0
+	ENDIF
+	IF ADIR(la, tcPath) < 1
+		RETURN 0
+	ENDIF
+	RETURN la[1, 2]
+
+*--------------------------------------------------------------------
+* Ship / first-run blank graphics; overwritten when Report Logo is uploaded.
+FUNCTION CompanyBranding_EnsurePlaceholderGraphics
+	LPARAMETERS tlForce
+	LOCAL lcRoot, lcGfx, lcMem, lcPs, llForce
+
+	llForce = (VARTYPE(tlForce) = "L" AND tlForce)
+	lcRoot = CompanyBranding_AppHome()
+	IF !DIRECTORY(lcRoot + "graphics")
+		MKDIR (lcRoot + "graphics")
+	ENDIF
+	IF !DIRECTORY(lcRoot + BRANDING_LOGO_DIR)
+		MKDIR (lcRoot + BRANDING_LOGO_DIR)
+	ENDIF
+
+	lcGfx = lcRoot + BRANDING_PLACEHOLDER_LOGO
+	IF llForce OR !FILE(lcGfx)
+		lcPs = 'powershell -NoProfile -Command "Add-Type -AssemblyName System.Drawing; ' + ;
+			'$b=New-Object System.Drawing.Bitmap 320,120; $g=[System.Drawing.Graphics]::FromImage($b); ' + ;
+			'$g.Clear([System.Drawing.Color]::FromArgb(245,245,245)); ' + ;
+			'$p=New-Object System.Drawing.Pen([System.Drawing.Color]::LightGray); ' + ;
+			'$g.DrawRectangle($p,0,0,319,119); $g.Dispose(); ' + ;
+			'$b.Save(' + CompanyBranding_PsSingleQuotedPath(lcGfx) + ',[System.Drawing.Imaging.ImageFormat]::Png); $b.Dispose()"'
+		RUN /N /HIDDEN &lcPs
+	ENDIF
+
+	lcGfx = lcRoot + BRANDING_GRAPHICS_BMP
+	IF llForce OR !FILE(lcGfx)
+		lcPs = 'powershell -NoProfile -Command "Add-Type -AssemblyName System.Drawing; ' + ;
+			'$b=New-Object System.Drawing.Bitmap 800,150; $g=[System.Drawing.Graphics]::FromImage($b); ' + ;
+			'$g.Clear([System.Drawing.Color]::White); ' + ;
+			'$p=New-Object System.Drawing.Pen([System.Drawing.Color]::Gainsboro); ' + ;
+			'$g.DrawRectangle($p,0,0,799,149); $g.Dispose(); ' + ;
+			'$b.Save(' + CompanyBranding_PsSingleQuotedPath(lcGfx) + ',[System.Drawing.Imaging.ImageFormat]::Bmp); $b.Dispose()"'
+		RUN /N /HIDDEN &lcPs
+	ENDIF
+
+	= CompanyBranding_EnsureDefaultIcon()
+	= CompanyBranding_SyncDefaultIconGraphics()
+	= ErpEnsureReportsGraphicsLink()
+	RETURN FILE(lcRoot + BRANDING_GRAPHICS_BMP)
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_RefreshCacheFromSql
+	LPARAMETERS tnConnHandle
+	LOCAL nConn
+
+	nConn = tnConnHandle
+	IF VARTYPE(nConn) # "N" OR nConn < 1
+		nConn = 0
+	ENDIF
+	= CacheCompanyLogoFile(nConn, .T.)
+	gCompanyLogoPath = GetCompanyLogoPath()
+	= CacheCompanyIconFile(nConn, .T.)
+	gCompanyIconPath = GetCompanyIconPath()
+	= CacheCompanyReportBmpFile(nConn, .T.)
+	IF !FILE(GetCompanyReportBmpPath())
+		= CompanyBranding_EnsureReportHeaderFromLogo(nConn)
+	ENDIF
+	gCompanyReportBmpPath = GetCompanyReportBmpPath()
+	= ErpEnsureReportsGraphicsLink()
+	RETURN .T.
 
 *--------------------------------------------------------------------
 FUNCTION CompanyBranding_EnsurePublic
@@ -58,21 +258,296 @@ FUNCTION CompanyBranding_AppHome
 		IIF(VARTYPE(LoginAppHome) = "C" AND !EMPTY(LoginAppHome), LoginAppHome, SYS(5) + SYS(2003))))
 
 *--------------------------------------------------------------------
+* Resolve graphics\file.bmp to full path under ERP home (toolbar icons).
+FUNCTION ErpGraphic
+	LPARAMETERS tcFile
+	LOCAL lcFile, lcPath, lcRoot
+
+	IF EMPTY(tcFile)
+		RETURN ""
+	ENDIF
+	lcFile = STRTRAN(ALLTRIM(tcFile), "/", "\")
+	IF (":" $ lcFile OR LEFT(lcFile, 2) == "\\") AND FILE(lcFile)
+		RETURN lcFile
+	ENDIF
+	DO WHILE LEFT(lcFile, 1) == "\"
+		lcFile = SUBSTR(lcFile, 2)
+	ENDDO
+	DO WHILE LEFT(lcFile, 3) == "..\"
+		lcFile = SUBSTR(lcFile, 4)
+	ENDDO
+	IF LEFT(UPPER(lcFile), 9) == "GRAPHICS\"
+		lcFile = SUBSTR(lcFile, 10)
+	ENDIF
+	lcRoot = CompanyBranding_AppHome()
+	lcPath = lcRoot + "graphics\" + lcFile
+	IF FILE(lcPath)
+		RETURN lcPath
+	ENDIF
+	lcPath = lcRoot + "Forms\graphics\" + lcFile
+	IF FILE(lcPath)
+		RETURN lcPath
+	ENDIF
+	RETURN lcRoot + "graphics\" + lcFile
+
+*--------------------------------------------------------------------
+* Forms in Forms\ resolve GRAPHICS\ relative to the form folder — mirror once.
+FUNCTION ErpEnsureFormsGraphicsLink
+	LOCAL lcRoot, lcSrc, lcDst, lcLibsDst, lcProbe
+
+	lcRoot = CompanyBranding_AppHome()
+	lcSrc = lcRoot + "graphics"
+	lcDst = lcRoot + "Forms\graphics"
+	lcLibsDst = lcRoot + "LIBS\graphics"
+	lcProbe = lcDst + "\spell.bmp"
+	IF FILE(lcProbe)
+		RETURN .T.
+	ENDIF
+	IF !DIRECTORY(lcSrc)
+		RETURN .F.
+	ENDIF
+	IF !DIRECTORY(lcDst)
+		MKDIR (lcDst)
+	ENDIF
+	RUN /N /HIDDEN robocopy "&lcSrc" "&lcDst" /E /XO /NFL /NDL /NJH /NJS
+	IF !DIRECTORY(lcLibsDst)
+		MKDIR (lcLibsDst)
+	ENDIF
+	RUN /N /HIDDEN robocopy "&lcSrc" "&lcLibsDst" /E /XO /NFL /NDL /NJH /NJS
+	RETURN FILE(lcProbe)
+
+*--------------------------------------------------------------------
+* Reports in REPORTS\ resolve graphics\ relative to the report folder.
+FUNCTION ErpEnsureReportsGraphicsLink
+	LOCAL lcRoot, lcSrc, lcDst, lcProbe
+
+	lcRoot = CompanyBranding_AppHome()
+	lcSrc = lcRoot + "graphics"
+	lcDst = lcRoot + "REPORTS\graphics"
+	lcProbe = lcDst + "\" + BRANDING_REPORT_LOGO_FILE
+	IF FILE(lcProbe)
+		RETURN .T.
+	ENDIF
+	IF !DIRECTORY(lcSrc)
+		RETURN .F.
+	ENDIF
+	IF !DIRECTORY(lcRoot + "REPORTS")
+		RETURN .F.
+	ENDIF
+	IF !DIRECTORY(lcDst)
+		MKDIR (lcDst)
+	ENDIF
+	RUN /N /HIDDEN robocopy "&lcSrc" "&lcDst" /E /XO /NFL /NDL /NJH /NJS
+	RETURN FILE(lcProbe) OR FILE(lcDst + "\spell.bmp")
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_ConvertImageToBmp
+	LPARAMETERS tcSource, tcDestBmp
+	LOCAL lcSrc, lcDst, lcPs
+
+	lcSrc = ALLTRIM(EVL(tcSource, ""))
+	lcDst = ALLTRIM(EVL(tcDestBmp, ""))
+	IF EMPTY(lcSrc) OR !FILE(lcSrc) OR EMPTY(lcDst)
+		RETURN .F.
+	ENDIF
+	IF LOWER(JUSTEXT(lcSrc)) == "bmp"
+		RETURN CompanyBranding_CopyFile(lcSrc, lcDst)
+	ENDIF
+	lcPs = 'powershell -NoProfile -Command "Add-Type -AssemblyName System.Drawing; ' + ;
+		'$i=[System.Drawing.Image]::FromFile(' + CompanyBranding_PsSingleQuotedPath(lcSrc) + '); ' + ;
+		'$i.Save(' + CompanyBranding_PsSingleQuotedPath(lcDst) + ',[System.Drawing.Imaging.ImageFormat]::Bmp); ' + ;
+		'$i.Dispose()"'
+	RUN /N /HIDDEN &lcPs
+	RETURN FILE(lcDst)
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_PublishReportHeaderBmp
+	LPARAMETERS tcSourceFile, tnConnHandle, tlSaveSql
+	LOCAL lcBmp, lcRoot, lcMemBmp, llSaveSql, nConn, llOwn, nRet, lcSQL, xBlob
+
+	= CompanyBranding_EnsureReportBmpPublic()
+	IF EMPTY(tcSourceFile) OR !FILE(tcSourceFile)
+		RETURN .F.
+	ENDIF
+	IF VARTYPE(tlSaveSql) # "L"
+		llSaveSql = .T.
+	ELSE
+		llSaveSql = tlSaveSql
+	ENDIF
+
+	lcRoot = CompanyBranding_AppHome()
+	lcBmp = lcRoot + "MEM\_report_header_tmp.bmp"
+	IF !CompanyBranding_ConvertImageToBmp(tcSourceFile, lcBmp)
+		RETURN .F.
+	ENDIF
+
+	lcMemBmp = lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE
+	IF !DIRECTORY(lcRoot + BRANDING_LOGO_DIR)
+		MKDIR (lcRoot + BRANDING_LOGO_DIR)
+	ENDIF
+	= CompanyBranding_CopyFile(lcBmp, lcMemBmp)
+	gCompanyReportBmpPath = lcMemBmp
+	= CompanyBranding_SyncGraphicsReportBmp(lcMemBmp)
+	= ErpEnsureReportsGraphicsLink()
+
+	IF llSaveSql
+		xBlob = CREATEBINARY(FILETOSTR(lcBmp))
+		nConn = tnConnHandle
+		llOwn = .F.
+		IF VARTYPE(nConn) # "N" OR nConn < 1
+			nConn = get_SQLSTRINGCONNECT()
+			llOwn = (nConn > 0)
+		ENDIF
+		IF nConn > 0
+			= CompanyBranding_EnsureMapBinary()
+			lcSQL = "UPDATE dbo.CompanyProfile SET ReportImage = ?xBlob, ReportMime = 'image/bmp', ModifiedDate = SYSDATETIME() WHERE CompanyId = 1"
+			nRet = SQLEXEC(nConn, lcSQL)
+			IF llOwn
+				SQLDISCONNECT(nConn)
+			ENDIF
+			IF nRet > 0 AND FILE("PROGS\load_CompanyProfile.prg")
+				DO load_CompanyProfile WITH .T.
+			ENDIF
+		ENDIF
+	ENDIF
+
+	IF FILE(lcBmp)
+		DELETE FILE (lcBmp)
+	ENDIF
+	RETURN .T.
+
+*--------------------------------------------------------------------
+* When no Report Logo exists, build Company_Rpt_Logo.bmp from the company logo.
+FUNCTION CompanyBranding_EnsureReportHeaderFromLogo
+	LPARAMETERS tnConnHandle
+	LOCAL lcLogo, lcRoot, lcRptLogo
+
+	lcRoot = CompanyBranding_AppHome()
+	lcRptLogo = lcRoot + BRANDING_GRAPHICS_BMP
+	IF FILE(lcRptLogo) AND FILE(lcRoot + "REPORTS\" + BRANDING_GRAPHICS_BMP)
+		RETURN .T.
+	ENDIF
+
+	lcLogo = GetCompanyLogoPath()
+	IF EMPTY(lcLogo) OR !FILE(lcLogo)
+		RETURN .F.
+	ENDIF
+
+	IF VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "ReportImage", 5) AND CompanyBranding_BlobHasData(goCompany.ReportImage)
+		RETURN CacheCompanyReportBmpFile(tnConnHandle, .F.)
+	ENDIF
+
+	RETURN CompanyBranding_PublishReportHeaderBmp(lcLogo, tnConnHandle, .T.)
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_SyncLogoToReportIfNeeded
+	LPARAMETERS tcLogoFile, tnConnHandle
+	LOCAL llHasReport
+
+	llHasReport = .F.
+	IF VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "ReportImage", 5)
+		llHasReport = CompanyBranding_BlobHasData(goCompany.ReportImage)
+	ENDIF
+	IF llHasReport
+		RETURN .T.
+	ENDIF
+	RETURN CompanyBranding_PublishReportHeaderBmp(tcLogoFile, tnConnHandle, .T.)
+
+*--------------------------------------------------------------------
+FUNCTION FixErpContainerPictures
+	LPARAMETERS toContainer
+	LOCAL i, o, lcPic, lcIcon
+
+	IF VARTYPE(toContainer) # "O"
+		RETURN 0
+	ENDIF
+	FOR i = 1 TO toContainer.ControlCount
+		o = toContainer.Controls(i)
+		IF PEMSTATUS(o, "Picture", 5) AND !EMPTY(o.Picture) AND !(":" $ o.Picture)
+			lcPic = ErpGraphic(o.Picture)
+			IF FILE(lcPic)
+				o.Picture = lcPic
+			ENDIF
+		ENDIF
+		IF PEMSTATUS(o, "Icon", 5) AND !EMPTY(o.Icon) AND !(":" $ o.Icon)
+			lcIcon = ErpGraphic(o.Icon)
+			IF FILE(lcIcon)
+				o.Icon = lcIcon
+			ENDIF
+		ENDIF
+		IF PEMSTATUS(o, "ControlCount", 5) AND o.ControlCount > 0
+			= FixErpContainerPictures(o)
+		ENDIF
+	ENDFOR
+	RETURN 1
+
+*--------------------------------------------------------------------
+* Show where a branding asset appears before the file picker (Choose buttons).
+FUNCTION CompanyBranding_ConfirmChoose
+	LPARAMETERS tcKind
+	LOCAL lcMsg, lcTitle
+
+	lcTitle = "Before you choose a file"
+	DO CASE
+	CASE UPPER(ALLTRIM(tcKind)) == "LOGO"
+		lcMsg = "Company logo (JPG, PNG, GIF, or BMP)" + CHR(13) + CHR(13) + ;
+			"Where it shows:" + CHR(13) + ;
+			"  - Preview on this Branding tab" + CHR(13) + ;
+			"  - Stored in SQL and MEM\company_logo.*" + CHR(13) + ;
+			"  - If you have not chosen a Report Logo yet, this logo is also" + CHR(13) + ;
+			"    converted to graphics\Company_Rpt_Logo.bmp for certs and other reports" + CHR(13) + CHR(13) + ;
+			"For a custom letterhead strip, use Report Logo below." + CHR(13) + CHR(13) + ;
+			"Practical tips:" + CHR(13) + ;
+			"  - Landscape image, about 400-800 px wide" + CHR(13) + ;
+			"  - Keep file size under 1 MB" + CHR(13) + CHR(13) + ;
+			"Choose a file now?"
+	CASE UPPER(ALLTRIM(tcKind)) == "ICON"
+		lcMsg = "Company icon (.ICO file only)" + CHR(13) + CHR(13) + ;
+			"Where it shows:" + CHR(13) + ;
+			"  - Windows taskbar and ERP main window title bar" + CHR(13) + ;
+			"  - Forms that apply company branding (menu, setup, quotes, etc.)" + CHR(13) + ;
+			"  - Built ERP.EXE icon (MEM\Company_Icon.ico)" + CHR(13) + CHR(13) + ;
+			"Practical tips:" + CHR(13) + ;
+			"  - Use a true Windows .ico file" + CHR(13) + ;
+			"  - Include 16x16, 32x32, and 48x48 sizes in the .ico" + CHR(13) + ;
+			"  - Simple, high-contrast art (reads small)" + CHR(13) + CHR(13) + ;
+			"Choose a file now?"
+	CASE INLIST(UPPER(ALLTRIM(tcKind)), "BMP", "REPORTLOGO")
+		lcMsg = "Report Logo (JPG, PNG, GIF, or BMP)" + CHR(13) + CHR(13) + ;
+			"Where it shows:" + CHR(13) + ;
+			"  - Report letterheads (PO, sales order, certs, logs, etc.)" + CHR(13) + ;
+			"  - Saved to MEM\Company_Rpt_Logo.bmp (canonical report header file)" + CHR(13) + ;
+			"  - Synced from SQL on ERP startup when the file differs" + CHR(13) + ;
+			"  - Reports use picture expression: ..\MEM\Company_Rpt_Logo.bmp" + CHR(13) + CHR(13) + ;
+			"Practical tips:" + CHR(13) + ;
+			"  - Landscape letterhead strip (logo left, address block right)" + CHR(13) + ;
+			"  - About 600-1200 px wide, 150-250 px tall" + CHR(13) + ;
+			"  - White or light background" + CHR(13) + CHR(13) + ;
+			"Choose a file now?"
+	OTHERWISE
+		RETURN .T.
+	ENDCASE
+	RETURN (MESSAGEBOX(lcMsg, 4+64, lcTitle) = 6)
+
+*--------------------------------------------------------------------
 FUNCTION InitCompanyBranding
 	LOCAL llOkLogo, llOkIcon, llOkReport
 
 	= CompanyBranding_EnsurePublic()
 	= CompanyBranding_EnsureIconPublic()
 	= CompanyBranding_EnsureReportBmpPublic()
-	llOkLogo = CacheCompanyLogoFile()
-	gCompanyLogoPath = GetCompanyLogoPath()
-	llOkReport = CacheCompanyReportBmpFile()
-	gCompanyReportBmpPath = GetCompanyReportBmpPath()
-	llOkIcon = CacheCompanyIconFile()
-	= CompanyBranding_EnsureDefaultIcon()
-	gCompanyIconPath = GetCompanyIconPath()
+	= CompanyBranding_EnsurePlaceholderGraphics()
+	= CompanyBranding_MigrateReportLogoFiles()
+	IF FILE("PROGS\load_CompanyProfile.prg")
+		DO load_CompanyProfile WITH .T.
+	ENDIF
+	= CompanyBranding_RefreshCacheFromSql(0)
+	llOkLogo = !EMPTY(gCompanyLogoPath)
+	llOkIcon = !EMPTY(gCompanyIconPath)
+	llOkReport = !EMPTY(gCompanyReportBmpPath)
+	= ErpEnsureFormsGraphicsLink()
 	= SetERPAppCaption()
-	RETURN (llOkLogo OR llOkIcon OR llOkReport OR !EMPTY(gCompanyIconPath))
+	RETURN (llOkLogo OR llOkIcon OR llOkReport)
 
 *--------------------------------------------------------------------
 FUNCTION SetERPAppCaption
@@ -127,7 +602,7 @@ FUNCTION CacheCompanyLogoFile
 	IF !tlForce AND VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "LogoImage", 5)
 		xData = goCompany.LogoImage
 		lcMime = IIF(PEMSTATUS(goCompany, "LogoMime", 5), TRANSFORM(goCompany.LogoMime), "")
-		IF !EMPTY(xData)
+		IF CompanyBranding_BlobHasData(xData)
 			lcExt  = CompanyBranding_MimeToExt(lcMime)
 			lcPath = lcDir + "\" + BRANDING_LOGO_BASENAME + lcExt
 			= CompanyBranding_WriteBlob(xData, lcPath)
@@ -165,7 +640,7 @@ FUNCTION CacheCompanyLogoFile
 		SQLDISCONNECT(nConn)
 	ENDIF
 
-	IF EMPTY(xData)
+	IF !CompanyBranding_BlobHasData(xData)
 		RETURN .F.
 	ENDIF
 
@@ -206,6 +681,11 @@ FUNCTION GetCompanyLogoPath
 		RETURN lcPath
 	ENDIF
 
+	lcPath = lcRoot + BRANDING_PLACEHOLDER_LOGO
+	IF FILE(lcPath)
+		RETURN lcPath
+	ENDIF
+
 	RETURN ""
 
 *--------------------------------------------------------------------
@@ -232,6 +712,7 @@ FUNCTION CompanyBranding_SaveLogoFile
 		RETURN .F.
 	ENDIF
 
+	= CompanyBranding_EnsureMapBinary()
 	lcSQL = "UPDATE dbo.CompanyProfile SET LogoImage = ?xBlob, LogoMime = ?lcMime, ModifiedDate = SYSDATETIME() WHERE CompanyId = 1"
 	nRet = SQLEXEC(nConn, lcSQL)
 	IF nRet < 1
@@ -243,6 +724,7 @@ FUNCTION CompanyBranding_SaveLogoFile
 
 	IF llOwn
 		SQLDISCONNECT(nConn)
+		nConn = 0
 	ENDIF
 
 	IF FILE("PROGS\load_CompanyProfile.prg")
@@ -250,6 +732,7 @@ FUNCTION CompanyBranding_SaveLogoFile
 	ENDIF
 	= CacheCompanyLogoFile(nConn, .T.)
 	gCompanyLogoPath = GetCompanyLogoPath()
+	= CompanyBranding_SyncLogoToReportIfNeeded(tcSourceFile, nConn)
 	RETURN .T.
 
 *--------------------------------------------------------------------
@@ -382,7 +865,7 @@ FUNCTION CacheCompanyIconFile
 	IF !tlForce AND VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "IconImage", 5)
 		xData = goCompany.IconImage
 		lcMime = IIF(PEMSTATUS(goCompany, "IconMime", 5), TRANSFORM(goCompany.IconMime), "")
-		IF !EMPTY(xData)
+		IF CompanyBranding_BlobHasData(xData)
 			= CompanyBranding_WriteBlob(xData, lcPath)
 			gCompanyIconPath = lcPath
 			= CompanyBranding_SyncGraphicsIcon(lcPath)
@@ -418,7 +901,7 @@ FUNCTION CacheCompanyIconFile
 		SQLDISCONNECT(nConn)
 	ENDIF
 
-	IF EMPTY(xData)
+	IF !CompanyBranding_BlobHasData(xData)
 		RETURN .F.
 	ENDIF
 
@@ -446,7 +929,7 @@ FUNCTION CompanyBranding_EnsureDefaultIcon
 
 	lcDefault = lcRoot + BRANDING_FALLBACK_ICON
 	IF !FILE(lcDefault)
-		lcDefault = lcRoot + "ICO\earth.ico"
+		lcDefault = lcRoot + "ICO\earth-globe.ico"
 	ENDIF
 	IF FILE(lcDefault)
 		= CompanyBranding_CopyFile(lcDefault, lcCache)
@@ -487,7 +970,7 @@ FUNCTION GetCompanyIconPath
 
 *--------------------------------------------------------------------
 FUNCTION GetCompanyIconFormPath
-	RETURN "graphics\earth.ico"
+	RETURN BRANDING_GRAPHICS_ICON
 
 *--------------------------------------------------------------------
 FUNCTION ApplyCompanyIconToForm
@@ -541,6 +1024,7 @@ FUNCTION CompanyBranding_SaveIconFile
 		RETURN .F.
 	ENDIF
 
+	= CompanyBranding_EnsureMapBinary()
 	lcSQL = "UPDATE dbo.CompanyProfile SET IconImage = ?xBlob, IconMime = ?lcMime, ModifiedDate = SYSDATETIME() WHERE CompanyId = 1"
 	nRet = SQLEXEC(nConn, lcSQL)
 	IF nRet < 1
@@ -552,6 +1036,7 @@ FUNCTION CompanyBranding_SaveIconFile
 
 	IF llOwn
 		SQLDISCONNECT(nConn)
+		nConn = 0
 	ENDIF
 
 	lcPath = CompanyBranding_AppHome() + BRANDING_LOGO_DIR + "\" + BRANDING_ICON_FILENAME
@@ -623,72 +1108,67 @@ FUNCTION CacheCompanyReportBmpFile
 	IF !DIRECTORY(lcDir)
 		MKDIR (lcDir)
 	ENDIF
-	lcPath = lcDir + "\" + BRANDING_COMPANY_BMP
+	lcPath = lcDir + "\" + BRANDING_REPORT_LOGO_FILE
+	xData = .NULL.
 
-	IF !tlForce AND VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "ReportImage", 5)
+	IF VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "ReportImage", 5)
 		xData = goCompany.ReportImage
 		lcMime = IIF(PEMSTATUS(goCompany, "ReportMime", 5), TRANSFORM(goCompany.ReportMime), "")
-		IF !EMPTY(xData)
-			= CompanyBranding_WriteBlob(xData, lcPath)
+	ENDIF
+
+	IF !CompanyBranding_BlobHasData(xData)
+		llOwn = .F.
+		nConn = tnConnHandle
+		IF VARTYPE(nConn) # "N" OR nConn < 1
+			nConn = get_SQLSTRINGCONNECT()
+			llOwn = (nConn > 0)
+		ENDIF
+		IF nConn > 0
+			CURSORSETPROP("MapBinary", .T., 0)
+			lcSQL = "SELECT ReportImage, ReportMime FROM dbo.CompanyProfile WITH (NOLOCK) WHERE CompanyId = 1"
+			nRet = SQLEXEC(nConn, lcSQL, "curCoReportBmp")
+			IF nRet > 0 AND USED("curCoReportBmp") AND RECCOUNT("curCoReportBmp") > 0
+				SELECT curCoReportBmp
+				xData  = curCoReportBmp.ReportImage
+				lcMime = TRANSFORM(curCoReportBmp.ReportMime)
+				USE IN curCoReportBmp
+			ENDIF
+			IF llOwn
+				SQLDISCONNECT(nConn)
+			ENDIF
+		ENDIF
+	ENDIF
+
+	IF CompanyBranding_BlobHasData(xData)
+		IF FILE(lcPath) AND CompanyBranding_BlobMatchesFile(xData, lcPath)
 			gCompanyReportBmpPath = lcPath
-			= CompanyBranding_SyncGraphicsReportBmp(lcPath)
 			RETURN .T.
 		ENDIF
+		= CompanyBranding_WriteBlob(xData, lcPath)
+		gCompanyReportBmpPath = lcPath
+		= CompanyBranding_SyncGraphicsReportBmp(lcPath)
+		RETURN FILE(lcPath)
 	ENDIF
 
-	llOwn = .F.
-	nConn = tnConnHandle
-	IF VARTYPE(nConn) # "N" OR nConn < 1
-		nConn = get_SQLSTRINGCONNECT()
-		llOwn = (nConn > 0)
+	IF FILE(lcPath)
+		gCompanyReportBmpPath = lcPath
+		RETURN .T.
 	ENDIF
-	IF nConn < 1
-		RETURN .F.
-	ENDIF
-
-	CURSORSETPROP("MapBinary", .T., 0)
-	lcSQL = "SELECT ReportImage, ReportMime FROM dbo.CompanyProfile WITH (NOLOCK) WHERE CompanyId = 1"
-	nRet = SQLEXEC(nConn, lcSQL, "curCoReportBmp")
-	IF nRet < 1 OR !USED("curCoReportBmp") OR RECCOUNT("curCoReportBmp") < 1
-		IF llOwn
-			SQLDISCONNECT(nConn)
-		ENDIF
-		RETURN .F.
-	ENDIF
-
-	SELECT curCoReportBmp
-	xData  = curCoReportBmp.ReportImage
-	lcMime = TRANSFORM(curCoReportBmp.ReportMime)
-	USE IN curCoReportBmp
-	IF llOwn
-		SQLDISCONNECT(nConn)
-	ENDIF
-
-	IF EMPTY(xData)
-		RETURN .F.
-	ENDIF
-
-	= CompanyBranding_WriteBlob(xData, lcPath)
-	gCompanyReportBmpPath = lcPath
-	= CompanyBranding_SyncGraphicsReportBmp(lcPath)
-	RETURN .T.
+	RETURN .F.
 
 *--------------------------------------------------------------------
 FUNCTION GetCompanyReportBmpPath
 	LOCAL lcRoot, lcPath
 
 	= CompanyBranding_EnsureReportBmpPublic()
-	IF !EMPTY(gCompanyReportBmpPath) AND FILE(gCompanyReportBmpPath)
-		RETURN gCompanyReportBmpPath
-	ENDIF
-
-	lcRoot = CompanyBranding_AppHome()
-	lcPath = lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_COMPANY_BMP
+	lcPath = CompanyBranding_ReportLogoMemPath()
 	IF FILE(lcPath)
 		gCompanyReportBmpPath = lcPath
 		RETURN lcPath
 	ENDIF
-
+	IF !EMPTY(gCompanyReportBmpPath) AND FILE(gCompanyReportBmpPath)
+		RETURN gCompanyReportBmpPath
+	ENDIF
 	RETURN ""
 
 *--------------------------------------------------------------------
@@ -707,7 +1187,7 @@ FUNCTION CompanyBranding_SaveReportBmpFile
 		RETURN .F.
 	ENDIF
 	IF LOWER(JUSTEXT(tcSourceFile)) # "bmp"
-		RETURN .F.
+		RETURN CompanyBranding_PublishReportHeaderBmp(tcSourceFile, tnConnHandle, .T.)
 	ENDIF
 
 	xBlob = CREATEBINARY(FILETOSTR(tcSourceFile))
@@ -722,6 +1202,7 @@ FUNCTION CompanyBranding_SaveReportBmpFile
 		RETURN .F.
 	ENDIF
 
+	= CompanyBranding_EnsureMapBinary()
 	lcSQL = "UPDATE dbo.CompanyProfile SET ReportImage = ?xBlob, ReportMime = ?lcMime, ModifiedDate = SYSDATETIME() WHERE CompanyId = 1"
 	nRet = SQLEXEC(nConn, lcSQL)
 	IF nRet < 1
@@ -733,15 +1214,17 @@ FUNCTION CompanyBranding_SaveReportBmpFile
 
 	IF llOwn
 		SQLDISCONNECT(nConn)
+		nConn = 0
 	ENDIF
 
-	lcPath = CompanyBranding_AppHome() + BRANDING_LOGO_DIR + "\" + BRANDING_COMPANY_BMP
+	lcPath = CompanyBranding_AppHome() + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE
 	IF !DIRECTORY(CompanyBranding_AppHome() + BRANDING_LOGO_DIR)
 		MKDIR (CompanyBranding_AppHome() + BRANDING_LOGO_DIR)
 	ENDIF
 	= CompanyBranding_CopyFile(tcSourceFile, lcPath)
 	gCompanyReportBmpPath = lcPath
 	= CompanyBranding_SyncGraphicsReportBmp(lcPath)
+	= ErpEnsureReportsGraphicsLink()
 
 	IF FILE("PROGS\load_CompanyProfile.prg")
 		DO load_CompanyProfile WITH .T.
@@ -774,7 +1257,15 @@ FUNCTION CompanyBranding_ClearReportBmp
 	ENDIF
 
 	lcRoot = CompanyBranding_AppHome()
-	lcPath = lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_COMPANY_BMP
+	lcPath = lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE
+	IF FILE(lcPath)
+		DELETE FILE (lcPath)
+	ENDIF
+	lcPath = lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE_LEGACY1
+	IF FILE(lcPath)
+		DELETE FILE (lcPath)
+	ENDIF
+	lcPath = lcRoot + BRANDING_LOGO_DIR + "\" + BRANDING_REPORT_LOGO_FILE_LEGACY2
 	IF FILE(lcPath)
 		DELETE FILE (lcPath)
 	ENDIF
@@ -800,11 +1291,26 @@ FUNCTION CompanyBranding_CopyFile
 	ENDIF
 
 	xData = FILETOSTR(tcSource)
-	IF EMPTY(xData)
+	IF !CompanyBranding_BlobHasData(xData)
 		RETURN .F.
 	ENDIF
 
 	RETURN STRTOFILE(xData, tcTarget, 0) > 0 AND FILE(tcTarget)
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_SyncDefaultIconGraphics
+	LOCAL lcRoot, lcSrc, lcDst
+
+	lcRoot = CompanyBranding_AppHome()
+	lcSrc = lcRoot + BRANDING_FALLBACK_ICON
+	IF !FILE(lcSrc)
+		lcSrc = lcRoot + "ICO\earth-globe.ico"
+	ENDIF
+	IF !FILE(lcSrc)
+		RETURN .F.
+	ENDIF
+	lcDst = lcRoot + BRANDING_GRAPHICS_ICON
+	RETURN CompanyBranding_CopyFile(lcSrc, lcDst)
 
 *--------------------------------------------------------------------
 FUNCTION CompanyBranding_SyncGraphicsIcon
@@ -818,8 +1324,17 @@ FUNCTION CompanyBranding_SyncGraphicsIcon
 *--------------------------------------------------------------------
 FUNCTION CompanyBranding_SyncGraphicsReportBmp
 	LPARAMETERS tcSource
+	LOCAL llOk, lcRoot, lcDst
 
 	IF EMPTY(tcSource) OR !FILE(tcSource)
 		RETURN .F.
 	ENDIF
-	RETURN CompanyBranding_CopyFile(tcSource, CompanyBranding_AppHome() + BRANDING_GRAPHICS_BMP)
+	lcRoot = CompanyBranding_AppHome()
+	llOk = CompanyBranding_CopyFile(tcSource, lcRoot + BRANDING_GRAPHICS_BMP)
+	lcDst = lcRoot + "REPORTS\" + BRANDING_GRAPHICS_BMP
+	IF !DIRECTORY(lcRoot + "REPORTS\graphics")
+		MKDIR (lcRoot + "REPORTS\graphics")
+	ENDIF
+	llOk = CompanyBranding_CopyFile(tcSource, lcDst) OR llOk
+	= ErpEnsureReportsGraphicsLink()
+	RETURN llOk

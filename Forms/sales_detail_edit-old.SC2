@@ -383,9 +383,9 @@ DEFINE CLASS so_invoice AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		invoicechanged = .F.
 		Name = "SO_Invoice"
 		ninvoice = 0

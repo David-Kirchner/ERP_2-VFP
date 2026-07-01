@@ -49,13 +49,13 @@ DEFINE CLASS frmcompanysources AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Company Sources"
 		closeconn = .F.
 		creturnvalue = ""
 		DataSession = 2
 		DoCreate = .T.
 		Height = 282
+		Icon = graphics\earth-globe.ico
 		Left = 28
 		LockScreen = .F.
 		MDIForm = .T.

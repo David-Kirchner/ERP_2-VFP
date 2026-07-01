@@ -43,10 +43,16 @@ FOR i = 1 TO ALEN(laFld, 1)
 	lcFld  = laFld[i, 1]
 	lcType = laFld[i, 2]
 	DO CASE
-		CASE lcType = "G"
-			* SQL varbinary without MapBinary maps as General — cannot EVALUATE
-			ADDPROPERTY(goCompany, lcFld, .NULL.)
-		CASE lcType = "M" OR lcType = "Q"
+		CASE lcType = "G" OR lcType = "Q" OR lcType = "B"
+			* LogoImage, IconImage, ReportImage (varbinary with MapBinary)
+			xVal = .NULL.
+			TRY
+				xVal = EVALUATE("curCompany." + lcFld)
+			CATCH
+				xVal = .NULL.
+			ENDTRY
+			ADDPROPERTY(goCompany, lcFld, xVal)
+		CASE lcType = "M"
 			xVal = EVALUATE("curCompany." + lcFld)
 			ADDPROPERTY(goCompany, lcFld, xVal)
 		OTHERWISE

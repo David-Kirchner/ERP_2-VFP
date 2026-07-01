@@ -33,14 +33,14 @@ DEFINE CLASS form1 AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Form1"
 		DoCreate = .T.
 		Height = 250
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "Form1"
 		nconnhandle = .F.
-		OLEDragPicture = ..\..\microsoft visual foxpro 9\samples\solution\
+		OLEDragPicture = ""
 		OLEDropEffects = 1
 		OLEDropMode = 1
 		ShowTips = .T.

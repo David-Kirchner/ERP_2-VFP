@@ -1,0 +1,877 @@
+*--------------------------------------------------------------------------------------------------------------------------------------------------------
+* sql_certs_frmCustomer - Customer CO editor (split from SQL_certs formset)
+*--------------------------------------------------------------------------------------------------------------------------------------------------------
+*< FOXBIN2PRG: Version="1.21" SourceFile="sql_certs_frmCustomer.scx" CPID="1252" />
+*
+DEFINE CLASS dataenvironment AS dataenvironment
+ 	*< CLASSDATA: Baseclass="dataenvironment" Timestamp="" Scale="" Uniqueid="" ClassIcon="2" />
+	*<PropValue>
+		DataSource = .NULL.
+		Height = 200
+		Left = 1
+		Name = "Dataenvironment"
+		Top = 220
+		Width = 520
+	*</PropValue>
+ENDDEFINE
+
+DEFINE CLASS sql_certs_frmCustomer AS form
+ 	*< CLASSDATA: Baseclass="form" Timestamp="" Scale="" Uniqueid="" />
+
+	*<DefinedPropArrayMethod>
+		*p: oCertFormSet
+	*</DefinedPropArrayMethod>
+
+	*< OBJECTDATA: ObjPath="lblDescript" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Company" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="POnum" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="PartNo" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Pcs" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Description" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="lblPart" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="lblCompany" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="lblPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="lblPieces" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="SalesNum" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="lblSO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="ItemSO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="cmdEdit" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="cmdAdd" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtCO_ID" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="cmdBlank" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="cmdClone" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="cmdDelete" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="edtCoComp" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Label2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="grdCO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="grdCO.Column1.Header1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="grdCO.Column1.Text1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="grdCO.Column2.Header1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="grdCO.Column2.Text1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="grdCO.Column3.Header1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="grdCO.Column3.Text1" UniqueID="" Timestamp="" />
+
+	*<PropValue>
+		Caption = "Customer specific - Be sure to have correct company before printing!"
+		Closable = .F.
+		ControlBox = .F.
+		DoCreate = .T.
+		HalfHeightCaption = .T.
+		Height = 215
+		Left = 647
+		MaxButton = .T.
+		MDIForm = .T.
+		MinButton = .F.
+		MinHeight = 172
+		MinWidth = 484
+		Name = "frmCustomer"
+		ShowTips = .T.
+		DataSession = 2
+		Top = 311
+		Width = 484
+	*</PropValue>
+
+	ADD OBJECT 'cmdAdd' AS commandbutton WITH ;
+		BackColor = 128,255,128, ;
+		Caption = "Add", ;
+		Height = 23, ;
+		Left = 4, ;
+		Name = "cmdAdd", ;
+		TabIndex = 17, ;
+		Top = 130, ;
+		Width = 39
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'cmdBlank' AS commandbutton WITH ;
+		Caption = "Blank", ;
+		Height = 23, ;
+		Left = 131, ;
+		Name = "cmdBlank", ;
+		TabIndex = 20, ;
+		Top = 130, ;
+		Width = 55
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'cmdClone' AS commandbutton WITH ;
+		Caption = "Copy", ;
+		Height = 23, ;
+		Left = 44, ;
+		Name = "cmdClone", ;
+		TabIndex = 18, ;
+		Top = 130, ;
+		Width = 42
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'cmdDelete' AS commandbutton WITH ;
+		BackColor = 255,128,128, ;
+		Caption = "Delete", ;
+		Height = 23, ;
+		Left = 187, ;
+		Name = "cmdDelete", ;
+		TabIndex = 21, ;
+		Top = 130, ;
+		Width = 55
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'cmdEdit' AS commandbutton WITH ;
+		Caption = "Edit", ;
+		Height = 23, ;
+		Left = 88, ;
+		Name = "cmdEdit", ;
+		TabIndex = 19, ;
+		Top = 130, ;
+		Width = 42
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'Company' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 1, ;
+		ColorSource = 3, ;
+		ControlSource = "m.company", ;
+		DisabledBackColor = 255,255,255, ;
+		Enabled = .T., ;
+		FontName = "Arial", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Format = "K", ;
+		Height = 16, ;
+		Left = 292, ;
+		Margin = 0, ;
+		MaxLength = 50, ;
+		Name = "Company", ;
+		ReleaseErase = .F., ;
+		SpecialEffect = 1, ;
+		TabIndex = 8, ;
+		Top = 48, ;
+		Width = 188
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'Description' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 1, ;
+		ColorSource = 3, ;
+		ControlSource = "m.DESCRIPTION", ;
+		DisabledBackColor = 255,255,255, ;
+		Enabled = .T., ;
+		FontName = "Arial", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Format = "K", ;
+		Height = 16, ;
+		Left = 252, ;
+		Margin = 0, ;
+		MaxLength = 50, ;
+		Name = "Description", ;
+		ReleaseErase = .F., ;
+		SpecialEffect = 1, ;
+		TabIndex = 15, ;
+		Top = 139, ;
+		Width = 230
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'edtCoComp' AS editbox WITH ;
+		BackColor = 128,255,128, ;
+		Height = 53, ;
+		Left = 1, ;
+		Name = "edtCoComp", ;
+		Top = 157, ;
+		Width = 479
+		*< END OBJECT: BaseClass="editbox" />
+
+	ADD OBJECT 'grdCO' AS grid WITH ;
+		ColumnCount = 3, ;
+		DeleteMark = .F., ;
+		FontSize = 8, ;
+		Height = 120, ;
+		Left = 0, ;
+		Name = "grdCO", ;
+		RowHeight = 17, ;
+		ToolTipText = "Companies ", ;
+		Top = 0, ;
+		Width = 228, ;
+		Column1.FontSize = 8, ;
+		Column1.Name = "Column1", ;
+		Column1.Width = 65, ;
+		Column2.FontSize = 8, ;
+		Column2.Name = "Column2", ;
+		Column2.Width = 90, ;
+		Column3.FontSize = 8, ;
+		Column3.Name = "Column3"
+		*< END OBJECT: BaseClass="grid" />
+
+	ADD OBJECT 'grdCO.Column1.Header1' AS header WITH ;
+		Caption = "Header1", ;
+		FontSize = 8, ;
+		Name = "Header1"
+		*< END OBJECT: BaseClass="header" />
+
+	ADD OBJECT 'grdCO.Column1.Text1' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 0, ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Margin = 0, ;
+		Name = "Text1"
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'grdCO.Column2.Header1' AS header WITH ;
+		Caption = "Header1", ;
+		FontSize = 8, ;
+		Name = "Header1"
+		*< END OBJECT: BaseClass="header" />
+
+	ADD OBJECT 'grdCO.Column2.Text1' AS textbox WITH ;
+		Alignment = 0, ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 0, ;
+		FontSize = 7, ;
+		ForeColor = 0,0,0, ;
+		Margin = 0, ;
+		Name = "Text1"
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'grdCO.Column3.Header1' AS header WITH ;
+		Caption = "Header1", ;
+		FontSize = 8, ;
+		Name = "Header1"
+		*< END OBJECT: BaseClass="header" />
+
+	ADD OBJECT 'grdCO.Column3.Text1' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 0, ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Margin = 0, ;
+		Name = "Text1"
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'ItemSO' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 1, ;
+		ColorSource = 3, ;
+		ControlSource = "m.item", ;
+		DisabledBackColor = 255,255,255, ;
+		Enabled = .T., ;
+		FontName = "Arial", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Format = "K", ;
+		Height = 16, ;
+		InputMask = "99", ;
+		Left = 360, ;
+		Margin = 0, ;
+		MaxLength = 2, ;
+		Name = "ItemSO", ;
+		ReleaseErase = .F., ;
+		SpecialEffect = 1, ;
+		TabIndex = 6, ;
+		Top = 24, ;
+		Width = 20
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'Label1' AS label WITH ;
+		AutoSize = .F., ;
+		Caption = "This window does not close!", ;
+		ForeColor = 255,128,128, ;
+		Height = 17, ;
+		Left = 320, ;
+		Name = "Label1", ;
+		Top = 1, ;
+		Width = 158
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'Label2' AS label WITH ;
+		Caption = "Use Item to get PO and PartNo", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,255, ;
+		Height = 33, ;
+		Left = 396, ;
+		Name = "Label2", ;
+		Top = 14, ;
+		Width = 72, ;
+		WordWrap = .T.
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'lblCompany' AS label WITH ;
+		Alignment = 1, ;
+		AutoSize = .T., ;
+		Caption = "Company", ;
+		Height = 17, ;
+		Left = 232, ;
+		Name = "lblCompany", ;
+		TabIndex = 7, ;
+		Top = 48, ;
+		Width = 55
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'lblDescript' AS label WITH ;
+		Alignment = 1, ;
+		AutoSize = .T., ;
+		Caption = "Description", ;
+		Height = 17, ;
+		Left = 360, ;
+		Name = "lblDescript", ;
+		TabIndex = 16, ;
+		Top = 126, ;
+		Width = 65
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'lblPart' AS label WITH ;
+		Alignment = 1, ;
+		AutoSize = .T., ;
+		Caption = "Part #", ;
+		Height = 17, ;
+		Left = 253, ;
+		Name = "lblPart", ;
+		TabIndex = 11, ;
+		Top = 97, ;
+		Width = 34
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'lblPieces' AS label WITH ;
+		Alignment = 1, ;
+		AutoSize = .T., ;
+		Caption = "Pieces", ;
+		Height = 17, ;
+		Left = 247, ;
+		Name = "lblPieces", ;
+		TabIndex = 13, ;
+		Top = 120, ;
+		Visible = .F., ;
+		Width = 40
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'lblPO' AS label WITH ;
+		Alignment = 1, ;
+		AutoSize = .T., ;
+		Caption = "PO #", ;
+		Height = 17, ;
+		Left = 261, ;
+		Name = "lblPO", ;
+		TabIndex = 9, ;
+		Top = 71, ;
+		Width = 29
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'lblSO' AS label WITH ;
+		Alignment = 1, ;
+		AutoSize = .T., ;
+		Caption = "SO #", ;
+		Height = 17, ;
+		Left = 253, ;
+		Name = "lblSO", ;
+		TabIndex = 2, ;
+		Top = 24, ;
+		Width = 29
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'PartNo' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 1, ;
+		ColorSource = 3, ;
+		ControlSource = "m.partno", ;
+		DisabledBackColor = 255,255,255, ;
+		Enabled = .T., ;
+		FontName = "Arial", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Format = "K", ;
+		Height = 16, ;
+		Left = 292, ;
+		Margin = 0, ;
+		MaxLength = 50, ;
+		Name = "PartNo", ;
+		ReleaseErase = .F., ;
+		SpecialEffect = 1, ;
+		TabIndex = 12, ;
+		Top = 96, ;
+		Width = 188
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'Pcs' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 1, ;
+		ColorSource = 3, ;
+		ControlSource = "m.Pcs", ;
+		DisabledBackColor = 255,255,255, ;
+		Enabled = .F., ;
+		FontName = "Arial", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Format = "99999999", ;
+		Height = 16, ;
+		Left = 292, ;
+		Margin = 0, ;
+		Name = "Pcs", ;
+		ReleaseErase = .F., ;
+		SpecialEffect = 1, ;
+		TabIndex = 14, ;
+		Top = 120, ;
+		Visible = .F., ;
+		Width = 60
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'POnum' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 1, ;
+		ColorSource = 3, ;
+		ControlSource = "", ;
+		DisabledBackColor = 255,255,255, ;
+		Enabled = .T., ;
+		FontName = "Arial", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Format = "K", ;
+		Height = 16, ;
+		Left = 292, ;
+		Margin = 0, ;
+		MaxLength = 50, ;
+		Name = "POnum", ;
+		ReleaseErase = .F., ;
+		SpecialEffect = 1, ;
+		TabIndex = 10, ;
+		Top = 72, ;
+		Width = 188
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'SalesNum' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BorderStyle = 1, ;
+		ColorSource = 3, ;
+		ControlSource = "m.SalesNum", ;
+		DisabledBackColor = 255,255,255, ;
+		Enabled = .T., ;
+		FontName = "Arial", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Format = "9999999", ;
+		Height = 16, ;
+		Left = 288, ;
+		Margin = 0, ;
+		Name = "SalesNum", ;
+		ReleaseErase = .F., ;
+		SpecialEffect = 1, ;
+		TabIndex = 3, ;
+		Top = 24, ;
+		Width = 60
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtCO_ID' AS textbox WITH ;
+		BackColor = 255,255,255, ;
+		BackStyle = 0, ;
+		BorderStyle = 0, ;
+		ColorSource = 3, ;
+		ControlSource = "CO_ID", ;
+		DisabledBackColor = 255,255,255, ;
+		Enabled = .T., ;
+		FontName = "Arial", ;
+		FontSize = 8, ;
+		ForeColor = 0,0,0, ;
+		Format = "K", ;
+		Height = 16, ;
+		Left = 252, ;
+		Margin = 0, ;
+		Name = "txtCO_ID", ;
+		ReadOnly = .T., ;
+		ReleaseErase = .F., ;
+		SpecialEffect = 1, ;
+		TabIndex = 4, ;
+		TabStop = .F., ;
+		Top = 3, ;
+		Width = 60
+		*< END OBJECT: BaseClass="textbox" />
+
+
+	PROCEDURE Init
+		LPARAMETERS toFormSet
+		IF VARTYPE(toFormSet) = "O"
+			ThisForm.oCertFormSet = toFormSet
+			* Share cert formset private data session (ERPCert_Co, ERPCert, etc.)
+			* DataSession = 2 is set at design time (read-only at runtime)
+			This.DataSessionID = toFormSet.DataSessionID
+		ENDIF
+		*ThisForm.Left = 224  &&W484 L206
+		*ThisForm.Top = 420  &&H171 T213
+	ENDPROC
+
+	PROCEDURE cmdAdd.Click
+		
+		IF This.Caption = "Add"
+			*Check Permision
+			MESSAGEBOX("Only Users with Cert Permision"+CHR(13)+"will be allowed to Save this Edit.",0+48,"Must have Permision")
+			
+			ThisForm.oCertFormSet.SetCert_CO_Edit(1)
+			
+			m.ID = ERPCert.ID
+			ThisForm.txtCO_ID.Value = 0
+			
+			ThisForm.SalesNum.Value = 0
+			*ThisForm.txtCO_ID.Value = ERPCert.ID
+			*ThisForm.ItemSO.Value = 1
+			ThisForm.ItemSO.Value = 0
+			ThisForm.Company.Value = ''
+			ThisForm.POnum.Value = ''
+			ThisForm.PartNo.Value = ''
+			ThisForm.Pcs.Value = 1
+			ThisForm.Description.Value = ''
+			ThisForm.oCertFormSet.isediting_co = .T.
+			ThisForm.SalesNum.SetFocus
+		ELSE
+			*Save
+			PRIVATE nCertID,nCO_ID,nSalesNum,nItemSO,cCompany,cPONum,cPartNo,nPcs,cDescription,cSOitem
+			nCertID		= PrepareSQLnum(ThisForm.oCertFormSet.ERPCert.PF1.pgCert.txtID.Value,'CertID',-3)
+			nCO_ID 		= PrepareSQLnum(ThisForm.txtCO_ID.Value,'CO_ID',-3)
+			nSalesNum	= PrepareSQLnum(ThisForm.SalesNum.Value,'SalesNum',-3)
+			nItemSO		= PrepareSQLnum(ThisForm.ItemSO.Value,'ItemSO',2,0)
+			cCompany	= PrepareSQLtxt(ThisForm.Company.Value,'Company',50)
+			cPONum		= PrepareSQLtxt(ThisForm.PONum.Value,'PONum',50)
+			cPartNo		= PrepareSQLtxt(ThisForm.PartNo.Value,'PartNo',50)
+			nPcs		= PrepareSQLnum(ThisForm.PCS.Value,'PCS',-3)
+			cDescription = PrepareSQLtxt(ThisForm.Description.Value,'Description',50)
+		
+			IF nSalesNum > 0
+				cSOitem = Proper_SO_Item(STR( m.SalesNum ) +'-'+ STR(nItemSO,2,0))
+			ELSE
+				cSOitem = SPACE(10)
+			ENDIF
+			
+			TRY
+				IF nCO_ID > 0
+				
+					cSQL = "UPDATE dbo.Cert_Co SET "
+					cSQL = cSQL+" SalesNum = "+STR(nSalesNum)
+					cSQL = cSQL+", SOitem = '"+cSOitem+"'"
+					cSQL = cSQL+", Company = '"+cCompany+"'"
+					cSQL = cSQL+", PONum = '"+cPONum+"'"
+					cSQL = cSQL+", PartNo = '"+cPartNo+"'"
+					cSQL = cSQL+", Pcs = "+STR(nPcs)
+					cSQL = cSQL+", [description] = '"+cDescription+"'"
+					cSQL = cSQL+" WHERE CO_ID = "+STR(nCO_ID)
+		
+					nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL )
+					DO WHILE nSQLEXEC = 0
+						WAIT WINDOW 'SQL' TIMEOUT 1
+						nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL  )
+					ENDDO
+					IF nSQLEXEC < 0 &&Try again!
+						nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, "")
+						DO WHILE nSQLEXEC = 0
+							WAIT WINDOW 'SQL 2' TIMEOUT 1
+							nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, "")
+		
+							IF nSQLEXEC < 0
+								IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+									nSQLEXEC = 0
+								ENDIF
+							ENDIF
+						ENDDO
+					ENDIF
+					IF nSQLEXEC < 0
+						SQLEXECError(cSQL, ThisForm.oCertFormSet.nConnHandle, nSQLEXEC )
+					ENDIF
+					
+					
+				ELSE
+				
+					cSQL = "INSERT INTO dbo.Cert_Co (ID,SalesNum,SOitem,Company,PONum,PartNo,Pcs,[description] ) VALUES ("
+					cSQL = cSQL +""+STR(ERPCert.ID)
+					cSQL = cSQL +","+STR(nSalesNum)
+					cSQL = cSQL +",'"+cSOitem+"'"
+					cSQL = cSQL +",'"+cCompany+"'"
+					cSQL = cSQL +",'"+cPONum+"'"
+					cSQL = cSQL +",'"+cPartNo+"'"
+					cSQL = cSQL +","+STR(nPcs)
+					cSQL = cSQL +",'"+cDescription+"'"
+					cSQL = cSQL +")"
+					
+					nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL )
+					DO WHILE nSQLEXEC = 0
+						WAIT WINDOW 'SQL' TIMEOUT 1
+						nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL  )
+					ENDDO
+					IF nSQLEXEC < 0 &&Try again!
+						nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, "")
+						DO WHILE nSQLEXEC = 0
+							WAIT WINDOW 'SQL 2' TIMEOUT 1
+							nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, "")
+		
+							IF nSQLEXEC < 0
+								IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+									nSQLEXEC = 0
+								ENDIF
+							ENDIF
+						ENDDO
+					ENDIF
+					IF nSQLEXEC < 0
+						SQLEXECError(cSQL, ThisForm.oCertFormSet.nConnHandle, nSQLEXEC )
+					ENDIF
+				
+					*************************
+					
+					IF USED('tmpCert_Co')
+						USE IN tmpCert_Co 
+					ELSE
+						SELECT 0
+					ENDIF
+					
+					cSQL = "SELECT CO_ID FROM dbo.Cert_Co WHERE "
+					cSQL = cSQL+" SalesNum = "+STR(nSalesNum)
+					cSQL = cSQL+"and SOitem = '"+cSOitem+"'"
+					cSQL = cSQL+"and Company = '"+cCompany+"'"
+					cSQL = cSQL+"and PONum = '"+cPONum+"'"
+					cSQL = cSQL+"and PartNo = '"+cPartNo+"'"
+					cSQL = cSQL+"and Pcs = "+STR(nPcs)
+					cSQL = cSQL+"and [description] = '"+cDescription+"'"
+		
+					nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, 'tmpCert_Co' )
+					DO WHILE nSQLEXEC = 0
+						WAIT WINDOW 'SQL' TIMEOUT 1
+						nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, 'tmpCert_Co' )
+					ENDDO
+					IF nSQLEXEC < 0 &&Try again!
+						nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, "tmpCert_Co")
+						DO WHILE nSQLEXEC = 0
+							WAIT WINDOW 'SQL 2' TIMEOUT 1
+							nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, "tmpCert_Co")
+		
+							IF nSQLEXEC < 0
+								IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+									nSQLEXEC = 0
+								ENDIF
+							ENDIF
+						ENDDO
+					ENDIF
+					IF nSQLEXEC < 0
+						SQLEXECError(cSQL, ThisForm.oCertFormSet.nConnHandle, nSQLEXEC, 'tmpCert_Co' )
+					ENDIF
+					
+					IF USED('tmpCert_Co')
+						IF VARTYPE(tmpCert_Co.CO_ID) = 'N'
+							nCO_ID = tmpCert_Co.CO_ID
+						ENDIF
+						USE IN tmpCert_Co
+					ENDIF
+				
+				ENDIF
+		
+			CATCH
+				MESSAGEBOX("User NOT allowed"+CHR(13)+"No Write Permision",0+16,"User NOT allowed")		
+			ENDTRY
+				
+			ThisForm.oCertFormSet.SetCert_CO_Edit(0)
+			ThisForm.oCertFormSet.GetCert_CO(nCertID)
+			
+		ENDIF
+	ENDPROC
+
+	PROCEDURE cmdBlank.Click
+		ThisForm.oCertFormSet.ERPCertCoBlank()
+		ThisForm.oCertFormSet.SetCert_CO_Edit(1)
+	ENDPROC
+
+	PROCEDURE cmdClone.Click
+		ThisForm.oCertFormSet.SetCert_CO_Edit(1)
+		
+		ThisForm.txtCO_ID.Value = 0
+		ThisForm.SalesNum.Refresh
+		ThisForm.txtCO_ID.Refresh
+		ThisForm.ItemSO.Refresh
+		ThisForm.Company.Refresh
+		ThisForm.POnum.Refresh
+		ThisForm.PartNo.Refresh
+		ThisForm.Pcs.Refresh
+		ThisForm.Description.Refresh
+		
+		ThisForm.SalesNum.SetFocus
+		
+	ENDPROC
+
+	PROCEDURE cmdDelete.Click
+		PRIVATE nCO_ID, cCompany
+		nCO_ID = ThisForm.txtCO_ID.Value
+		cCompany = ThisForm.company.Value
+		IF nCO_ID > 0
+		
+			IF MESSAGEBOX("Are you sure you want to 'Delete'"+CHR(13)+cCompany+CHR(13)+"This Record ID "+ALLTRIM(STR(nCO_ID))+"?",4+32,"Delete?") = 6		
+				PRIVATE cSQL,nSQLEXEC 
+				
+				cSQL = "DELETE FROM dbo.Cert_Co WHERE CO_ID ="+STR(nCO_ID)
+		
+				nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL )
+				DO WHILE nSQLEXEC = 0
+					WAIT WINDOW 'SQL' TIMEOUT 1
+					nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL )
+				ENDDO
+				IF nSQLEXEC < 0 &&Try again!
+					nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, "")
+					DO WHILE nSQLEXEC = 0
+						WAIT WINDOW 'SQL 2' TIMEOUT 1
+						nSQLEXEC = SQLEXEC(ThisForm.oCertFormSet.nConnHandle, cSQL, "")
+		
+						IF nSQLEXEC < 0
+							IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+								nSQLEXEC = 0
+							ENDIF
+						ENDIF
+					ENDDO
+				ENDIF
+				IF nSQLEXEC < 0
+					SQLEXECError(cSQL, ThisForm.oCertFormSet.nConnHandle, nSQLEXEC )
+				ENDIF
+					
+				*refresh
+				ThisForm.oCertFormSet.SelectCertID(ThisForm.oCertFormSet.ERPCert.PF1.pgCert.txtID.Value)
+				ThisForm.oCertFormSet.GetCert_CO()
+				
+			ENDIF
+		ELSE
+			MESSAGEBOX("No Record to Delete",0+16,"No ID")
+		ENDIF
+		
+		ThisForm.oCertFormSet.SetCert_CO_Edit(0)
+		
+	ENDPROC
+
+	PROCEDURE cmdEdit.Click
+		IF This.Caption = "Edit"
+			ThisForm.oCertFormSet.SetCert_CO_Edit(1)
+			ThisForm.txtCO_ID.Value = ERPCert_CO.CO_ID
+			ThisForm.SalesNum.SetFocus
+		
+		ELSE
+			*Abort
+			ThisForm.oCertFormSet.SetCert_CO_Edit(0)
+			ThisForm.oCertFormSet.Refresh_ERPCert('ABORT')
+		ENDIF
+	ENDPROC
+
+	PROCEDURE Company.When
+		RETURN VARTYPE(ThisForm.oCertFormSet) = "O" AND ThisForm.oCertFormSet.isediting_co
+	ENDPROC
+
+	PROCEDURE Description.When
+		RETURN VARTYPE(ThisForm.oCertFormSet) = "O" AND ThisForm.oCertFormSet.isediting_co
+	ENDPROC
+
+	PROCEDURE grdCO.AfterRowColChange
+		LPARAMETERS nColIndex
+		IF VARTYPE(ThisForm.oCertFormSet) = "O"
+			ThisForm.oCertFormSet.RefreshERPCertCo(ERPCert_Co.CO_ID)
+		ENDIF
+	ENDPROC
+
+	PROCEDURE ItemSO.Valid
+		PRIVATE nSalesNum, nItem, cSOitem
+		nSalesNum	= PrepareSQLnum(ThisForm.SalesNum.Value,'SalesNum',-3)
+		nItem		= PrepareSQLnum(This.Value,'item',-1)
+		
+		IF nSalesNum > 0 AND nItem > 0
+			*check
+			cSOitem		= PrepareSQLtxt(STR(nSalesNum,7)+"-"+STR(nItem,2),'SOitem',10)
+			
+			*nCount = Count_ItemTot_SalesNum( nSalesNum, ThisForm.nConnHandle )
+			IF Count_SOIteminSales (cSOitem, ThisForm.oCertFormSet.nConnHandle,'') = 0
+				MESSAGEBOX("This SO item number was not found"+CHR(13)+STR(nSalesNum),0+16,"bad SO")
+			ELSE
+				PRIVATE cPO_Num,cPartNo,cPcs,cDescr
+				cPO_Num	= ''
+				cPartNo	= ''
+				cPcs	= ''
+				cDescr	= ''
+			
+			ENDIF
+		ENDIF
+		
+	ENDPROC
+
+	PROCEDURE ItemSO.When
+		RETURN VARTYPE(ThisForm.oCertFormSet) = "O" AND ThisForm.oCertFormSet.isediting_co
+	ENDPROC
+
+	PROCEDURE PartNo.When
+		RETURN VARTYPE(ThisForm.oCertFormSet) = "O" AND ThisForm.oCertFormSet.isediting_co
+	ENDPROC
+
+	PROCEDURE Pcs.When
+		RETURN VARTYPE(ThisForm.oCertFormSet) = "O" AND ThisForm.oCertFormSet.isediting_co
+	ENDPROC
+
+	PROCEDURE POnum.When
+		RETURN VARTYPE(ThisForm.oCertFormSet) = "O" AND ThisForm.oCertFormSet.isediting_co
+	ENDPROC
+
+	PROCEDURE Resize
+		*ThisForm.Left = 224  &&W484 L206
+		*ThisForm.Top = 420  &&H171 T213
+		*ThisForm.oCertFormSet.Refresh_ERPCert('INIT')
+		
+		PRIVATE nDeltaH, nDeltaW
+		nDeltaH = ThisForm.Height - 172
+		nDeltaW = ThisForm.Width - 484
+		
+		ThisForm.cmdAdd.Top		= (130 + nDeltaH)
+		ThisForm.cmdClone.Top	= (130 + nDeltaH)
+		ThisForm.cmdEdit.Top	= (130 + nDeltaH)
+		ThisForm.cmdBlank.Top	= (130 + nDeltaH)
+		ThisForm.cmdDelete.Top	= (130 + nDeltaH)
+		
+		ThisForm.lblDescript.Top = 126 + nDeltaH
+		ThisForm.Description.Top = 139 + nDeltaH
+		
+		ThisForm.edtCoComp.Top 	= 157 + nDeltaH
+		**********
+		
+		ThisForm.grdCO.Height	= (120 + nDeltaH)
+		ThisForm.grdCO.Width	= (228 + nDeltaW)
+		
+		ThisForm.txtCO_ID.Left	= (264 + nDeltaW)
+		ThisForm.lblSO.Left		= (253 + nDeltaW)
+		ThisForm.SalesNum.Left	= (288 + nDeltaW)
+		ThisForm.ItemSO.Left	= (360 + nDeltaW)
+		ThisForm.lblCompany.Left	= (232 + nDeltaW)
+		ThisForm.Company.Left	= 292 + nDeltaW
+		ThisForm.lblPO.Left		= 261 + nDeltaW
+		ThisForm.POnum.Left		= 292 + nDeltaW
+		ThisForm.lblPart.Left	= 253 + nDeltaW
+		ThisForm.PartNo.Left 	= 292 + nDeltaW
+		ThisForm.lblPieces.Left	= 247 + nDeltaW
+		ThisForm.Pcs.Left		= 292 + nDeltaW
+		
+		ThisForm.lblDescript.Left= 360 + nDeltaW
+		ThisForm.Description.Left= 252 + nDeltaW
+		
+		
+	ENDPROC
+
+	PROCEDURE SalesNum.Valid
+		PRIVATE nSalesNum
+		nSalesNum	= PrepareSQLnum(This.Value,'SalesNum',-3)
+		
+		IF nSalesNum > 0
+			*check
+			*nCount = Count_ItemTot_SalesNum( nSalesNum, ThisForm.nConnHandle )
+			IF Count_SOinSales_No(nSalesNum, ThisForm.oCertFormSet.nConnHandle,'') = 0
+				MESSAGEBOX("This Sales Order was not found"+CHR(13)+STR(nSalesNum),0+16,"bad SO")
+			ELSE
+				*get Comany name 
+				PRIVATE cCompany
+				cCompany = getFromQuotesSO(nSalesNum ,"COMPANY",ThisForm.oCertFormSet.nConnHandle)
+				IF LEN(cCompany)>0
+					ThisForm.COMPANY.Value = cCompany
+				ENDIF
+			ENDIF
+		ENDIF
+		
+		
+	ENDPROC
+
+	PROCEDURE SalesNum.When
+		RETURN VARTYPE(ThisForm.oCertFormSet) = "O" AND ThisForm.oCertFormSet.isediting_co
+	ENDPROC
+
+	PROCEDURE txtCO_ID.When
+		RETURN VARTYPE(ThisForm.oCertFormSet) = "O" AND ThisForm.oCertFormSet.isediting
+	ENDPROC
+
+ENDDEFINE

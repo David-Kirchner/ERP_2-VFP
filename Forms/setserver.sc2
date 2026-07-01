@@ -51,12 +51,12 @@ DEFINE CLASS frmsetserver AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 128,255,255
 		Caption = "Set Server"
 		cserver = ''
 		DoCreate = .T.
 		Height = 300
+		Icon = graphics\earth-globe.ico
 		Left = 1
 		Name = "frmSetServer"
 		Top = 0
@@ -291,6 +291,12 @@ DEFINE CLASS frmsetserver AS form
 		Width = 130
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		************************
 		*Where Am I

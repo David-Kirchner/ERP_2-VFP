@@ -90,13 +90,13 @@ DEFINE CLASS frmpoduedate AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BackColor = 128,255,255
 		Caption = "Purchase Order Due Date Edit"
 		cpoitem = ''
 		DataSession = 2
 		DoCreate = .T.
 		Height = 504
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmPODueDate"
 		nconnhandle = 0

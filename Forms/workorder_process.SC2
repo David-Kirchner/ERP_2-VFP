@@ -114,7 +114,7 @@ DEFINE CLASS frmwo_process AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		AutoCenter = .T.
 		Caption = "WorkOrder Process"
 		ControlBox = .F.

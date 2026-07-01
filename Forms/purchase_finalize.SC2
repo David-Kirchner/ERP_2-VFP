@@ -249,9 +249,9 @@ DEFINE CLASS frmpurchase_finalize AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		lreturn = .F.
 		Name = "frmPurchase_Finalize"
 		nconnhandle = 0

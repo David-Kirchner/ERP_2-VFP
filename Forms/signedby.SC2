@@ -33,10 +33,10 @@ DEFINE CLASS frmsignedby AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Sign Cert"
 		DoCreate = .T.
 		Height = 141
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmSignedBy"
 		rettext = " "
@@ -100,15 +100,23 @@ DEFINE CLASS frmsignedby AS form
 		IF NOT "PROC_SQL" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_SQL ADDITIVE
 		ENDIF
+		IF NOT "CERT_SIG" $ UPPER(SET("PROCEDURE"))
+			IF FILE("PROGS\cert_sig.prg")
+				SET PROCEDURE TO PROGS\cert_sig.prg ADDITIVE
+			ENDIF
+		ENDIF
 		
 		ThisForm.lblUser.Caption = SYS(0)
 		ThisForm.lblDate.Caption = DTOC(DATE()) &&DMY(DATE())
 		
-		PRIVATE cMachineID, cUser
+		PRIVATE cMachineID, cUser, lnMySig
 		cMachineID = ID()
 		cUser = RIGHT(cMachineID, LEN(cMachineID)-AT('#',cMachineID)-1 )
 		
-		ThisForm.cmbSignBy.Value = cUser
+		lnMySig = Cert_Sig_LookupForCurrentUser(0)
+		IF lnMySig > 0
+			ThisForm.cmbSignBy.Value = lnMySig
+		ENDIF
 		
 		*!*	DO CASE 
 		*!*	CASE 'RUSSELL' $ UPPER(SYS(0))
@@ -140,19 +148,22 @@ DEFINE CLASS frmsignedby AS form
 	ENDPROC
 
 	PROCEDURE cmbSignBy.Init
-		PRIVATE cSQL, nSQLEXEC, nLoopCount
+		PRIVATE cSQL, nSQLEXEC, nLoopCount, nConnHandle, nIndex
 		
-		IF USED('tmpAllowSign')
-			SELECT tmpAllowSign
-		ELSE
-			SELECT 0
+		IF NOT "CERT_SIG" $ UPPER(SET("PROCEDURE"))
+			IF FILE("PROGS\cert_sig.prg")
+				SET PROCEDURE TO PROGS\cert_sig.prg ADDITIVE
+			ENDIF
 		ENDIF
 		
 		this.clear
 		
-		cSQL = "SELECT [UN] FROM dbo.AppSetup WITH(NOLOCK) "
-		cSQL = cSQL + " WHERE [PRP] = 'Sign Cert'"
-		cSQL = cSQL + " AND [ANS] = 'YES'"
+		cSQL = "SELECT cs.Sig_ID, cs.PersonName "
+		cSQL = cSQL + "FROM dbo.Cert_Sig cs WITH(NOLOCK) "
+		cSQL = cSQL + "INNER JOIN dbo.AppSetup ap WITH(NOLOCK) ON ap.[UN] = cs.PersonName "
+		cSQL = cSQL + "WHERE cs.IsActive = 1 "
+		cSQL = cSQL + "AND ap.[PRP] = 'Sign Cert' AND ap.[ANS] = 'YES' "
+		cSQL = cSQL + "ORDER BY cs.PersonName"
 		
 		nConnHandle = get_SQLSTRINGCONNECT()
 		nSQLEXEC = SQLEXEC(nConnHandle, cSQL, 'tmpAllowSign')
@@ -177,27 +188,22 @@ DEFINE CLASS frmsignedby AS form
 			SQLEXECError(cSQL,nConnHandle,nSQLEXEC, 'tmpAllowSign')
 		ENDIF
 		
-		
-		DIMENSION aAllowSign(1,2)
+		This.ColumnCount = 2
+		This.NumberOfElements = 0
+		This.BoundColumn = 1
+		This.ColumnWidths = "0,140"
 		
 		IF USED('tmpAllowSign')
-			SELECT * FROM tmpAllowSign INTO ARRAY aAllowSign
+			SELECT tmpAllowSign
+			nIndex = 0
+			SCAN
+				nIndex = nIndex + 1
+				This.AddListItem(ALLTRIM(STR(tmpAllowSign.Sig_ID)), nIndex, 1)
+				This.AddListItem(ALLTRIM(tmpAllowSign.PersonName), nIndex, 2)
+			ENDSCAN
 			USE IN tmpAllowSign
 		ENDIF
 		SQLDISCONNECT(nConnHandle)
-		
-		*This.ColumnCount = ALEN(aAllowSign,2)
-		This.ColumnCount = 1
-		This.NumberOfElements=ALEN(aAllowSign)
-		This.BoundColumn = 1
-		This.ColumnWidths = "115"
-		
-		
-		PRIVATE nArrayCount
-		nArrayCount = ALEN(aAllowSign,1)
-		FOR I = 1 TO nArrayCount
-			this.addListitem(aAllowSign(I),I)
-		ENDFOR
 	ENDPROC
 
 	PROCEDURE cmdCancel.Click
@@ -254,7 +260,7 @@ DEFINE CLASS frmsignedby AS form
 		*!*	ENDCASE
 		
 		IF lSave
-			ThisForm.RetText = sys(0)+"|"+DTOC(DATE())+"|"+ThisForm.cmbSignBy.Value
+			ThisForm.RetText = sys(0)+"|"+DTOC(DATE())+"|"+ALLTRIM(STR(VAL(TRANSFORM(ThisForm.cmbSignBy.Value))))
 			ThisForm.Release
 		Else
 			ThisForm.RetText = " "

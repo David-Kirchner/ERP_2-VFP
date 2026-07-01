@@ -1,0 +1,1 @@
+CreateObject("WScript.Shell").Run Chr(34) & "C:\Program Files (x86)\Microsoft Visual FoxPro 9\vfp9.exe" & Chr(34) & " -cNULL " & Chr(34) & "E:\VFP\ERP_2\tools\compile_spacex_assets_test.prg" & Chr(34), 0, True

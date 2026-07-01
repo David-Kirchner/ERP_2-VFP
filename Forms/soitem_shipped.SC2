@@ -123,7 +123,6 @@ DEFINE CLASS soitem_shipped AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "SO Shipped"
 		closeconn = .F.
 		creturnvalue = ""
@@ -131,6 +130,7 @@ DEFINE CLASS soitem_shipped AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 427
+		Icon = graphics\earth-globe.ico
 		lar = .F.
 		Left = 28
 		leqp = .F.

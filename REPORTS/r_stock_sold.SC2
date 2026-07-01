@@ -266,6 +266,10 @@ DEFINE CLASS frmstocksoldrpt AS form
 		*	USE IN FilterSQL
 		EndIf
 		
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+
 	ENDPROC
 
 	PROCEDURE filtersql		&& Run the SQL with the Filtered parameters

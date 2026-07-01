@@ -80,7 +80,6 @@ DEFINE CLASS frmchoosereceivingdetails AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Select the Heat, looks like there is a receive record."
@@ -91,6 +90,7 @@ DEFINE CLASS frmchoosereceivingdetails AS form
 		DoCreate = .T.
 		Height = 446
 		holdnumber = 0
+		Icon = graphics\earth-globe.ico
 		lclosetmpreceivingpoitem = .F.
 		LockScreen = .F.
 		MDIForm = .T.

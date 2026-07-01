@@ -30,13 +30,14 @@ Run these scripts in SSMS while connected to the target SQL Server instance.
 24. `20_SeedAppUsers.sql`
 25. `20_Z_ERP1_Alignment.sql`
 26. `21_CurrentSupportTables.sql`
+27. `22_CompanyProfile_CustomerTermsPath.sql`
 
 ## Current Rules
 
 - Archive tables are created as `dbo.Ar_*`, matching the `NR_` prefix style.
 - `AuditDB.dbo.ErrorLog` and `AuditDB.dbo.DDLEvents` are the audit tables.
 - `ERP_1.dbo.ErrorLog` and `ERP_1.dbo.DDLEvents` are not part of a fresh build.
-- `dbo.AppErrorLog`, `dbo.CompanyCertPdf`, and `dbo.CompanyProfileHistory` are part of the fresh build.
+- `dbo.AppErrorLog`, `dbo.CompanyCertPdf`, `dbo.CompanyProfileHistory`, and `dbo.[CUSTOMER TERMS]` are part of the fresh build.
 - The deleted external databases `FileStreamFTS`, `Messenger`, and `TimeClockPlus` are not recreated.
 - `dbo.p_FileStream_ins`, `dbo.p_NR_TimeClockPunches`, and `dbo.f_Get_EmailService_User_ClockedIn` are not recreated.
 - One-off/scratch legacy tables such as `CREDITREF`, `WindfallSTK_2025`, and `HPAcertPdf` are not part of the fresh build.

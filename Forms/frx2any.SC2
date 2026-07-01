@@ -67,11 +67,11 @@ DEFINE CLASS frmfrx2any AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BorderStyle = 2
 		Caption = "FRX2Any"
 		DoCreate = .T.
 		Height = 400
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		MaxButton = .F.
 		MinButton = .F.

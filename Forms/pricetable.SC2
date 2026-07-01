@@ -496,12 +496,12 @@ DEFINE CLASS pricetable AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cc = ''
 		cl = ''
 		DataSession = 2
 		editmode = .T.
+		Icon = graphics\earth-globe.ico
 		naddrec = 0
 		Name = "PriceTable"
 		npt_id = 0

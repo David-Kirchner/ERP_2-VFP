@@ -332,7 +332,7 @@ COLOR=1
 </Reportes>
 <Reportes 
 	platform="WINDOWS " uniqueid="" timestamp="0" objtype="17" objcode="0" name="" vpos="1250.000" hpos="2500.000" height="8541.667" width="22083.333" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="0" fillgreen="0" fillblue="0" pensize="0" penpat="0" fillpat="0" fontface="" fontstyle="0" fontsize="0" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".F." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="0" curpos=".T." supalways=".T." supovflow=".T." suprpcol="0" supgroup="0" supvalchng=".F." 
-	<picture><![CDATA["graphics\erphead.bmp"]]>
+	<picture><![CDATA["..\MEM\Company_Rpt_Logo.bmp"]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
@@ -620,13 +620,13 @@ COLOR=1
 </Reportes>
 <Reportes 
 	platform="WINDOWS " uniqueid="" timestamp="0" objtype="17" objcode="0" name="" vpos="70625.000" hpos="4583.333" height="8854.167" width="26875.000" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="0" fillgreen="0" fillblue="0" pensize="0" penpat="0" fillpat="0" fontface="" fontstyle="0" fontsize="0" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="1" spacing="0" double=".F." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="0" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
-	<picture><![CDATA["..\graphics\sig-russ_kirchner_3.bmp"]]>
+	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
 	<expr><![CDATA[]]>
-	<supexpr><![CDATA[HavePermission('CofC Backup')]]>
+	<supexpr><![CDATA[.F.]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>
@@ -716,13 +716,13 @@ COLOR=1
 </Reportes>
 <Reportes 
 	platform="WINDOWS " uniqueid="" timestamp="0" objtype="17" objcode="0" name="" vpos="70416.667" hpos="35000.000" height="8437.500" width="25416.667" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="0" fillgreen="0" fillblue="0" pensize="0" penpat="0" fillpat="0" fontface="" fontstyle="0" fontsize="0" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="1" spacing="0" double=".F." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="0" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
-	<picture><![CDATA["..\graphics\sig-haileypalmer.gif"]]>
+	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
 	<expr><![CDATA[]]>
-	<supexpr><![CDATA[ALLTRIM( RIGHT( SYS(0), LEN(SYS(0))-AT("#",SYS(0))-1 ) )='Hailey Palmer']]>
+	<supexpr><![CDATA[.F.]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>

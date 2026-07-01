@@ -49,7 +49,6 @@ DEFINE CLASS production_scan AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BorderStyle = 0
 		Caption = "Select Order"
 		ClipControls = .F.
@@ -58,6 +57,7 @@ DEFINE CLASS production_scan AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 223
+		Icon = graphics\earth-globe.ico
 		Left = 26
 		LockScreen = .F.
 		MaxButton = .F.

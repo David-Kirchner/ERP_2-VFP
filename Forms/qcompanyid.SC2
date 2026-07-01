@@ -48,12 +48,12 @@ DEFINE CLASS frmcompanyid AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Found Company, but not persons name."
 		DoCreate = .T.
 		Height = 181
+		Icon = graphics\earth-globe.ico
 		LockScreen = .F.
 		Name = "frmCompanyID"
 		pcust = ""

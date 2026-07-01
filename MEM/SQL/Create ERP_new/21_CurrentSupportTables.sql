@@ -1,11 +1,12 @@
 /*
-  Step 21 - Current ERP_1 support tables.
+  Step 21 - Current ERP_2 support tables.
 
-  These are intentionally part of the fresh ERP_1 build:
+  These are intentionally part of the fresh ERP_2 build:
     - dbo.AppErrorLog
     - dbo.CompanyCertPdf
     - dbo.CompanyProfileHistory
     - dbo.trg_CompanyProfile_History
+    - dbo.[CUSTOMER TERMS]  (Sage import staging; HPAlloy shape, renamed)
 
   Deleted external systems such as Messenger are not recreated here.
 */
@@ -69,6 +70,45 @@ BEGIN
     CREATE INDEX IX_CompanyCertPdf_CertNo ON dbo.CompanyCertPdf(CertNumber) WHERE CertNumber IS NOT NULL;
     CREATE INDEX IX_CompanyCertPdf_WO ON dbo.CompanyCertPdf(WorkOrderNumber) WHERE WorkOrderNumber IS NOT NULL;
     CREATE INDEX IX_CompanyCertPdf_Rendered ON dbo.CompanyCertPdf(RenderedUtc DESC);
+END;
+GO
+
+/*
+  Sage accounting export staging table.
+  Same column layout as HPAlloy.dbo.[CUSTOMER TERMS and List], renamed for ERP_2.
+*/
+IF OBJECT_ID(N'dbo.[CUSTOMER TERMS]', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.[CUSTOMER TERMS]
+    (
+        [Customer ID] nvarchar(50) NULL,
+        [Customer Name] nvarchar(50) NULL,
+        [Inactive] nvarchar(50) NULL,
+        [Contact] nvarchar(50) NULL,
+        [Bill to Address-Line One] nvarchar(50) NULL,
+        [Bill to Address-Line Two] nvarchar(50) NULL,
+        [Bill to City] nvarchar(50) NULL,
+        [Bill to State] nvarchar(50) NULL,
+        [Bill to Zip] nvarchar(50) NULL,
+        [Bill to Country] nvarchar(50) NULL,
+        [Customer Type] nvarchar(50) NULL,
+        [Telephone 1] nvarchar(50) NULL,
+        [Fax Number] nvarchar(50) NULL,
+        [Pricing Level] nvarchar(50) NULL,
+        [Use Standard Terms] nvarchar(50) NULL,
+        [C O D  Terms] nvarchar(50) NULL,
+        [Prepaid Terms] nvarchar(50) NULL,
+        [Terms Type] nvarchar(50) NULL,
+        [Due Days] nvarchar(50) NULL,
+        [Credit Limit] nvarchar(50) NULL,
+        [CREDIT INFO] nvarchar(50) NULL,
+        [MISC  INFO] nvarchar(50) NULL,
+        [Customer Since Date] nvarchar(50) NULL,
+        [Last Invoice Date] nvarchar(50) NULL,
+        [Current Balance] nvarchar(50) NULL,
+        [Credit Status] nvarchar(50) NULL,
+        [dtDate] datetime NOT NULL CONSTRAINT DF_CUSTOMER_TERMS_dtDate DEFAULT (getdate())
+    );
 END;
 GO
 

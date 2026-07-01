@@ -127,9 +127,9 @@ DEFINE CLASS latesales AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		Name = "LateSales"
 		nsalesnum = 0
 		WindowType = 1

@@ -42,13 +42,13 @@ DEFINE CLASS frmshow_user_permission AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "User Permission"
 		ClipControls = .T.
 		Closable = .T.
 		ControlBox = .F.
 		DoCreate = .T.
 		Height = 272
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmShow_User_Permission"
 		nconnhandle = 0
@@ -216,6 +216,10 @@ DEFINE CLASS frmshow_user_permission AS form
 		ENDIF
 		
 		=SQLDISCONNECT(ThisForm.nConnHandle)
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+		
 	ENDPROC
 
 	PROCEDURE Init

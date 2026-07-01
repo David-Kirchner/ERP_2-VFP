@@ -59,10 +59,10 @@ DEFINE CLASS frmmtr AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		cunsalloydrw = ''
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		Name = "frmMTR"
 		ncurrentpage = 0
 		nstocklst_id = 0
@@ -365,6 +365,12 @@ DEFINE CLASS frmmtr AS formset
 		Width = 100
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		PARAMETER pAlloy,pForm,pThck,pHeat,pLot,pnID,pnConn
 		*DO FORM "forms\MTR.scx" WITH 'C-276','40',2.5,'Z12345','',0,0
@@ -522,7 +528,7 @@ DEFINE CLASS frmmtr AS formset
 			
 			
 		*DO FORMS\Certs WITH cHEAT, nLOT, cType
-		DO FORM forms\ERP_CERTS.scx WITH cHEAT, cLOT, cType
+		DO FORM forms\SQL_certs.scx WITH cHEAT, cLOT, cType
 		
 		
 		

@@ -1,0 +1,157 @@
+﻿ERP_2 vs ERP-crash project comparison
+Generated: 2026-06-19 09:13:59
+
+PJT sizes (bytes):
+  ERP-crash.pjt: 2419870
+  erp_2.pjt:     2675046
+  erp_test.pjt:  2678181
+
+Member counts (.ADD lines in PJ2 text):
+ERP_2\ERP.PJ2 (current text): 579 members (pj2 exists=True)
+ERP_2\ERP-crash: 579 members (pj2 exists=True)
+ERP_2\erp_2: 476 members (pj2 exists=True)
+ERP_2\erp_test: 476 members (pj2 exists=True)
+E:\VFP\ERP (original): 0 members (pj2 exists=False)
+
+--- ONLY in ERP-crash (not in erp_2) ---
+  company_bmp.bmp
+  forms\addeditsodetails.scx
+  forms\faxnumber.scx
+  forms\latepo.scx
+  forms\machine_shop.scx
+  forms\matchacctid.scx
+  forms\modify_stocklst_detail.scx
+  forms\nace2003.scx
+  forms\names1.scx
+  forms\price_fixer_tool.scx
+  forms\printmail.scx
+  forms\prod_costing.scx
+  forms\receive_edit_fs.scx
+  forms\reportconsumed_ordered.scx
+  forms\reportreceived_ordered.scx
+  forms\rma_select.scx
+  forms\rma22_test.scx
+  forms\sales_finalize.scx
+  forms\scan.scx
+  forms\searchformtrackmess.scx
+  forms\select_country.scx
+  forms\selectsendinq.scx
+  forms\shipments.scx
+  forms\show_proc_order.scx
+  forms\show_vendor_invoice.scx
+  forms\showreceiving.scx
+  forms\showvswagelog.scx
+  forms\showvwire_log.scx
+  forms\signedby.scx
+  forms\so_shipped.scx
+  forms\soitem_stocklst_detail_history.scx
+  forms\sourcesalloy.scx
+  forms\spec_text.scx
+  forms\stocklst_gs.scx
+  forms\stocklst_heat_search.scx
+  forms\stocklst_sql_quotes_old.scx
+  forms\testing_log.scx
+  forms\thumbnail.scx
+  forms\user_dbprofile.scx
+  forms\wire_dies.scx
+  graphics\caldropdown.bmp
+  graphics\company_logo.jpg
+  graphics\cut.msk
+  graphics\earth.ico
+  graphics\erp_logo_small.bmp
+  graphics\hpalloy logo large.bmp
+  graphics\hpalloys logo layered small.bmp
+  graphics\logohpa.bmp
+  graphics\options.ico
+  graphics\pushpinb.msk
+  graphics\sageacct.png
+  graphics\searchfm.bmp
+  graphics\sig_haileypalmer.jpg
+  graphics\sig-alnitagall.png
+  graphics\spacealloysusa-americas-nb.jpg
+  graphics\spacealloysusa-logo-nb.jpg
+  graphics\spacealloysusa-logo-nbhrz.jpg
+  graphics\truck-orig.bmp
+  help\sql server name.txt
+  include\colorcodes.txt
+  include\error procedures.txt
+  include\popupdate.txt
+  include\preparesql procedures.txt
+  include\process_id.txt
+  include\qty pu defined.txt
+  include\receive po flow.txt
+  include\sales sales_no.txt
+  include\sql try again.txt
+  include\stocklst_process flow.txt
+  include\work in progress list.txt
+  libs\_controls.vcx
+  libs\frx2any.vcx
+  libs\listener.vcx
+  libs\printpreview.vcx
+  libs\production.vcx
+  libs\productionlog.vcx
+  libs\purchaseorder.vcx
+  libs\vfpcalendar.vcx
+  libs\wizfancy.vcx
+  mem\company_bmp.bmp
+  mem\company_icon.ico
+  menus\setup_erp.mnx
+  myshutdown.prg
+  progs\createhpadsn.prg
+  progs\gathersend.prg
+  progs\pcuser.prg
+  progs\proc_test.prg
+  progs\proper_po_item.prg
+  progs\proper_so_item.prg
+  progs\recorderror.prg
+  progs\remove0.prg
+  progs\salespdescription.prg
+  progs\salespemail.prg
+  progs\salesrepfromso.prg
+  progs\sherry precision elite.prg
+  reports\billoflading-blank.frx
+  reports\certs_lma.frx
+  reports\exportcontrolpurchasingclause.frx
+  reports\faxsalesorder02.frx
+  reports\nace2003 fullpage 33.lbx
+  reports\packingslip_barcode.frt
+  reports\packingslip-blank.frx
+  reports\proforma09.frx
+  reports\proforma-pnc.frx
+  reports\proforma-wf.frx
+  reports\r_salesorder.scx
+  reports\r_stock_purchase.frx
+  reports\r_stock_purchase.scx
+  reports\salesorder02.frx
+  reports\sherrylabs\sherrylabs.bmp
+  reports\stocklst_process_history.frx
+  reports\testing_log.frx
+  reports\vendor.frx
+  reports\vendorlist.frx
+  reports\vendorlist2.frx
+  reports\workorder12.frx
+  scan.exe
+  version3_4.txt
+Count: 118
+
+--- ONLY in erp_2 (not in ERP-crash) ---
+  forms\erp_certs.scx
+  forms\frx2any.vcx
+  forms\printpreview.vcx
+  forms\production.vcx
+  forms\productionlog.vcx
+  forms\purchaseorder.vcx
+  forms\vfpcalendar.vcx
+  graphics\erphead.bmp
+  libs\caldropdown.bmp
+  mem\earth.ico
+  mem\erp_logo_small.bmp
+  progs\checkupsroute.prg
+  progs\erp_certs_addnewcert.prg
+  progs\erp_certs_check_spec.prg
+  reports\packingslip_barcode.frx
+Count: 15
+
+--- ERP.PJ2 vs ERP-crash (should match) ---
+ERP.PJ2 not in crash: 2
+Crash not in ERP.PJ2: 2

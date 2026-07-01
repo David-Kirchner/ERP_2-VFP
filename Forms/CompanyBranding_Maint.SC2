@@ -35,11 +35,11 @@ DEFINE CLASS frmcompanybranding_maint AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Company Logo (Reports)"
 		DoCreate = .T.
 		Height = 280
+		Icon = graphics\earth-globe.ico
 		lskipcompanybranding = .T.
 		Name = "frmCompanyBranding_maint"
 		Width = 420
@@ -97,7 +97,7 @@ DEFINE CLASS frmcompanybranding_maint AS form
 
 	ADD OBJECT 'lblTitle' AS label WITH ;
 		AutoSize = .T., ;
-		Caption = "Company BMP used by FRX (MEM\Company_BMP.bmp):", ;
+		Caption = "Report Logo used by FRX (MEM\Company_Rpt_Logo.bmp → graphics\Company_Rpt_Logo.bmp):", ;
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblTitle", ;
@@ -125,7 +125,7 @@ DEFINE CLASS frmcompanybranding_maint AS form
 		= CacheCompanyReportBmpFile(0, .T.)
 		lcPath = GetCompanyBmpPath()
 		This.imgPreview.Picture = lcPath
-		This.lblPath.Caption = IIF(EMPTY(lcPath), "(no Company BMP — upload via Company Profile)", lcPath)
+		This.lblPath.Caption = IIF(EMPTY(lcPath), "(no Report Logo — upload via Company Profile)", lcPath)
 	ENDPROC
 
 	PROCEDURE cmdClose.Click

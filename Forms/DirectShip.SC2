@@ -46,7 +46,6 @@ DEFINE CLASS frmdirectship AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Direct Ship"
 		ControlBox = .F.
@@ -56,6 +55,7 @@ DEFINE CLASS frmdirectship AS form
 		DataSession = 2
 		Desktop = .T.
 		DoCreate = .T.
+		Icon = graphics\earth-globe.ico
 		MDIForm = .T.
 		Name = "frmDirectShip"
 		nid_detail_process = 0

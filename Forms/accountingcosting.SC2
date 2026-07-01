@@ -27,10 +27,10 @@ DEFINE CLASS frmaccountingcosting AS form
 	*< OBJECTDATA: ObjPath="Label1" UniqueID="" Timestamp="" />
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Accounting Costing - Write down rules."
 		DoCreate = .T.
 		Height = 455
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmAccountingCosting"
 		ShowTips = .T.
@@ -64,6 +64,12 @@ DEFINE CLASS frmaccountingcosting AS form
 		Width = 360
 		*< END OBJECT: BaseClass="label" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		PRIVATE v
 		

@@ -67,7 +67,7 @@ DEFINE CLASS frmstocklst_vendore_edit AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		Caption = "Remove Vendor Stock "
 		closeconn = .F.
 		DataSession = 2

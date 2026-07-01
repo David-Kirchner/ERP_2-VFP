@@ -359,7 +359,6 @@ DEFINE CLASS packingslip AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		bill3addr = 0
 		caddr_ref = ''
 		Caption = "Packing Slip"
@@ -371,6 +370,7 @@ DEFINE CLASS packingslip AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 350
+		Icon = graphics\earth-globe.ico
 		Left = 4
 		LockScreen = .F.
 		Name = "PACKINGSLIP"

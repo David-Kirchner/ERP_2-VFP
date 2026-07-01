@@ -181,7 +181,6 @@ DEFINE CLASS frmsearchquotes AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Search Table:"
@@ -190,6 +189,7 @@ DEFINE CLASS frmsearchquotes AS form
 		csearchtable = ""
 		DoCreate = .T.
 		Height = 361
+		Icon = graphics\earth-globe.ico
 		lisnumber = .F.
 		MinHeight = 300
 		MinWidth = 617
@@ -1431,6 +1431,12 @@ DEFINE CLASS frmsearchquotes AS form
 		Width = 110
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE getsql_field		&& Return Field from
 		
 		*"QUOTES"

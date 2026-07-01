@@ -505,6 +505,12 @@ DEFINE CLASS frmquickcompany AS embossedform OF "..\libs\wizstyle.vcx"
 		Width = 107
 		*< END OBJECT: ClassLib="..\libs\wizstyle.vcx" BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		PARAMETERS pCompany
 		

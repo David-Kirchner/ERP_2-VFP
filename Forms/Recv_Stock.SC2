@@ -179,7 +179,6 @@ DEFINE CLASS frmrecv_stock AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Receive Stock "
 		cc = ''
@@ -193,6 +192,7 @@ DEFINE CLASS frmrecv_stock AS form
 		Enabled = .T.
 		heat = ''
 		Height = 438
+		Icon = graphics\earth-globe.ico
 		id_detail = 0
 		id_master = 0
 		Left = 2

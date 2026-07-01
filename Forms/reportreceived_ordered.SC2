@@ -39,12 +39,12 @@ DEFINE CLASS frmreportreceived_ordered AS form
 	*< OBJECTDATA: ObjPath="cmdQuit" UniqueID="" Timestamp="" />
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Report Received Vs Ordered"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 219
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		MDIForm = .T.
 		Name = "frmReportReceived_Ordered"

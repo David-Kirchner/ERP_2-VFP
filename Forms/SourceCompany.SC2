@@ -95,10 +95,10 @@ DEFINE CLASS frmsourcecompany AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "SourceCompany"
 		DoCreate = .T.
 		Height = 564
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmSourceCompany"
 		nconnhandle = 0
@@ -866,6 +866,12 @@ DEFINE CLASS frmsourcecompany AS form
 		ThisForm.chkMK1.Value	= 0
 		
 		ThisForm.Notes1.Value = ''
+	ENDPROC
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
 	ENDPROC
 
 	PROCEDURE getalloyinfo

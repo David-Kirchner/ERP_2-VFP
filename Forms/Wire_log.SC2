@@ -173,7 +173,7 @@ DEFINE CLASS frmwirelog AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		BackColor = 200,228,192
 		Caption = "Space Alloys USA"
 		DataSession = 2
@@ -2601,6 +2601,10 @@ DEFINE CLASS frmwirelog AS form
 		IF ThisForm.lOpenShip AND USED('Ship')
 			USE IN Ship
 		ENDIF
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+
 	ENDPROC
 
 	PROCEDURE duplots		&& Count the number of within this lot
@@ -3971,7 +3975,7 @@ DEFINE CLASS frmwirelog AS form
 		SELECT tmpWire_Log
 		ThisForm.AlwaysOnTop = .F.
 		*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH tmpWire_Log.Heat, tmpWire_Log.Lot, "WireDraw"
+			DO FORM 'Forms\SQL_certs' WITH tmpWire_Log.Heat, tmpWire_Log.Lot, "WireDraw"
 		*	ThisForm.AlwaysOnBottom = .F.
 		
 		SELECT tmpWire_Log

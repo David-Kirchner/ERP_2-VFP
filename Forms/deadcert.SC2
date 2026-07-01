@@ -37,10 +37,10 @@ DEFINE CLASS frmdeadcert AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Dead Cert Report"
 		DoCreate = .T.
 		Height = 225
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmDeadCert"
 		nconnhandle = 0
@@ -139,6 +139,12 @@ DEFINE CLASS frmdeadcert AS form
 		Width = 118
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Load
 		IF NOT "PROC_SETUP" $ SET("PROCEDURE")  &&Added for when Quotes is run without ERP menu.
 			SET PROCEDURE TO Progs\Proc_Setup ADDITIVE

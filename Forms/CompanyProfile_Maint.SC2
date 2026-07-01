@@ -39,6 +39,9 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.txtWebsite" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.lblCageCode" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.txtCageCode" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgContact.lblCustomerTermsPath" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgContact.txtCustomerTermsImportPath" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgContact.cmdBrowseCustomerTerms" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgCert.lblCertHeaderText" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgCert.edtCertHeaderText" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgCert.lblCertCertifyText" UniqueID="" Timestamp="" />
@@ -63,6 +66,42 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblShortNameTitle" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgLogo.txtShortNameBranding" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgLogo.lblShortNameHint" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillHdr" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillCompany" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillCompany" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillAddr1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillAddr1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillAddr2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillAddr2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillCity" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillCity" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillState" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillState" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillPostal" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillPostal" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillCountry" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillCountry" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillPhone" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillPhone" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipHdr" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.cmdCopyBillToShip" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipCompany" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipCompany" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipToLine1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipToLine1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipToLine2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipToLine2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipCity" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipCity" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipState" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipState" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipPostal" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipPostal" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipCountry" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipCountry" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipPhone" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipPhone" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblAddrHint" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdSave" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdReload" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdClose" UniqueID="" Timestamp="" />
@@ -72,14 +111,31 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*m: refreshiconpreview
 		*m: refreshlogopreview
 		*m: refreshreportbmppreview
+		*p: cbilltoaddr1
+		*p: cbilltoaddr2
+		*p: cbilltocity
+		*p: cbilltocompany
+		*p: cbilltocountry
+		*p: cbilltophone
+		*p: cbilltopostal
+		*p: cbilltostate
 		*p: ccagecode
 		*p: ccertcertifytext
 		*p: ccertfootertext
 		*p: ccertheadertext
+		*p: ccustomertermsimportpath
 		*p: cdbaname
 		*p: clegalname
 		*p: cqualityemail
 		*p: csalesemail
+		*p: cshiptoaddr1
+		*p: cshiptoaddr2
+		*p: cshiptocity
+		*p: cshiptocompany
+		*p: cshiptocountry
+		*p: cshiptophone
+		*p: cshiptopostal
+		*p: cshiptostate
 		*p: cshortname
 		*p: ctagline
 		*p: cwebsite
@@ -88,22 +144,39 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Company Profile"
+		cbilltoaddr1 = ""
+		cbilltoaddr2 = ""
+		cbilltocity = ""
+		cbilltocompany = ""
+		cbilltocountry = ""
+		cbilltophone = ""
+		cbilltopostal = ""
+		cbilltostate = ""
 		ccagecode = ""
 		ccertcertifytext = ""
 		ccertfootertext = ""
 		ccertheadertext = ""
+		ccustomertermsimportpath = ""
 		cdbaname = ""
 		clegalname = ""
 		cqualityemail = ""
 		csalesemail = ""
+		cshiptoaddr1 = ""
+		cshiptoaddr2 = ""
+		cshiptocity = ""
+		cshiptocompany = ""
+		cshiptocountry = ""
+		cshiptophone = ""
+		cshiptopostal = ""
+		cshiptostate = ""
 		cshortname = ""
 		ctagline = ""
 		cwebsite = ""
 		DoCreate = .T.
 		Height = 560
+		Icon = ..\
 		lskipcompanybranding = .T.
 		Name = "frmCompanyProfile_maint"
 		nconnhandle = 0
@@ -144,18 +217,382 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 500, ;
 		Left = 10, ;
 		Name = "pgf1", ;
-		PageCount = 4, ;
+		PageCount = 5, ;
 		Top = 10, ;
 		Width = 500, ;
 		Page1.Caption = "Identity", ;
 		Page1.Name = "pgIdentity", ;
-		Page2.Caption = "Contact / Web", ;
+		Page2.Caption = "Contact / Paths", ;
 		Page2.Name = "pgContact", ;
 		Page3.Caption = "Cert text", ;
 		Page3.Name = "pgCert", ;
 		Page4.Caption = "Branding", ;
-		Page4.Name = "pgLogo"
+		Page4.Name = "pgLogo", ;
+		Page5.Caption = "Addresses", ;
+		Page5.Name = "pgAddresses"
 		*< END OBJECT: BaseClass="pageframe" />
+
+	ADD OBJECT 'pgf1.pgAddresses.cmdCopyBillToShip' AS commandbutton WITH ;
+		BackColor = 192,192,192, ;
+		Caption = "Copy billing to ship-to", ;
+		Height = 24, ;
+		Left = 300, ;
+		Name = "cmdCopyBillToShip", ;
+		ToolTipText = "Copy all billing fields into ship-to", ;
+		Top = 173, ;
+		Width = 166
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblAddrHint' AS label WITH ;
+		AutoSize = .F., ;
+		Caption = "Report UDFs: REPORTS\company_report.prg — see REPORTS\COMPANY_REPORTS.md for expressions.", ;
+		Height = 30, ;
+		Left = 13, ;
+		Name = "lblAddrHint", ;
+		Top = 394, ;
+		Width = 456, ;
+		WordWrap = .T.
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblBillAddr1' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Address 1", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblBillAddr1", ;
+		Top = 64, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblBillAddr2' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Address 2", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblBillAddr2", ;
+		Top = 92, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblBillCity' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "City", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblBillCity", ;
+		Top = 120, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblBillCompany' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Company", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblBillCompany", ;
+		Top = 36, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblBillCountry' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Country", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblBillCountry", ;
+		Top = 148, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblBillHdr' AS label WITH ;
+		Caption = "Billing address (saved to dbo.CompanyProfile)", ;
+		FontBold = .T., ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblBillHdr", ;
+		Top = 12, ;
+		Width = 273
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblBillPhone' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Phone", ;
+		Height = 17, ;
+		Left = 220, ;
+		Name = "lblBillPhone", ;
+		Top = 148, ;
+		Width = 40
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblBillPostal' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "ZIP", ;
+		Height = 17, ;
+		Left = 338, ;
+		Name = "lblBillPostal", ;
+		Top = 120, ;
+		Width = 28
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblBillState' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "ST", ;
+		Height = 17, ;
+		Left = 270, ;
+		Name = "lblBillState", ;
+		Top = 120, ;
+		Width = 24
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipCity' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "City", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblShipCity", ;
+		Top = 320, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipCompany' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Company", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblShipCompany", ;
+		Top = 236, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipCountry' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Country", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblShipCountry", ;
+		Top = 348, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipHdr' AS label WITH ;
+		Caption = "Company ship-to (dbo.CompanyProfile; customer addresses are dbo.ShipAddr)", ;
+		FontBold = .T., ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblShipHdr", ;
+		Top = 212, ;
+		Width = 465
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipPhone' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Phone", ;
+		Height = 17, ;
+		Left = 220, ;
+		Name = "lblShipPhone", ;
+		Top = 348, ;
+		Width = 40
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipPostal' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "ZIP", ;
+		Height = 17, ;
+		Left = 338, ;
+		Name = "lblShipPostal", ;
+		Top = 320, ;
+		Width = 28
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipState' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "ST", ;
+		Height = 17, ;
+		Left = 270, ;
+		Name = "lblShipState", ;
+		Top = 320, ;
+		Width = 24
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipToLine1' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Address 1", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblShipToLine1", ;
+		Top = 264, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipToLine2' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Address 2", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblShipToLine2", ;
+		Top = 292, ;
+		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtBillAddr1' AS textbox WITH ;
+		ControlSource = "ThisForm.cBillToAddr1", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtBillAddr1", ;
+		SelectOnEntry = .T., ;
+		Top = 62, ;
+		Width = 374
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtBillAddr2' AS textbox WITH ;
+		ControlSource = "ThisForm.cBillToAddr2", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtBillAddr2", ;
+		SelectOnEntry = .T., ;
+		Top = 90, ;
+		Width = 374
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtBillCity' AS textbox WITH ;
+		ControlSource = "ThisForm.cBillToCity", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtBillCity", ;
+		SelectOnEntry = .T., ;
+		Top = 118, ;
+		Width = 170
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtBillCompany' AS textbox WITH ;
+		ControlSource = "ThisForm.cBillToCompany", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtBillCompany", ;
+		SelectOnEntry = .T., ;
+		Top = 34, ;
+		Width = 374
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtBillCountry' AS textbox WITH ;
+		ControlSource = "ThisForm.cBillToCountry", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtBillCountry", ;
+		SelectOnEntry = .T., ;
+		Top = 146, ;
+		Width = 120
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtBillPhone' AS textbox WITH ;
+		ControlSource = "ThisForm.cBillToPhone", ;
+		Height = 23, ;
+		Left = 264, ;
+		Name = "txtBillPhone", ;
+		SelectOnEntry = .T., ;
+		Top = 146, ;
+		Width = 202
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtBillPostal' AS textbox WITH ;
+		ControlSource = "ThisForm.cBillToPostal", ;
+		Height = 23, ;
+		Left = 368, ;
+		Name = "txtBillPostal", ;
+		SelectOnEntry = .T., ;
+		Top = 118, ;
+		Width = 98
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtBillState' AS textbox WITH ;
+		ControlSource = "ThisForm.cBillToState", ;
+		Height = 23, ;
+		Left = 296, ;
+		Name = "txtBillState", ;
+		SelectOnEntry = .T., ;
+		Top = 118, ;
+		Width = 36
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtShipCity' AS textbox WITH ;
+		ControlSource = "ThisForm.cShipToCity", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtShipCity", ;
+		SelectOnEntry = .T., ;
+		Top = 318, ;
+		Width = 170
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtShipCompany' AS textbox WITH ;
+		ControlSource = "ThisForm.cShipToCompany", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtShipCompany", ;
+		SelectOnEntry = .T., ;
+		Top = 234, ;
+		Width = 374
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtShipCountry' AS textbox WITH ;
+		ControlSource = "ThisForm.cShipToCountry", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtShipCountry", ;
+		SelectOnEntry = .T., ;
+		Top = 346, ;
+		Width = 120
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtShipPhone' AS textbox WITH ;
+		ControlSource = "ThisForm.cShipToPhone", ;
+		Height = 23, ;
+		Left = 264, ;
+		Name = "txtShipPhone", ;
+		SelectOnEntry = .T., ;
+		Top = 346, ;
+		Width = 202
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtShipPostal' AS textbox WITH ;
+		ControlSource = "ThisForm.cShipToPostal", ;
+		Height = 23, ;
+		Left = 368, ;
+		Name = "txtShipPostal", ;
+		SelectOnEntry = .T., ;
+		Top = 318, ;
+		Width = 98
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtShipState' AS textbox WITH ;
+		ControlSource = "ThisForm.cShipToState", ;
+		Height = 23, ;
+		Left = 296, ;
+		Name = "txtShipState", ;
+		SelectOnEntry = .T., ;
+		Top = 318, ;
+		Width = 36
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtShipToLine1' AS textbox WITH ;
+		ControlSource = "ThisForm.cShipToAddr1", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtShipToLine1", ;
+		SelectOnEntry = .T., ;
+		Top = 262, ;
+		Width = 374
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtShipToLine2' AS textbox WITH ;
+		ControlSource = "ThisForm.cShipToAddr2", ;
+		Height = 23, ;
+		Left = 92, ;
+		Name = "txtShipToLine2", ;
+		SelectOnEntry = .T., ;
+		Top = 290, ;
+		Width = 374
+		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'pgf1.pgCert.edtCertCertifyText' AS editbox WITH ;
 		ControlSource = "ThisForm.cCertCertifyText", ;
@@ -211,7 +648,17 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 120
 		*< END OBJECT: BaseClass="label" />
 
+	ADD OBJECT 'pgf1.pgContact.cmdBrowseCustomerTerms' AS commandbutton WITH ;
+		Caption = "Browse...", ;
+		Height = 27, ;
+		Left = 376, ;
+		Name = "cmdBrowseCustomerTerms", ;
+		Top = 142, ;
+		Width = 85
+		*< END OBJECT: BaseClass="commandbutton" />
+
 	ADD OBJECT 'pgf1.pgContact.lblCageCode' AS label WITH ;
+		Alignment = 1, ;
 		Caption = "CAGE", ;
 		Height = 17, ;
 		Left = 16, ;
@@ -220,7 +667,19 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 90
 		*< END OBJECT: BaseClass="label" />
 
+	ADD OBJECT 'pgf1.pgContact.lblCustomerTermsPath' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "CUSTOMER TERMS import", ;
+		Height = 32, ;
+		Left = 16, ;
+		Name = "lblCustomerTermsPath", ;
+		Top = 141, ;
+		Width = 93, ;
+		WordWrap = .T.
+		*< END OBJECT: BaseClass="label" />
+
 	ADD OBJECT 'pgf1.pgContact.lblQualityEmail' AS label WITH ;
+		Alignment = 1, ;
 		Caption = "Quality email", ;
 		Height = 17, ;
 		Left = 16, ;
@@ -230,6 +689,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgContact.lblSalesEmail' AS label WITH ;
+		Alignment = 1, ;
 		Caption = "Sales email", ;
 		Height = 17, ;
 		Left = 16, ;
@@ -239,6 +699,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgContact.lblWebsite' AS label WITH ;
+		Alignment = 1, ;
 		Caption = "Website", ;
 		Height = 17, ;
 		Left = 16, ;
@@ -255,6 +716,17 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		SelectOnEntry = .T., ;
 		Top = 108, ;
 		Width = 350
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgContact.txtCustomerTermsImportPath' AS textbox WITH ;
+		ControlSource = "ThisForm.cCustomerTermsImportPath", ;
+		Height = 23, ;
+		Left = 111, ;
+		Name = "txtCustomerTermsImportPath", ;
+		SelectOnEntry = .T., ;
+		ToolTipText = "Folder for Sage CUSTOMER TERMS and List.CSV and HPA App Export.CSV. Blank = \\server\HPAData\Quotes\", ;
+		Top = 144, ;
+		Width = 255
 		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'pgf1.pgContact.txtQualityEmail' AS textbox WITH ;
@@ -288,6 +760,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'pgf1.pgIdentity.lblDBAName' AS label WITH ;
+		Alignment = 1, ;
 		Caption = "DBA", ;
 		Height = 17, ;
 		Left = 16, ;
@@ -297,6 +770,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgIdentity.lblLegalName' AS label WITH ;
+		Alignment = 1, ;
 		Caption = "Legal name", ;
 		Height = 17, ;
 		Left = 16, ;
@@ -306,15 +780,18 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgIdentity.lblShortName' AS label WITH ;
+		Alignment = 1, ;
 		Caption = "Short name (window title)", ;
-		Height = 17, ;
+		Height = 33, ;
 		Left = 16, ;
 		Name = "lblShortName", ;
-		Top = 80, ;
-		Width = 140
+		Top = 73, ;
+		Width = 93, ;
+		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgIdentity.lblTagline' AS label WITH ;
+		Alignment = 1, ;
 		Caption = "Tagline", ;
 		Height = 17, ;
 		Left = 16, ;
@@ -381,6 +858,15 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 90
 		*< END OBJECT: BaseClass="commandbutton" />
 
+	ADD OBJECT 'pgf1.pgLogo.cmdClearReportBmp' AS commandbutton WITH ;
+		Caption = "Clear report logo", ;
+		Height = 27, ;
+		Left = 169, ;
+		Name = "cmdClearReportBmp", ;
+		Top = 302, ;
+		Width = 120
+		*< END OBJECT: BaseClass="commandbutton" />
+
 	ADD OBJECT 'pgf1.pgLogo.cmdPickIcon' AS commandbutton WITH ;
 		Caption = "Choose icon...", ;
 		Height = 27, ;
@@ -397,6 +883,15 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Name = "cmdPickLogo", ;
 		Top = 150, ;
 		Width = 120
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'pgf1.pgLogo.cmdPickReportBmp' AS commandbutton WITH ;
+		Caption = "Choose report logo...", ;
+		Height = 27, ;
+		Left = 16, ;
+		Name = "cmdPickReportBmp", ;
+		Top = 302, ;
+		Width = 153
 		*< END OBJECT: BaseClass="commandbutton" />
 
 	ADD OBJECT 'pgf1.pgLogo.imgIconPreview' AS image WITH ;
@@ -419,54 +914,6 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 220
 		*< END OBJECT: BaseClass="image" />
 
-	ADD OBJECT 'pgf1.pgLogo.lblIconInfo' AS label WITH ;
-		AutoSize = .T., ;
-		Caption = "Cached to MEM\Company_Icon.ico for ERP window and forms.", ;
-		Height = 17, ;
-		Left = 260, ;
-		Name = "lblIconInfo", ;
-		Top = 36, ;
-		Width = 224
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgLogo.lblIconTitle' AS label WITH ;
-		FontBold = .T., ;
-		Caption = "Company Icon", ;
-		Height = 17, ;
-		Left = 260, ;
-		Name = "lblIconTitle", ;
-		Top = 16, ;
-		Width = 120
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgLogo.lblLogoInfo' AS label WITH ;
-		AutoSize = .T., ;
-		Caption = "Optional image for on-screen branding (jpg/png/gif/bmp).", ;
-		Height = 17, ;
-		Left = 16, ;
-		Name = "lblLogoInfo", ;
-		Top = 190, ;
-		Width = 468
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgLogo.cmdClearReportBmp' AS commandbutton WITH ;
-		Caption = "Clear report BMP", ;
-		Height = 27, ;
-		Left = 150, ;
-		Name = "cmdClearReportBmp", ;
-		Top = 302, ;
-		Width = 120
-		*< END OBJECT: BaseClass="commandbutton" />
-
-	ADD OBJECT 'pgf1.pgLogo.cmdPickReportBmp' AS commandbutton WITH ;
-		Caption = "Choose Company BMP...", ;
-		Height = 27, ;
-		Left = 16, ;
-		Name = "cmdPickReportBmp", ;
-		Top = 302, ;
-		Width = 120
-		*< END OBJECT: BaseClass="commandbutton" />
-
 	ADD OBJECT 'pgf1.pgLogo.imgReportBmpPreview' AS image WITH ;
 		BorderStyle = 1, ;
 		Height = 64, ;
@@ -477,23 +924,84 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 200
 		*< END OBJECT: BaseClass="image" />
 
-	ADD OBJECT 'pgf1.pgLogo.lblReportBmpInfo' AS label WITH ;
+	ADD OBJECT 'pgf1.pgLogo.lblIconInfo' AS label WITH ;
 		AutoSize = .T., ;
-		Caption = "Cached to MEM\Company_BMP.bmp; FRX use graphics\erphead.bmp (synced on upload).", ;
+		Caption = "Cached to MEM\Company_Icon.ico for ERP window and forms.", ;
 		Height = 17, ;
+		Left = 260, ;
+		Name = "lblIconInfo", ;
+		Top = 36, ;
+		Width = 344
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblIconTitle' AS label WITH ;
+		Caption = "Company Icon", ;
+		FontBold = .T., ;
+		Height = 17, ;
+		Left = 260, ;
+		Name = "lblIconTitle", ;
+		Top = 16, ;
+		Width = 120
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblLogoInfo' AS label WITH ;
+		AutoSize = .T., ;
+		Caption = "Choose image saves to SQL immediately. Save button is for text fields on other tabs.", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblLogoInfo", ;
+		Top = 190, ;
+		Width = 477
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblLogoTitle' AS label WITH ;
+		Caption = "Company Logo", ;
+		FontBold = .T., ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblLogoTitle", ;
+		Top = 16, ;
+		Width = 120
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblReportBmpInfo' AS label WITH ;
+		AutoSize = .F., ;
+		Caption = "SQL ReportImage -> MEM\Company_Rpt_Logo.bmp -> graphics\Company_Rpt_Logo.bmp for FRX.", ;
+		Height = 34, ;
 		Left = 16, ;
 		Name = "lblReportBmpInfo", ;
 		Top = 336, ;
-		Width = 468
+		Width = 326, ;
+		WordWrap = .T.
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblReportBmpTitle' AS label WITH ;
+		Caption = "Report Logo", ;
+		FontBold = .T., ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblReportBmpTitle", ;
+		Top = 212, ;
+		Width = 200
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgLogo.lblShortNameHint' AS label WITH ;
+		AutoSize = .T., ;
+		Caption = "Same field as Identity tab. Save to update the main window Caption.", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblShortNameHint", ;
+		Top = 429, ;
+		Width = 371
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgLogo.lblShortNameTitle' AS label WITH ;
-		FontBold = .T., ;
 		Caption = "Short name (ERP window title)", ;
+		FontBold = .T., ;
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShortNameTitle", ;
-		Top = 360, ;
+		Top = 385, ;
 		Width = 200
 		*< END OBJECT: BaseClass="label" />
 
@@ -503,43 +1011,21 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 16, ;
 		Name = "txtShortNameBranding", ;
 		SelectOnEntry = .T., ;
-		Top = 378, ;
+		Top = 403, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
-
-	ADD OBJECT 'pgf1.pgLogo.lblShortNameHint' AS label WITH ;
-		AutoSize = .T., ;
-		Caption = "Same field as Identity tab. Save to update the main window Caption.", ;
-		Height = 17, ;
-		Left = 16, ;
-		Name = "lblShortNameHint", ;
-		Top = 404, ;
-		Width = 468
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgLogo.lblReportBmpTitle' AS label WITH ;
-		FontBold = .T., ;
-		Caption = "Company BMP (reports)", ;
-		Height = 17, ;
-		Left = 16, ;
-		Name = "lblReportBmpTitle", ;
-		Top = 212, ;
-		Width = 200
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgf1.pgLogo.lblLogoTitle' AS label WITH ;
-		FontBold = .T., ;
-		Caption = "Company Logo", ;
-		Height = 17, ;
-		Left = 16, ;
-		Name = "lblLogoTitle", ;
-		Top = 16, ;
-		Width = 120
-		*< END OBJECT: BaseClass="label" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		This.nConnHandle = get_SQLSTRINGCONNECT()
-		DO PROGS\load_CompanyProfile
+		= CompanyBranding_EnsurePlaceholderGraphics()
+		DO PROGS\load_CompanyProfile WITH .T.
+		= CompanyBranding_RefreshCacheFromSql(This.nConnHandle)
 		This.LoadData()
 		This.RefreshLogoPreview()
 		This.RefreshIconPreview()
@@ -562,7 +1048,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	ENDPROC
 
 	PROCEDURE loaddata
-		LOCAL laP[11], i, lcP, lcProp, xVal
+		LOCAL laP[28], i, lcP, lcProp, xVal
 		IF VARTYPE(goCompany) # "O"
 			DO PROGS\load_CompanyProfile
 		ENDIF
@@ -580,6 +1066,23 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		laP[9] = "CertHeaderText"
 		laP[10] = "CertCertifyText"
 		laP[11] = "CertFooterText"
+		laP[12] = "CustomerTermsImportPath"
+		laP[13] = "BillToCompany"
+		laP[14] = "BillToAddr1"
+		laP[15] = "BillToAddr2"
+		laP[16] = "BillToCity"
+		laP[17] = "BillToState"
+		laP[18] = "BillToPostal"
+		laP[19] = "BillToCountry"
+		laP[20] = "BillToPhone"
+		laP[21] = "ShipToCompany"
+		laP[22] = "ShipToAddr1"
+		laP[23] = "ShipToAddr2"
+		laP[24] = "ShipToCity"
+		laP[25] = "ShipToState"
+		laP[26] = "ShipToPostal"
+		laP[27] = "ShipToCountry"
+		laP[28] = "ShipToPhone"
 		FOR i = 1 TO ALEN(laP)
 			lcP = laP[i]
 			lcProp = "c" + lcP
@@ -617,6 +1120,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 
 	PROCEDURE cmdReload.Click
 		DO PROGS\load_CompanyProfile WITH .T.
+		= CompanyBranding_RefreshCacheFromSql(Thisform.nConnHandle)
 		Thisform.LoadData()
 		Thisform.RefreshLogoPreview()
 		Thisform.RefreshIconPreview()
@@ -637,9 +1141,26 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		lcSQL = lcSQL + "QualityEmail = "+CompanyProfile_SQLQuote(Thisform.cQualityEmail)+", "
 		lcSQL = lcSQL + "Website = "+CompanyProfile_SQLQuote(Thisform.cWebsite)+", "
 		lcSQL = lcSQL + "CageCode = "+CompanyProfile_SQLQuote(Thisform.cCageCode)+", "
+		lcSQL = lcSQL + "CustomerTermsImportPath = "+CompanyProfile_SQLQuote(Thisform.cCustomerTermsImportPath)+", "
 		lcSQL = lcSQL + "CertHeaderText = "+CompanyProfile_SQLQuote(Thisform.cCertHeaderText)+", "
 		lcSQL = lcSQL + "CertCertifyText = "+CompanyProfile_SQLQuote(Thisform.cCertCertifyText)+", "
 		lcSQL = lcSQL + "CertFooterText = "+CompanyProfile_SQLQuote(Thisform.cCertFooterText)+", "
+		lcSQL = lcSQL + "BillToCompany = "+CompanyProfile_SQLQuote(Thisform.cBillToCompany)+", "
+		lcSQL = lcSQL + "BillToAddr1 = "+CompanyProfile_SQLQuote(Thisform.cBillToAddr1)+", "
+		lcSQL = lcSQL + "BillToAddr2 = "+CompanyProfile_SQLQuote(Thisform.cBillToAddr2)+", "
+		lcSQL = lcSQL + "BillToCity = "+CompanyProfile_SQLQuote(Thisform.cBillToCity)+", "
+		lcSQL = lcSQL + "BillToState = "+CompanyProfile_SQLQuote(Thisform.cBillToState)+", "
+		lcSQL = lcSQL + "BillToPostal = "+CompanyProfile_SQLQuote(Thisform.cBillToPostal)+", "
+		lcSQL = lcSQL + "BillToCountry = "+CompanyProfile_SQLQuote(Thisform.cBillToCountry)+", "
+		lcSQL = lcSQL + "BillToPhone = "+CompanyProfile_SQLQuote(Thisform.cBillToPhone)+", "
+		lcSQL = lcSQL + "ShipToCompany = "+CompanyProfile_SQLQuote(Thisform.cShipToCompany)+", "
+		lcSQL = lcSQL + "ShipToAddr1 = "+CompanyProfile_SQLQuote(Thisform.cShipToAddr1)+", "
+		lcSQL = lcSQL + "ShipToAddr2 = "+CompanyProfile_SQLQuote(Thisform.cShipToAddr2)+", "
+		lcSQL = lcSQL + "ShipToCity = "+CompanyProfile_SQLQuote(Thisform.cShipToCity)+", "
+		lcSQL = lcSQL + "ShipToState = "+CompanyProfile_SQLQuote(Thisform.cShipToState)+", "
+		lcSQL = lcSQL + "ShipToPostal = "+CompanyProfile_SQLQuote(Thisform.cShipToPostal)+", "
+		lcSQL = lcSQL + "ShipToCountry = "+CompanyProfile_SQLQuote(Thisform.cShipToCountry)+", "
+		lcSQL = lcSQL + "ShipToPhone = "+CompanyProfile_SQLQuote(Thisform.cShipToPhone)+", "
 		lcSQL = lcSQL + "ModifiedDate = SYSDATETIME() "
 		lcSQL = lcSQL + "WHERE CompanyId = 1"
 		nRet = SQLEXEC(Thisform.nConnHandle, lcSQL)
@@ -648,32 +1169,39 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 			RETURN
 		ENDIF
 		DO PROGS\load_CompanyProfile WITH .T.
+		= CompanyBranding_RefreshCacheFromSql(Thisform.nConnHandle)
 		IF TYPE("SetERPAppCaption") = "F"
 			= SetERPAppCaption(Thisform.cShortName)
 		ENDIF
+		Thisform.RefreshLogoPreview()
+		Thisform.RefreshIconPreview()
+		Thisform.RefreshReportBmpPreview()
 		MESSAGEBOX("Company profile saved.", 64, "Company Profile")
 	ENDPROC
 
-	PROCEDURE pgf1.pgLogo.cmdClearLogo.Click
-		IF MESSAGEBOX("Remove company logo from database?", 4+32, "Company Profile") # 6
-			RETURN
-		ENDIF
-		= CompanyBranding_ClearLogo(Thisform.nConnHandle)
-		Thisform.RefreshLogoPreview()
+	PROCEDURE pgf1.pgAddresses.cmdCopyBillToShip.Click
+		Thisform.cShipToCompany = Thisform.cBillToCompany
+		Thisform.cShipToAddr1 = Thisform.cBillToAddr1
+		Thisform.cShipToAddr2 = Thisform.cBillToAddr2
+		Thisform.cShipToCity = Thisform.cBillToCity
+		Thisform.cShipToState = Thisform.cBillToState
+		Thisform.cShipToPostal = Thisform.cBillToPostal
+		Thisform.cShipToCountry = Thisform.cBillToCountry
+		Thisform.cShipToPhone = Thisform.cBillToPhone
+		
+		ThisForm.Refresh
 	ENDPROC
 
-	PROCEDURE pgf1.pgLogo.cmdPickLogo.Click
-		LOCAL lcFile
-		lcFile = GETFILE("jpg,png,gif,bmp", "Company logo", "Import", 0, "Choose company logo image")
-		IF EMPTY(lcFile)
+	PROCEDURE pgf1.pgContact.cmdBrowseCustomerTerms.Click
+		LOCAL lcDir
+		lcDir = GETDIR(Thisform.cCustomerTermsImportPath, "CUSTOMER TERMS import folder", "Choose Sage export folder", 64)
+		IF EMPTY(lcDir)
 			RETURN
 		ENDIF
-		IF !CompanyBranding_SaveLogoFile(lcFile, Thisform.nConnHandle)
-			MESSAGEBOX("Could not save logo to SQL. Check connection and CompanyProfile table.", 16, "Company Profile")
-			RETURN
+		IF RIGHT(lcDir, 1) # "\"
+			lcDir = lcDir + "\"
 		ENDIF
-		Thisform.RefreshLogoPreview()
-		MESSAGEBOX("Logo saved. Reports will use the new image.", 64, "Company Profile")
+		Thisform.cCustomerTermsImportPath = lcDir
 	ENDPROC
 
 	PROCEDURE pgf1.pgLogo.cmdClearIcon.Click
@@ -687,8 +1215,30 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		ENDIF
 	ENDPROC
 
+	PROCEDURE pgf1.pgLogo.cmdClearLogo.Click
+		IF MESSAGEBOX("Remove company logo from database?", 4+32, "Company Profile") # 6
+			RETURN
+		ENDIF
+		= CompanyBranding_ClearLogo(Thisform.nConnHandle)
+		Thisform.RefreshLogoPreview()
+	ENDPROC
+
+	PROCEDURE pgf1.pgLogo.cmdClearReportBmp.Click
+		IF MESSAGEBOX("Remove Report Logo from database?", 4+32, "Company Profile") # 6
+			RETURN
+		ENDIF
+		IF !CompanyBranding_ClearReportBmp(Thisform.nConnHandle)
+			MESSAGEBOX("Could not clear Report Logo. Run MEM\SQL\Config\09_CompanyProfile_ReportImage.sql if columns are missing.", 16, "Company Profile")
+			RETURN
+		ENDIF
+		Thisform.RefreshReportBmpPreview()
+	ENDPROC
+
 	PROCEDURE pgf1.pgLogo.cmdPickIcon.Click
 		LOCAL lcFile, lcIcon, lcRoot, lcOldDir
+		IF !CompanyBranding_ConfirmChoose("ICON")
+			RETURN
+		ENDIF
 		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, SYS(5)+SYS(2003)))
 		lcOldDir = CURDIR()
 		CD (lcRoot + "ICO")
@@ -709,35 +1259,44 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		MESSAGEBOX("Icon saved to MEM\Company_Icon.ico. ERP window and forms will use the new icon.", 64, "Company Profile")
 	ENDPROC
 
-	PROCEDURE pgf1.pgLogo.cmdClearReportBmp.Click
-		IF MESSAGEBOX("Remove Company BMP from database?", 4+32, "Company Profile") # 6
+	PROCEDURE pgf1.pgLogo.cmdPickLogo.Click
+		LOCAL lcFile
+		IF !CompanyBranding_ConfirmChoose("LOGO")
 			RETURN
 		ENDIF
-		IF !CompanyBranding_ClearReportBmp(Thisform.nConnHandle)
-			MESSAGEBOX("Could not clear report BMP. Run MEM\SQL\Config\09_CompanyProfile_ReportImage.sql if columns are missing.", 16, "Company Profile")
+		lcFile = GETFILE("jpg,png,gif,bmp", "Company logo", "Import", 0, "Choose company logo image")
+		IF EMPTY(lcFile)
 			RETURN
 		ENDIF
-		Thisform.RefreshReportBmpPreview()
+		IF !CompanyBranding_SaveLogoFile(lcFile, Thisform.nConnHandle)
+			MESSAGEBOX("Could not save logo to SQL. Check connection and CompanyProfile table.", 16, "Company Profile")
+			RETURN
+		ENDIF
+		Thisform.RefreshLogoPreview()
+		MESSAGEBOX("Logo saved. If no Report Logo was set, it was also published to graphics\Company_Rpt_Logo.bmp for reports.", 64, "Company Profile")
 	ENDPROC
 
 	PROCEDURE pgf1.pgLogo.cmdPickReportBmp.Click
 		LOCAL lcFile, lcRoot, lcOldDir
+		IF !CompanyBranding_ConfirmChoose("REPORTLOGO")
+			RETURN
+		ENDIF
 		lcRoot = ADDBS(IIF(VARTYPE(gERPAppHome)="C" AND !EMPTY(gERPAppHome), gERPAppHome, SYS(5)+SYS(2003)))
 		lcOldDir = CURDIR()
 		IF DIRECTORY(lcRoot + "GRAPHICS")
 			CD (lcRoot + "GRAPHICS")
 		ENDIF
-		lcFile = GETFILE("bmp", "Company BMP", "Import", 0, "Choose report header BMP")
+		lcFile = GETFILE("bmp,jpg,png,gif", "Report Logo", "Import", 0, "Choose report letterhead image")
 		CD (lcOldDir)
 		IF EMPTY(lcFile)
 			RETURN
 		ENDIF
 		IF !CompanyBranding_SaveReportBmpFile(lcFile, Thisform.nConnHandle)
-			MESSAGEBOX("Could not save report BMP. Choose a .bmp file and run MEM\SQL\Config\09_CompanyProfile_ReportImage.sql if needed.", 16, "Company Profile")
+			MESSAGEBOX("Could not save Report Logo. Run MEM\SQL\Config\09_CompanyProfile_ReportImage.sql if needed.", 16, "Company Profile")
 			RETURN
 		ENDIF
 		Thisform.RefreshReportBmpPreview()
-		MESSAGEBOX("Company BMP saved to MEM\Company_BMP.bmp. Reports using CompanyReport_Bmp() will show this image.", 64, "Company Profile")
+		MESSAGEBOX("Report Logo saved to graphics\Company_Rpt_Logo.bmp (and REPORTS\graphics\).", 64, "Company Profile")
 	ENDPROC
 
 ENDDEFINE

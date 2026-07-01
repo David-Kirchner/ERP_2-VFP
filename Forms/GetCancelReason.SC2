@@ -30,7 +30,6 @@ DEFINE CLASS frmcancelcomment AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Enter cancel  reason."
 		Closable = .F.
@@ -38,6 +37,7 @@ DEFINE CLASS frmcancelcomment AS form
 		creturn = 
 		DoCreate = .T.
 		Height = 76
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmCancelComment"
 		Top = 0
@@ -62,7 +62,7 @@ DEFINE CLASS frmcancelcomment AS form
 		Left = 8, ;
 		MaxLength = 240, ;
 		Name = "edtComment", ;
-		OLEDragPicture = ..\..\microsoft visual foxpro 9\samples\solution\, ;
+		OLEDragPicture = ""
 		OLEDropEffects = 1, ;
 		OLEDropMode = 1, ;
 		OLEDropTextInsertion = 1, ;

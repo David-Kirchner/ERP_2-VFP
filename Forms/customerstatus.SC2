@@ -49,7 +49,6 @@ DEFINE CLASS frmcustomerstatus AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "Customer Status"
@@ -58,6 +57,7 @@ DEFINE CLASS frmcustomerstatus AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 140
+		Icon = graphics\earth-globe.ico
 		Name = "frmCustomerStatus"
 		Width = 434
 		WindowType = 1

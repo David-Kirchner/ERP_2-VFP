@@ -46,12 +46,12 @@ DEFINE CLASS frmordertasks AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		candropicon = DragMove.cur
 		Caption = "Order tasks"
 		DoCreate = .T.
 		dragthreshold = 0
 		Height = 345
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		mousex = 0
 		mousey = 0

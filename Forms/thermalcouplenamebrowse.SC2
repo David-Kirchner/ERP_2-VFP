@@ -34,7 +34,7 @@ DEFINE CLASS frmthermalcoupleuseadd AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
+		Icon = graphics\earth-globe.ico
 		BorderStyle = 1
 		Caption = ""
 		ClipControls = .F.

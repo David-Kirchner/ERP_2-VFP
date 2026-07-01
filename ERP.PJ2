@@ -96,7 +96,6 @@ WITH loProject.FILES
 	.ADD('forms\draw_sched.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\editsalesorder.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\employeemaint.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('forms\erp_certs.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\erp_menu.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\faxman.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\faxnumber.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -240,7 +239,8 @@ WITH loProject.FILES
 	.ADD('forms\spectext.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\sql_alloy.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\sql_certs.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('forms\sql_certs21.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('forms\sql_certs_frmCustomer.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('forms\sql_certs_frmSpaceX.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('forms\stock_projected.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\stocklst_detail.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\stocklst_detail_cost.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -304,12 +304,12 @@ WITH loProject.FILES
 	.ADD('graphics\check_ico.gif')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\company_logo.jpg')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\erpicon.ico')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('graphics\erphead.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('graphics\Company_Rpt_Logo.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\copy.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\cut.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\cut.msk')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\dragmove.cur')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('graphics\earth.ico')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('graphics\earth-globe.ico')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\email_icon_small.gif')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\erp_logo_small.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\filter.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -379,7 +379,7 @@ WITH loProject.FILES
 	.ADD('graphics\wznew.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('graphics\wzprint.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('mem\Company_Icon.ico')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('mem\Company_BMP.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('mem\Company_Rpt_Logo.bmp')		&& *< FileMetadata: Type="x" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('help\sql server name.txt')		&& *< FileMetadata: Type="T" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('include\colorcodes.txt')		&& *< FileMetadata: Type="T" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('include\error procedures.txt')		&& *< FileMetadata: Type="T" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -435,11 +435,17 @@ WITH loProject.FILES
 	.ADD('progs\chemistry2.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\chemistry3.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\company_branding.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
-	.ADD('progs\company_report.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('reports\company_report.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\companybranding_maint.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\companyprofile_maint.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\createhpadsn.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\erp_environment_ui.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('progs\sql_certs.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('progs\sql_certs_addnewcert.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('progs\sql_certs_check_spec.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('progs\sql_certs_savespacexhardness.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('progs\sql_certs_customer_form.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('progs\sql_certs_spacex_form.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('progs\errorhandlerlog.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\f2math.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\gathersend.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -657,6 +663,8 @@ WITH loProject.FILES
 	*<ExcludedFiles>
 	.ITEM(lcCurdir + 'libs\system.app').Exclude = .T.
 	.ITEM(lcCurdir + 'scan.exe').Exclude = .T.
+	* Cert form: sql_certs is the single active cert screen (2026-06-18).
+	* .ITEM(lcCurdir + 'forms\sql_certs.scx').Exclude = .T.  && optional: deploy beside EXE instead of embedding
 	*</ExcludedFiles>
 
 	*<TextFiles>
@@ -667,7 +675,7 @@ WITH loProject
 	*<ProjectProperties>
 	.SetMain(lcCurdir + 'main.prg')
 
-	.Icon = lcCurdir + 'graphics\earth.ico'
+	.Icon = lcCurdir + 'graphics\earth-globe.ico'
 	.Debug = .T.
 	.Encrypted = .F.
 	*<.CmntStyle = 1 />

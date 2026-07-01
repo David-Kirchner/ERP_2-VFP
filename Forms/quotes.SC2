@@ -226,7 +226,6 @@ DEFINE CLASS frmquotes AS formset
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.Embossedlabel1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.Label1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.QuoteDays" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.lblQuoteDaysShown" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.chkProdReqDefine" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.chkDiffResolved" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.chkHPAcapable" UniqueID="" Timestamp="" />
@@ -242,6 +241,7 @@ DEFINE CLASS frmquotes AS formset
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.chkRegret" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.ID1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.InqNumP" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageQA.lblQuoteDaysShown" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageSold.shpSales" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageSold.txtOrderspec" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="QUOTES.pf1.PageSold.lblOrderspec" UniqueID="" Timestamp="" />
@@ -1244,7 +1244,6 @@ DEFINE CLASS frmquotes AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		autoname = .T.
 		AutoRelease = .T.
 		cc = ''
@@ -9585,7 +9584,7 @@ DEFINE CLASS frmquotes AS formset
 		MinButton = .T., ;
 		Name = "QUOTES", ;
 		OLEDragMode = 0, ;
-		OLEDragPicture = microsoft visual foxpro 9\samples\solution\, ;
+		OLEDragPicture = e:\vfp\erp_2\forms\, ;
 		OLEDropMode = 2, ;
 		ShowTips = .T., ;
 		ShowWindow = 0, ;
@@ -9652,7 +9651,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 26, ;
 		Left = 399, ;
 		Name = "chkEmail", ;
-		Picture = GRAPHICS\email_icon_small.gif, ;
+		Picture = graphics\email_icon_small.gif, ;
 		SpecialEffect = 1, ;
 		Style = 1, ;
 		TabIndex = 41, ;
@@ -9715,7 +9714,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 26, ;
 		Left = 364, ;
 		Name = "chkResearchAlloy", ;
-		Picture = GRAPHICS\research.ico, ;
+		Picture = graphics\research.ico, ;
 		SpecialEffect = 1, ;
 		Style = 1, ;
 		TabIndex = 41, ;
@@ -9766,7 +9765,7 @@ DEFINE CLASS frmquotes AS formset
 		AutoSize = .F., ;
 		BackColor = 192,192,192, ;
 		BackStyle = 1, ;
-		Caption = "�", ;
+		Caption = "*", ;
 		Centered = .F., ;
 		ControlSource = "quotes.TN", ;
 		FontBold = .T., ;
@@ -9778,7 +9777,7 @@ DEFINE CLASS frmquotes AS formset
 		Style = 1, ;
 		TabIndex = 46, ;
 		TabStop = .F., ;
-		ToolTipText = "Use the Registered TradeName � -Blue ring when True", ;
+		ToolTipText = "Use Trademark symbol - blue ring when True", ;
 		Top = 97, ;
 		Width = 20
 		*< END OBJECT: BaseClass="checkbox" />
@@ -9895,7 +9894,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 263, ;
 		Name = "cmdAutoName", ;
-		Picture = GRAPHICS\spell.bmp, ;
+		Picture = graphics\spell.bmp, ;
 		TabIndex = 4, ;
 		TabStop = .F., ;
 		ToolTipText = "Click off to edit name and not remove the company name.", ;
@@ -9934,7 +9933,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 376, ;
 		Name = "cmdCompanyHistory", ;
-		Picture = GRAPHICS\hist.bmp, ;
+		Picture = graphics\hist.bmp, ;
 		TabIndex = 21, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up the Company History", ;
@@ -9964,7 +9963,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 469, ;
 		Name = "cmdCustomerTerms", ;
-		Picture = GRAPHICS\terms.bmp, ;
+		Picture = graphics\terms.bmp, ;
 		TabIndex = 25, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up Customer Terms", ;
@@ -9990,7 +9989,7 @@ DEFINE CLASS frmquotes AS formset
 		Name = "cmdDropEmail", ;
 		OLEDropEffects = 1, ;
 		OLEDropMode = 1, ;
-		Picture = GRAPHICS\mail2.ico, ;
+		Picture = graphics\mail2.ico, ;
 		TabIndex = 34, ;
 		TabStop = .F., ;
 		ToolTipText = "Drop an Email here to Add a new record.", ;
@@ -10035,7 +10034,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 26, ;
 		Left = 102, ;
 		Name = "cmdEditQuickCompany", ;
-		Picture = GRAPHICS\bullseye.ico, ;
+		Picture = graphics\bullseye.ico, ;
 		PicturePosition = 0, ;
 		TabIndex = 17, ;
 		TabStop = .F., ;
@@ -10137,7 +10136,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 400, ;
 		Name = "cmdOrderHistory", ;
-		Picture = GRAPHICS\orderhist.bmp, ;
+		Picture = graphics\orderhist.bmp, ;
 		TabIndex = 22, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up the Order History", ;
@@ -10153,7 +10152,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 32, ;
 		Left = 70, ;
 		Name = "cmdPeach", ;
-		Picture = GRAPHICS\peachsyncicon.bmp, ;
+		Picture = graphics\peachsyncicon.bmp, ;
 		PicturePosition = 14, ;
 		TabIndex = 16, ;
 		TabStop = .F., ;
@@ -10217,7 +10216,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 353, ;
 		Name = "cmdSeekCompany", ;
-		Picture = GRAPHICS\find.bmp, ;
+		Picture = graphics\find.bmp, ;
 		TabIndex = 20, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up the Company Names in system, choice to choose new name.", ;
@@ -10232,7 +10231,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 447, ;
 		Name = "cmdShowBillToAddress", ;
-		Picture = GRAPHICS\billaddr.bmp, ;
+		Picture = graphics\billaddr.bmp, ;
 		TabIndex = 24, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up Billing Address", ;
@@ -10247,7 +10246,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 425, ;
 		Name = "cmdShowShipToAddress", ;
-		Picture = GRAPHICS\shipaddr.bmp, ;
+		Picture = graphics\shipaddr.bmp, ;
 		TabIndex = 23, ;
 		TabStop = .F., ;
 		ToolTipText = "Pop up Shipping Address", ;
@@ -10304,7 +10303,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 53, ;
 		Left = 276, ;
 		Name = "Comments", ;
-		OLEDragPicture = forms\graphics\smmail.bmp, ;
+		OLEDragPicture = graphics\smmail.bmp, ;
 		OLEDropEffects = 1, ;
 		OLEDropMode = 1, ;
 		TabIndex = 66, ;
@@ -13034,16 +13033,16 @@ DEFINE CLASS frmquotes AS formset
 	ADD OBJECT 'QUOTES.pf1.PageQA.chkRegret' AS checkbox WITH ;
 		Alignment = 0, ;
 		AutoSize = .F., ;
-		BackStyle = 0, ;
-		Caption = "Regret", ;
+		BackStyle = 1, ;
+		Caption = "Regreted", ;
 		ControlSource = "", ;
 		Height = 17, ;
-		Left = 9, ;
+		Left = 6, ;
 		Name = "chkRegret", ;
 		ReadOnly = .F., ;
 		ToolTipText = "Regret, not able to quote.", ;
-		Top = 19, ;
-		Width = 55
+		Top = 38, ;
+		Width = 70
 		*< END OBJECT: BaseClass="checkbox" />
 
 	ADD OBJECT 'QUOTES.pf1.PageQA.cmdPrintQA' AS commandbutton WITH ;
@@ -13139,16 +13138,17 @@ DEFINE CLASS frmquotes AS formset
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'QUOTES.pf1.PageQA.lblQuoteDaysShown' AS label WITH ;
-		Alignment = 2, ;
+		Alignment = 0, ;
 		BackStyle = 0, ;
 		Caption = "Quotes Days shown: ", ;
-		Height = 17, ;
-		Left = -1, ;
+		Height = 32, ;
+		Left = 2, ;
 		Name = "lblQuoteDaysShown", ;
 		TabIndex = 2, ;
 		ToolTipText = "Only recent Quotes will be shown to keep system fast.", ;
-		Top = 2, ;
-		Width = 132
+		Top = 1, ;
+		Width = 75, ;
+		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'QUOTES.pf1.PageQA.lblQuoteExpireDate' AS label WITH ;
@@ -13221,16 +13221,16 @@ DEFINE CLASS frmquotes AS formset
 		ControlSource = "", ;
 		Enabled = .T., ;
 		Format = "", ;
-		Height = 21, ;
+		Height = 20, ;
 		InputMask = "9999", ;
-		Left = 74, ;
+		Left = 47, ;
 		Name = "QuoteDays", ;
 		SelectOnEntry = .T., ;
 		TabIndex = 3, ;
-		Top = 17, ;
+		Top = 15, ;
 		Value = , ;
 		Visible = .T., ;
-		Width = 45
+		Width = 35
 		*< END OBJECT: ClassLib="..\libs\wizstyle.vcx" BaseClass="textbox" />
 
 	ADD OBJECT 'QUOTES.pf1.PageQA.shpSales' AS shape WITH ;
@@ -13315,7 +13315,7 @@ DEFINE CLASS frmquotes AS formset
 		Left = 146, ;
 		Name = "txtQuote_No_ID", ;
 		ReadOnly = .T., ;
-		ToolTipText = "Quote ID", ;
+		ToolTipText = "Quote_No_ID", ;
 		Top = 4, ;
 		Value = 0, ;
 		Visible = .F., ;
@@ -14385,7 +14385,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 29, ;
 		Name = "cmdCmplt", ;
-		Picture = ..\, ;
+		Picture = graphics\green.bmp, ;
 		TabIndex = 36, ;
 		ToolTipText = "Mark a late order as Complete", ;
 		Top = 70, ;
@@ -14429,7 +14429,7 @@ DEFINE CLASS frmquotes AS formset
 		Height = 22, ;
 		Left = 221, ;
 		Name = "cmdPackingSlipHistory", ;
-		Picture = forms\graphics\packhist.bmp, ;
+		Picture = graphics\packhist.bmp, ;
 		TabIndex = 36, ;
 		ToolTipText = '"Pop up the PackingSlip History"', ;
 		Top = 104, ;
@@ -43996,6 +43996,9 @@ DEFINE CLASS frmquotes AS formset
 
 	PROCEDURE QUOTES.Init
 		PRIVATE cUserName
+		= ErpEnsureFormsGraphicsLink()
+		= FixErpContainerPictures(This)
+		= ApplyCompanyIconToForm(This)
 		ThisFormSet.Select4Order1.Enabled = .F.
 		ThisFormSet.Select4Order1.Visible = .F.
 		
@@ -44062,12 +44065,14 @@ DEFINE CLASS frmquotes AS formset
 		
 		IF AppSetup_Get_AutoName(gcSalesP)
 			ThisFormSet.AutoName = .T.
-			ThisForm.cmdAutoName.Picture = "graphics\spell.bmp"
+			ThisForm.cmdAutoName.Picture = ErpGraphic("spell.bmp")
 		ELSE
 			ThisFormSet.AutoName = .F.
-			ThisForm.cmdAutoName.Picture = "graphics\strikthr.bmp"
+			ThisForm.cmdAutoName.Picture = ErpGraphic("strikthr.bmp")
 		ENDIF
 		
+		This.chkTN.Caption = CHR(153)
+		This.chkTN.ToolTipText = "Use Trademark symbol "+CHR(153)+" - blue ring when True"
 		
 		IF gcSalesP  = "*"
 			IF "\MEM" $ SYS(2003)

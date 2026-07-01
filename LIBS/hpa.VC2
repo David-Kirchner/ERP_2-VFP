@@ -4611,7 +4611,7 @@ DEFINE CLASS hpa_log AS form 		&& Log file for GFM, Roll, Press
 			*CASE FILE('\program files\VFP\ERPCert\Forms\ERPCert3.scx')
 			THISFORM.ALWAYSONTOP = .F.
 			*	ThisForm.AlwaysOnBottom = .T.
-			DO FORM 'Forms\ERP_CERTS' WITH gfmlog.Heat, gfmlog.Lot, "GFM"
+			DO FORM 'Forms\SQL_certs' WITH gfmlog.Heat, gfmlog.Lot, "GFM"
 			*	ThisForm.AlwaysOnBottom = .F.
 			IF USED('GFMlog')
 				SELECT gfmlog

@@ -98,13 +98,13 @@ DEFINE CLASS frmwo_class AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Production WO Information."
 		Closable = .F.
 		ControlBox = .F.
 		DoCreate = .T.
 		HalfHeightCaption = .T.
 		Height = 320
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmWO_class"
 		nconnhandle = .F.

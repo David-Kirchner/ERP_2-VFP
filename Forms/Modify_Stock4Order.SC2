@@ -226,7 +226,6 @@ DEFINE CLASS modify_stock4order AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoCenter = .T.
 		Caption = "Modify Stock for Order"
 		clocation = ''
@@ -243,6 +242,7 @@ DEFINE CLASS modify_stock4order AS form
 		enterweight1 = .F.
 		enterweight3 = .F.
 		Height = 380
+		Icon = graphics\earth-globe.ico
 		MDIForm = .T.
 		modify_stocklst_how = ''
 		Name = "modify_stock4order"

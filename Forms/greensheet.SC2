@@ -114,9 +114,9 @@ DEFINE CLASS frmreconcile AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AutoRelease = .T.
 		DataSession = 2
+		Icon = graphics\earth-globe.ico
 		Name = "frmReconcile"
 	*</PropValue>
 
@@ -971,6 +971,12 @@ DEFINE CLASS frmreconcile AS formset
 		
 		
 		RETURN lSave
+	ENDPROC
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
 	ENDPROC
 
 	PROCEDURE initsoitems

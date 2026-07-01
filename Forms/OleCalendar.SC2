@@ -36,7 +36,6 @@ DEFINE CLASS frmolecalendar AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		BorderStyle = 0
@@ -48,6 +47,7 @@ DEFINE CLASS frmolecalendar AS form
 		dreturndate = 
 		fndatepick = .F.
 		Height = 90
+		Icon = graphics\earth-globe.ico
 		MDIForm = .F.
 		Name = "frmOLEcalendar"
 		ShowTips = .T.

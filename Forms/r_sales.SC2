@@ -301,11 +301,11 @@ DEFINE CLASS frmreport_sales AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Sales"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 445
+		Icon = graphics\earth-globe.ico
 		Left = 23
 		LockScreen = .F.
 		MDIForm = .T.
@@ -3542,6 +3542,10 @@ DEFINE CLASS frmreport_sales AS form
 		IF USED('Ship') AND close_Ship
 			USE IN Ship
 		EndIf
+		
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
 		
 	ENDPROC
 

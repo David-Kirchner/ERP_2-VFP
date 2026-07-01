@@ -82,12 +82,12 @@ DEFINE CLASS frmchooseso AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Choose SO"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 464
 		holdnumber = 0
+		Icon = graphics\earth-globe.ico
 		Left = 2
 		LockScreen = .F.
 		Name = "frmChooseSO"
@@ -714,6 +714,12 @@ DEFINE CLASS frmchooseso AS form
 		Width = 64
 		*< END OBJECT: BaseClass="textbox" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE Init
 		PARAMETERS pWhat
 		*DO FORM Forms\ChooseSO WITH "ChooseSO" TO nSO

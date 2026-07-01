@@ -60,7 +60,6 @@ DEFINE CLASS frmchooseprodsched AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Choose Production Schedule to view"
 		cordernum = ''
 		cotype_num = ''
@@ -68,6 +67,7 @@ DEFINE CLASS frmchooseprodsched AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 337
+		Icon = graphics\earth-globe.ico
 		Left = 42
 		LockScreen = .F.
 		Name = "frmChooseProdSched"

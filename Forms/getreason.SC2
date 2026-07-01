@@ -32,7 +32,6 @@ DEFINE CLASS frmgetreason AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Enter Reason."
 		Closable = .F.
@@ -40,6 +39,7 @@ DEFINE CLASS frmgetreason AS form
 		creturn = 
 		DoCreate = .T.
 		Height = 76
+		Icon = graphics\earth-globe.ico
 		Left = 124
 		lforceanswer = .F.
 		Name = "frmGetReason"
@@ -80,7 +80,7 @@ DEFINE CLASS frmgetreason AS form
 		Left = 8, ;
 		MaxLength = 240, ;
 		Name = "edtComment", ;
-		OLEDragPicture = ..\, ;
+		OLEDragPicture = ""
 		OLEDropEffects = 1, ;
 		OLEDropMode = 0, ;
 		OLEDropTextInsertion = 0, ;

@@ -157,6 +157,10 @@ DEFINE CLASS frmthermalcouplename AS embossedform OF "..\libs\wizembss.vcx"
 	
 	PROCEDURE Destroy
 		SQLDISCONNECT(ThisForm.nConnHandle)
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+
 	ENDPROC
 
 	PROCEDURE Init

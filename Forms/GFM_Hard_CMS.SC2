@@ -50,13 +50,13 @@ DEFINE CLASS frmgfm_hard_prof AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		BorderStyle = 1
 		Caption = "Rockwell Hardness Profile"
 		ClipControls = .T.
 		ControlBox = .F.
 		DoCreate = .T.
 		Height = 130
+		Icon = graphics\earth-globe.ico
 		Left = 8
 		Name = "frmGFM_Hard_Prof"
 		nconnhandle = 0

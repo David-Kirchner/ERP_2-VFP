@@ -8,7 +8,8 @@ When building or extending ERP **data maintenance** UI:
 
 - Use **visual Form Designer screens** under `Forms\` (`*.SC2` / `*.SCX`) with drag-and-drop fields and pageframes.
 - Use **PRGs only** for: shared libraries, `DO FORM` launchers, SQL/load helpers, and report expression functions — **not** for programmatic-only maintenance forms (`CREATEOBJECT` + `ADDOBJECT` UIs).
-- Rebuild binaries from SC2 via FoxBin2Prg when SCX must be updated.
-
-Company Profile pattern: `Forms\CompanyProfile_Maint.SC2` + thin `PROGS\CompanyProfile_maint.prg` launcher.
+- Rebuild binaries from SC2 via FoxBin2Prg when SCX must be updated.
+- **Before editing SC2:** if the binary (SCX) is newer, run BIN2PRG first — see rule `foxbin2prg-sync`.
+- **After editing SC2:** always PRG2BIN (`tools\run_prg2bin_one.bat` or `DO tools\prg2bin_one.prg WITH ...`).
+Company Profile pattern: `Forms\CompanyProfile_Maint.SC2` + thin `PROGS\CompanyProfile_maint.prg` launcher.
 

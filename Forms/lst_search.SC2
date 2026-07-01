@@ -40,11 +40,11 @@ DEFINE CLASS frmstocklst_search AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "Search StockLst, BrokerLst then History"
 		DataSession = 2
 		DoCreate = .T.
 		Height = 245
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		MinHeight = 245
 		MinWidth = 561

@@ -37,13 +37,13 @@ DEFINE CLASS hpa AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		AlwaysOnTop = .T.
 		Caption = "Main Menu"
 		Closable = .F.
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 353
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		MaxButton = .F.
 		MaxHeight = 600
@@ -543,7 +543,7 @@ DEFINE CLASS hpa AS form
 		******* StockList ********
 		CASE tNodeText == "Stock List"	
 		*CASE tNodeText = "SQL Certs"	-Done in Manufacturing
-		*	DO FORM "Forms\ERP_CERTS.SCX"
+		*	DO FORM "Forms\SQL_certs.SCX"
 			
 		CASE tNodeText == "Inventory Check"
 			IF WEXIST("StockCheck")
@@ -633,8 +633,7 @@ DEFINE CLASS hpa AS form
 			IF WEXIST("SQL Certs")
 				ACTIVATE WINDOW SQL_Certs
 			ELSE
-				*DO FORM "Forms\SQL_Certs"
-				DO FORM "Forms\ERP_CERTS.SCX"
+				DO FORM "Forms\SQL_certs.SCX"
 			ENDIF 
 		
 		*!*	******* MAIL ********
@@ -776,7 +775,7 @@ DEFINE CLASS hpa AS form
 			ENDIF
 		
 		CASE tNodeText = "HPA Certs"
-			DO FORM "Forms\ERP_CERTS.SCX"
+			DO FORM "Forms\SQL_certs.SCX"
 		
 		*CASE tNodeText = "SQL Certs"
 		*	DO FORM "Forms\SQL_Certs.SCX"
@@ -979,7 +978,7 @@ DEFINE CLASS hpa AS form
 
 	PROCEDURE Init
 		= ApplyCompanyIconToForm(This)
-
+		
 		******* QUOTES ********
 		*? "HPA.Init"
 		*Key is not unique in collection .Add() -make sure key is unique!!

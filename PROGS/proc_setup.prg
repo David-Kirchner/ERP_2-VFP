@@ -15,7 +15,7 @@
 *AppSetup_Get_UN_From_PRP_ANSF
 *Machine_Text  Machine_Name_Init  Machine_Name
 *AppSetup_Get_Active_Sales  get_Email_ServerDir get_Server_Email get_Report_Server 
-*get_SQL_Path get_SQL_SendPDF_Path 
+*get_SQL_Path get_SQL_SendPDF_Path GetCustomerTermsImportPath 
 *-AppSetup_Get_DSN 
 *AppSetup_TableofSalesP AppSetup_TopTableofSalesP
 *ERPAppLoad Set_ERPVersion Get_ERPVersion 
@@ -2836,6 +2836,28 @@ cSQL_Path = "\\"+cSQLServer+"\HPAData\Quotes\"
 *WAIT WINDOW (cSQL_Path) TIMEOUT 2
 
 RETURN cSQL_Path
+ENDPROC
+
+*********************************
+PROCEDURE GetCustomerTermsImportPath
+* Folder for Sage CUSTOMER TERMS export CSVs. Company Profile overrides get_SQL_Path().
+LOCAL lcPath
+lcPath = ""
+IF TYPE("goCompany") # "O"
+	IF FILE("PROGS\load_CompanyProfile.prg")
+		DO PROGS\load_CompanyProfile
+	ENDIF
+ENDIF
+IF TYPE("goCompany") = "O" AND PEMSTATUS(goCompany, "CustomerTermsImportPath", 5)
+	lcPath = ALLTRIM(TRANSFORM(goCompany.CustomerTermsImportPath))
+ENDIF
+IF EMPTY(lcPath)
+	RETURN get_SQL_Path()
+ENDIF
+IF RIGHT(lcPath, 1) # "\"
+	lcPath = lcPath + "\"
+ENDIF
+RETURN lcPath
 ENDPROC
 
 ********************************* 

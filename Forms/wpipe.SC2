@@ -243,4 +243,10 @@ DEFINE CLASS wpipe AS embossedform OF "..\libs\wizstyle.vcx"
 		
 	ENDPROC
 
+
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
 ENDDEFINE

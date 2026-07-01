@@ -45,10 +45,10 @@ DEFINE CLASS frmr_salesp AS form
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth.ico
 		Caption = "SalesP by Quarter"
 		DoCreate = .T.
 		Height = 249
+		Icon = graphics\earth-globe.ico
 		Left = 0
 		Name = "frmR_SalesP"
 		nconnhandle = 0
@@ -206,6 +206,12 @@ DEFINE CLASS frmr_salesp AS form
 		Width = 72
 		*< END OBJECT: BaseClass="label" />
 	
+	PROCEDURE Destroy
+		IF VARTYPE(ERP_Menu) = "O"  &&
+			ERP_Menu.WindowState = 0
+		ENDIF
+	ENDPROC
+
 	PROCEDURE getlateshipmentsdata
 	ENDPROC
 
