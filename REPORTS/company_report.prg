@@ -266,6 +266,112 @@ FUNCTION CompanyReport_ShipToLine
 	RETURN CompanyReport_AddressLine("SHIP", tnLine)
 
 *--------------------------------------------------------------------
+* BILL vs SHIP from PO ShipWhere (1=Billing, 5=Profile Ship) or seeded POShipAddr (1/2).
+FUNCTION CompanyReport_WhichFromPO
+	LPARAMETERS tnShipWhere, tnPOShipAddr
+	LOCAL lnWhere, lnAddr
+
+	lnWhere = IIF(VARTYPE(tnShipWhere) = "N", tnShipWhere, 0)
+	lnAddr = IIF(VARTYPE(tnPOShipAddr) = "N", tnPOShipAddr, 0)
+	DO CASE
+	CASE lnWhere = 1
+		RETURN "BILL"
+	CASE lnWhere = 5
+		RETURN "SHIP"
+	CASE lnAddr = 1
+		RETURN "BILL"
+	CASE lnAddr = 2
+		RETURN "SHIP"
+	OTHERWISE
+		RETURN "SHIP"
+	ENDCASE
+
+*--------------------------------------------------------------------
+* Company Profile Addresses tab Phone for BILL/SHIP (or PO ShipWhere/POShipAddr).
+FUNCTION CompanyReport_AddrPhone
+	LPARAMETERS tcWhich
+	RETURN CompanyReport_AddressField(EVL(tcWhich, "SHIP"), "Phone")
+
+*--------------------------------------------------------------------
+* Prefer BillToFax/ShipToFax when present; else CompanyProfile.Fax; else plant Fax.
+FUNCTION CompanyReport_AddrFax
+	LPARAMETERS tcWhich
+	LOCAL lc, lcWhich, lo
+
+	lcWhich = UPPER(ALLTRIM(EVL(tcWhich, "SHIP")))
+	lc = CompanyReport_AddressField(lcWhich, "Fax")
+	IF !EMPTY(lc)
+		RETURN lc
+	ENDIF
+	= CompanyReport_EnsureData()
+	IF VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "Fax", 5)
+		lc = ALLTRIM(goCompany.Fax)
+		IF !EMPTY(lc)
+			RETURN lc
+		ENDIF
+	ENDIF
+	lo = CompanyReport_GetPlant("WINDFALL")
+	IF VARTYPE(lo) = "O" AND !EMPTY(lo.Fax)
+		RETURN ALLTRIM(lo.Fax)
+	ENDIF
+	RETURN ""
+
+*--------------------------------------------------------------------
+FUNCTION CompanyReport_Website
+	LOCAL lc, lcHref
+
+	= CompanyReport_EnsureData()
+	lc = ""
+	IF VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "Website", 5)
+		lc = ALLTRIM(goCompany.Website)
+	ENDIF
+	RETURN lc
+
+*--------------------------------------------------------------------
+* HTML-safe website link (or plain text) for email banners.
+FUNCTION CompanyReport_WebsiteHtml
+	LOCAL lc, lcHref, lcDisp
+
+	lc = CompanyReport_Website()
+	IF EMPTY(lc)
+		RETURN ""
+	ENDIF
+	lcDisp = STRTRAN(lc, ["], [])
+	lcHref = lcDisp
+	IF ATC("://", lcHref) = 0
+		lcHref = "https://" + STRTRAN(lcHref, "\", "/")
+	ENDIF
+	RETURN [<a href="] + lcHref + [">] + lcDisp + [</a>]
+
+*--------------------------------------------------------------------
+* PO footer: where vendors send invoices (Company Profile Identity).
+FUNCTION CompanyReport_InvoiceSendLine
+	LOCAL lc
+	= CompanyReport_EnsureData()
+	lc = ""
+	IF VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "InvoiceSendLine", 5)
+		lc = ALLTRIM(NVL(goCompany.InvoiceSendLine, ""))
+	ENDIF
+	IF EMPTY(lc)
+		lc = "Send invoices to AP@SpaceAlloysUSA.com or mail to POBox 40 Tipton, IN 46072"
+	ENDIF
+	RETURN lc
+
+*--------------------------------------------------------------------
+* PO footer: where vendors send material certifications (Company Profile Identity).
+FUNCTION CompanyReport_MaterialCertSendLine
+	LOCAL lc
+	= CompanyReport_EnsureData()
+	lc = ""
+	IF VARTYPE(goCompany) = "O" AND PEMSTATUS(goCompany, "MaterialCertSendLine", 5)
+		lc = ALLTRIM(NVL(goCompany.MaterialCertSendLine, ""))
+	ENDIF
+	IF EMPTY(lc)
+		lc = "Please send all material certifications to MTR@SpaceAlloysUSA.com"
+	ENDIF
+	RETURN lc
+
+*--------------------------------------------------------------------
 FUNCTION CompanyReport_AddressLine
 	LPARAMETERS tcWhich, tnLine
 	LOCAL laLines[6], i, lcCityLine, lcPhone, lnWant, lnGot

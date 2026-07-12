@@ -1,4 +1,6 @@
-/* Step 23 - CompanyProfile company bill/ship-to (dbo.ShipAddr = customer addresses) */
+/* Step 23 - CompanyProfile company bill/ship-to columns.
+   Plant ShipAddr/SoldAddr 1–2 are seeded from these via
+   26_Seed_Plant_ShipBill_Addresses.sql (customer ShipAddr codes are separate). */
 USE [ERP_2];
 GO
 
@@ -18,6 +20,8 @@ IF COL_LENGTH('dbo.CompanyProfile', 'BillToCountry') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD BillToCountry NVARCHAR(40) NULL;
 IF COL_LENGTH('dbo.CompanyProfile', 'BillToPhone') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD BillToPhone NVARCHAR(25) NULL;
+IF COL_LENGTH('dbo.CompanyProfile', 'BillToFax') IS NULL
+    ALTER TABLE dbo.CompanyProfile ADD BillToFax NVARCHAR(25) NULL;
 
 IF COL_LENGTH('dbo.CompanyProfile', 'ShipToCompany') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD ShipToCompany NVARCHAR(100) NULL;
@@ -35,4 +39,6 @@ IF COL_LENGTH('dbo.CompanyProfile', 'ShipToCountry') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD ShipToCountry NVARCHAR(40) NULL;
 IF COL_LENGTH('dbo.CompanyProfile', 'ShipToPhone') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD ShipToPhone NVARCHAR(25) NULL;
+IF COL_LENGTH('dbo.CompanyProfile', 'ShipToFax') IS NULL
+    ALTER TABLE dbo.CompanyProfile ADD ShipToFax NVARCHAR(25) NULL;
 GO

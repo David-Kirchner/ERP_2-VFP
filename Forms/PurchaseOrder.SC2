@@ -58,7 +58,7 @@ DEFINE CLASS purchaseorder AS formset
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.txtReceivedBy" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.lblBy" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.txtAlloy" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.chkServicesPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.chkLab_Service" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.cmdDelete" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.cmdWorkOrder" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.chkVendorPOConf" UniqueID="" Timestamp="" />
@@ -262,7 +262,7 @@ DEFINE CLASS purchaseorder AS formset
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.PgReview.txtOrder_Qty" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.PgReview.txtOtherFld" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.PgReview.cmbStock" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.PgReview.chkServicesPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.PgReview.chkLab_Service" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.PgReview.lblItempo" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.PgReview.txtDue_max" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.PgReview.lblDue_max" UniqueID="" Timestamp="" />
@@ -1031,9 +1031,9 @@ DEFINE CLASS purchaseorder AS formset
 		pgfPO.pgPODesc.chkRandLen.Alignment = 0, ;
 		pgfPO.pgPODesc.chkRandLen.Name = "chkRandLen", ;
 		pgfPO.pgPODesc.chkRandLen.TabIndex = 41, ;
-		pgfPO.pgPODesc.chkServicesPO.Alignment = 0, ;
-		pgfPO.pgPODesc.chkServicesPO.Name = "chkServicesPO", ;
-		pgfPO.pgPODesc.chkServicesPO.TabIndex = 81, ;
+		pgfPO.pgPODesc.chkLab_Service.Alignment = 0, ;
+		pgfPO.pgPODesc.chkLab_Service.Name = "chkLab_Service", ;
+		pgfPO.pgPODesc.chkLab_Service.TabIndex = 81, ;
 		pgfPO.pgPODesc.chkSPS1.Alignment = 0, ;
 		pgfPO.pgPODesc.chkSPS1.Name = "chkSPS1", ;
 		pgfPO.pgPODesc.chkSPS1.TabIndex = 79, ;
@@ -3474,7 +3474,7 @@ DEFINE CLASS purchaseorder AS formset
 		Width = 80
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'frmPOMaint.pf1.pgEdit.chkServicesPO' AS checkbox WITH ;
+	ADD OBJECT 'frmPOMaint.pf1.pgEdit.chkLab_Service' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 236,233,216, ;
 		BackStyle = 1, ;
@@ -3484,7 +3484,7 @@ DEFINE CLASS purchaseorder AS formset
 		Enabled = .T., ;
 		Height = 17, ;
 		Left = 510, ;
-		Name = "chkServicesPO", ;
+		Name = "chkLab_Service", ;
 		TabIndex = 25, ;
 		ToolTipText = "Services - Purchases without a Material Reciept or Due In.", ;
 		Top = 170, ;
@@ -3926,7 +3926,7 @@ DEFINE CLASS purchaseorder AS formset
 		Enabled = .F., ;
 		Height = 20, ;
 		Left = 241, ;
-		MaxLength = 30, ;
+		MaxLength = 100, ;
 		Name = "txtCompany", ;
 		TabIndex = 23, ;
 		Top = 173, ;
@@ -4259,7 +4259,7 @@ DEFINE CLASS purchaseorder AS formset
 		Width = 52
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'frmPOMaint.pf1.PgReview.chkServicesPO' AS checkbox WITH ;
+	ADD OBJECT 'frmPOMaint.pf1.PgReview.chkLab_Service' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 212,208,200, ;
 		BackStyle = 0, ;
@@ -4269,7 +4269,7 @@ DEFINE CLASS purchaseorder AS formset
 		Enabled = .F., ;
 		Height = 12, ;
 		Left = 131, ;
-		Name = "chkServicesPO", ;
+		Name = "chkLab_Service", ;
 		TabIndex = 86, ;
 		Top = 234, ;
 		Visible = .T., ;
@@ -5302,7 +5302,7 @@ DEFINE CLASS purchaseorder AS formset
 		Enabled = .F., ;
 		Format = "K!", ;
 		Height = 23, ;
-		InputMask = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", ;
+		InputMask = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", ;
 		Left = 307, ;
 		Name = "txtCompany", ;
 		SelectedBackColor = 49,106,197, ;
@@ -9414,7 +9414,7 @@ DEFINE CLASS purchaseorder AS formset
 		ThisFormSet.frmPOMaint.pf1.pgEdit.txtTotal.Refresh
 		
 		**************
-		ThisFormSet.frmPOMaint.pf1.pgEdit.chkServicesPO.Value 	= PrepareSQLchk(PurchaseOrder.Services,'Services')
+		ThisFormSet.frmPOMaint.pf1.pgEdit.chkLab_Service.Value 	= PrepareSQLchk(PurchaseOrder.Services,'Services')
 		ThisFormSet.frmPOMaint.pf1.pgEdit.chkConvServ.Value		= PrepareSQLchk(PurchaseOrder.ConvServ,'ConvServ')
 		ThisFormSet.frmPOMaint.pf1.pgEdit.chkEquipment.Value	= PrepareSQLchk(PurchaseOrder.Equipment,'Equipment')
 		*ThisFormSet.frmPOMaint.pf1.pgEdit.chkComplete.Value		= PrepareSQLchk(PurchaseOrder.Delivered,'Delivered')
@@ -9777,7 +9777,7 @@ DEFINE CLASS purchaseorder AS formset
 		
 		
 		PRIVATE lServices,lConvServ,lEquipment,lIntP
-		lServices = PrepareSQLchk(ThisFormSet.frmPO.pgfPO.pgPODesc.chkServicesPO.Value,'Services')
+		lServices = PrepareSQLchk(ThisFormSet.frmPO.pgfPO.pgPODesc.chkLab_Service.Value,'Services')
 		lConvServ = PrepareSQLchk(ThisFormSet.frmPO.pgfPO.pgPODesc.chkConvServ.Value,'ConvServ')
 		lEquipment= PrepareSQLchk(ThisFormSet.frmPO.pgfPO.pgPODesc.chkEquipment.Value,'Equipment')
 		lIntP	 = PrepareSQLchk(ThisFormSet.frmPO.pgfPO.pgPODesc.chkIntP.Value,'IntP')
@@ -9804,7 +9804,7 @@ DEFINE CLASS purchaseorder AS formset
 		
 		PRIVATE cPOitem, cCompany
 		cPOitem = PrepareSQLtxt(PurchaseOrder.POitem,'POitem',12)
-		cCompany = PrepareSQLtxt(PurchaseOrder.Company,'Company',30)
+		cCompany = PrepareSQLtxt(PurchaseOrder.Company,'Company',100)
 		
 		ThisFormSet.frmPOMaint.pf1.pgStockLst.txtPOitem.Value = cPOitem 
 		ThisFormSet.frmPOMaint.pf1.pgStockLst.txtCompany.Value = cCompany
@@ -10294,7 +10294,7 @@ DEFINE CLASS purchaseorder AS formset
 		ThisFormSet.frmPOMaint.pf1.pgReview.lblWO_Dnum.Caption	= STR(PrepareSQLnum(PurchaseOrder.WO_Detail,'WO_Detail',-3))
 		ThisFormSet.frmPOMaint.pf1.pgReview.txtWO_Detail.Value	= PrepareSQLnum(PurchaseOrder.WO_Detail,'WO_Detail',-3)
 		
-		ThisFormSet.frmPOMaint.pf1.pgReview.txtCompany.VALUE	= ShowSQLtxt(PurchaseOrder.Company,'Company',30)
+		ThisFormSet.frmPOMaint.pf1.pgReview.txtCompany.VALUE	= ShowSQLtxt(PurchaseOrder.Company,'Company',100)
 		ThisFormSet.frmPOMaint.pf1.pgReview.txtSalesP.VALUE		= ShowSQLtxt(PurchaseOrder.SalesP,'SalesP',1)
 		ThisFormSet.frmPOMaint.pf1.pgReview.txtCover.VALUE		= ShowSQLtxt(PurchaseOrder.Cover,'Cover',1)
 		
@@ -10343,7 +10343,7 @@ DEFINE CLASS purchaseorder AS formset
 		ThisFormSet.frmPOMaint.pf1.pgReview.txtStandSize.VALUE	= PrepareSQLnum(PurchaseOrder.StandSize,'StandSize',10,4)
 		
 		ThisFormSet.frmPOMaint.pf1.pgReview.chkSPS1.VALUE		= PrepareSQLchk(PurchaseOrder.Sheet_pk,'Sheet_pk')
-		ThisFormSet.frmPOMaint.pf1.pgReview.chkServicesPO.VALUE	= PrepareSQLchk(PurchaseOrder.Services,'Services')
+		ThisFormSet.frmPOMaint.pf1.pgReview.chkLab_Service.VALUE	= PrepareSQLchk(PurchaseOrder.Services,'Services')
 		ThisFormSet.frmPOMaint.pf1.pgReview.chkConvServ.VALUE	= PrepareSQLchk(PurchaseOrder.ConvServ,'ConvServ')
 		ThisFormSet.frmPOMaint.pf1.pgReview.chkEquipment.VALUE	= PrepareSQLchk(PurchaseOrder.Equipment,'Equipment')
 		ThisFormSet.frmPOMaint.pf1.pgReview.chkIntP.VALUE	= PrepareSQLchk(PurchaseOrder.IntP,'IntP')
@@ -13748,7 +13748,7 @@ DEFINE CLASS purchaseorder AS formset
 							cInit			= PrepareSQLtxt(PurchaseOrder.SalesP,'SalesP',1,.F.)+PrepareSQLtxt(PurchaseOrder.Cover,'SalesP',1,.F.)	&&ReceivedBy
 							lPass			= .T.
 							lGoodPapers		= .T.
-							cVendor			= PrepareSQLtxt(PurchaseOrder.Company,'Company',50,.F.)
+							cVendor			= PrepareSQLtxt(PurchaseOrder.Company,'Company',100,.F.)
 		
 		
 							nReceivingID = 0
@@ -14594,7 +14594,7 @@ DEFINE CLASS purchaseorder AS formset
 		
 	ENDPROC
 
-	PROCEDURE frmPOMaint.pf1.pgEdit.chkServicesPO.Click
+	PROCEDURE frmPOMaint.pf1.pgEdit.chkLab_Service.Click
 		PRIVATE lThisVal,cPOitem, cSQL, nSQLEXEC
 		cPOitem = PurchaseOrder.POitem
 		
@@ -15766,7 +15766,7 @@ DEFINE CLASS purchaseorder AS formset
 	PROCEDURE frmPOMaint.pf1.PgReview.cmdShowVendors.Click
 		PRIVATE cCompany, nVendCode
 		nVendCode = PrepareSQLnum(This.Parent.lblVendCode.Caption ,'VendCode',-3)
-		cCompany = ShowSQLtxt(This.Parent.txtCompany.Value,'Company',30)
+		cCompany = ShowSQLtxt(This.Parent.txtCompany.Value,'Company',100)
 		
 		lcCurrTable = ALIAS()
 		
@@ -16462,7 +16462,7 @@ DEFINE CLASS purchaseorder AS formset
 		ThisFormSet.frmPOMaint.pf1.PgEdit.lblSz3.Top 	= 137 + nHeight
 		ThisFormSet.frmPOMaint.pf1.PgEdit.txtSz3.Top 	= 149 + nHeight
 		
-		ThisFormSet.frmPOMaint.pf1.PgEdit.chkServicesPO.Top 	= 170 + nHeight
+		ThisFormSet.frmPOMaint.pf1.PgEdit.chkLab_Service.Top 	= 170 + nHeight
 		ThisFormSet.frmPOMaint.pf1.PgEdit.chkConvServ.Top 		= 170 + nHeight
 		ThisFormSet.frmPOMaint.pf1.PgEdit.chkIntP.Top 		= 170 + nHeight
 		

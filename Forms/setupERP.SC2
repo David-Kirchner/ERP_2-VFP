@@ -42,10 +42,14 @@ DEFINE CLASS erpsetup AS form
 	*< OBJECTDATA: ObjPath="cmdRunScripts" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdTiptonPrinter" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="lblLoginUN" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="lblDisplayName" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="txtDisplayName" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="cmdStoreName" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdUserPermission" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Command1" UniqueID="" Timestamp="" />
 
 	*<DefinedPropArrayMethod>
+		*p: cdisplayname		&& dbo.AppUsers.DisplayName for LoginUN
 		*p: databasedirmem		&& SQL Database name from ERP_Environment.xml
 		*p: homedirmem		&& Location of home, normally "C:\Program Files\VFP"
 		*p: logindatabase
@@ -64,17 +68,19 @@ DEFINE CLASS erpsetup AS form
 		AlwaysOnTop = .T.
 		AutoCenter = .T.
 		Caption = "ERP Setup"
+		cdisplayname = ""
 		DataSession = 2
 		DoCreate = .T.
-		Height = 220
+		Height = 256
 		Icon = ..\
 		logindatabase = ""
 		loginhome = ""
 		loginpc = ""
 		loginpeachinv = ""
 		loginserver = ""
-		loginun = "
+		loginun = ""
 		Name = "ERPSETUP"
+		salesp = ""
 		serverpeachinv = ""
 		Width = 428
 		WindowType = 1
@@ -85,9 +91,9 @@ DEFINE CLASS erpsetup AS form
 		Height = 23, ;
 		Left = 331, ;
 		Name = "cmdChangeDatabase", ;
-		TabIndex = 12, ;
+		TabIndex = 16, ;
 		ToolTipText = "Pick SQL database from ERP_Environment.xml", ;
-		Top = 78, ;
+		Top = 99, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -96,8 +102,8 @@ DEFINE CLASS erpsetup AS form
 		Height = 23, ;
 		Left = 331, ;
 		Name = "cmdChangeHome", ;
-		TabIndex = 7, ;
-		Top = 36, ;
+		TabIndex = 10, ;
+		Top = 57, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -106,9 +112,9 @@ DEFINE CLASS erpsetup AS form
 		Height = 23, ;
 		Left = 331, ;
 		Name = "cmdChangeServer", ;
-		TabIndex = 10, ;
+		TabIndex = 13, ;
 		ToolTipText = "Pick SQL server from ERP_Environment.xml", ;
-		Top = 57, ;
+		Top = 78, ;
 		Visible = .T., ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -119,9 +125,9 @@ DEFINE CLASS erpsetup AS form
 		Height = 27, ;
 		Left = 324, ;
 		Name = "cmdDone", ;
-		TabIndex = 1, ;
+		TabIndex = 17, ;
 		TerminateRead = .T., ;
-		Top = 190, ;
+		Top = 223, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -131,8 +137,8 @@ DEFINE CLASS erpsetup AS form
 		Height = 27, ;
 		Left = 12, ;
 		Name = "cmdRHPA", ;
-		TabIndex = 14, ;
-		Top = 103, ;
+		TabIndex = 20, ;
+		Top = 124, ;
 		Visible = .F., ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -143,8 +149,8 @@ DEFINE CLASS erpsetup AS form
 		Height = 27, ;
 		Left = 12, ;
 		Name = "cmdRMAIL", ;
-		TabIndex = 16, ;
-		Top = 127, ;
+		TabIndex = 19, ;
+		Top = 148, ;
 		Visible = .F., ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -155,8 +161,8 @@ DEFINE CLASS erpsetup AS form
 		Height = 27, ;
 		Left = 12, ;
 		Name = "cmdRunScripts", ;
-		TabIndex = 15, ;
-		Top = 167, ;
+		TabIndex = 22, ;
+		Top = 188, ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -170,15 +176,26 @@ DEFINE CLASS erpsetup AS form
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
+	ADD OBJECT 'cmdStoreName' AS commandbutton WITH ;
+		Caption = "Store", ;
+		Height = 23, ;
+		Left = 331, ;
+		Name = "cmdStoreName", ;
+		TabIndex = 7, ;
+		ToolTipText = "Save display Name for this login into dbo.AppUsers (used on reports/email)", ;
+		Top = 36, ;
+		Width = 84
+		*< END OBJECT: BaseClass="commandbutton" />
+
 	ADD OBJECT 'cmdTiptonPrinter' AS commandbutton WITH ;
 		Caption = "Printer", ;
 		Enabled = .T., ;
 		Height = 27, ;
 		Left = 153, ;
 		Name = "cmdTiptonPrinter", ;
-		TabIndex = 14, ;
+		TabIndex = 21, ;
 		ToolTipText = "Check for a Tipton Printer", ;
-		Top = 129, ;
+		Top = 150, ;
 		Visible = .T., ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -190,8 +207,8 @@ DEFINE CLASS erpsetup AS form
 		Height = 27, ;
 		Left = 324, ;
 		Name = "cmdUserInfo", ;
-		TabIndex = 17, ;
-		Top = 129, ;
+		TabIndex = 23, ;
+		Top = 150, ;
 		Width = 84
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -202,8 +219,8 @@ DEFINE CLASS erpsetup AS form
 		Height = 27, ;
 		Left = 153, ;
 		Name = "cmdUserPermission", ;
-		TabIndex = 17, ;
-		Top = 157, ;
+		TabIndex = 24, ;
+		Top = 178, ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -214,8 +231,8 @@ DEFINE CLASS erpsetup AS form
 		Height = 27, ;
 		Left = 154, ;
 		Name = "Command1", ;
-		TabIndex = 17, ;
-		Top = 185, ;
+		TabIndex = 25, ;
+		Top = 206, ;
 		Width = 132
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -224,8 +241,8 @@ DEFINE CLASS erpsetup AS form
 		Height = 23, ;
 		Left = 77, ;
 		Name = "DatabaseDir", ;
-		TabIndex = 11, ;
-		Top = 78, ;
+		TabIndex = 15, ;
+		Top = 99, ;
 		Width = 240
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -234,8 +251,8 @@ DEFINE CLASS erpsetup AS form
 		Height = 23, ;
 		Left = 77, ;
 		Name = "HomeDir", ;
-		TabIndex = 6, ;
-		Top = 37, ;
+		TabIndex = 9, ;
+		Top = 58, ;
 		Width = 240
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -257,10 +274,22 @@ DEFINE CLASS erpsetup AS form
 		Height = 17, ;
 		Left = 12, ;
 		Name = "lblDatabase", ;
-		TabIndex = 8, ;
+		TabIndex = 14, ;
 		ToolTipText = "SQL database catalog (ERP_1, ERP_2, ...). Click label to clear.", ;
-		Top = 81, ;
+		Top = 102, ;
 		Width = 62
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'lblDisplayName' AS label WITH ;
+		Alignment = 2, ;
+		Caption = "Name", ;
+		Height = 17, ;
+		Left = 24, ;
+		Name = "lblDisplayName", ;
+		TabIndex = 5, ;
+		ToolTipText = "Report/email display name for this Windows login (dbo.AppUsers.DisplayName)", ;
+		Top = 40, ;
+		Width = 50
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'lblHome' AS label WITH ;
@@ -270,9 +299,9 @@ DEFINE CLASS erpsetup AS form
 		Height = 17, ;
 		Left = 24, ;
 		Name = "lblHome", ;
-		TabIndex = 5, ;
+		TabIndex = 8, ;
 		ToolTipText = "Used in Main.prg as SET DEFAULT TO (LoginAppHome) and SET PATH TO (LoginAppHome)", ;
-		Top = 40, ;
+		Top = 61, ;
 		Width = 50
 		*< END OBJECT: BaseClass="label" />
 
@@ -281,7 +310,7 @@ DEFINE CLASS erpsetup AS form
 		Height = 17, ;
 		Left = 78, ;
 		Name = "lblLoginUN", ;
-		TabIndex = 5, ;
+		TabIndex = 1, ;
 		Top = 13, ;
 		Width = 132
 		*< END OBJECT: BaseClass="label" />
@@ -293,8 +322,9 @@ DEFINE CLASS erpsetup AS form
 		Height = 17, ;
 		Left = 77, ;
 		Name = "lblProfile", ;
+		TabIndex = 18, ;
 		ToolTipText = "Click to pick a full profile (sets Server and Database together)", ;
-		Top = 109, ;
+		Top = 130, ;
 		Width = 300
 		*< END OBJECT: BaseClass="label" />
 
@@ -305,9 +335,9 @@ DEFINE CLASS erpsetup AS form
 		Height = 17, ;
 		Left = 24, ;
 		Name = "lblServer", ;
-		TabIndex = 8, ;
+		TabIndex = 11, ;
 		ToolTipText = "SQL Server instance from ERP_Environment.xml", ;
-		Top = 61, ;
+		Top = 82, ;
 		Visible = .T., ;
 		Width = 50
 		*< END OBJECT: BaseClass="label" />
@@ -328,9 +358,22 @@ DEFINE CLASS erpsetup AS form
 		Height = 23, ;
 		Left = 77, ;
 		Name = "ServerDir", ;
-		TabIndex = 9, ;
-		Top = 56, ;
+		TabIndex = 12, ;
+		Top = 77, ;
 		Visible = .T., ;
+		Width = 240
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'txtDisplayName' AS textbox WITH ;
+		ControlSource = "ThisForm.cDisplayName", ;
+		Height = 23, ;
+		Left = 77, ;
+		MaxLength = 200, ;
+		Name = "txtDisplayName", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 6, ;
+		ToolTipText = "Example: David Kirchner", ;
+		Top = 36, ;
 		Width = 240
 		*< END OBJECT: BaseClass="textbox" />
 	
@@ -744,6 +787,14 @@ DEFINE CLASS erpsetup AS form
 			ThisForm.cmdRunScripts.Enabled = .T.
 		ENDIF
 		
+		* Load report Name (dbo.AppUsers.DisplayName) for this login
+		ThisForm.cDisplayName = AppUsers_Get_DisplayName(ThisForm.LoginUN)
+		IF EMPTY(ThisForm.cDisplayName)
+			ThisForm.cDisplayName = AppSetup_Login_DisplayName(ThisForm.LoginUN)
+			IF UPPER(ALLTRIM(ThisForm.cDisplayName)) == UPPER(ALLTRIM(ThisForm.LoginUN))
+				ThisForm.cDisplayName = ""
+			ENDIF
+		ENDIF
 		
 	ENDPROC
 
@@ -966,6 +1017,29 @@ DEFINE CLASS erpsetup AS form
 		
 		ThisForm.Refresh
 		
+	ENDPROC
+
+	PROCEDURE cmdStoreName.Click
+		LOCAL lcName, lcUN, lcPC, llOk
+		lcName = ALLTRIM(ThisForm.cDisplayName)
+		lcUN = ALLTRIM(ThisForm.LoginUN)
+		lcPC = ALLTRIM(ThisForm.LoginPC)
+		IF EMPTY(lcUN)
+			MESSAGEBOX("Login user is empty — cannot store Name.", 48, "ERP Setup")
+			RETURN
+		ENDIF
+		IF EMPTY(lcName)
+			MESSAGEBOX("Enter a Name (e.g. David Kirchner) first.", 48, "ERP Setup")
+			RETURN
+		ENDIF
+		llOk = AppUsers_Save_DisplayName(lcUN, lcName, lcPC)
+		IF llOk
+			WAIT WINDOW "Name stored for login '" + lcUN + "'" NOWAIT
+			ThisForm.cDisplayName = AppUsers_Get_DisplayName(lcUN)
+			ThisForm.Refresh()
+		ELSE
+			MESSAGEBOX("Could not save Name to dbo.AppUsers. Check SQL connection.", 16, "ERP Setup")
+		ENDIF
 	ENDPROC
 
 	PROCEDURE cmdTiptonPrinter.Click

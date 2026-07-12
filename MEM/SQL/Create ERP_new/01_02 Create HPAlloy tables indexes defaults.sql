@@ -996,7 +996,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShipAddr]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[ShipAddr](
-	[shipcode] [decimal](10, 0) NOT NULL,
+	[shipcode] [int] NOT NULL,
 	[company] [varchar](100) NULL,
 	[addr1] [varchar](100) NULL,
 	[addr2] [varchar](100) NULL,
@@ -1757,7 +1757,7 @@ CREATE TABLE [dbo].[PurchaseOrder](
 	[SalesNum] [int] NULL,
 	[Item] [decimal](2, 0) NULL,
 	[SalesP] [char](1) NULL,
-	[Company] [varchar](30) NULL,
+	[Company] [varchar](100) NULL,
 	[Alloy] [char](12) NULL,
 	[Form] [char](2) NULL,
 	[CC] [char](1) NULL,
@@ -1839,6 +1839,7 @@ CREATE TABLE [dbo].[PurchaseOrder](
 	[DescriptID]  AS ((((isnull([Alloy],'            ')+isnull([Form],'  '))+isnull([CC],' '))+isnull([CL],' '))+str(round([Thck],(9),(3)),(9),(3))) PERSISTED,
 	[Hold] [bit] NULL,
 	[WhoInsert] [varchar](254) NULL,
+	[Lab_Service] [bit] NOT NULL,
  CONSTRAINT [PK_purchaseorders] PRIMARY KEY NONCLUSTERED 
 (
 	[POitem] ASC
@@ -2745,7 +2746,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SoldAddr]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[SoldAddr](
-	[soldcode] [decimal](10, 0) NOT NULL,
+	[soldcode] [int] NOT NULL,
 	[company] [varchar](100) NULL,
 	[addr1] [varchar](100) NULL,
 	[addr2] [varchar](100) NULL,
@@ -4490,7 +4491,7 @@ CREATE TABLE [dbo].[CreditCd](
 	[ExpireDD] [numeric](2, 0) NULL,
 	[ExpireMM] [numeric](2, 0) NULL,
 	[ExpireYYYY] [numeric](4, 0) NULL,
-	[soldcode] [decimal](10, 0) NULL,
+	[soldcode] [int] NULL,
 	[sale] [smallmoney] NULL,
 	[shipins] [smallmoney] NULL,
 	[totalamt] [smallmoney] NULL,
@@ -7390,6 +7391,7 @@ CREATE TABLE [dbo].[Receiving](
 	[Services] [bit] NULL,
 	[ConvServ] [bit] NULL,
 	[Equipment] [bit] NULL,
+	[Lab_Service] [bit] NULL,
 	[CertID] [varchar](50) NULL,
 	[MillTrace] [bit] NULL,
 	[Stock_Recv_ID] [int] NULL,
@@ -8213,9 +8215,9 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ShipAddrCode]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[ShipAddrCode](
-	[shipcode] [decimal](10, 0) NOT NULL,
+	[shipcode] [int] NOT NULL,
 	[customer] [char](20) NULL,
-	[oldcode] [decimal](10, 0) NULL,
+	[oldcode] [int] NULL,
  CONSTRAINT [PK_shipaddrcode] PRIMARY KEY CLUSTERED 
 (
 	[shipcode] ASC
@@ -8443,8 +8445,8 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Sold_Ship]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[Sold_Ship](
-	[soldcode] [decimal](10, 0) NOT NULL,
-	[shipcode] [decimal](10, 0) NOT NULL,
+	[soldcode] [int] NOT NULL,
+	[shipcode] [int] NOT NULL,
 	[ID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
  CONSTRAINT [PK_sold_ship] PRIMARY KEY CLUSTERED 
 (
@@ -8461,9 +8463,9 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SoldAddrCode]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[SoldAddrCode](
-	[soldcode] [decimal](10, 0) NOT NULL,
+	[soldcode] [int] NOT NULL,
 	[customer] [char](20) NULL,
-	[oldcode] [decimal](10, 0) NULL,
+	[oldcode] [int] NULL,
  CONSTRAINT [PK_soldaddrcode] PRIMARY KEY CLUSTERED 
 (
 	[soldcode] ASC
@@ -14115,6 +14117,11 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_PurchaseOrder_Equipment]') AND type = 'D')
 BEGIN
 ALTER TABLE [dbo].[PurchaseOrder] ADD  CONSTRAINT [DF_PurchaseOrder_Equipment]  DEFAULT ((0)) FOR [Equipment]
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_PurchaseOrder_Lab_Service]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[PurchaseOrder] ADD  CONSTRAINT [DF_PurchaseOrder_Lab_Service]  DEFAULT ((0)) FOR [Lab_Service]
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_PurchaseOrder_Melt_Type]') AND type = 'D')

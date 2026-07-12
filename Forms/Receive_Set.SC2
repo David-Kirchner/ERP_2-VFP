@@ -116,7 +116,7 @@ DEFINE CLASS formset AS formset
 	*< OBJECTDATA: ObjPath="frmShowReceived_Ordered.lblForm" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmShowReceived_Ordered.lblOrder_QTY" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmShowReceived_Ordered.txtAlloyPO" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="frmShowReceived_Ordered.chkServicesPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="frmShowReceived_Ordered.chkLab_Service" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmShowReceived_Ordered.chkConvServ" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmShowReceived_Ordered.chkEquipment" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmShowReceived_Ordered.chkReconciled" UniqueID="" Timestamp="" />
@@ -2760,7 +2760,7 @@ DEFINE CLASS formset AS formset
 		Width = 80
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'frmShowReceived_Ordered.chkServicesPO' AS checkbox WITH ;
+	ADD OBJECT 'frmShowReceived_Ordered.chkLab_Service' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 236,233,216, ;
 		BackStyle = 0, ;
@@ -2770,7 +2770,7 @@ DEFINE CLASS formset AS formset
 		Enabled = .T., ;
 		Height = 17, ;
 		Left = 13, ;
-		Name = "chkServicesPO", ;
+		Name = "chkLab_Service", ;
 		TabIndex = 18, ;
 		ToolTipText = "Services - Purchases without a Material Reciept or Due In.", ;
 		Top = 66, ;

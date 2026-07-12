@@ -99,7 +99,7 @@ DEFINE CLASS frmreceive_edit AS form
 	*< OBJECTDATA: ObjPath="lblPO_PU" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="lblAcct_PU" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="txtAcct_P" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="chkServicesPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="chkLab_Service" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkConvServ" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkEquipment" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdEditHeat" UniqueID="" Timestamp="" />
@@ -360,7 +360,7 @@ DEFINE CLASS frmreceive_edit AS form
 		Width = 126
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'chkServicesPO' AS checkbox WITH ;
+	ADD OBJECT 'chkLab_Service' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 212,208,200, ;
 		BackStyle = 0, ;
@@ -370,7 +370,7 @@ DEFINE CLASS frmreceive_edit AS form
 		Enabled = .F., ;
 		Height = 18, ;
 		Left = 258, ;
-		Name = "chkServicesPO", ;
+		Name = "chkLab_Service", ;
 		TabIndex = 75, ;
 		ToolTipText = "Order for Service/Lab test, may not have material to receive", ;
 		Top = 283, ;
@@ -2429,7 +2429,7 @@ DEFINE CLASS frmreceive_edit AS form
 			IF nWO_Detail > 0 
 				IF ThisForm.cWhat = 'EDIT -POItem'
 					IF is_Vendor_LabService(nHpaPo, ThisForm.nConnhandle)
-						IF NOT PrepareSQLchk(ThisForm.chkServicesPO.Value,'LabService')
+						IF NOT PrepareSQLchk(ThisForm.chkLab_Service.Value,'LabService')
 							IF MESSAGEBOX("This PO "+ALLTRIM(STR(nHPApo))+" Should be marked as for Testing Service."+CHR(13)+CHR(13)+"This Vendor is for testing material!"+CHR(13)+"Do you still want to continue saving?",4+256+16,"Wrong PO") <> 6
 								lReady2Save = .F.
 							ENDIF
@@ -2487,7 +2487,7 @@ DEFINE CLASS frmreceive_edit AS form
 		
 		**********************
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO		= PrepareSQLlogic(ThisForm.chkServicesPO.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisForm.chkLab_Service.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisForm.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisForm.chkEquipment.VALUE,'Equipment',.F.)
 		
@@ -4509,7 +4509,7 @@ DEFINE CLASS frmreceive_edit AS form
 			ThisForm.txtRMA_No.Value		= 0		&&tmpWO_Recv.RMA_No
 			ThisForm.txtRMA_Detail.Value	= 0
 			
-			ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+			ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(1,'ConvServ') 	&&WO recieve is for Toll Work!
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -4766,7 +4766,7 @@ DEFINE CLASS frmreceive_edit AS form
 			ThisForm.txtRMA_No.Value		= 0		&&tmpWOD_Recv.RMA_No
 			ThisForm.txtRMA_Detail.Value	= 0
 			
-			ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+			ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -5119,7 +5119,7 @@ DEFINE CLASS frmreceive_edit AS form
 			
 			ThisForm.edtRejectReason.Visible = .T.
 			
-			ThisForm.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
+			ThisForm.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOitem.ConvServ,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOitem.Equipment,'Equipment')
 			 
@@ -5520,7 +5520,7 @@ DEFINE CLASS frmreceive_edit AS form
 			ThisForm.txtRMA_No.Value		= 0
 			ThisForm.txtRMA_Detail.Value	= 0
 			
-			ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+			ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -5864,7 +5864,7 @@ DEFINE CLASS frmreceive_edit AS form
 			ThisForm.txtRMA_No.Value		= 0
 			ThisForm.txtRMA_Detail.Value	= 0
 			
-			ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+			ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -6249,7 +6249,7 @@ DEFINE CLASS frmreceive_edit AS form
 				ThisForm.txtBillW.Value = PrepareSQLnum(tmpReceivingPOitem.BillW,'BillW',9,1)
 			ENDIF
 			
-			ThisForm.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
+			ThisForm.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOitem.ConvServ,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOitem.Equipment,'Equipment')
 		
@@ -6342,7 +6342,7 @@ DEFINE CLASS frmreceive_edit AS form
 			
 			ThisForm.edtRejectReason.Value	= ALLTRIM(ShowSQLtxt(tmpReceivingPOitem.RejectReason,'RejectReason',255))
 			
-			ThisForm.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
+			ThisForm.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOitem.ConvServ,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOitem.Equipment,'Equipment')
 			
@@ -7010,9 +7010,9 @@ DEFINE CLASS frmreceive_edit AS form
 					
 		*			ThisForm.Visible = .T.
 					IF Count_POIteminPurchaseOrder( cPOItem, ThisForm.nConnHandle, "SERVICES" ) > 0
-						ThisForm.chkServicesPO.Value= PrepareSQLchk(1,'Services')
+						ThisForm.chkLab_Service.Value= PrepareSQLchk(1,'Services')
 					ELSE
-						ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+						ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 					ENDIF
 					IF Count_POIteminPurchaseOrder( cPOItem, ThisForm.nConnHandle, "CONVSERV" ) > 0
 						ThisForm.chkConvServ.Value	= PrepareSQLchk(1,'ConvServ') 
@@ -8502,7 +8502,7 @@ DEFINE CLASS frmreceive_edit AS form
 			
 			ThisForm.edtRejectReason.Value	= ALLTRIM(ShowSQLtxt(tmpReceivingPOi.RejectReason,'RejectReason',255))
 			
-			ThisForm.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOi.Services,'Services')
+			ThisForm.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOi.Services,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOi.ConvServ,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOi.Equipment,'Equipment')
 		
@@ -9280,7 +9280,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ELSE
 			*Do not Enable unless for a PO ADD
 			IF pcWhat = "ADD"
-				ThisForm.chkServicesPO.Enabled = .T.
+				ThisForm.chkLab_Service.Enabled = .T.
 				ThisForm.chkConvServ.Enabled = .T.
 				ThisForm.chkEquipment.Enabled = .T.
 			ENDIF		
@@ -12230,7 +12230,7 @@ DEFINE CLASS frmreceive_edit AS form
 							ThisForm.txtRMA_No.Value	= PrepareSQLnum(tmpRMA_D.RMA_No,'RMA_No',-3)
 							ThisForm.txtRMA_Detail.Value = PrepareSQLnum(tmpRMA_D.RMA_Detail_ID,'RMA_Detail_ID',-3)
 							
-							ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+							ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 							ThisForm.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 							ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -12314,7 +12314,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ThisForm.txtRMA_No.Value = 0
 		ThisForm.txtRMA_Detail.Value = 0
 		
-		ThisForm.chkServicesPO.Value= PrepareSQLlogic(0,'Services')
+		ThisForm.chkLab_Service.Value= PrepareSQLlogic(0,'Services')
 		ThisForm.chkConvServ.Value	= PrepareSQLlogic(0,'ConvServ') 
 		ThisForm.chkEquipment.Value	= PrepareSQLlogic(0,'Equipment')
 		
@@ -12740,7 +12740,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ThisForm.chkPass.Value		= PrepareSQLlogic(1,'Pass')
 		ThisForm.chkGoodPapers.Value= PrepareSQLlogic(1,'GoodPapers')
 		
-		ThisForm.chkServicesPO.Value= PrepareSQLlogic(0,'Services')
+		ThisForm.chkLab_Service.Value= PrepareSQLlogic(0,'Services')
 		ThisForm.chkConvServ.Value	= PrepareSQLlogic(0,'ConvServ') 
 		ThisForm.chkEquipment.Value	= PrepareSQLlogic(0,'Equipment')
 		
@@ -12887,7 +12887,7 @@ DEFINE CLASS frmreceive_edit AS form
 		
 		**********************
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO		= PrepareSQLlogic(ThisForm.chkServicesPO.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisForm.chkLab_Service.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisForm.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisForm.chkEquipment.VALUE,'Equipment',.F.)
 		
@@ -15778,7 +15778,7 @@ DEFINE CLASS frmreceive_edit AS form
 		
 		**********************
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO		= PrepareSQLlogic(ThisForm.chkServicesPO.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisForm.chkLab_Service.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisForm.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisForm.chkEquipment.VALUE,'Equipment',.F.)
 		
@@ -16217,7 +16217,7 @@ DEFINE CLASS frmreceive_edit AS form
 		*ThisForm.ShowPOitemType(cPOitem)
 		
 		IF Proper_PO_item(cPOitem) = Proper_PO_item('')
-			ThisForm.chkServicesPO.Visible = .T.
+			ThisForm.chkLab_Service.Visible = .T.
 			ThisForm.chkConvServ.Visible = .T.
 			ThisForm.chkEquipment.Visible = .T.
 		
@@ -16227,7 +16227,7 @@ DEFINE CLASS frmreceive_edit AS form
 			RETURN .F.
 		ENDIF
 		
-		ThisForm.chkServicesPO.Visible = .F.
+		ThisForm.chkLab_Service.Visible = .F.
 		ThisForm.chkConvServ.Visible = .F.
 		ThisForm.chkEquipment.Visible = .F.
 		
@@ -16260,8 +16260,8 @@ DEFINE CLASS frmreceive_edit AS form
 			ELSE
 				IF Count_POIteminPurchaseOrder( cPOitem, ThisForm.nConnHandle, "SERVICES" ) > 0
 					This.Caption = "Receiving data for Lab Services"
-					ThisForm.chkServicesPO.Visible = .T.
-					ThisForm.chkServicesPO.Enabled = .T.
+					ThisForm.chkLab_Service.Visible = .T.
+					ThisForm.chkLab_Service.Enabled = .T.
 					
 					ThisForm.POType = "SRV"
 					*ThisForm.PO
@@ -17124,7 +17124,7 @@ DEFINE CLASS frmreceive_edit AS form
 		*!*	ENDIF
 	ENDPROC
 
-	PROCEDURE chkServicesPO.InteractiveChange
+	PROCEDURE chkLab_Service.InteractiveChange
 		*!*	PRIVATE lServicesPO, cForm, lConvServ, lEquipment
 		*!*	lServicesPO = PrepareSQLlogic( This.Value, 'ServicesPO',.F. )
 		*!*	cForm = ShowSQLtxt(This.Parent.txtForm.Value,'Form',2)
@@ -17133,7 +17133,7 @@ DEFINE CLASS frmreceive_edit AS form
 		
 	ENDPROC
 
-	PROCEDURE chkServicesPO.Valid
+	PROCEDURE chkLab_Service.Valid
 		*ThisForm.ShowPOitemType()
 	ENDPROC
 
@@ -18698,7 +18698,7 @@ DEFINE CLASS frmreceive_edit AS form
 							*Do not pull POitem Data
 							IF ThisForm.cWhat = 'EDIT -POItem'
 								ThisForm.chkConvServ.Enabled = .T.
-								ThisForm.chkServicesPO.Enabled = .T.
+								ThisForm.chkLab_Service.Enabled = .T.
 								ThisForm.chkEquipment.Enabled = .T.
 							ENDIF
 						ELSE

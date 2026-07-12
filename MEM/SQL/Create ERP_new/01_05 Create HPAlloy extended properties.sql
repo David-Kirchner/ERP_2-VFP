@@ -1630,7 +1630,10 @@ IF NOT EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'S
 	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Another HPA SO or PO associated with this PO' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'PurchaseOrder', @level2type=N'COLUMN',@level2name=N'JobNumber'
 GO
 IF NOT EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'PurchaseOrder', N'COLUMN',N'Services'))
-	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Order for Service/Lab test, may not receive material with PO' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'PurchaseOrder', @level2type=N'COLUMN',@level2name=N'Services'
+	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Procedures or Service' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'PurchaseOrder', @level2type=N'COLUMN',@level2name=N'Services'
+GO
+IF NOT EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'PurchaseOrder', N'COLUMN',N'Lab_Service'))
+	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Material Specification testing for Stock' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'PurchaseOrder', @level2type=N'COLUMN',@level2name=N'Lab_Service'
 GO
 IF NOT EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'PurchaseOrder', N'COLUMN',N'ConvServ'))
 	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Conversion Service' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'PurchaseOrder', @level2type=N'COLUMN',@level2name=N'ConvServ'
@@ -1903,7 +1906,10 @@ IF NOT EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'S
 	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Vendors PU' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Receiving', @level2type=N'COLUMN',@level2name=N'PO_PU'
 GO
 IF NOT EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Receiving', N'COLUMN',N'Services'))
-	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Order for Service/Lab test, may not receive material with PO' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Receiving', @level2type=N'COLUMN',@level2name=N'Services'
+	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Procedures or Service' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Receiving', @level2type=N'COLUMN',@level2name=N'Services'
+GO
+IF NOT EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Receiving', N'COLUMN',N'Lab_Service'))
+	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Material Specification testing for Stock' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Receiving', @level2type=N'COLUMN',@level2name=N'Lab_Service'
 GO
 IF NOT EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Receiving', N'COLUMN',N'ConvServ'))
 	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Conversion Service' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Receiving', @level2type=N'COLUMN',@level2name=N'ConvServ'

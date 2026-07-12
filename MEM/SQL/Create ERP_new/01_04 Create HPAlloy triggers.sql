@@ -7908,7 +7908,8 @@ INSERT INTO dbo.Ar_PurchaseOrder_hist
 	,[RcvdE]
 	,[DLAE]
 	,[TBL] 
-	,[hold]  ) 
+	,[hold]
+	,[Lab_Service]  ) 
 SELECT
 	[poitem],
 	[hpapo],
@@ -7993,6 +7994,7 @@ SELECT
 	,[DLAE]
 	,[TBL]
 	,[hold]
+	,[Lab_Service]
 	FROM deleted
 
 PRINT ''Trigger  end  [PurchaseOrder After_Delete]''
@@ -8099,7 +8101,8 @@ IF UPDATE([SalesNum]) or UPDATE([Company]) or UPDATE([Amendment]) or UPDATE([ite
 		,[RcvdE]
 		,[DLAE]
 		,[TBL] 
-		,Hold  ) 
+		,Hold
+		,[Lab_Service]  ) 
 	SELECT
 		[poitem],
 		[hpapo],
@@ -8184,6 +8187,7 @@ IF UPDATE([SalesNum]) or UPDATE([Company]) or UPDATE([Amendment]) or UPDATE([ite
 		,[DLAE]
 		,[TBL]
 		,Hold
+		,[Lab_Service]
 		FROM deleted
 	END
 end
@@ -9201,14 +9205,14 @@ IF UPDATE([Cancelled])
 	
 
 
-IF UPDATE([Services])
+IF ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 	BEGIN
-	IF EXISTS (SELECT * FROM inserted WHERE inserted.[Services] = 1 AND UPDATE([Services])) 
+	IF EXISTS (SELECT * FROM inserted WHERE ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 ) AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )) 
 		BEGIN
 
 		-----------------
 		IF EXISTS (SELECT * FROM inserted INNER JOIN dbo.BrokerLst_Master BM ON 
-		  inserted.POitem = BM.PO_item WHERE inserted.[Services] = 1 AND UPDATE([Services])) 
+		  inserted.POitem = BM.PO_item WHERE ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 ) AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )) 
 			
 			BEGIN
 			
@@ -9226,9 +9230,9 @@ IF UPDATE([Services])
 				FROM inserted 
 					INNER JOIN dbo.BrokerLst_Master SM ON inserted.POitem = SM.PO_item 
 					INNER JOIN dbo.BrokerLst_Detail SD ON SM.ID = SD.ID 
-					WHERE inserted.[Services] = 1
+					WHERE ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
 					AND ISNULL(SM.heat,''Due in'') = ''Due in''
-					AND UPDATE([Services])
+					AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			PRINT '' Delete BrokerLst_Process for PO  [PurchaseOrder_Update]''
 			DELETE FROM dbo.BrokerLst_Process
@@ -9237,8 +9241,8 @@ IF UPDATE([Services])
 				AND ( BrokerLst_Process.Process_ID = ''INCOMING  '' 
 				OR BrokerLst_Process.Process_ID = ''PARTRECV''
 				OR BrokerLst_Process.Process_ID = ''SELECTED  '' )
-				AND inserted.[Services] = 1
-				AND UPDATE([Services])
+				AND ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
+				AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			PRINT ''Delete BrokerLst_Detail for PO  [PurchaseOrder_Update]''
 			DELETE FROM dbo.BrokerLst_Detail
@@ -9246,25 +9250,25 @@ IF UPDATE([Services])
 				INNER JOIN dbo.BrokerLst_Master SM ON inserted.POitem = SM.PO_item
 				INNER JOIN dbo.BrokerLst_Detail SD ON SM.ID = SD.ID
 				WHERE inserted.POitem = SM.PO_item 
-				AND inserted.[Services] = 1
+				AND ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
 				AND ISNULL(SM.heat,''Due in'') = ''Due in''
-				AND UPDATE([Services])
+				AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			PRINT ''Delete BrokerLst_Master for PO  [PurchaseOrder_Update]''
 			DELETE FROM dbo.BrokerLst_Master
 				FROM inserted
 				INNER JOIN dbo.BrokerLst_Master SM ON inserted.POitem = SM.PO_item
 				WHERE inserted.POitem = SM.PO_item 	
-				AND inserted.[Services] = 1
+				AND ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
 				AND ISNULL(SM.heat,''Due in'') = ''Due in''
-				AND UPDATE([Services])
+				AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			END
 
 		-------------------
 
 		IF EXISTS (SELECT * FROM inserted INNER JOIN dbo.StockLst_Master SM ON 
-		  inserted.POitem = SM.PO_item WHERE inserted.Cancelled = 1 AND UPDATE([Services])) 
+		  inserted.POitem = SM.PO_item WHERE ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 ) AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )) 
 			
 			BEGIN
 				
@@ -9282,9 +9286,9 @@ IF UPDATE([Services])
 				FROM inserted 
 					INNER JOIN dbo.StockLst_Master SM ON inserted.POitem = SM.PO_item 
 					INNER JOIN dbo.StockLst_Detail SD ON SM.ID = SD.ID 
-					WHERE inserted.[Services] = 1
+					WHERE ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
 					AND ISNULL(SM.heat,''Due in'') = ''Due in''
-					AND UPDATE([Services])
+					AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 				
 			PRINT '' Delete StockLst_Process for PO  [PurchaseOrder_Update]''
 			DELETE FROM dbo.StockLst_Process
@@ -9293,8 +9297,8 @@ IF UPDATE([Services])
 				AND ( StockLst_Process.Process_ID = ''INCOMING  ''
 				OR StockLst_Process.Process_ID = ''PARTRECV''
 				OR StockLst_Process.Process_ID = ''SELECTED  '' )
-				AND inserted.[Services] = 1
-				AND UPDATE([Services])
+				AND ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
+				AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			PRINT '' Delete StockLst_Detail for PO  [PurchaseOrder_Update]''
 			DELETE FROM dbo.StockLst_Detail
@@ -9302,25 +9306,25 @@ IF UPDATE([Services])
 				INNER JOIN dbo.StockLst_Master SM ON inserted.POitem = SM.PO_item
 				INNER JOIN dbo.StockLst_Detail SD ON SM.ID = SD.ID
 				WHERE inserted.POitem = SM.PO_item 
-				AND inserted.[Services] = 1
+				AND ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
 				AND ISNULL(SM.heat,''Due in'') = ''Due in''
-				AND UPDATE([Services])
+				AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 				
 			PRINT '' Delete StockLst_Master for PO  [PurchaseOrder_Update]''
 			DELETE FROM dbo.StockLst_Master
 				FROM inserted
 				INNER JOIN dbo.StockLst_Master SM ON inserted.POitem = SM.PO_item
 				WHERE inserted.POitem = SM.PO_item 	
-				AND inserted.[Services] = 1
+				AND ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
 				AND ISNULL(SM.heat,''Due in'') = ''Due in''
-				AND UPDATE([Services])
+				AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			END
 
 		-----------------
 
 		IF EXISTS (SELECT * FROM inserted INNER JOIN dbo.WIPLst_Master BM ON 
-		  inserted.POitem = BM.PO_item WHERE inserted.[Services] = 1 AND UPDATE([Services])) 
+		  inserted.POitem = BM.PO_item WHERE ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 ) AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )) 
 			
 			BEGIN
 			
@@ -9338,9 +9342,9 @@ IF UPDATE([Services])
 				FROM inserted 
 					INNER JOIN dbo.WIPLst_Master SM ON inserted.POitem = SM.PO_item 
 					INNER JOIN dbo.WIPLst_Detail SD ON SM.ID = SD.ID 
-					WHERE inserted.[Services] = 1
+					WHERE ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
 					AND ISNULL(SM.heat,''Due in'') = ''Due in''
-					AND UPDATE([Services])
+					AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			PRINT '' Delete Lst_Process for PO  [PurchaseOrder_Update]''
 			DELETE FROM dbo.WIPLst_Process
@@ -9349,8 +9353,8 @@ IF UPDATE([Services])
 				AND ( WIPLst_Process.Process_ID = ''INCOMING  '' 
 				OR WIPLst_Process.Process_ID = ''PARTRECV''
 				OR WIPLst_Process.Process_ID = ''SELECTED  '' )
-				AND inserted.[Services] = 1
-				AND UPDATE([Services])
+				AND ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
+				AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			PRINT ''Delete Lst_Detail for PO  [PurchaseOrder_Update]''
 			DELETE FROM dbo.WIPLst_Detail
@@ -9358,18 +9362,18 @@ IF UPDATE([Services])
 				INNER JOIN dbo.WIPLst_Master SM ON inserted.POitem = SM.PO_item
 				INNER JOIN dbo.WIPLst_Detail SD ON SM.ID = SD.ID
 				WHERE inserted.POitem = SM.PO_item 
-				AND inserted.[Services] = 1
+				AND ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
 				AND ISNULL(SM.heat,''Due in'') = ''Due in''
-				AND UPDATE([Services])
+				AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			PRINT ''Delete Lst_Master for PO  [PurchaseOrder_Update]''
 			DELETE FROM dbo.WIPLst_Master
 				FROM inserted
 				INNER JOIN dbo.WIPLst_Master SM ON inserted.POitem = SM.PO_item
 				WHERE inserted.POitem = SM.PO_item 	
-				AND inserted.[Services] = 1
+				AND ( inserted.[Services] = 1 OR inserted.[Lab_Service] = 1 )
 				AND ISNULL(SM.heat,''Due in'') = ''Due in''
-				AND UPDATE([Services])
+				AND ( UPDATE([Services]) OR UPDATE([Lab_Service]) )
 			
 			END
 		-----------------------
@@ -10155,7 +10159,7 @@ INSERT INTO dbo.Ar_Receiving_Hist
 	R_PU,
 	[hold],
     [PO_QTY],[PO_P],[PO_PU],
-	[Services],[ConvServ],[Equipment],[CertID],
+	[Services],[ConvServ],[Equipment],[Lab_Service],[CertID],
 	[Who],[What],[When]  ) 
 SELECT
 	deleted.[ID],
@@ -10188,7 +10192,7 @@ SELECT
 	deleted.R_PU,
 	deleted.[hold],
     deleted.[PO_QTY],deleted.[PO_P],deleted.[PO_PU],
-	deleted.[Services],deleted.[ConvServ],deleted.[Equipment],deleted.[CertID],
+	deleted.[Services],deleted.[ConvServ],deleted.[Equipment],deleted.[Lab_Service],deleted.[CertID],
 	 suser_sname() AS [Who],	''Edit'' AS [What],	GETDATE() AS [When]
 	FROM deleted, inserted
 		WHERE deleted.ID=inserted.ID AND 
@@ -10261,7 +10265,7 @@ INSERT INTO dbo.Ar_Receiving_Hist
 	R_AP_P, 
 	[hold],
     [PO_QTY], [PO_P], [PO_PU],
-	[Services],[ConvServ],[Equipment],[CertID],
+	[Services],[ConvServ],[Equipment],[Lab_Service],[CertID],
 	[Who],
 	[What],
 	[When]   ) 
@@ -10299,7 +10303,7 @@ SELECT
 	R_AP_P, 
 	[hold],
     [PO_QTY], [PO_P], [PO_PU],
-	[Services],[ConvServ],[Equipment],[CertID],
+	[Services],[ConvServ],[Equipment],[Lab_Service],[CertID],
 	 suser_sname() AS [Who],
 	''Delete'' AS [What],
 	GETDATE() AS [When]

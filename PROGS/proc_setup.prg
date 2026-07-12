@@ -8,7 +8,8 @@
 *get_SQLSTRINGCONNECT get_SQL_ServerName 
 *GetSQLServers CheckSQLConnection SetPrinterTo
 *AppSetup_Login AppSetup_SalesP_Exists AppSetup_ActiveSales_SalesP AppSetup_Login_SalesP AppSetup_Get_UserName 
-*AppSetup_Get_SalesP AppSetup_Get_SalesRep_SalesP
+*AppSetup_Get_SalesP AppSetup_Get_SalesRep_SalesP AppSetup_Login_DisplayName
+*AppUsers_Get_DisplayName AppUsers_Save_DisplayName
 *AppSetup_Get_UserName_from_Machine AppSetup_Is_UserName_IN_Table_for_Machine
 *AppSetup_Get_Machine, AppSetup_Get_Machine_Version AppSetup_10Min
 *AppSetup_Get_ServerDir, AppSetup_Get_HomeDir, AppSetup_HomeDir, AppSetup_Get_Email 
@@ -1231,7 +1232,7 @@ ENDPROC
 PROCEDURE AppSetup_Get_SalesRep_SalesP  
 PARAMETERS pSalesP
 *AppSetup_Get_SalesRep_SalesP(pSalesP)
-*Returns SalesRep from AppSetup Table for SalesP
+*Returns SalesRep display name from AppSetup for SalesP (e.g. D -> David Kirchner)
 
 IF VARTYPE(pSalesP) != "C"
 	RETURN ''
@@ -1283,11 +1284,16 @@ IF nConn > 0
 	IF USED('tmpPSP_SQL7')
 		IF RECCOUNT('tmpPSP_SQL7') > 0
 			IF VARTYPE(tmpPSP_SQL7.UN) = "C"
-				cReturn = tmpPSP_SQL7.UN
+				cReturn = ALLTRIM(tmpPSP_SQL7.UN)
 			ENDIF
 		ENDIF
 		
 		USE IN tmpPSP_SQL7
+	ENDIF
+
+	* Login-style UN (e.g. talkt) -> display name sharing Server/Database (e.g. David Kirchner)
+	IF !EMPTY(cReturn) AND ATC(" ", cReturn) = 0
+		cReturn = AppSetup_Login_DisplayName(cReturn, nConn)
 	ENDIF
 	
 	SQLDISCONNECT( nConn )
@@ -1305,6 +1311,246 @@ IF NOT EMPTY(cAlias)
 ENDIF
 
 RETURN cReturn 
+ENDPROC
+
+**************************************
+PROCEDURE AppSetup_Login_DisplayName
+PARAMETERS pLoginUN, pConn
+*cName = AppSetup_Login_DisplayName('talkt')
+* When SalesP UN is a Windows login, resolve a spaced display name from AppSetup
+* rows that share the same Server/Database ANS (e.g. talkt -> David Kirchner).
+
+PRIVATE cLogin, cReturn
+cReturn = ''
+IF VARTYPE(pLoginUN) != "C"
+	RETURN cReturn
+ENDIF
+cLogin = ALLTRIM(pLoginUN)
+cReturn = cLogin
+IF EMPTY(cLogin) OR ATC(" ", cLogin) > 0
+	RETURN cReturn
+ENDIF
+
+PRIVATE nConn, lCloseConn
+lCloseConn = .F.
+IF VARTYPE(pConn) = "N" AND pConn > 0
+	nConn = pConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lCloseConn = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+
+PRIVATE cAlias
+cAlias = ALIAS()
+
+PRIVATE cSQL, nSQLEXEC
+IF USED('tmpPSP_DispName')
+	USE IN tmpPSP_DispName
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	* Prefer dbo.AppUsers.DisplayName (ERP Setup Name field) — no Company* user table exists
+	PRIVATE cEsc
+	cEsc = STRTRAN(cLogin, "'", "''")
+	cSQL = "SELECT TOP 1 RTRIM(DisplayName) AS DisplayName FROM dbo.AppUsers WITH(NOLOCK) "
+	cSQL = cSQL + "WHERE Active = 1 AND ISNULL(RTRIM(DisplayName),'') <> '' AND ("
+	cSQL = cSQL + "RTRIM(WindowsLogin) = N'" + cEsc + "' "
+	cSQL = cSQL + "OR RTRIM(WindowsLogin) LIKE N'%\' + N'" + cEsc + "' "
+	cSQL = cSQL + ") ORDER BY CASE WHEN CHARINDEX('\', WindowsLogin) > 0 THEN 0 ELSE 1 END, Id"
+
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_DispName')
+	DO WHILE nSQLEXEC = 0
+		WAIT WINDOW 'SQL' TIMEOUT 1
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_DispName')
+	ENDDO
+	IF nSQLEXEC < 0
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_DispName')
+	ENDIF
+
+	IF USED('tmpPSP_DispName')
+		IF RECCOUNT('tmpPSP_DispName') > 0 AND VARTYPE(tmpPSP_DispName.DisplayName) = "C"
+			IF !EMPTY(ALLTRIM(tmpPSP_DispName.DisplayName))
+				cReturn = ALLTRIM(tmpPSP_DispName.DisplayName)
+			ENDIF
+		ENDIF
+		USE IN tmpPSP_DispName
+	ENDIF
+
+	* Fallback: AppSetup twin UN sharing Server/Database ANS
+	IF ATC(" ", cReturn) = 0 OR UPPER(ALLTRIM(cReturn)) == UPPER(cLogin)
+		cSQL = "SELECT TOP 1 RTRIM(d.UN) AS UN FROM dbo.AppSetup login WITH(NOLOCK) "
+		cSQL = cSQL + "INNER JOIN dbo.AppSetup d WITH(NOLOCK) ON d.Prp = login.Prp "
+		cSQL = cSQL + "AND RTRIM(d.ANS) = RTRIM(login.ANS) AND CHARINDEX(' ', RTRIM(d.UN)) > 0 "
+		cSQL = cSQL + "WHERE RTRIM(login.UN) = '" + cEsc + "' "
+		cSQL = cSQL + "AND login.Prp IN ('Server','Database') "
+		cSQL = cSQL + "ORDER BY CASE login.Prp WHEN 'Server' THEN 1 ELSE 2 END"
+
+		nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_DispName')
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_DispName')
+		ENDDO
+		IF nSQLEXEC < 0
+			nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSP_DispName')
+		ENDIF
+		IF nSQLEXEC < 0
+			SQLEXECError(cSQL, nConn, nSQLEXEC, 'tmpPSP_DispName')
+			RecordError(nSQLEXEC,"SQL Error","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL)
+		ENDIF
+
+		IF USED('tmpPSP_DispName')
+			IF RECCOUNT('tmpPSP_DispName') > 0 AND VARTYPE(tmpPSP_DispName.UN) = "C"
+				IF !EMPTY(ALLTRIM(tmpPSP_DispName.UN))
+					cReturn = ALLTRIM(tmpPSP_DispName.UN)
+				ENDIF
+			ENDIF
+			USE IN tmpPSP_DispName
+		ENDIF
+	ENDIF
+
+	IF lCloseConn
+		SQLDISCONNECT(nConn)
+	ENDIF
+ENDIF
+
+IF NOT EMPTY(cAlias)
+	IF USED(cAlias)
+		SELECT (cAlias)
+	ENDIF
+ENDIF
+
+RETURN cReturn
+ENDPROC
+
+**************************************
+PROCEDURE AppUsers_Get_DisplayName
+PARAMETERS pLoginUN, pConn
+*cName = AppUsers_Get_DisplayName('talkt')
+* Returns dbo.AppUsers.DisplayName for a Windows login (with or without COMPUTER\ prefix).
+
+PRIVATE cLogin, cReturn
+cReturn = ''
+IF VARTYPE(pLoginUN) != "C" OR EMPTY(ALLTRIM(pLoginUN))
+	RETURN cReturn
+ENDIF
+cLogin = ALLTRIM(pLoginUN)
+* Strip DOMAIN\ if present for lookup flexibility
+IF ATC("\", cLogin) > 0
+	cLogin = ALLTRIM(SUBSTR(cLogin, ATC("\", cLogin) + 1))
+ENDIF
+
+PRIVATE nConn, lCloseConn
+lCloseConn = .F.
+IF VARTYPE(pConn) = "N" AND pConn > 0
+	nConn = pConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lCloseConn = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+
+PRIVATE cAlias, cSQL, nSQLEXEC, cEsc
+cAlias = ALIAS()
+cEsc = STRTRAN(cLogin, "'", "''")
+
+IF USED('tmpAppUserDN')
+	USE IN tmpAppUserDN
+ENDIF
+SELECT 0
+
+IF nConn > 0
+	cSQL = "SELECT TOP 1 RTRIM(ISNULL(DisplayName,'')) AS DisplayName FROM dbo.AppUsers WITH(NOLOCK) "
+	cSQL = cSQL + "WHERE Active = 1 AND ("
+	cSQL = cSQL + "RTRIM(WindowsLogin) = N'" + cEsc + "' "
+	cSQL = cSQL + "OR RTRIM(WindowsLogin) LIKE N'%\' + N'" + cEsc + "' "
+	cSQL = cSQL + ") ORDER BY Id"
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpAppUserDN')
+	IF nSQLEXEC > 0 AND USED('tmpAppUserDN') AND RECCOUNT('tmpAppUserDN') > 0
+		cReturn = ALLTRIM(tmpAppUserDN.DisplayName)
+	ENDIF
+	IF USED('tmpAppUserDN')
+		USE IN tmpAppUserDN
+	ENDIF
+	IF lCloseConn
+		SQLDISCONNECT(nConn)
+	ENDIF
+ENDIF
+
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN cReturn
+ENDPROC
+
+**************************************
+PROCEDURE AppUsers_Save_DisplayName
+PARAMETERS pLoginUN, pDisplayName, pLoginPC, pConn
+*lOK = AppUsers_Save_DisplayName('talkt', 'David Kirchner', 'SUPERMICRO')
+* Upserts dbo.AppUsers.DisplayName for this Windows login. Returns .T./.F.
+
+PRIVATE cLogin, cName, cPC, cWin, cEscL, cEscN, cEscW
+PRIVATE nConn, lCloseConn, cSQL, nSQLEXEC, lOK, cAlias
+
+lOK = .F.
+IF VARTYPE(pLoginUN) != "C" OR EMPTY(ALLTRIM(pLoginUN))
+	RETURN .F.
+ENDIF
+IF VARTYPE(pDisplayName) != "C"
+	RETURN .F.
+ENDIF
+cLogin = ALLTRIM(pLoginUN)
+cName = ALLTRIM(pDisplayName)
+cPC = IIF(VARTYPE(pLoginPC) = "C", ALLTRIM(pLoginPC), "")
+IF ATC("\", cLogin) > 0
+	cWin = cLogin
+	cLogin = ALLTRIM(SUBSTR(cLogin, RAT("\", cLogin) + 1))
+ELSE
+	IF !EMPTY(cPC)
+		cWin = cPC + "\" + cLogin
+	ELSE
+		cWin = cLogin
+	ENDIF
+ENDIF
+
+lCloseConn = .F.
+IF VARTYPE(pConn) = "N" AND pConn > 0
+	nConn = pConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lCloseConn = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+cAlias = ALIAS()
+cEscL = STRTRAN(cLogin, "'", "''")
+cEscN = STRTRAN(cName, "'", "''")
+cEscW = STRTRAN(cWin, "'", "''")
+
+IF nConn > 0
+	cSQL = "IF EXISTS (SELECT 1 FROM dbo.AppUsers WITH(NOLOCK) WHERE "
+	cSQL = cSQL + "RTRIM(WindowsLogin) = N'" + cEscL + "' OR RTRIM(WindowsLogin) LIKE N'%\' + N'" + cEscL + "') "
+	cSQL = cSQL + "UPDATE dbo.AppUsers SET DisplayName = N'" + cEscN + "', Active = 1 "
+	cSQL = cSQL + "WHERE RTRIM(WindowsLogin) = N'" + cEscL + "' OR RTRIM(WindowsLogin) LIKE N'%\' + N'" + cEscL + "' "
+	cSQL = cSQL + "ELSE INSERT INTO dbo.AppUsers (WindowsLogin, AppRole, Active, DisplayName) "
+	cSQL = cSQL + "VALUES (N'" + cEscW + "', N'ReadOnly', 1, N'" + cEscN + "')"
+
+	nSQLEXEC = SQLEXEC(nConn, cSQL)
+	IF nSQLEXEC > 0
+		lOK = .T.
+	ELSE
+		SQLEXECError(cSQL, nConn, nSQLEXEC, "")
+		RecordError(nSQLEXEC,"SQL Error","Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO(),cSQL)
+	ENDIF
+	IF lCloseConn
+		SQLDISCONNECT(nConn)
+	ENDIF
+ENDIF
+
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN lOK
 ENDPROC
 
 **************************************

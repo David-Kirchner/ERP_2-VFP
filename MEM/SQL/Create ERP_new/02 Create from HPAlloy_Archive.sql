@@ -930,7 +930,7 @@ CREATE TABLE [dbo].[Ar_PurchaseOrder_hist](
 	[salesnum] [int] NULL,
 	[item] [decimal](2, 0) NULL,
 	[salesp] [char](1) NULL,
-	[company] [varchar](30) NULL,
+	[company] [varchar](100) NULL,
 	[alloy] [char](12) NULL,
 	[form] [char](2) NULL,
 	[cc] [char](1) NULL,
@@ -965,6 +965,7 @@ CREATE TABLE [dbo].[Ar_PurchaseOrder_hist](
 	[Services] [bit] NULL,
 	[ConvServ] [bit] NULL,
 	[Equipment] [bit] NULL,
+	[Lab_Service] [bit] NULL,
 	[Stock] [varchar](13) NULL,
 	[sheet_pk] [bit] NULL,
 	[ShipWhere] [decimal](1, 0) NULL,
@@ -1071,6 +1072,7 @@ CREATE TABLE [dbo].[Ar_Receiving_Hist](
 	[Services] [bit] NULL,
 	[ConvServ] [bit] NULL,
 	[Equipment] [bit] NULL,
+	[Lab_Service] [bit] NULL,
 	[CertID] [varchar](50) NULL,
 	[Who] [varchar](255) NULL,
 	[What] [char](10) NULL,
@@ -1320,7 +1322,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ar_ShipAddr_History]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[Ar_ShipAddr_History](
-	[shipcode] [decimal](10, 0) NOT NULL,
+	[shipcode] [int] NOT NULL,
 	[company] [varchar](100) NULL,
 	[addr1] [varchar](100) NULL,
 	[addr2] [varchar](100) NULL,

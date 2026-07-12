@@ -1,0 +1,28 @@
+---
+description: Equipment/non-stock PO StockLst pricing mirrors Order_PU/P/QTY
+globs: "**/purchaseorder*.{VC2,vcx,SC2,scx}"
+alwaysApply: false
+---
+
+# Equipment / No-Stock PO pricing (StockLst vs Order)
+
+## Rule
+
+When a PO line is **not metal for StockLst** (Equipment, Lab Service, IntP / `Stock = 'No Stock'`):
+
+- `StockLst_PU = Order_PU`
+- `StockLst_P = Order_P`
+- `StockLst_QTY = Order_QTY` (use `1` only when `Order_PU = 4` / `$Lot`)
+
+Vendor chooses the pricing unit (`Order_PU` / `Order_P`). Do **not** force `$Lot`, do **not** hardcode `StockLst_QTY = 1` for `$/PC`, and do **not** overwrite `StockLst_PU` with `GetPUfromForm()` (empty Form → wrong PU → HPA vs Vendor mismatch warning).
+
+Also apply when editing `equipment-quote-to-po` skill/reference.
+
+## Metal stock (contrast)
+
+When the line **is for stock**, `StockLst_PU` follows the Form’s accounting-standard PU (`GetPUfromForm`). That strict rule does **not** apply to Equipment / No Stock.
+
+## Skill insert
+
+`INSERT` values must be `@qty, @qty, @unitprice, @pu` for  
+`Order_QTY, StockLst_QTY, StockLst_P, StockLst_PU` (then `Order_P, Order_PU`).

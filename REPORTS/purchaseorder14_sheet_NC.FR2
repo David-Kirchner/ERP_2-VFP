@@ -1897,7 +1897,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Send invoices to AP@HPAlloy.com or mail to POBox 40 Tipton, IN 46072"]]>
+	<expr><![CDATA[CompanyReport_InvoiceSendLine()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

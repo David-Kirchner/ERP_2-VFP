@@ -39,7 +39,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	*< OBJECTDATA: ObjPath="pgfPO.pgPODesc.txtOrder_Qty" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgPODesc.txtOtherFld" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgPODesc.cmbStock" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfPO.pgPODesc.chkServicesPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfPO.pgPODesc.chkLab_Service" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgPODesc.lblItempo" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgPODesc.txtDue_max" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgPODesc.lblDue_max" UniqueID="" Timestamp="" />
@@ -160,6 +160,8 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	*< OBJECTDATA: ObjPath="pgfPO.pgPOAddress.lblFOB" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgPOAddress.cmbRemoteStock" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgPOAddress.lblCity" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfPO.pgPOAddress.txtEst_Frght" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfPO.pgPOAddress.Label2" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgTestPO.pgfTesting" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgTestPO.pgfTesting.pgMaterial.shpMetric" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgTestPO.pgfTesting.pgMaterial.ogTestType" UniqueID="" Timestamp="" />
@@ -249,7 +251,6 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.txtPeachID" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.Vend_Notes" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.cmdShowVendors" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.lblApproved1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.QAApproved1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.lvlInactive1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.INACTIVE1" UniqueID="" Timestamp="" />
@@ -262,6 +263,11 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.lblCity" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.LBLVEND_Notes1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.Embossedlabel3" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.lblFreight" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.txtFreight" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.lblDiscount" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.txtDiscount" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfPO.pgVendor.lblApproved1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendorContact.Shape3" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendorContact.Shape2" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfPO.pgVendorContact.Shape1" UniqueID="" Timestamp="" />
@@ -737,12 +743,12 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		BackStyle = 0, ;
 		Caption = "ERP PO", ;
 		Enabled = .T., ;
-		Height = 17, ;
+		Height = 32, ;
 		Left = 8, ;
 		Name = "Label1", ;
 		TabIndex = 27, ;
 		Top = 198, ;
-		Width = 42, ;
+		Width = 27, ;
 		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
 
@@ -782,6 +788,18 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		TabIndex = 23, ;
 		Top = 165, ;
 		Width = 34
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfPO.pgPOAddress.Label2' AS label WITH ;
+		AutoSize = .F., ;
+		BackStyle = 0, ;
+		Caption = "Est Freight", ;
+		Height = 17, ;
+		Left = 352, ;
+		Name = "Label2", ;
+		TabIndex = 31, ;
+		Top = 212, ;
+		Width = 60
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgfPO.pgPOAddress.Label4' AS label WITH ;
@@ -938,10 +956,11 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Top = 74, ;
 		Value = 1, ;
 		Width = 103, ;
-		Option1.Caption = "ERP_Loc1", ;
+		Option1.Caption = "Billing", ;
 		Option1.Height = 17, ;
 		Option1.Left = 5, ;
 		Option1.Name = "Option1", ;
+		Option1.ToolTipText = "Company Profile set for Billing", ;
 		Option1.Top = 5, ;
 		Option1.Value = 1, ;
 		Option1.Width = 85, ;
@@ -963,10 +982,11 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Option4.Name = "Option4", ;
 		Option4.Top = 62, ;
 		Option4.Width = 98, ;
-		Option5.Caption = "ERP_Loc2", ;
+		Option5.Caption = "Profile Ship", ;
 		Option5.Height = 17, ;
 		Option5.Left = 5, ;
 		Option5.Name = "Option5", ;
+		Option5.ToolTipText = "Company Profile set for Ship to", ;
 		Option5.Top = 81, ;
 		Option5.Width = 97, ;
 		Option6.Caption = "Remote Stock", ;
@@ -1073,6 +1093,24 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		TabIndex = 24, ;
 		Top = 161, ;
 		Width = 166
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgfPO.pgPOAddress.txtEst_Frght' AS textbox WITH ;
+		Alignment = 1, ;
+		BackColor = 255,255,128, ;
+		DisabledForeColor = 172,168,153, ;
+		Enabled = .T., ;
+		Format = "K", ;
+		Height = 21, ;
+		InputMask = "999,999.99", ;
+		Left = 415, ;
+		Name = "txtEst_Frght", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 32, ;
+		ToolTipText = "Estimated freight (dbo.PO_No.Est_Frght)", ;
+		Top = 209, ;
+		Value = 0, ;
+		Width = 137
 		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'pgfPO.pgPOAddress.txtFax' AS textbox WITH ;
@@ -1293,6 +1331,24 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Width = 81
 		*< END OBJECT: BaseClass="checkbox" />
 
+	ADD OBJECT 'pgfPO.pgPODesc.chkLab_Service' AS checkbox WITH ;
+		Alignment = 0, ;
+		BackColor = 212,208,200, ;
+		BackStyle = 0, ;
+		Caption = "WO Lab Test", ;
+		ControlSource = "", ;
+		DisabledForeColor = 0,0,1, ;
+		Enabled = .F., ;
+		Height = 12, ;
+		Left = 131, ;
+		Name = "chkLab_Service", ;
+		TabIndex = 86, ;
+		ToolTipText = "Testing for a WO production", ;
+		Top = 214, ;
+		Visible = .T., ;
+		Width = 96
+		*< END OBJECT: BaseClass="checkbox" />
+
 	ADD OBJECT 'pgfPO.pgPODesc.chkMetric' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackStyle = 0, ;
@@ -1336,24 +1392,6 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		TabIndex = 43, ;
 		Top = 63, ;
 		Width = 52
-		*< END OBJECT: BaseClass="checkbox" />
-
-	ADD OBJECT 'pgfPO.pgPODesc.chkServicesPO' AS checkbox WITH ;
-		Alignment = 0, ;
-		BackColor = 212,208,200, ;
-		BackStyle = 0, ;
-		Caption = "WO Lab Test", ;
-		ControlSource = "", ;
-		DisabledForeColor = 0,0,1, ;
-		Enabled = .F., ;
-		Height = 12, ;
-		Left = 131, ;
-		Name = "chkServicesPO", ;
-		TabIndex = 86, ;
-		ToolTipText = "Testing for a WO production", ;
-		Top = 214, ;
-		Visible = .T., ;
-		Width = 96
 		*< END OBJECT: BaseClass="checkbox" />
 
 	ADD OBJECT 'pgfPO.pgPODesc.chkSPS1' AS checkbox WITH ;
@@ -2379,7 +2417,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Enabled = .F., ;
 		Format = "K!", ;
 		Height = 23, ;
-		InputMask = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", ;
+		InputMask = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", ;
 		Left = 307, ;
 		Name = "txtCompany", ;
 		SelectedBackColor = 49,106,197, ;
@@ -2388,7 +2426,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Top = 26, ;
 		Visible = .T., ;
 		Width = 211
-		*< END OBJECT: ClassLib="wizstyle.vcx" BaseClass="textbox" />
+		*< END OBJECT: ClassLib="..\libs\wizstyle.vcx" BaseClass="textbox" />
 
 	ADD OBJECT 'pgfPO.pgPODesc.txtCond_spec' AS textbox WITH ;
 		Comment = "", ;
@@ -4422,7 +4460,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Visible = .T., ;
 		Width = 83, ;
 		ZOrderSet = 45
-		*< END OBJECT: ClassLib="wizembss.vcx" BaseClass="label" />
+		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="label" />
 
 	ADD OBJECT 'pgfPO.pgVendor.Embossedlabel3' AS embossedlabel WITH ;
 		Alignment = 1, ;
@@ -4431,11 +4469,11 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Left = 203, ;
 		Name = "Embossedlabel3", ;
 		TabIndex = 29, ;
-		Top = 184, ;
+		Top = 207, ;
 		Visible = .T., ;
 		Width = 72, ;
 		ZOrderSet = 33
-		*< END OBJECT: ClassLib="wizembss.vcx" BaseClass="label" />
+		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="label" />
 
 	ADD OBJECT 'pgfPO.pgVendor.INACTIVE1' AS embossedlogic WITH ;
 		Alignment = 0, ;
@@ -4451,7 +4489,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Visible = .T., ;
 		Width = 18, ;
 		ZOrderSet = 41
-		*< END OBJECT: ClassLib="wizembss.vcx" BaseClass="checkbox" />
+		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="checkbox" />
 
 	ADD OBJECT 'pgfPO.pgVendor.Label4' AS label WITH ;
 		AutoSize = .F., ;
@@ -4503,7 +4541,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Visible = .T., ;
 		Width = 76, ;
 		ZOrderSet = 37
-		*< END OBJECT: ClassLib="wizembss.vcx" BaseClass="label" />
+		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="label" />
 
 	ADD OBJECT 'pgfPO.pgVendor.lblCity' AS label WITH ;
 		AutoSize = .F., ;
@@ -4518,6 +4556,30 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Width = 30
 		*< END OBJECT: BaseClass="label" />
 
+	ADD OBJECT 'pgfPO.pgVendor.lblDiscount' AS label WITH ;
+		BackStyle = 0, ;
+		Caption = "Discount", ;
+		Enabled = .T., ;
+		Height = 17, ;
+		Left = 138, ;
+		Name = "lblDiscount", ;
+		TabIndex = 2, ;
+		Top = 188, ;
+		Width = 52
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfPO.pgVendor.lblFreight' AS label WITH ;
+		BackStyle = 0, ;
+		Caption = "Freight", ;
+		Enabled = .T., ;
+		Height = 17, ;
+		Left = 8, ;
+		Name = "lblFreight", ;
+		TabIndex = 2, ;
+		Top = 188, ;
+		Width = 44
+		*< END OBJECT: BaseClass="label" />
+
 	ADD OBJECT 'pgfPO.pgVendor.lblPeachID' AS embossedlabel WITH ;
 		Alignment = 1, ;
 		AutoSize = .F., ;
@@ -4530,7 +4592,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Visible = .T., ;
 		Width = 51, ;
 		ZOrderSet = 44
-		*< END OBJECT: ClassLib="wizembss.vcx" BaseClass="label" />
+		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="label" />
 
 	ADD OBJECT 'pgfPO.pgVendor.lblPOBuyFrom' AS label WITH ;
 		BackStyle = 0, ;
@@ -4567,11 +4629,11 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Left = 30, ;
 		Name = "LBLVEND_Notes1", ;
 		TabIndex = 27, ;
-		Top = 184, ;
+		Top = 207, ;
 		Visible = .T., ;
 		Width = 72, ;
 		ZOrderSet = 33
-		*< END OBJECT: ClassLib="wizembss.vcx" BaseClass="label" />
+		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="label" />
 
 	ADD OBJECT 'pgfPO.pgVendor.lvlInactive1' AS embossedlabel WITH ;
 		Alignment = 1, ;
@@ -4583,7 +4645,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Visible = .T., ;
 		Width = 63, ;
 		ZOrderSet = 40
-		*< END OBJECT: ClassLib="wizembss.vcx" BaseClass="label" />
+		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="label" />
 
 	ADD OBJECT 'pgfPO.pgVendor.Metal1' AS embossedlogic WITH ;
 		Alignment = 0, ;
@@ -4599,7 +4661,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Visible = .T., ;
 		Width = 18, ;
 		ZOrderSet = 46
-		*< END OBJECT: ClassLib="wizembss.vcx" BaseClass="checkbox" />
+		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="checkbox" />
 
 	ADD OBJECT 'pgfPO.pgVendor.QAApproved1' AS embossedlogic WITH ;
 		Alignment = 0, ;
@@ -4615,7 +4677,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Visible = .T., ;
 		Width = 18, ;
 		ZOrderSet = 38
-		*< END OBJECT: ClassLib="wizembss.vcx" BaseClass="checkbox" />
+		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="checkbox" />
 
 	ADD OBJECT 'pgfPO.pgVendor.shpDepricated' AS shape WITH ;
 		BackColor = 128,128,128, ;
@@ -4711,6 +4773,34 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Width = 57
 		*< END OBJECT: BaseClass="textbox" />
 
+	ADD OBJECT 'pgfPO.pgVendor.txtDiscount' AS textbox WITH ;
+		DisabledForeColor = 0,0,0, ;
+		Enabled = .T., ;
+		Format = "", ;
+		Height = 23, ;
+		Left = 195, ;
+		MaxLength = 100, ;
+		Name = "txtDiscount", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 5, ;
+		Top = 183, ;
+		Width = 74
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgfPO.pgVendor.txtFreight' AS textbox WITH ;
+		DisabledForeColor = 0,0,0, ;
+		Enabled = .T., ;
+		Format = "", ;
+		Height = 23, ;
+		Left = 51, ;
+		MaxLength = 100, ;
+		Name = "txtFreight", ;
+		SelectOnEntry = .T., ;
+		TabIndex = 5, ;
+		Top = 183, ;
+		Width = 74
+		*< END OBJECT: BaseClass="textbox" />
+
 	ADD OBJECT 'pgfPO.pgVendor.txtLastEdit' AS textbox WITH ;
 		BackColor = 236,233,216, ;
 		DisabledBackColor = 236,233,216, ;
@@ -4801,7 +4891,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Name = "Vend_Notes", ;
 		SelectOnEntry = .T., ;
 		TabIndex = 28, ;
-		Top = 198, ;
+		Top = 221, ;
 		Width = 180
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -4815,7 +4905,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		Name = "Vend_Print", ;
 		SelectOnEntry = .T., ;
 		TabIndex = 30, ;
-		Top = 198, ;
+		Top = 221, ;
 		Width = 180
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -5456,7 +5546,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 							ThisForm.pgfPO.pgPODesc.txtPO_Rev.VALUE		= ALLTRIM(STR( getPO_NO_Rev(nHPAPO,ThisForm.nConnHandle) ))
 							ThisForm.cPOitem 							= tmpPO.POitem
 		
-							ThisForm.pgfPO.pgPODesc.txtCompany.VALUE	= ShowSQLtxt(tmpPO.Company,'Company',30)
+							ThisForm.pgfPO.pgPODesc.txtCompany.VALUE	= ShowSQLtxt(tmpPO.Company,'Company',100)
 							ThisForm.pgfPO.pgPODesc.txtSalesP.VALUE		= ShowSQLtxt(tmpPO.SalesP,'SalesP',1)
 							ThisForm.pgfPO.pgPODesc.txtCover.VALUE		= ShowSQLtxt(tmpPO.Cover,'Cover',1)
 		
@@ -5503,7 +5593,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 							ThisForm.pgfPO.pgPODesc.txtStandSize.VALUE	= PrepareSQLnum(tmpPO.StandSize,'StandSize',10,4)
 							
 							ThisForm.pgfPO.pgPODesc.chkSPS1.VALUE		= PrepareSQLchk(tmpPO.Sheet_PK,'Sheet_PK')
-							ThisForm.pgfPO.pgPODesc.chkServicesPO.VALUE	= PrepareSQLchk(tmpPO.Services,'Services')
+							ThisForm.pgfPO.pgPODesc.chkLab_Service.VALUE	= PrepareSQLchk(tmpPO.Services,'Services')
 							ThisForm.pgfPO.pgPODesc.chkConvServ.VALUE	= PrepareSQLchk(tmpPO.ConvServ,'ConvServ')
 							ThisForm.pgfPO.pgPOdesc.chkEquipment.VALUE	= PrepareSQLchk(tmpPO.Equipment,'Equipment')
 							ThisForm.pgfPO.pgPOdesc.chkIntP.VALUE		= PrepareSQLchk(tmpPO.IntP,'IntP')
@@ -5792,7 +5882,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		lOK = .T.
 		
 		PRIVATE lServicesPO,lEquipment
-		lServicesPO = PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkServicesPO.Value,'ServicesPO',.F.)
+		lServicesPO = PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkLab_Service.Value,'ServicesPO',.F.)
 		lEquipment	= PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkEquipment.Value,'Equipment',.F.)
 		
 		IF lServicesPO OR lEquipment
@@ -7864,7 +7954,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			ThisForm.pgfPO.pgPODesc.txtPounds.Value = nLBS
 		OTHERWISE
 			PRIVATE lServicesPO, lOddCut
-			lServicesPO = PrepareSQLlogic( ThisForm.pgfPO.pgPODesc.chkServicesPO.Value, 'ServicesPO',.F. )
+			lServicesPO = PrepareSQLlogic( ThisForm.pgfPO.pgPODesc.chkLab_Service.Value, 'ServicesPO',.F. )
 			lOddCut		= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkOddCut.VALUE,'OddCut',.F.)
 			*IF NOT lServicesPO 
 				IF NOT lOddCut
@@ -7948,7 +8038,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			ThisForm.pgfPO.pgPOdesc.txtStandSize.Enabled = .T.
 			
 			ThisForm.pgfPO.pgPOdesc.chkSPS1.ENABLED = .T.
-			ThisForm.pgfPO.pgPOdesc.chkServicesPO.ENABLED = .T.
+			ThisForm.pgfPO.pgPOdesc.chkLab_Service.ENABLED = .T.
 			ThisForm.pgfPO.pgPOdesc.chkConvServ.ENABLED = .T.
 			ThisForm.pgfPO.pgPOdesc.chkEquipment.ENABLED = .T.
 			ThisForm.pgfPO.pgPOdesc.chkIntP.ENABLED = .T.
@@ -8069,7 +8159,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			ThisForm.pgfPO.pgPOdesc.txtStandSize.Enabled = .F.
 			
 			ThisForm.pgfPO.pgPOdesc.chkSPS1.ENABLED = .F.
-			ThisForm.pgfPO.pgPOdesc.chkServicesPO.ENABLED = .F.
+			ThisForm.pgfPO.pgPOdesc.chkLab_Service.ENABLED = .F.
 			ThisForm.pgfPO.pgPOdesc.chkConvServ.ENABLED = .F.
 			ThisForm.pgfPO.pgPOdesc.chkEquipment.ENABLED = .F.
 			ThisForm.pgfPO.pgPOdesc.chkIntP.ENABLED = .F.
@@ -8190,7 +8280,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			ThisForm.pgfPO.pgPOdesc.txtStandSize.Value = 0
 			
 			ThisForm.pgfPO.pgPOdesc.chkSPS1.Value = 0
-			ThisForm.pgfPO.pgPOdesc.chkServicesPO.Value = 0
+			ThisForm.pgfPO.pgPOdesc.chkLab_Service.Value = 0
 			ThisForm.pgfPO.pgPOdesc.chkConvServ.Value = 0
 			ThisForm.pgfPO.pgPOdesc.chkEquipment.Value = 0
 			ThisForm.pgfPO.pgPOdesc.chkIntP.Value = 0
@@ -8502,7 +8592,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		nItemPo		= PrepareSQLnum(ThisForm.pgfPO.pgPOdesc.txtItemPo.VALUE,'ItemPO',2,0)
 		cPOitem		= Proper_PO_Item( STR(nHpaPo)+"-"+STR(nItemPo,2,0) )
 		cSOitem		= PrepareSQLtxt(ThisForm.cSOitem,'SOitem',10)
-		cBuyFrom	= ALLTRIM(PrepareSQLtxt(ThisForm.pgfPO.pgPOdesc.txtCompany.VALUE,'BuyFrom',30))
+		cBuyFrom	= ALLTRIM(PrepareSQLtxt(ThisForm.pgfPO.pgPOdesc.txtCompany.VALUE,'BuyFrom',100))
 		
 		PRIVATE lSQLgood, lOK
 		lSQLgood = .T.
@@ -8906,8 +8996,8 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		ThisForm.chkCancelPO.VALUE = 0
 		ThisForm.chkCancelPO.ENABLED =.T.
 		
-		ThisForm.pgfPO.pgPOdesc.chkServicesPO.VALUE = 0
-		ThisForm.pgfPO.pgPOdesc.chkServicesPO.ENABLED = .T.
+		ThisForm.pgfPO.pgPOdesc.chkLab_Service.VALUE = 0
+		ThisForm.pgfPO.pgPOdesc.chkLab_Service.ENABLED = .T.
 		ThisForm.pgfPO.pgPOdesc.chkConvServ.VALUE = 0
 		ThisForm.pgfPO.pgPOdesc.chkConvServ.ENABLED = .T.
 		
@@ -8958,7 +9048,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		cPeachID		= PrepareSQLtxt(ThisForm.pgfPO.pgPOdesc.lblPeachID.Caption,'PeachID',20,.F.)
 		nContactID		= PrepareSQLnum(ThisForm.nContactID,"ContactID",-3)
 		
-		cCompany		= ALLTRIM(PrepareSQLtxt(ThisForm.pgfPO.pgPOdesc.txtCompany.VALUE,'Company',30,.F.))
+		cCompany		= ALLTRIM(PrepareSQLtxt(ThisForm.pgfPO.pgPOdesc.txtCompany.VALUE,'Company',100,.F.))
 		cBuyFrom		= LEFT(cCompany,15)
 		
 		cSalesP			= PrepareSQLtxt(ThisForm.pgfPO.pgPOdesc.txtSalesP.VALUE,'SalesP',1,.F.)
@@ -8999,7 +9089,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		cMelt			= PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.cmbMelt.Value,'Melt',7)
 		cMisc_purch		= PrepareSQLtxt(ThisForm.pgfPO.pgPOdesc.txtMisc_purch.VALUE,'Misc_Purchase',-1,.F.)
 		lSheet_pk		= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkSPS1.VALUE,'SPS1',.F.)
-		lServicesPO		= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkServicesPO.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkLab_Service.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkEquipment.VALUE,'Equipment',.F.)
 		lIntP			= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkIntP.VALUE,'Int Servce',.F.)
@@ -9088,7 +9178,15 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		nS_Total = nStockLst_QTY * nStockLst_P
 		
 		IF nStockLst_PU = 0
-			nStockLst_PU = GetPUfromForm(cForm, ThisForm.nConnHandle)
+			IF lEquipment OR lServicesPO OR lIntP
+				IF nOrder_PU > 0
+					nStockLst_PU = nOrder_PU
+				ELSE
+					nStockLst_PU = GetPUfromForm(cForm, ThisForm.nConnHandle)
+				ENDIF
+			ELSE
+				nStockLst_PU = GetPUfromForm(cForm, ThisForm.nConnHandle)
+			ENDIF
 		ENDIF
 		
 		PRIVATE	cPoItem, cSOitem
@@ -10959,7 +11057,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		******************************
 		IF lPOSaveOK AND nReceiving_ID = 0
 			*refresh screen
-			ThisForm.pgfPO.pgPOdesc.chkServicesPO.VALUE = .F.
+			ThisForm.pgfPO.pgPOdesc.chkLab_Service.VALUE = .F.
 			ThisForm.pgfPO.pgPOdesc.chkConvServ.VALUE = .F.
 			ThisForm.POScreen("DISABLE")
 			
@@ -11021,7 +11119,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		
 		PRIVATE lSheet_pk, lServicesPO, lConvServ, lEquipment, lIntP
 		lSheet_pk	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkSPS1.VALUE,'SPS1',.F.)
-		lServicesPO	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkServicesPO.VALUE,'ServicesPO',.F.)
+		lServicesPO	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkLab_Service.VALUE,'ServicesPO',.F.)
 		lConvServ	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkConvServ.VALUE,'ConvServ',.F.)
 		lEquipment	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkEquipment.VALUE,'Equipment',.F.)
 		lIntP		= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkIntP.VALUE,'Service',.F.)
@@ -11213,7 +11311,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 				RETURN .F.
 			ENDIF
 		
-			cCompany	= PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.txtCompany.Value,'Company',30)
+			cCompany	= PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.txtCompany.Value,'Company',100)
 			IF EMPTY(ALLTRIM(cCompany))
 				=MESSAGEBOX("Purchase Order needs the Company Purchased from entered.",16,"Invalid input")
 				RETURN .F.
@@ -11735,7 +11833,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			PRIVATE nStockLst_QTY, nStockLst_P, nStockLst_PU, nOrder_Qty, nOrder_P, nOrder_PU
 			nStockLst_QTY	= PrepareSQLnum(ThisForm.pgfPO.pgPODesc.txtStockLst_QTY.VALUE,'StockLst_QTY',-5)
 			nStockLst_P		= PrepareSQLnum(ThisForm.pgfPO.pgPODesc.txtStockLst_P.VALUE,'StockLst_P',-5)
-			nStockLst_PU	= GetPUfromForm(cForm, ThisForm.nConnHandle)
+			nStockLst_PU	= PrepareSQLnum(ThisForm.pgfPO.pgPODesc.txtStockLst_PU.VALUE,'StockLst_PU',-1)
 			nOrder_Qty		= PrepareSQLnum(ThisForm.pgfPO.pgPODesc.txtOrder_QTY.VALUE,'Order_QTY',-5)
 			nOrder_P		= PrepareSQLnum(ThisForm.pgfPO.pgPODesc.txtOrder_P.VALUE,'Order_P',-5)
 			nOrder_PU		= PrepareSQLnum(ThisForm.pgfPO.pgPODesc.cmbOrder_PU.VALUE,'Order_PU',-1)
@@ -11747,6 +11845,34 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			
 			PRIVATE lIsForStock
 			lIsForStock = isForStock(cStock)
+
+			* Metal stock: StockLst_PU follows Form accounting standard (GetPUfromForm).
+			* Equipment / Lab / IntP (No Stock): mirror vendor Order_PU / Order_P / Order_QTY —
+			* no Form-based StockLst_PU overwrite (empty Form was forcing $Lot and mismatch warnings).
+			IF NOT lIsForStock AND (lEquipment OR lServicesPO OR lIntP)
+				IF nOrder_PU > 0
+					nStockLst_PU = nOrder_PU
+					ThisForm.pgfPO.pgPODesc.txtStockLst_PU.Value = nStockLst_PU
+					ThisForm.pgfPO.pgPODesc.lblPerUnit.Caption = Get_PUtext(nStockLst_PU)
+				ENDIF
+				IF nOrder_P > 0
+					nStockLst_P = nOrder_P
+					ThisForm.pgfPO.pgPODesc.txtStockLst_P.VALUE = nStockLst_P
+				ENDIF
+				IF nOrder_PU = 4
+					nStockLst_QTY = 1
+				ELSE
+					IF nOrder_Qty > 0
+						nStockLst_QTY = nOrder_Qty
+					ENDIF
+				ENDIF
+				ThisForm.pgfPO.pgPODesc.txtStockLst_QTY.VALUE = nStockLst_QTY
+			ELSE
+				* Stock metal (or unknown): require Form-based accounting PU when textbox empty
+				IF nStockLst_PU <= 0
+					nStockLst_PU = GetPUfromForm(cForm, ThisForm.nConnHandle)
+				ENDIF
+			ENDIF
 			
 			IF NOT lIsForStock 
 				*If Order price is filled and not filled for Stock price, use Order price!
@@ -11841,17 +11967,15 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 				IF nWO+nWO_Detail = 0
 					*Not a Work Order
 					DO CASE
-					CASE lServicesPO
-						nStockLst_PU = 4 &&Lot
-						ThisForm.pgfPO.pgPODesc.txtStockLst_PU.Value = 4
+					CASE lServicesPO OR lEquipment OR lIntP
+						* Non-stock: use vendor Order_PU (not forced $Lot)
+						IF nOrder_PU > 0
+							nStockLst_PU = nOrder_PU
+						ELSE
+							nStockLst_PU = 4 &&Lot fallback only if Order_PU missing
+						ENDIF
+						ThisForm.pgfPO.pgPODesc.txtStockLst_PU.Value = nStockLst_PU
 					CASE lConvServ
-						nStockLst_PU = 4 &&Lot
-						ThisForm.pgfPO.pgPODesc.txtStockLst_PU.Value = 4
-					*********************************
-					CASE lEquipment
-						nStockLst_PU = 4 &&Lot
-						ThisForm.pgfPO.pgPODesc.txtStockLst_PU.Value = 4
-					CASE lIntP 	&&IntService
 						nStockLst_PU = 4 &&Lot
 						ThisForm.pgfPO.pgPODesc.txtStockLst_PU.Value = 4
 					OTHERWISE
@@ -12234,47 +12358,32 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 				ENDIF
 			ENDIF
 			***********************************************
-			**check that Lab Service is on PC or Lot, not Pounds.
+			** Equipment / Lab / IntP (No Stock): keep StockLst_* aligned with Order_*
 			IF lServicesPO OR lEquipment OR lIntP
 				ThisForm.pgfPO.pgPODesc.cmbStock.VALUE = 'No Stock'
 				cStock = 'No Stock'
-			
-				IF nStockLst_QTY <> 1
-					IF lEquipment AND nPounds > 0 AND nStockLst_PU = 1
-						*Works
+
+				IF nOrder_PU > 0
+					nStockLst_PU = nOrder_PU
+				ENDIF
+				IF nOrder_P > 0
+					nStockLst_P = nOrder_P
+				ENDIF
+				IF nOrder_PU = 4
+					nStockLst_QTY = 1
+				ELSE
+					IF nOrder_Qty > 0
+						nStockLst_QTY = nOrder_Qty
 					ELSE
-						PRIVATE cMess0
-						cMess0 = CHR(13)+"Lab Service and Equipment are usually priced as a lot or for each Piece."
-						
-						IF nPieces > 0
-							IF nStockLst_PU = 4
-								*Keep as Lot
-								ThisForm.pgfPO.pgPODesc.lblPerUnit.Caption = Get_PUtext(nStockLst_PU)
-								ThisForm.pgfPO.pgPODesc.txtStockLst_QTY.VALUE = 1 
-							ELSE
-								*change to PC
-								nStockLst_QTY = nPieces
-								IF nStockLst_PU <> 3
-									MESSAGEBOX("Changing the $/Unit to '$/PC' "+CHR(13)+"and Pieces to '"+ALLTRIM(STR(nStockLst_QTY))+"'."+cMess0+CHR(13)+"Please Change the STK Q to match this unit.",48,"Override for Lab Service/Equipment.")
-								ENDIF
-								nStockLst_PU = 3
-								ThisForm.pgfPO.pgPODesc.lblPerUnit.Caption = Get_PUtext(nStockLst_PU)
-								ThisForm.pgfPO.pgPODesc.txtStockLst_QTY.VALUE = nStockLst_QTY 
-							ENDIF				
-						ELSE
-							*Change to Lot
-							nStockLst_QTY = 1
-							IF nStockLst_PU <> 4
-								MESSAGEBOX("Changing the $/Unit to '$ Lot' and Pieces to '1'"+cMess0+CHR(13)+"Please Change the STK Q to match this unit.",48,"Override for Lab Service/Equipment.")
-							ENDIF
-							nStockLst_PU = 4
-							ThisForm.pgfPO.pgPODesc.lblPerUnit.Caption = Get_PUtext(nStockLst_PU)
-							ThisForm.pgfPO.pgPODesc.txtStockLst_QTY.VALUE = 1 
-							
+						IF nPieces > 0 AND nOrder_PU = 3
+							nStockLst_QTY = nPieces
 						ENDIF
 					ENDIF
-					
 				ENDIF
+				ThisForm.pgfPO.pgPODesc.txtStockLst_PU.Value = nStockLst_PU
+				ThisForm.pgfPO.pgPODesc.txtStockLst_P.VALUE = nStockLst_P
+				ThisForm.pgfPO.pgPODesc.txtStockLst_QTY.VALUE = nStockLst_QTY
+				ThisForm.pgfPO.pgPODesc.lblPerUnit.Caption = Get_PUtext(nStockLst_PU)
 			ENDIF
 			
 			***********
@@ -12312,7 +12421,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			**********************************************
 			*check Vendor
 			PRIVATE cCompany, cBuyFrom
-			cCompany		= ALLTRIM(PrepareSQLtxt(ThisForm.pgfPO.pgPOdesc.txtCompany.VALUE,'Company',30,.F.))
+			cCompany		= ALLTRIM(PrepareSQLtxt(ThisForm.pgfPO.pgPOdesc.txtCompany.VALUE,'Company',100,.F.))
 			cBuyFrom		= LEFT(cCompany,15)
 		
 			IF EMPTY(cCompany)
@@ -12538,8 +12647,8 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			ThisForm.chkCancelPO.VALUE = 0
 			ThisForm.chkCancelPO.ENABLED =.T.
 		
-			ThisForm.pgfPO.pgPOdesc.chkServicesPO.VALUE = .F.
-			ThisForm.pgfPO.pgPOdesc.chkServicesPO.ENABLED = .T.
+			ThisForm.pgfPO.pgPOdesc.chkLab_Service.VALUE = .F.
+			ThisForm.pgfPO.pgPOdesc.chkLab_Service.ENABLED = .T.
 			ThisForm.pgfPO.pgPOdesc.chkConvServ.VALUE = .F.
 			ThisForm.pgfPO.pgPOdesc.chkConvServ.ENABLED = .T.
 			
@@ -12614,6 +12723,36 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			MESSAGEBOX("No records to print."+CHR(13)+"HpaPO = "+ALLTRIM(STR(nHpaPo))+".",48,"No Print")
 			RETURN .F.
 		ENDIF
+		
+		* Company Profile UDFs + publish Report Logo BMP before FRX (avoids Open BMP prompt)
+		IF ATC("company_report", SET("PROCEDURE")) = 0 AND FILE("REPORTS\company_report.prg")
+			SET PROCEDURE TO REPORTS\company_report.prg ADDITIVE
+		ENDIF
+		IF ATC("company_branding", SET("PROCEDURE")) = 0 AND FILE("PROGS\company_branding.prg")
+			SET PROCEDURE TO PROGS\company_branding.prg ADDITIVE
+		ENDIF
+		IF TYPE("CompanyReport_EnsureData") = "U"
+			IF TYPE("gERPAppHome") = "C" AND FILE(gERPAppHome + "REPORTS\company_report.prg")
+				SET PROCEDURE TO (gERPAppHome + "REPORTS\company_report.prg") ADDITIVE
+			ENDIF
+		ENDIF
+		IF TYPE("CacheCompanyReportBmpFile") # "U"
+			= CacheCompanyReportBmpFile(ThisForm.nConnHandle, .T.)
+		ENDIF
+		IF TYPE("ErpEnsureReportsGraphicsLink") # "U"
+			= ErpEnsureReportsGraphicsLink()
+		ENDIF
+		IF TYPE("CompanyReport_EnsureData") # "U"
+			= CompanyReport_EnsureData()
+		ENDIF
+		* FRX picture uses ..\MEM\Company_Rpt_Logo.bmp relative to REPORTS\
+		IF !FILE("MEM\Company_Rpt_Logo.bmp")
+			MESSAGEBOX("Company Report Logo is missing (MEM\Company_Rpt_Logo.bmp)."+CHR(13)+ ;
+				"Open Company Profile > Branding and choose a Report Logo, then try Print again.", ;
+				48, "Report Logo required")
+			RETURN .F.
+		ENDIF
+		
 		SET FILTER TO HPApo = nHpaPo
 		INDEX ON ValPOitem(POitem) TAG VALPOitem
 		SET ORDER TO VALPOitem
@@ -12641,7 +12780,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		
 		*************************************************************
 		PRIVATE cPOCompany, cPOName, lPrintSheetPk, lPrintEvenTheCancelled
-		cPOCompany	= PrepareSQLtxt(PurchaseOrder.Company,'Company',30)
+		cPOCompany	= PrepareSQLtxt(PurchaseOrder.Company,'Company',100)
 		cPOName		= PrepareSQLtxt(PurchaseOrder.POSalesP,'POSalesP',20)
 		lPrintSheetPk = .F.
 		lPrintEvenTheCancelled = .T.
@@ -13302,7 +13441,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		cForm = PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.cmbForm.Value,'Form',2)
 		
 		PRIVATE lServices,lConvServ,lEquipment,lIntP
-		lServices = PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkServicesPO.Value,'Services',.f.)
+		lServices = PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkLab_Service.Value,'Services',.f.)
 		lConvServ = PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkConvServ.Value,'ConvServ',.F.)
 		lEquipment = PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkEquipment.Value,'Equipment',.F.)
 		lIntP	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkIntP.Value,'IntP',.F.)
@@ -14451,7 +14590,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		**
 		nHpaPo			= PrepareSQLnum(ThisForm.pgfPO.pgPODesc.txtHPApo.VALUE,'ERP PO',-3,0)
 		nItemPo			= PrepareSQLnum(ThisForm.pgfPO.pgPODesc.txtItemPO.Value,'Item PO',2,0)
-		cCompany		= ALLTRIM(PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.txtCompany.VALUE,'Company',30,.F.))
+		cCompany		= ALLTRIM(PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.txtCompany.VALUE,'Company',100,.F.))
 		cSalesP			= PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.txtSalesP.VALUE,'SalesP',1,.F.)
 		cCover			= PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.txtCover.VALUE,'Cover',1,.F.)
 		cStock			= PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.cmbStock.VALUE,'Stock',13,.F.)
@@ -14474,7 +14613,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		nShipWhere 		= PrepareSQLnum(ThisForm.pgfPO.pgPOdesc.cmbShipWhere.VALUE,'ShipWhere',1,0)
 		nShipWhere2		= PrepareSQLnum(ThisForm.pgfPO.pgPOAddress.opgPOShipTo.Value,'ShipWhere',1,0)
 		
-		lServicesPO		= PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkServicesPO.Value,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkLab_Service.Value,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkConvServ.Value,'ConvServ',.F.)
 		lEquipment		= PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkEquipment.Value,'Equipment',.F.)
 		lIntP			= PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkIntP.Value,'IntP',.F.)
@@ -17457,7 +17596,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			ThisForm.pgfPO.pgPODesc.txtPounds.Value = nLBS
 		OTHERWISE
 			PRIVATE lServicesPO, lOddCut
-			lServicesPO = PrepareSQLlogic( ThisForm.pgfPO.pgPODesc.chkServicesPO.Value, 'ServicesPO',.F. )
+			lServicesPO = PrepareSQLlogic( ThisForm.pgfPO.pgPODesc.chkLab_Service.Value, 'ServicesPO',.F. )
 			lOddCut		= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkOddCut.VALUE,'OddCut',.F.)
 			IF NOT lServicesPO 
 				IF NOT lOddCut
@@ -17476,7 +17615,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		ENDIF
 		
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO = PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkServicesPO.Value,'ServicesPO',.F. )
+		lServicesPO = PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkLab_Service.Value,'ServicesPO',.F. )
 		lConvServ = PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkConvServ.Value,'ConvServ',.F.)
 		lEquipment = PrepareSQLlogic(ThisForm.pgfPO.pgPODesc.chkEquipment.Value,'Equipment',.F.)
 		
@@ -17551,7 +17690,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		ENDIF
 		
 		PRIVATE cCompany, cCity, cForm, cBranchInit 
-		cCompany = ShowSQLtxt(cCompany,'Company',30)
+		cCompany = ShowSQLtxt(cCompany,'Company',100)
 		cCity	= ShowSQLtxt(cCity,'City',30)
 		cForm 		= PrepareSQLtxt(ThisForm.pgfPO.pgPODesc.cmbForm.Value,'Form',2)
 		cBranchInit = GetBRANCHfromForm (cForm, ThisForm.nConnHandle )
@@ -17750,7 +17889,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 					ThisForm.pgfPO.pgPODesc.lblWO_Dnum.Caption	= STR(PrepareSQLnum(tmpPO.WO_Detail,'WO_Detail',-3))
 					ThisForm.pgfPO.pgPODesc.txtWO_Detail.Value	= PrepareSQLnum(tmpPO.WO_Detail,'WO_Detail',-3)
 		
-					THISFORM.pgfPO.pgPOdesc.txtCompany.VALUE	= ShowSQLtxt(tmpPO.Company,'Company',30)
+					THISFORM.pgfPO.pgPOdesc.txtCompany.VALUE	= ShowSQLtxt(tmpPO.Company,'Company',100)
 					THISFORM.pgfPO.pgPOdesc.txtSalesP.VALUE		= ShowSQLtxt(tmpPO.SalesP,'SalesP',1)
 					THISFORM.pgfPO.pgPOdesc.txtCover.VALUE		= ShowSQLtxt(tmpPO.Cover,'Cover',1)
 		
@@ -17798,7 +17937,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 					THISFORM.pgfPO.pgPOdesc.txtStandSize.VALUE	= PrepareSQLnum(tmpPO.StandSize,'StandSize',10,4)
 		
 					THISFORM.pgfPO.pgPOdesc.chkSPS1.VALUE		= PrepareSQLchk(tmpPO.Sheet_pk,'Sheet_pk')
-					THISFORM.pgfPO.pgPOdesc.chkServicesPO.VALUE	= PrepareSQLchk(tmpPO.Services,'Services')
+					THISFORM.pgfPO.pgPOdesc.chkLab_Service.VALUE	= PrepareSQLchk(tmpPO.Services,'Services')
 					THISFORM.pgfPO.pgPOdesc.chkConvServ.VALUE	= PrepareSQLchk(tmpPO.ConvServ,'ConvServ')
 					THISFORM.pgfPO.pgPOdesc.chkEquipment.VALUE	= PrepareSQLchk(tmpPO.Equipment,'Equipment')
 					
@@ -18804,11 +18943,13 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		
 		PRIVATE nQuoted_QTY, nQuoted_P, nQuoted_Total, nQuoted_PU
 		PRIVATE nItemSale
+		PRIVATE nPT_Total
 		nQuoted_QTY = 0	&&Customer Stnd
 		nQuoted_P = 0
 		nQuoted_Total = 0
 		nQuoted_PU = 0
 		nItemSale = 0
+		nPT_Total = 0
 		
 		
 		IF NOT EMPTY(cThisSO_item)
@@ -20770,6 +20911,37 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		
 	ENDPROC
 
+	PROCEDURE pgfPO.pgPOAddress.Activate
+		* Load estimated freight from dbo.PO_No when Ship to Addr tab gets focus
+		PRIVATE nHpaPo, cSQL, nSQLEXEC, nEst
+		nHpaPo = PrepareSQLnum(ThisForm.pgfPO.pgPODesc.txtHpaPo.Value,'HPApo',-3)
+		This.txtEst_Frght.Value = 0
+		IF nHpaPo < 1
+			RETURN
+		ENDIF
+		IF USED('tmpPO_EstFrght')
+			USE IN tmpPO_EstFrght
+		ENDIF
+		cSQL = "SELECT ISNULL(Est_Frght,0) AS Est_Frght FROM dbo.PO_No WITH(NOLOCK) WHERE HPAPO = "+STR(nHpaPo)
+		SELECT 0
+		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpPO_EstFrght')
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpPO_EstFrght')
+		ENDDO
+		IF nSQLEXEC < 0
+			SQLEXECError(cSQL, ThisForm.nConnHandle, nSQLEXEC, 'tmpPO_EstFrght')
+			RETURN
+		ENDIF
+		IF USED('tmpPO_EstFrght') AND RECCOUNT('tmpPO_EstFrght') > 0
+			SELECT tmpPO_EstFrght
+			GO TOP
+			This.txtEst_Frght.Value = PrepareSQLnum(tmpPO_EstFrght.Est_Frght,'Est_Frght',12,2)
+			USE IN tmpPO_EstFrght
+		ENDIF
+		
+	ENDPROC
+
 	PROCEDURE pgfPO.pgPOAddress.Click
 		ThisForm.POShipAddr = PrepareSQLnum(This.txtPOShipAddr.Value,'POShipAddr',-3)
 		
@@ -21491,13 +21663,38 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		*1 ERP_Loc1,2 DIRECT,3 Blind,4 Service,5 ERP_Loc2,6 RemoteStock
 	ENDPROC
 
+	PROCEDURE pgfPO.pgPOAddress.txtEst_Frght.LostFocus
+		* Save estimated freight to dbo.PO_No.Est_Frght
+		PRIVATE nHpaPo, nEst, cSQL, nSQLEXEC
+		nHpaPo = PrepareSQLnum(ThisForm.pgfPO.pgPODesc.txtHpaPo.Value,'HPApo',-3)
+		IF nHpaPo < 1
+			RETURN
+		ENDIF
+		nEst = PrepareSQLnum(This.Value,'Est_Frght',12,2)
+		IF isPO_No_Exists(nHpaPo, ThisForm.nConnHandle)
+			cSQL = "UPDATE dbo.PO_No SET Est_Frght = "+STR(nEst,12,2)+" WHERE HPAPO = "+STR(nHpaPo)
+		ELSE
+			cSQL = "INSERT INTO dbo.PO_No (HPAPO, PO_Rev, Changing, Printed, Cancelled, Est_Frght) VALUES ("
+			cSQL = cSQL + STR(nHpaPo)+",0,0,0,0,"+STR(nEst,12,2)+")"
+		ENDIF
+		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL)
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL)
+		ENDDO
+		IF nSQLEXEC < 0
+			SQLEXECError(cSQL, ThisForm.nConnHandle, nSQLEXEC, '')
+		ENDIF
+		
+	ENDPROC
+
 	PROCEDURE pgfPO.pgPODesc.chkConvServ.InteractiveChange
 		
 		PRIVATE lServicesPO,lConvServ,lEquipment, lIntP
 		lConvServ  = PrepareSQLlogic( This.Value, 'ConvServ',.F. )
 		PRIVATE cForm
 		cForm = ShowSQLtxt(This.parent.cmbForm.Value,'Form',2)
-		lServicesPO = PrepareSQLlogic(This.parent.chkServicesPO.Value,'ServicesPO',.F.)
+		lServicesPO = PrepareSQLlogic(This.parent.chkLab_Service.Value,'ServicesPO',.F.)
 		lEquipment = PrepareSQLlogic(This.parent.chkEquipment.Value,'Equipment',.F.)
 		lIntP	= PrepareSQLlogic(This.parent.chkIntP.Value,'IntP',.F.)
 		
@@ -21593,7 +21790,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	PROCEDURE pgfPO.pgPODesc.chkConvServ.Valid
 		PRIVATE lServicesPO,lConvServ,lEquipment
 		lConvServ  = PrepareSQLlogic(This.Value, 'ConvServ',.F. )
-		lServicesPO = PrepareSQLlogic(This.parent.chkServicesPO.Value,'ServicesPO',.F.)
+		lServicesPO = PrepareSQLlogic(This.parent.chkLab_Service.Value,'ServicesPO',.F.)
 		lEquipment = PrepareSQLlogic(This.parent.chkEquipment.Value,'Equipment',.F.)
 		
 		************************
@@ -21617,7 +21814,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		lEquipment  = PrepareSQLlogic( This.Value, 'Equipment',.F. )
 		PRIVATE cForm
 		cForm = ShowSQLtxt(This.parent.cmbForm.Value,'Form',2)
-		lServicesPO = PrepareSQLlogic(This.parent.chkServicesPO.Value,'ServicesPO',.F.)
+		lServicesPO = PrepareSQLlogic(This.parent.chkLab_Service.Value,'ServicesPO',.F.)
 		lConvServ = PrepareSQLlogic(This.parent.chkConvServ.Value,'ConvServ',.F.)
 		lIntP	= PrepareSQLlogic(This.parent.chkIntP.Value,'IntP',.F.)
 		
@@ -21652,7 +21849,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	PROCEDURE pgfPO.pgPODesc.chkEquipment.Valid
 		PRIVATE lServicesPO,lConvServ,lEquipment
 		lConvServ  = PrepareSQLlogic(This.parent.chkConvServ.Value, 'ConvServ',.F. )
-		lServicesPO = PrepareSQLlogic(This.parent.chkServicesPO.Value,'ServicesPO',.F.)
+		lServicesPO = PrepareSQLlogic(This.parent.chkLab_Service.Value,'ServicesPO',.F.)
 		lEquipment = PrepareSQLlogic(This.Value,'Equipment',.F.)
 		
 		************************
@@ -21739,7 +21936,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		
 	ENDPROC
 
-	PROCEDURE pgfPO.pgPODesc.chkServicesPO.InteractiveChange
+	PROCEDURE pgfPO.pgPODesc.chkLab_Service.InteractiveChange
 		PRIVATE lServicesPO, cForm, lConvServ, lEquipment, lIntP
 		lServicesPO = PrepareSQLlogic( This.Value, 'ServicesPO',.F. )
 		cForm = ShowSQLtxt(This.parent.cmbForm.Value,'Form',2)
@@ -21769,7 +21966,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		ENDIF
 	ENDPROC
 
-	PROCEDURE pgfPO.pgPODesc.chkServicesPO.Valid
+	PROCEDURE pgfPO.pgPODesc.chkLab_Service.Valid
 		*PurchaseOrder.Services or LabServices
 		PRIVATE lServicesPO,lConvServ,lEquipment
 		lConvServ  = PrepareSQLlogic(This.parent.chkConvServ.Value, 'ConvServ',.F. )
@@ -22501,7 +22698,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	PROCEDURE pgfPO.pgPODesc.cmdEditVendors.Click
 		PRIVATE m.Company, nVendCode
 		nVendCode = PrepareSQLnum(ThisForm.nVendCode,'VendCode',-3)
-		m.Company = ShowSQLtxt(This.Parent.txtCompany.Value,'Company',30)
+		m.Company = ShowSQLtxt(This.Parent.txtCompany.Value,'Company',100)
 		Private nTop
 		
 		IF nVendCode > 0
@@ -22538,7 +22735,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	PROCEDURE pgfPO.pgPODesc.cmdShowVendors.Click
 		PRIVATE cCompany, nVendCode
 		nVendCode = PrepareSQLnum(ThisForm.nVendCode,'VendCode',-3)
-		cCompany = ShowSQLtxt(This.Parent.txtCompany.Value,'Company',30)
+		cCompany = ShowSQLtxt(This.Parent.txtCompany.Value,'Company',100)
 		
 		lcCurrTable = ALIAS()
 		
@@ -22828,7 +23025,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		ENDIF
 		
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO = PrepareSQLlogic( This.Parent.chkServicesPO.Value,'ServicesPO',.F. )
+		lServicesPO = PrepareSQLlogic( This.Parent.chkLab_Service.Value,'ServicesPO',.F. )
 		lConvServ = PrepareSQLlogic(This.parent.chkConvServ.Value,'ConvServ',.F.)
 		lEquipment = PrepareSQLlogic(This.parent.chkEquipment.Value,'Equipment',.F.)
 		
@@ -23271,7 +23468,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		ENDIF
 			
 		cSearchStrOrig = SUBSTR(This.Value,1,nInsertionPt )
-		lcSearchStr = ShowSQLtxt(cSearchStrOrig,'Company',30)
+		lcSearchStr = ShowSQLtxt(cSearchStrOrig,'Company',100)
 		
 		lcTryVendor  = ''
 		
@@ -23308,8 +23505,8 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			RETURN .T.
 		ENDIF
 		*cSearchStrOrig = SUBSTR(This.Value,1,nInsertionPt )
-		cSearchStrOrig = ShowSQLtxt(This.Value,'Company',30)
-		lcSearchStr = RTRIM( ShowSQLtxt(cSearchStrOrig,'Company',30) )
+		cSearchStrOrig = ShowSQLtxt(This.Value,'Company',100)
+		lcSearchStr = RTRIM( ShowSQLtxt(cSearchStrOrig,'Company',100) )
 		lcTryVendor  = ''
 		
 		IF !EMPTY(lcSearchStr)
@@ -24148,7 +24345,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		
 		*****
 		PRIVATE lServicesPO,lEquipment
-		lServicesPO = PrepareSQLlogic(This.parent.chkServicesPO.Value,'ServicesPO',.F.)
+		lServicesPO = PrepareSQLlogic(This.parent.chkLab_Service.Value,'ServicesPO',.F.)
 		lEquipment	= PrepareSQLlogic(This.parent.chkEquipment.Value,'Equipment',.F.)
 		
 		IF lServicesPO
@@ -24207,7 +24404,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	PROCEDURE pgfPO.pgPODesc.txtStockLst_QTY.Valid
 		*Service and Equipment PO do not get saved to StockLst
 		PRIVATE lServicesPO,lEquipment,lConvServ
-		lServicesPO = PrepareSQLlogic(This.parent.chkServicesPO.Value,'ServicesPO',.F.)
+		lServicesPO = PrepareSQLlogic(This.parent.chkLab_Service.Value,'ServicesPO',.F.)
 		lEquipment	= PrepareSQLlogic(This.parent.chkEquipment.Value,'Equipment',.F.)
 		lConvServ	= PrepareSQLlogic(This.parent.chkConvServ.Value,'ConvServ',.F.)
 		
@@ -24712,7 +24909,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		ENDIF
 		
 		PRIVATE lServicesPO, lConvServ, lEquipment, lIntP	
-		lServicesPO	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkServicesPO.VALUE,'ServicesPO',.F.)
+		lServicesPO	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkLab_Service.VALUE,'ServicesPO',.F.)
 		lConvServ	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment	= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkEquipment.VALUE,'Equipment',.F.)
 		lIntP		= PrepareSQLlogic(ThisForm.pgfPO.pgPOdesc.chkIntP.VALUE,'IntP',.F.)
@@ -25539,8 +25736,8 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			ENDIF
 		ELSE
 			PRIVATE cVendorDesc, cVendorAddr
-			cVendorDesc = PrepareSQLtxt(ThisForm.PgfPO.pgPODesc.txtCompany.Value,'Company',30)
-			cVendorAddr = PrepareSQLtxt(This.txtCompany.Value,'Company',30)
+			cVendorDesc = PrepareSQLtxt(ThisForm.PgfPO.pgPODesc.txtCompany.Value,'Company',100)
+			cVendorAddr = PrepareSQLtxt(This.txtCompany.Value,'Company',100)
 			
 			IF LEN(cVendorDesc) > 0 AND LEN(cVendorAddr ) = 0
 				
@@ -26029,10 +26226,10 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		matchCodes = 0
 		
 		lcCurrTable = ALIAS()
-		cCompany = ShowSQLtxt(This.parent.parent.pgPODesc.txtCompany.Value,'Company',30)
+		cCompany = ShowSQLtxt(This.parent.parent.pgPODesc.txtCompany.Value,'Company',100)
 		cCompany = ALLTRIM(cCompany)
 		IF EMPTY( cCompany )
-			cCompany = ShowSQLtxt(This.Parent.txtCompany.Value, 'Company', 30)
+			cCompany = ShowSQLtxt(This.Parent.txtCompany.Value, 'Company',100)
 		ENDIF
 		
 		DO FORM Forms\SearchForm WITH "Vendor", cCompany  TO nNewVendCode
@@ -26052,7 +26249,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			
 			PRIVATE cNewCompany, cOldCompany
 			cNewCompany = getVendor_Company_VendCode(nNewVendCode)
-			cOldCompany = ShowSQLtxt(This.parent.parent.pgPODesc.txtCompany.Value,'Company',30)
+			cOldCompany = ShowSQLtxt(This.parent.parent.pgPODesc.txtCompany.Value,'Company',100)
 			
 			IF NOT EMPTY(cOldCompany)
 				IF NOT EMPTY(cNewCompany)
@@ -26169,7 +26366,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	PROCEDURE pgfPO.pgVendor.cmdShowVendors.Click
 		PRIVATE m.Company, nVendCode
 		nVendCode = PrepareSQLnum(ThisForm.nVendCode,'VendCode',-3)
-		m.Company = ShowSQLtxt(This.Parent.txtCompany.Value,'Company',30)
+		m.Company = ShowSQLtxt(This.Parent.txtCompany.Value,'Company',100)
 		
 		Private nTop
 		
@@ -26195,6 +26392,30 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 	ENDPROC
 
 	PROCEDURE pgfPO.pgVendor.txtCompany.GotFocus
+		IF EMPTY(This.Value) AND This.Parent.cmdEditAddr.Caption = "Save"
+			*This.Value = This.parent.parent.pgDesc.txtCompany.Value
+			This.Value = This.parent.parent.pgPODesc.txtCompany.Value
+		*	IF EMPTY(This.Parent.txtContact.Value)
+		*		*This.Parent.txtContact.Value = This.parent.parent.pgDesc.txtPOSalesName.Value
+		*		This.Parent.txtContact.Value = This.parent.parent.pgPODesc.txtPOSalesName.Value
+		*	ENDIF
+		ENDIF
+		
+	ENDPROC
+
+	PROCEDURE pgfPO.pgVendor.txtDiscount.GotFocus
+		IF EMPTY(This.Value) AND This.Parent.cmdEditAddr.Caption = "Save"
+			*This.Value = This.parent.parent.pgDesc.txtCompany.Value
+			This.Value = This.parent.parent.pgPODesc.txtCompany.Value
+		*	IF EMPTY(This.Parent.txtContact.Value)
+		*		*This.Parent.txtContact.Value = This.parent.parent.pgDesc.txtPOSalesName.Value
+		*		This.Parent.txtContact.Value = This.parent.parent.pgPODesc.txtPOSalesName.Value
+		*	ENDIF
+		ENDIF
+		
+	ENDPROC
+
+	PROCEDURE pgfPO.pgVendor.txtFreight.GotFocus
 		IF EMPTY(This.Value) AND This.Parent.cmdEditAddr.Caption = "Save"
 			*This.Value = This.parent.parent.pgDesc.txtCompany.Value
 			This.Value = This.parent.parent.pgPODesc.txtCompany.Value
@@ -26233,8 +26454,8 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			
 		ELSE
 			PRIVATE cVendorDesc, cVendorAddr
-			cVendorDesc = PrepareSQLtxt(ThisForm.PgfPO.pgPODesc.txtCompany.Value,'Company',30)
-			cVendorAddr = PrepareSQLtxt(This.parent.pgVendor.txtCompany.Value,'Company',30)
+			cVendorDesc = PrepareSQLtxt(ThisForm.PgfPO.pgPODesc.txtCompany.Value,'Company',100)
+			cVendorAddr = PrepareSQLtxt(This.parent.pgVendor.txtCompany.Value,'Company',100)
 			
 			IF LEN(cVendorDesc) > 0 AND LEN(cVendorAddr ) > 0 AND This.parent.pgVendor.cmdEditAddr.CAPTION = "Save"
 			

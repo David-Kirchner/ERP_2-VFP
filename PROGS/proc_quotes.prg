@@ -607,7 +607,7 @@ ENDPROC
 PROCEDURE GetBrandName_Ptl
 PARAMETER cPartialBN
 *cBrandName = ALLTRIM(GetBrandName_Ptl( SUBSTR(cDescription, nLocat-2, 8) ))
-*cPartialBN is CC®CCCCC
+*cPartialBN is CC?CCCCC
 
 IF VARTYPE(cPartialBN) != "C"
 	RETURN ''
@@ -619,13 +619,13 @@ cPartBN = ''
 
 *PARSE cPartialBN
 DO CASE 
-CASE AT("®", cPartialBN) = 0
+CASE AT("?", cPartialBN) = 0
 	RETURN ''
-CASE AT("®", cPartialBN) = 1
+CASE AT("?", cPartialBN) = 1
 	cPartBN = "%" + cPartialBN
-CASE AT("®", cPartialBN) = 2
+CASE AT("?", cPartialBN) = 2
 	cPartBN = "%" + cPartialBN
-CASE AT("®", cPartialBN) = 3
+CASE AT("?", cPartialBN) = 3
 	cPartBN = "%" + cPartialBN
 OTHERWISE
 	cPartBN = "%" + cPartialBN
@@ -1470,6 +1470,10 @@ IF nConn > 0
 			ENDIF
 
 			USE IN tmpPQ_SQLAns
+		ENDIF
+
+		IF !EMPTY(lcSalesPName) AND ATC(" ", ALLTRIM(lcSalesPName)) = 0
+			lcSalesPName = AppSetup_Login_DisplayName(lcSalesPName, nConn)
 		ENDIF
 		
 		SQLDISCONNECT( nConn )
@@ -5206,12 +5210,12 @@ SCAN
 	PRIVATE nLocat,cBrandName,nAdder
 	nLocat = 0
 	*Is their a brandname
-	IF AT("®", cDescription ) > 0
-		*Get length past ®
+	IF AT("?", cDescription ) > 0
+		*Get length past ?
 		PRIVATE nLocat,cBrandName,nAdder
-		nLocat = AT("®", cDescription )
+		nLocat = AT("?", cDescription )
 		cBrandName = ALLTRIM(GetBrandName_Ptl( SUBSTR(cDescription, nLocat-2, 8) ))
-*		nAdder = LEN(cBrandName - AT("®",cBrandName)) && make sure you find how manny added characters are after the ® before you insert a break
+*		nAdder = LEN(cBrandName - AT("?",cBrandName)) && make sure you find how manny added characters are after the ? before you insert a break
 		
 		cDescription = STUFF(cDescription, AT(cBrandName, cDescription ),0,"<br />")
 		cDescription = STUFF(cDescription, AT(cBrandName, cDescription )+LEN(cBrandName),0,"<br />")  
@@ -5526,7 +5530,7 @@ cSQL = cSQL + ",POitem,Cond_Spec,Misc_Purch,Amendment"
 *cSQL = cSQL + ",P_Lb,P_Pc,P_Ft,LotP"
 cSQL = cSQL + ",OtherP,OtherFld, Order_Qty,Order_PU,Order_P"
 *cSQL = cSQL + ",StockLst_QTY,StockLst_P,StockLst_PU,StockLst_Total"
-cSQL = cSQL + ",SalesNum,ShipVia,OrderDate,JobNumber,Terms,FOB"
+cSQL = cSQL + ",SalesNum,ShipVia,OrderDate,JobNumber,Terms,FOB,ShipWhere"
 cSQL = cSQL + " FROM dbo.PurchaseOrder "
 cSQL = cSQL + " WHERE HPAPO = "+STR(nHPAPO)+""
 
@@ -5569,14 +5573,37 @@ SELECT 'tmpPOConf'
 PRIVATE m.MsgNoteHTML, m.MsgHeader
 
 PRIVATE cPOName, cPOCompany, nPOshipAddr, cPOEmail, cPOPhone, cPOFax, cSalesRep, nAdmendment
+PRIVATE nShipWhere, cAddrWhich, cHpaPhone, cHpaFax, cHpaCountry, cLogoImg, cWebsiteHtml
 cPOName		= tmpPOConf.POSalesP
 cPOCompany	= tmpPOConf.Company
 nPOshipAddr = PrepareSQLnum(tmpPOConf.POshipAddr,'POshipAddr',-3)
+nShipWhere	= PrepareSQLnum(tmpPOConf.ShipWhere,'ShipWhere',-1)
 cPOEmail	= VendorContactEmail_ContactID(tmpPOConf.ContactID)
 cPOPhone	= VendorContactPhone_ContactID(tmpPOConf.ContactID)
 cPOFax		= VendorContactFax_ContactID(tmpPOConf.ContactID)
 cSalesRep	= AppSetup_Get_SalesRep_SalesP(tmpPOConf.SalesP)
 nAdmendment	= PrepareSQLnum(tmpPOConf.Amendment,'Amendment',-1)
+
+IF NOT "COMPANY_BRANDING" $ UPPER(SET("PROCEDURE"))
+	IF FILE("PROGS\company_branding.prg")
+		SET PROCEDURE TO PROGS\company_branding.prg ADDITIVE
+	ENDIF
+ENDIF
+IF NOT "COMPANY_REPORT" $ UPPER(SET("PROCEDURE"))
+	IF FILE("REPORTS\company_report.prg")
+		SET PROCEDURE TO REPORTS\company_report.prg ADDITIVE
+	ENDIF
+ENDIF
+
+cAddrWhich = CompanyReport_WhichFromPO(nShipWhere, nPOshipAddr)
+cHpaPhone = CompanyReport_AddrPhone(cAddrWhich)
+cHpaFax = CompanyReport_AddrFax(cAddrWhich)
+cHpaCountry = CompanyReport_AddressField(cAddrWhich, "Country")
+IF EMPTY(cHpaCountry)
+	cHpaCountry = "United States of America"
+ENDIF
+cLogoImg = CompanyBranding_ReportLogoHtmlImg(69)
+cWebsiteHtml = CompanyReport_WebsiteHtml()
 
 m.MsgHeader = ''
 m.MsgHeader = m.MsgHeader +"<!DOCTYPE html> " &&trigger in Send_HTML_Email
@@ -5600,10 +5627,12 @@ m.MsgHeader = m.MsgHeader +"<header>"
 m.MsgHeader = m.MsgHeader +[<table style="border: thin none #000000; width: 480pt; ">]
 m.MsgHeader = m.MsgHeader +"<tr>"
 m.MsgHeader = m.MsgHeader +[<td style="width: 165pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<img alt="Space Alloys USA Logo" ]
-*m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/HPALogo.png"  ]
-m.MsgHeader = m.MsgHeader +[src="https://images.SpaceAlloysUSA.com/v1/images/Purchase/]+ALLTRIM(STR(nHPAPO))+[/]+ALLTRIM(cPOEmail)+[/HPALogo.png" ]
-m.MsgHeader = m.MsgHeader +[height="69"/>]
+IF !EMPTY(cLogoImg)
+	m.MsgHeader = m.MsgHeader + cLogoImg
+ELSE
+	* Branding Report Logo unavailable ? omit broken remote HPALogo URL
+	m.MsgHeader = m.MsgHeader +[&nbsp;]
+ENDIF
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[<td style="width: 192pt; vertical-align: top;">]
 m.MsgHeader = m.MsgHeader +[<h2></h2>] &&Purchase Order
@@ -5630,14 +5659,14 @@ m.MsgHeader = m.MsgHeader +[<td style="width: 54pt; vertical-align: top;">]
 m.MsgHeader = m.MsgHeader +[<strong>Buy from:</strong>]
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[<td style="width: 150pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +PrepareSQLtxt(cPOName,'Name',25)+[<br />]
-m.MsgHeader = m.MsgHeader +PrepareSQLtxt(cPOCompany,'Company',30)+[<br />]
+m.MsgHeader = m.MsgHeader +PrepareSQLtxt(cPOName,'Name',50)+[<br />]
+m.MsgHeader = m.MsgHeader +PrepareSQLtxt(cPOCompany,'Company',100)+[<br />]
 m.MsgHeader = m.MsgHeader +PrepareSQLtxt(cPOEmail,'email',60)+[<br />]
 m.MsgHeader = m.MsgHeader +[P ]+PrepareSQLtxt(cPOPhone,'Phone ',20)+[<br />]
 m.MsgHeader = m.MsgHeader +[F ]+PrepareSQLtxt(cPOFax,'Fax',20)
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[<td style="width: 72pt; text-align: left; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<strong>HPA Contact:</strong>]
+m.MsgHeader = m.MsgHeader +[<strong>Contact:</strong>]
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[<td style="width: 150pt; vertical-align: top;">]
 m.MsgHeader = m.MsgHeader +[]+ALLTRIM(cSalesRep)+[<br />]
@@ -5645,10 +5674,16 @@ m.MsgHeader = m.MsgHeader +[]+ALLTRIM(cSalesRep)+[<br />]
 m.MsgHeader = m.MsgHeader + POShipAddrST(nPOShipAddr,nConn)+[<br />]  &&Street Addr
 m.MsgHeader = m.MsgHeader + POShipAddrCity(nPOShipAddr,nConn)+[<br />]  &&City, State and Zip
 
-m.MsgHeader = m.MsgHeader +[United States of America<br />]
-m.MsgHeader = m.MsgHeader +[P 800-472-5569<br />]
-m.MsgHeader = m.MsgHeader +[P 765-945-8230<br />]
-m.MsgHeader = m.MsgHeader +[F 765-945-8294]
+m.MsgHeader = m.MsgHeader + ALLTRIM(cHpaCountry) + [<br />]
+IF !EMPTY(cHpaPhone)
+	m.MsgHeader = m.MsgHeader +[P ]+ALLTRIM(cHpaPhone)+[<br />]
+ENDIF
+IF !EMPTY(cHpaFax)
+	m.MsgHeader = m.MsgHeader +[F ]+ALLTRIM(cHpaFax)+[<br />]
+ENDIF
+IF !EMPTY(cWebsiteHtml)
+	m.MsgHeader = m.MsgHeader + cWebsiteHtml
+ENDIF
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[</tr>]
 m.MsgHeader = m.MsgHeader +[</table>]
@@ -5771,9 +5806,9 @@ SCAN
 	IF tmpPOConf.Order_Qty > 1	&&do Not display Qty(0) or Qty(1)
 		cPU_Label = Get_PUstr_from_nPU(tmpPOConf.Order_PU, nConn )
 		IF LEN(cPU_Label)>0
-			m.MsgNoteHTML = m.MsgNoteHTML+"("+Remove0(Order_Qty,12,4,.F.)+" "+cPU_Label+"). "
+			m.MsgNoteHTML = m.MsgNoteHTML+"("+Remove0(tmpPOConf.Order_Qty,12,4,.F.)+" "+cPU_Label+"). "
 		ELSE
-			m.MsgNoteHTML = m.MsgNoteHTML+"Qty("+Remove0(Order_Qty,12,4,.F.)+") "	
+			m.MsgNoteHTML = m.MsgNoteHTML+"Qty("+Remove0(tmpPOConf.Order_Qty,12,4,.F.)+") "	
 		ENDIF
 	ENDIF
 	m.MsgNoteHTML = m.MsgNoteHTML+CHR(09)+[ ]+tmpPOConf.ItemDescription
@@ -6034,14 +6069,14 @@ m.MsgFooter = m.MsgFooter +[</tr>]
 *m.MsgFooter = m.MsgFooter +[<tr>]
 *m.MsgFooter = m.MsgFooter +[<td class="styleTextAlignCenter" colspan="2"> ]
 *m.MsgFooter = m.MsgFooter +[<a href=" http://www.facebook.com/HighPerformanceAlloys" target="_blank">]
-*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/Facebook-Buttons/Facebook-Buttons-51-88-.png" title=" Space Alloys USA’ Facebook Page" alt="Space Alloys USA’ Facebook Page" width="34" /></a> ]
+*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/Facebook-Buttons/Facebook-Buttons-51-88-.png" title=" Space Alloys USA? Facebook Page" alt="Space Alloys USA? Facebook Page" width="34" /></a> ]
 *m.MsgFooter = m.MsgFooter +[<a href=" https://twitter.com/#!/HPAlloy" target="_blank">]
-*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/Twitter-Buttons/Twitter-Buttons-69-72-.png" title=" Space Alloys USA’ Twitter Page" alt=" Space Alloys USA’ Twitter Page" width="34" /></a>]
+*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/Twitter-Buttons/Twitter-Buttons-69-72-.png" title=" Space Alloys USA? Twitter Page" alt=" Space Alloys USA? Twitter Page" width="34" /></a>]
 *m.MsgFooter = m.MsgFooter +[<a href=" http://www.linkedin.com/company/2335867?trk=tyah" target="_blank">]
-*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/LinkedIn-Buttons/linkedin-tiny-square2.png" title=" Space Alloys USA’ LinkedIn Page" alt=" Space Alloys USA’ LinkedIn Page" width="32" /></a>]
-*m.MsgFooter = m.MsgFooter +[<a href=" http://highperformancealloy.blogspot.com/" target="_blank"><img src="https://www.blogger.com/img/start/icon.png" title=" Space Alloys USA’ Blog Page" alt=" Space Alloys USA’ Blog Page" width="32" /></a>]
+*m.MsgFooter = m.MsgFooter +[<img src="http://www.buttonshut.com/LinkedIn-Buttons/linkedin-tiny-square2.png" title=" Space Alloys USA? LinkedIn Page" alt=" Space Alloys USA? LinkedIn Page" width="32" /></a>]
+*m.MsgFooter = m.MsgFooter +[<a href=" http://highperformancealloy.blogspot.com/" target="_blank"><img src="https://www.blogger.com/img/start/icon.png" title=" Space Alloys USA? Blog Page" alt=" Space Alloys USA? Blog Page" width="32" /></a>]
 *m.MsgFooter = m.MsgFooter +[<a href=" http://www.youtube.com/user/HPAlloy" target="_blank">]
-*m.MsgFooter = m.MsgFooter +[<img src="http://s.ytimg.com/yt/img/creators_corner/YouTube/youtube_32x32.png" title=" Space Alloys USA’ YouTube Channel" alt=" Space Alloys USA’ YouTube Channel" width="32" /></a>]
+*m.MsgFooter = m.MsgFooter +[<img src="http://s.ytimg.com/yt/img/creators_corner/YouTube/youtube_32x32.png" title=" Space Alloys USA? YouTube Channel" alt=" Space Alloys USA? YouTube Channel" width="32" /></a>]
 *m.MsgFooter = m.MsgFooter +[</td>]
 *m.MsgFooter = m.MsgFooter +[</tr>]
 
@@ -7764,7 +7799,7 @@ m.MsgHeader = m.MsgHeader +[F ]+PrepareSQLtxt(cFax,'Fax',20)
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[<td style="width: 72pt; text-align: left; vertical-align: top;">]
 
-m.MsgHeader = m.MsgHeader +[<strong>HPA Contact:</strong>]
+m.MsgHeader = m.MsgHeader +[<strong>Contact:</strong>]
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[<td style="width: 150pt; vertical-align: top;">]
 m.MsgHeader = m.MsgHeader +ALLTRIM(cSalesRep)+[<br />]

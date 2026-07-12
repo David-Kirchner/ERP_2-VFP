@@ -451,7 +451,7 @@ DEFINE CLASS editorder AS formset
 	*< OBJECTDATA: ObjPath="frmPO.pgfPO.pgPODesc.lblOrder_Qty" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPO.pgfPO.pgPODesc.txtOtherFld" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPO.pgfPO.pgPODesc.cmbStock" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="frmPO.pgfPO.pgPODesc.chkServicesPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="frmPO.pgfPO.pgPODesc.chkLab_Service" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPO.pgfPO.pgPODesc.lblItempo" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPO.pgfPO.pgPODesc.txtDue_max" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPO.pgfPO.pgPODesc.lblDue_max" UniqueID="" Timestamp="" />
@@ -6400,7 +6400,7 @@ DEFINE CLASS editorder AS formset
 		Width = 60
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'frmPO.pgfPO.pgPODesc.chkServicesPO' AS checkbox WITH ;
+	ADD OBJECT 'frmPO.pgfPO.pgPODesc.chkLab_Service' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 212,208,200, ;
 		BackStyle = 0, ;
@@ -6410,7 +6410,7 @@ DEFINE CLASS editorder AS formset
 		Enabled = .F., ;
 		Height = 12, ;
 		Left = 120, ;
-		Name = "chkServicesPO", ;
+		Name = "chkLab_Service", ;
 		TabIndex = 62, ;
 		Top = 214, ;
 		Visible = .T., ;
@@ -10930,7 +10930,7 @@ DEFINE CLASS editorder AS formset
 							ThisForm.pf.pg_po.pgfPO.pgPODesc.txtPOSalesName.VALUE	= tmpPO.POSalesP
 							ThisForm.pf.pg_po.pgfPO.pgPODesc.txtShipVia.VALUE	= tmpPO.ShipVia
 							ThisForm.pf.pg_po.pgfPO.pgPODesc.txtJobNumber.VALUE	= tmpPO.JobNumber
-							ThisForm.pf.pg_po.pgfPO.pgPODesc.chkServicesPO.VALUE= tmpPO.Services
+							ThisForm.pf.pg_po.pgfPO.pgPODesc.chkLab_Service.VALUE= tmpPO.Services
 							ThisForm.pf.pg_po.pgfPO.pgPODesc.chkConvServ.VALUE	= tmpPO.ConvServ
 							ThisForm.pf.pg_po.pgfPO.pgPODesc.cmbStock.VALUE		= tmpPO.Stock
 							ThisForm.pf.pg_po.pgfPO.pgPODesc.chkSPS1.VALUE		= tmpPO.Sheet_PK
@@ -12207,7 +12207,7 @@ DEFINE CLASS editorder AS formset
 				.cmdCopyComments.ENABLED = .T.
 				.txtMisc_Purch.ENABLED = .T.
 				.chkSPS1.ENABLED = .T.
-				.chkServicesPO.ENABLED = .T.
+				.chkLab_Service.ENABLED = .T.
 				.chkConvServ.ENABLED = .T.
 				.lblCond_spec.ENABLED = .T.
 				.cmdGetPO.ENABLED = .T.	
@@ -12396,7 +12396,7 @@ DEFINE CLASS editorder AS formset
 				.txtMisc_Purch.ENABLED = .F.
 				.cmdCopyComments.ENABLED = .F.
 				.chkSPS1.ENABLED = .F.
-				.chkServicesPO.ENABLED = .F.
+				.chkLab_Service.ENABLED = .F.
 				.chkConvServ.ENABLED = .F.
 				.lblCond_spec.ENABLED = .F.
 				.cmdGetPO.ENABLED = .F.
@@ -12554,7 +12554,7 @@ DEFINE CLASS editorder AS formset
 				.txtLotP.Value = 0
 				.txtOtherP.Value = ""
 				.txtOtherFld.Value = ""
-				.chkServicesPO.Value = 0
+				.chkLab_Service.Value = 0
 				.chkConvServ.Value = 0
 				.chkSPS1.Value = 0
 				.txtOrderDate.Value = ""
@@ -12603,10 +12603,10 @@ DEFINE CLASS editorder AS formset
 			ThisForm.pf.pg_po.pgfPO.pgTestPO.pgfTesting.pgMaterial.Sz3.Value = ""
 			 
 		*		.cmbStock
-		*		.chkServicesPO
+		*		.chkLab_Service
 		*		.cmbForm
 		*		.chkSPS1
-		*		.chkServicesPO
+		*		.chkLab_Service
 		*		.cmdCopyComments
 		*		.lblCond_spec
 		
@@ -12874,7 +12874,7 @@ DEFINE CLASS editorder AS formset
 		cCond_Spec		= PrepareSQLtxt(ThisForm.pf.pg_po.pgFPO.pgPOdesc.txtCond_Spec.VALUE,'Cond_Spec',-1,.F.)
 		cMisc_purch		= PrepareSQLtxt(ThisForm.pf.pg_po.pgFPO.pgPOdesc.txtMisc_purch.VALUE,'Misc_Purchase',0,.F.)
 		lSheet_pk		= PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkSPS1.VALUE,'SPS1')
-		lServicesPO		= PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.VALUE,'ServicesPO')
+		lServicesPO		= PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.VALUE,'ServicesPO')
 		lConvServ		= PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkConvServ.VALUE,'ConvServ')
 		lEquipment		= PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkEquipment.VALUE,'Equipment')
 		nPOShipAddr		= PrepareSQLnum(ThisForm.pf.pg_po.pgfPO.pgPOAddress.txtPOShipAddr.Value,'POShipAddr',-3,0)
@@ -15781,7 +15781,7 @@ DEFINE CLASS editorder AS formset
 		ENDIF
 		
 		IF lPOSaveOK 
-			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.VALUE = 0
+			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.VALUE = 0
 			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkConvServ.VALUE = 0
 			THISFORM.POScreen("DISABLE")
 			THISFORM.Show_Po()
@@ -15829,7 +15829,7 @@ DEFINE CLASS editorder AS formset
 		cPOitem		= Proper_PO_Item( STR(nHpaPo)+"-"+STR(nItemPo,2,0) )
 		cMill		= PrepareSQLtxt(THISFORM.pf.pg_po.pgFPO.pgPOdesc.txtCompany.VALUE,"Mill",10,.F.,.T.)
 		
-		lServicesPO	= PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.VALUE,'ServicesPO')
+		lServicesPO	= PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.VALUE,'ServicesPO')
 		lConvServ	= PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkConvServ.VALUE,'ConvServ')
 		lEquipment	= PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkEquipment.VALUE,'Equipment')
 		
@@ -16241,9 +16241,9 @@ DEFINE CLASS editorder AS formset
 		CASE lcPara = "EDIT"
 		
 		*	IF SalesQuote.hpapo2 = THISFORM.pf.pg_po.pgFPO.pgPOdesc.txtHpaPo.VALUE
-		*		THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.VALUE = 1
+		*		THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.VALUE = 1
 		*		THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkConvServ.VALUE = 1
-		*		*THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.ENABLED = .F.
+		*		*THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.ENABLED = .F.
 		*		MESSAGEBOX('This PO was automatically marked as a Service'+CHR(13)+""Please uncheck 'Service Only' if program was wrong.",0+48,'Service PO')
 		*	ENDIF
 			IF THISFORM.pf.pg_po.pgFPO.pgPOAddress.opgPOShipTo.VALUE > 1
@@ -16332,8 +16332,8 @@ DEFINE CLASS editorder AS formset
 			THISFORM.pf.pg_po.chkCancelPO.VALUE = 0
 			THISFORM.pf.pg_po.chkCancelPO.ENABLED =.T.
 		
-			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.VALUE = 0
-			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.ENABLED = .T.
+			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.VALUE = 0
+			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.ENABLED = .T.
 			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkConvServ.VALUE = 0
 			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkConvServ.ENABLED = .T.
 			
@@ -16586,8 +16586,8 @@ DEFINE CLASS editorder AS formset
 			THISFORM.pf.pg_po.chkCancelPO.VALUE = 0
 			THISFORM.pf.pg_po.chkCancelPO.ENABLED =.T.
 		
-			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.VALUE = 0
-			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.ENABLED = .T.
+			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.VALUE = 0
+			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.ENABLED = .T.
 			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkConvServ.VALUE = 0
 			THISFORM.pf.pg_po.pgFPO.pgPOdesc.chkConvServ.ENABLED = .T.
 		
@@ -17196,7 +17196,7 @@ DEFINE CLASS editorder AS formset
 		ENDIF
 		
 		PRIVATE lServices,lConvServ,lEquipment
-		lServices = PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkServicesPO.Value,'Services')
+		lServices = PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkLab_Service.Value,'Services')
 		lConvServ = PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkConvServ.Value,'ConvServ')
 		lEquipment = PrepareSQLchk(ThisForm.pf.pg_po.pgFPO.pgPOdesc.chkEquipment.Value,'Equipment')
 		ThisForm.pf.pg_po.pgFPO.pgPOdesc.lblPerUnit.Caption	= FormUnitCaption(pForm,lServices,lConvServ,lEquipment,ThisForm.nConnHandle)
@@ -20174,7 +20174,7 @@ DEFINE CLASS editorder AS formset
 			.txtDispAlloy.Refresh
 			.txtStandSize.Refresh
 			.chkSPS1.Refresh
-			.chkServicesPO.Refresh
+			.chkLab_Service.Refresh
 			.chkConvServ.Refresh
 			.txtOrderDate.Refresh
 			.txtDue_Min.Refresh
@@ -28330,7 +28330,7 @@ DEFINE CLASS editorder AS formset
 				This.Parent.chkDeliveredPO.Value = IIF(ISNULL(tmpPoItemDetail.Delivered),0,tmpPoItemDetail.Delivered)
 		
 				This.Parent.pgfPO.pgPODesc.chkSPS1.Value = IIF(ISNULL(tmpPoItemDetail.Sheet_pk),0,tmpPoItemDetail.Sheet_pk)
-				This.Parent.pgfPO.pgPODesc.chkServicesPO.Value = IIF(ISNULL(tmpPoItemDetail.Services),0,tmpPoItemDetail.Services)
+				This.Parent.pgfPO.pgPODesc.chkLab_Service.Value = IIF(ISNULL(tmpPoItemDetail.Services),0,tmpPoItemDetail.Services)
 				This.Parent.pgfPO.pgPODesc.chkConvServ.Value = IIF(ISNULL(tmpPoItemDetail.ConvServ),0,tmpPoItemDetail.ConvServ)
 				This.Parent.pgfPO.pgPODesc.chkRandLen.Value = IIF(ISNULL(tmpPoItemDetail.RandLen),0,tmpPoItemDetail.RandLen)
 				This.Parent.pgfPO.pgPODesc.chkMetric.Value = IIF(ISNULL(tmpPoItemDetail.Metric),0,tmpPoItemDetail.Metric)
@@ -28397,7 +28397,7 @@ DEFINE CLASS editorder AS formset
 				This.Parent.chkCancelPO.Enabled = .T.
 				This.Parent.chkDeliveredPO.Value = 0
 				This.Parent.pgfPO.pgPODesc.chkSPS1.Value = 0
-				This.Parent.pgfPO.pgPODesc.chkServicesPO.Value = 0
+				This.Parent.pgfPO.pgPODesc.chkLab_Service.Value = 0
 				This.Parent.pgfPO.pgPODesc.chkConvServ.Value = 0
 				This.Parent.pgfPO.pgPODesc.chkRandL.Value = 0
 				
@@ -29055,7 +29055,7 @@ DEFINE CLASS editorder AS formset
 		lConvServ  = PrepareSQLchk( This.Value, 'ConvServ',.F. )
 		PRIVATE cForm
 		cForm = PrepareSQLtxt(This.parent.cmbForm.Value,'Form',2)
-		lServicesPO = PrepareSQLchk(This.parent.chkServicesPO.Value,'ServicesPO')
+		lServicesPO = PrepareSQLchk(This.parent.chkLab_Service.Value,'ServicesPO')
 		lEquipment = PrepareSQLchk(This.parent.chkEquipment.Value,'Equipment')
 		
 		This.parent.lblPerUnit.Caption	= FormUnitCaption(cForm,lServicesPO,lConvServ,lEquipment,ThisForm.nConnHandle)
@@ -29068,14 +29068,14 @@ DEFINE CLASS editorder AS formset
 		lEquipment  = PrepareSQLchk( This.Value, 'Equipment',.F. )
 		PRIVATE cForm
 		cForm = PrepareSQLtxt(This.parent.cmbForm.Value,'Form',2)
-		lServicesPO = PrepareSQLchk(This.parent.chkServicesPO.Value,'ServicesPO')
+		lServicesPO = PrepareSQLchk(This.parent.chkLab_Service.Value,'ServicesPO')
 		lConvServ = PrepareSQLchk(This.parent.chkConvServ.Value,'ConvServ')
 		
 		This.parent.lblPerUnit.Caption	= FormUnitCaption(cForm,lServicesPO,lConvServ,lEquipment,ThisForm.nConnHandle)
 		
 	ENDPROC
 
-	PROCEDURE frmPO.pgfPO.pgPODesc.chkServicesPO.InteractiveChange
+	PROCEDURE frmPO.pgfPO.pgPODesc.chkLab_Service.InteractiveChange
 		
 		PRIVATE lServicesPO, lConvServ, lEquipment
 		lServicesPO = PrepareSQLchk( This.Value, 'ServicesPO',.F. )
@@ -29616,7 +29616,7 @@ DEFINE CLASS editorder AS formset
 		ENDCASE
 		
 		PRIVATE lServices,lConvServ
-		lServices = PrepareSQLchk( This.parent.chkServicesPO.Value, 'ServicesPO' )
+		lServices = PrepareSQLchk( This.parent.chkLab_Service.Value, 'ServicesPO' )
 		lConvServ = PrepareSQLchk( This.parent.chkConvServ.Value, 'ConvServ' )
 			
 		IF nCalcUnitPrice > 0

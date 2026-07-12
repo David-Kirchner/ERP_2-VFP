@@ -106,7 +106,7 @@ DEFINE CLASS frmreceive_edit AS formset
 	*< OBJECTDATA: ObjPath="Receive_Edit.lblPO_PU" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Receive_Edit.lblAcct_PU" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Receive_Edit.txtAcct_P" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="Receive_Edit.chkServicesPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Receive_Edit.chkLab_Service" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Receive_Edit.chkConvServ" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Receive_Edit.chkEquipment" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Receive_Edit.cmdEditHeat" UniqueID="" Timestamp="" />
@@ -143,7 +143,7 @@ DEFINE CLASS frmreceive_edit AS formset
 	*< OBJECTDATA: ObjPath="Show_Recv_Order.lblForm" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Show_Recv_Order.lblOrder_QTY" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Show_Recv_Order.txtAlloyPO" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="Show_Recv_Order.chkServicesPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="Show_Recv_Order.chkLab_Service" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Show_Recv_Order.chkConvServ" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Show_Recv_Order.chkEquipment" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="Show_Recv_Order.chkReconciled" UniqueID="" Timestamp="" />
@@ -381,7 +381,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		Width = 158
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'Receive_Edit.chkServicesPO' AS checkbox WITH ;
+	ADD OBJECT 'Receive_Edit.chkLab_Service' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 212,208,200, ;
 		BackStyle = 0, ;
@@ -391,7 +391,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		Enabled = .F., ;
 		Height = 20, ;
 		Left = 258, ;
-		Name = "chkServicesPO", ;
+		Name = "chkLab_Service", ;
 		TabIndex = 74, ;
 		Top = 263, ;
 		Visible = .T., ;
@@ -1768,7 +1768,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		Width = 80
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'Show_Recv_Order.chkServicesPO' AS checkbox WITH ;
+	ADD OBJECT 'Show_Recv_Order.chkLab_Service' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 236,233,216, ;
 		BackStyle = 0, ;
@@ -1778,7 +1778,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		Enabled = .T., ;
 		Height = 17, ;
 		Left = 15, ;
-		Name = "chkServicesPO", ;
+		Name = "chkLab_Service", ;
 		TabIndex = 18, ;
 		ToolTipText = "Services - Purchases without a Material Reciept or Due In.", ;
 		Top = 65, ;
@@ -3152,7 +3152,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		
 		**********************
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO		= PrepareSQLlogic(ThisFormset.Receive_Edit.chkServicesPO.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisFormset.Receive_Edit.chkLab_Service.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisFormset.Receive_Edit.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisFormset.Receive_Edit.chkEquipment.VALUE,'Equipment',.F.)
 		
@@ -6008,7 +6008,7 @@ DEFINE CLASS frmreceive_edit AS formset
 			ThisFormSet.Receive_Edit.txtRMA_No.Value		= 0		&&tmpWOD_Recv.RMA_No
 			ThisFormSet.Receive_Edit.txtRMA_Detail.Value	= 0
 			
-			ThisFormSet.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+			ThisFormSet.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 			ThisFormSet.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 			ThisFormSet.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -6324,7 +6324,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		*		ThisFormset.Receive_Edit.txtRejectReason.Visible = .T.
 		*	ENDIF
 			
-			ThisFormset.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
+			ThisFormset.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
 			ThisFormset.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOitem.ConvServ,'ConvServ') 
 			ThisFormset.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOitem.Equipment,'Equipment')
 			 
@@ -6714,7 +6714,7 @@ DEFINE CLASS frmreceive_edit AS formset
 			ThisFormset.Receive_Edit.txtRMA_No.Value		= 0
 			ThisFormset.Receive_Edit.txtRMA_Detail.Value	= 0
 			
-			ThisFormset.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+			ThisFormset.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 			ThisFormset.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 			ThisFormset.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -7060,7 +7060,7 @@ DEFINE CLASS frmreceive_edit AS formset
 			ThisFormset.Receive_Edit.txtRMA_No.Value		= 0
 			ThisFormset.Receive_Edit.txtRMA_Detail.Value	= 0
 			
-			ThisFormset.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+			ThisFormset.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 			ThisFormset.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 			ThisFormset.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -7434,7 +7434,7 @@ DEFINE CLASS frmreceive_edit AS formset
 				ThisFormset.Receive_Edit.txtBillW.Value = PrepareSQLnum(tmpReceivingPOitem.BillW,'BillW',9,1)
 			ENDIF
 			
-			ThisFormset.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
+			ThisFormset.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
 			ThisFormset.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOitem.ConvServ,'ConvServ') 
 			ThisFormset.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOitem.Equipment,'Equipment')
 		
@@ -8666,7 +8666,7 @@ DEFINE CLASS frmreceive_edit AS formset
 					ThisFormset.Receive_Edit.txtRejectPC.Value	= 0
 					ThisFormset.Receive_Edit.txtRejectReason.Value	= ''
 					
-					ThisFormset.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+					ThisFormset.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 					ThisFormset.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 					ThisFormset.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -9150,7 +9150,7 @@ DEFINE CLASS frmreceive_edit AS formset
 						ThisFormset.Receive_Edit.txtRMA_No.Value		= 0
 						ThisFormset.Receive_Edit.txtRMA_Detail.Value	= 0
 		
-						ThisFormset.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+						ThisFormset.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 						ThisFormset.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 						ThisFormset.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 						
@@ -10577,7 +10577,7 @@ DEFINE CLASS frmreceive_edit AS formset
 			ThisFormSet.Receive_Edit.txtRejectPC.Value	= PrepareSQLnum(tmpReceivingPOi.RejectPC,'RejectPC',-3)
 			ThisFormSet.Receive_Edit.txtRejectReason.Value	= ALLTRIM(ShowSQLtxt(tmpReceivingPOi.RejectReason,'RejectReason',255))
 			
-			ThisFormSet.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOi.Services,'Services')
+			ThisFormSet.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOi.Services,'Services')
 			ThisFormSet.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOi.ConvServ,'ConvServ') 
 			ThisFormSet.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOi.Equipment,'Equipment')
 		
@@ -11113,7 +11113,7 @@ DEFINE CLASS frmreceive_edit AS formset
 				ThisFormSet.Show_Recv_Order.txtS_QTY.Value		= PrepareSQLnum(tmpPO.StockLst_QTY,'QTY',-5)
 				ThisFormSet.Show_Recv_Order.txtS_P.Value		 = PrepareSQLnum(tmpPO.StockLst_P,'S_P',-5)
 				ThisFormSet.Show_Recv_Order.txtOrder_LBS.Value = tmpPO.Pounds
-				ThisFormSet.Show_Recv_OrderchkServicesPO.Value = tmpPO.Services
+				ThisFormSet.Show_Recv_OrderchkLab_Service.Value = tmpPO.Services
 				ThisFormSet.Show_Recv_OrderchkConvServ.Value	= tmpPO.ConvServ
 				ThisFormSet.Show_Recv_OrderchkEquipment.Value	= tmpPO.Equipment
 				ThisFormSet.Show_Recv_OrderchkComplete.Value	= tmpPO.Delivered
@@ -15607,7 +15607,7 @@ DEFINE CLASS frmreceive_edit AS formset
 							ThisFormset.Receive_Edit.txtRMA_No.Value	= PrepareSQLnum(tmpRMA_D.RMA_No,'RMA_No',-3)
 							ThisFormset.Receive_Edit.txtRMA_Detail.Value = PrepareSQLnum(tmpRMA_D.RMA_Detail_ID,'RMA_Detail_ID',-3)
 							
-							ThisFormset.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+							ThisFormset.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 							ThisFormset.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 							ThisFormset.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -15700,7 +15700,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		ThisFormset.Receive_Edit.txtRMA_No.Value = 0
 		ThisFormset.Receive_Edit.txtRMA_Detail.Value = 0
 		
-		ThisFormset.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+		ThisFormset.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 		ThisFormset.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 		ThisFormset.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -16115,7 +16115,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		ThisFormset.Receive_Edit.chkPass.Value		= 1
 		ThisFormset.Receive_Edit.chkGoodPapers.Value		= 1
 		
-		ThisFormset.Receive_Edit.chkServicesPO.Value= PrepareSQLchk(0,'Services')
+		ThisFormset.Receive_Edit.chkLab_Service.Value= PrepareSQLchk(0,'Services')
 		ThisFormset.Receive_Edit.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 		ThisFormset.Receive_Edit.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -16258,7 +16258,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		
 		**********************
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO		= PrepareSQLlogic(ThisFormSet.Receive_Edit.chkServicesPO.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisFormSet.Receive_Edit.chkLab_Service.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisFormSet.Receive_Edit.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisFormSet.Receive_Edit.chkEquipment.VALUE,'Equipment',.F.)
 		
@@ -18706,7 +18706,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		
 		**********************
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO		= PrepareSQLlogic(ThisFormSet.Receive_Edit.chkServicesPO.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisFormSet.Receive_Edit.chkLab_Service.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisFormSet.Receive_Edit.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisFormSet.Receive_Edit.chkEquipment.VALUE,'Equipment',.F.)
 		
@@ -20341,7 +20341,7 @@ DEFINE CLASS frmreceive_edit AS formset
 		*!*	ENDIF
 	ENDPROC
 
-	PROCEDURE Receive_Edit.chkServicesPO.InteractiveChange
+	PROCEDURE Receive_Edit.chkLab_Service.InteractiveChange
 		*!*	PRIVATE lServicesPO, cForm, lConvServ, lEquipment
 		*!*	lServicesPO = PrepareSQLlogic( This.Value, 'ServicesPO',.F. )
 		*!*	cForm = ShowSQLtxt(This.Parent.txtForm.Value,'Form',2)

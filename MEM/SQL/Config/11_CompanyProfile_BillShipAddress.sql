@@ -1,5 +1,8 @@
 /* Company default billing and ship-to — dbo.CompanyProfile (CompanyId=1).
-   dbo.ShipAddr holds customer ship-to addresses; do not use it for company defaults. */
+   Customer ship-tos live in dbo.ShipAddr (codes other than plant 1/2).
+   Plant ERP_Loc1/Loc2 use reserved ShipAddr/SoldAddr codes 1 and 2,
+   seeded from this profile by 26_Seed_Plant_ShipBill_Addresses.sql
+   (required so PurchaseOrder Print PO can set POShipAddr). */
 USE [ERP_2];
 GO
 
@@ -19,6 +22,8 @@ IF COL_LENGTH('dbo.CompanyProfile', 'BillToCountry') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD BillToCountry NVARCHAR(40) NULL;
 IF COL_LENGTH('dbo.CompanyProfile', 'BillToPhone') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD BillToPhone NVARCHAR(25) NULL;
+IF COL_LENGTH('dbo.CompanyProfile', 'BillToFax') IS NULL
+    ALTER TABLE dbo.CompanyProfile ADD BillToFax NVARCHAR(25) NULL;
 
 IF COL_LENGTH('dbo.CompanyProfile', 'ShipToCompany') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD ShipToCompany NVARCHAR(100) NULL;
@@ -36,6 +41,8 @@ IF COL_LENGTH('dbo.CompanyProfile', 'ShipToCountry') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD ShipToCountry NVARCHAR(40) NULL;
 IF COL_LENGTH('dbo.CompanyProfile', 'ShipToPhone') IS NULL
     ALTER TABLE dbo.CompanyProfile ADD ShipToPhone NVARCHAR(25) NULL;
+IF COL_LENGTH('dbo.CompanyProfile', 'ShipToFax') IS NULL
+    ALTER TABLE dbo.CompanyProfile ADD ShipToFax NVARCHAR(25) NULL;
 GO
 
 PRINT 'CompanyProfile billing / ship-to address columns ready.';

@@ -553,7 +553,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["P.O. Box 40"]]>
+	<expr><![CDATA["P.O. Box 40
+"]]>
 	<supexpr><![CDATA[PurchaseOrder.ShipWhere < 2]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1369,7 +1370,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Send invoices to AP@SpaceAlloysUSA.com or mail to POBox 40 Tipton, IN 46072"]]>
+	<expr><![CDATA[CompanyReport_InvoiceSendLine()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1537,7 +1538,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["- Mercury Free:  The material shall not have come in contact with or have been contaminated     by mercury or other low melting point metals."]]>
+	<expr><![CDATA["- Mercury Free:  The material shall not have come in contact with or have been contaminated 
+    by mercury or other low melting point metals."]]>
 	<supexpr><![CDATA[NOT (PurchaseOrder.Services or PurchaseOrder.Equipment)]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1561,7 +1563,9 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA['2. Material test reports/certifications MUST include the following statement verbatim:"The recording of false, fictitious, or fraudulent statements on this document may be punishable as a felony under Federal Statutes, including Federal Law Title 18,']]>
+	<expr><![CDATA['2. Material test reports/certifications MUST include the following statement verbatim:
+"The recording of false, fictitious, or fraudulent statements on this document may be punishable 
+as a felony under Federal Statutes, including Federal Law Title 18,']]>
 	<supexpr><![CDATA[NOT (PurchaseOrder.Services or PurchaseOrder.Equipment)]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1597,7 +1601,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Please send all material certifications to MTR@SpaceAlloysUSA.com"]]>
+	<expr><![CDATA[CompanyReport_MaterialCertSendLine()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1621,7 +1625,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["5. Cut material shall meet tolerance standards specified on this purchase order or ASTM and/or ASME tolerance standards when not specified, including out-of-square, and shall allow for cleanup to the dimensions specified."]]>
+	<expr><![CDATA["5. Cut material shall meet tolerance standards specified on this purchase order or ASTM and/or ASME tolerance 
+standards when not specified, including out-of-square, and shall allow for cleanup to the dimensions specified."]]>
 	<supexpr><![CDATA[NOT (PurchaseOrder.Services or PurchaseOrder.Equipment)]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1681,7 +1686,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA['4. Material test reports/certifications MUST include a statement of compliance if the material alloy supplied meets the requirements of DFARS 252.225-7001,7002,7008,7009 "Preference for Domestic Specialty Metals.']]>
+	<expr><![CDATA['4. Material test reports/certifications MUST include a statement of compliance if the material alloy 
+supplied meets the requirements of DFARS 252.225-7001,7002,7008,7009 "Preference for Domestic Specialty Metals.']]>
 	<supexpr><![CDATA[NOT (PurchaseOrder.Services or PurchaseOrder.Equipment)]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

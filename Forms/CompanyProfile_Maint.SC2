@@ -31,12 +31,16 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtShortName" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.lblTagline" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtTagline" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.lblWebsite" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtWebsite" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.lblInvoiceSendLine" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtInvoiceSendLine" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.lblMaterialCertSendLine" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtMaterialCertSendLine" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.lblSalesEmail" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.txtSalesEmail" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.lblQualityEmail" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.txtQualityEmail" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgContact.lblWebsite" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgf1.pgContact.txtWebsite" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.lblCageCode" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.txtCageCode" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgContact.lblCustomerTermsPath" UniqueID="" Timestamp="" />
@@ -83,6 +87,8 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillCountry" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillPhone" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillPhone" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblBillFax" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtBillFax" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipHdr" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.cmdCopyBillToShip" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipCompany" UniqueID="" Timestamp="" />
@@ -101,6 +107,8 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipCountry" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipPhone" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipPhone" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblShipFax" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.txtShipFax" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgAddresses.lblAddrHint" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdSave" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdReload" UniqueID="" Timestamp="" />
@@ -116,6 +124,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*p: cbilltocity
 		*p: cbilltocompany
 		*p: cbilltocountry
+		*p: cbilltofax
 		*p: cbilltophone
 		*p: cbilltopostal
 		*p: cbilltostate
@@ -125,7 +134,9 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*p: ccertheadertext
 		*p: ccustomertermsimportpath
 		*p: cdbaname
+		*p: cinvoicesendline
 		*p: clegalname
+		*p: cmaterialcertsendline
 		*p: cqualityemail
 		*p: csalesemail
 		*p: cshiptoaddr1
@@ -133,6 +144,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*p: cshiptocity
 		*p: cshiptocompany
 		*p: cshiptocountry
+		*p: cshiptofax
 		*p: cshiptophone
 		*p: cshiptopostal
 		*p: cshiptostate
@@ -151,6 +163,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		cbilltocity = ""
 		cbilltocompany = ""
 		cbilltocountry = ""
+		cbilltofax = ""
 		cbilltophone = ""
 		cbilltopostal = ""
 		cbilltostate = ""
@@ -160,7 +173,9 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		ccertheadertext = ""
 		ccustomertermsimportpath = ""
 		cdbaname = ""
+		cinvoicesendline = ""
 		clegalname = ""
+		cmaterialcertsendline = ""
 		cqualityemail = ""
 		csalesemail = ""
 		cshiptoaddr1 = ""
@@ -168,6 +183,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		cshiptocity = ""
 		cshiptocompany = ""
 		cshiptocountry = ""
+		cshiptofax = ""
 		cshiptophone = ""
 		cshiptopostal = ""
 		cshiptostate = ""
@@ -180,7 +196,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		lskipcompanybranding = .T.
 		Name = "frmCompanyProfile_maint"
 		nconnhandle = 0
-		Width = 520
+		Width = 580
 		WindowType = 1
 	*</PropValue>
 
@@ -188,7 +204,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Cancel = .T., ;
 		Caption = "Close", ;
 		Height = 27, ;
-		Left = 400, ;
+		Left = 460, ;
 		Name = "cmdClose", ;
 		Top = 520, ;
 		Width = 84
@@ -197,7 +213,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	ADD OBJECT 'cmdReload' AS commandbutton WITH ;
 		Caption = "Reload", ;
 		Height = 27, ;
-		Left = 120, ;
+		Left = 140, ;
 		Name = "cmdReload", ;
 		Top = 520, ;
 		Width = 84
@@ -206,7 +222,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	ADD OBJECT 'cmdSave' AS commandbutton WITH ;
 		Caption = "Save", ;
 		Height = 27, ;
-		Left = 280, ;
+		Left = 320, ;
 		Name = "cmdSave", ;
 		Top = 520, ;
 		Width = 84
@@ -219,7 +235,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Name = "pgf1", ;
 		PageCount = 5, ;
 		Top = 10, ;
-		Width = 500, ;
+		Width = 560, ;
 		Page1.Caption = "Identity", ;
 		Page1.Name = "pgIdentity", ;
 		Page2.Caption = "Contact / Paths", ;
@@ -239,7 +255,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 300, ;
 		Name = "cmdCopyBillToShip", ;
 		ToolTipText = "Copy all billing fields into ship-to", ;
-		Top = 173, ;
+		Top = 201, ;
 		Width = 166
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -249,7 +265,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 30, ;
 		Left = 13, ;
 		Name = "lblAddrHint", ;
-		Top = 394, ;
+		Top = 434, ;
 		Width = 456, ;
 		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
@@ -304,6 +320,16 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 72
 		*< END OBJECT: BaseClass="label" />
 
+	ADD OBJECT 'pgf1.pgAddresses.lblBillFax' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Fax", ;
+		Height = 17, ;
+		Left = 220, ;
+		Name = "lblBillFax", ;
+		Top = 176, ;
+		Width = 40
+		*< END OBJECT: BaseClass="label" />
+
 	ADD OBJECT 'pgf1.pgAddresses.lblBillHdr' AS label WITH ;
 		Caption = "Billing address (saved to dbo.CompanyProfile)", ;
 		FontBold = .T., ;
@@ -350,7 +376,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShipCity", ;
-		Top = 320, ;
+		Top = 348, ;
 		Width = 72
 		*< END OBJECT: BaseClass="label" />
 
@@ -360,7 +386,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShipCompany", ;
-		Top = 236, ;
+		Top = 264, ;
 		Width = 72
 		*< END OBJECT: BaseClass="label" />
 
@@ -370,8 +396,18 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShipCountry", ;
-		Top = 348, ;
+		Top = 376, ;
 		Width = 72
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgAddresses.lblShipFax' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Fax", ;
+		Height = 17, ;
+		Left = 220, ;
+		Name = "lblShipFax", ;
+		Top = 404, ;
+		Width = 40
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgAddresses.lblShipHdr' AS label WITH ;
@@ -380,7 +416,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShipHdr", ;
-		Top = 212, ;
+		Top = 240, ;
 		Width = 465
 		*< END OBJECT: BaseClass="label" />
 
@@ -390,7 +426,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 220, ;
 		Name = "lblShipPhone", ;
-		Top = 348, ;
+		Top = 376, ;
 		Width = 40
 		*< END OBJECT: BaseClass="label" />
 
@@ -400,7 +436,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 338, ;
 		Name = "lblShipPostal", ;
-		Top = 320, ;
+		Top = 348, ;
 		Width = 28
 		*< END OBJECT: BaseClass="label" />
 
@@ -410,7 +446,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 270, ;
 		Name = "lblShipState", ;
-		Top = 320, ;
+		Top = 348, ;
 		Width = 24
 		*< END OBJECT: BaseClass="label" />
 
@@ -420,7 +456,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShipToLine1", ;
-		Top = 264, ;
+		Top = 292, ;
 		Width = 72
 		*< END OBJECT: BaseClass="label" />
 
@@ -430,7 +466,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShipToLine2", ;
-		Top = 292, ;
+		Top = 320, ;
 		Width = 72
 		*< END OBJECT: BaseClass="label" />
 
@@ -484,6 +520,16 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 120
 		*< END OBJECT: BaseClass="textbox" />
 
+	ADD OBJECT 'pgf1.pgAddresses.txtBillFax' AS textbox WITH ;
+		ControlSource = "ThisForm.cBillToFax", ;
+		Height = 23, ;
+		Left = 264, ;
+		Name = "txtBillFax", ;
+		SelectOnEntry = .T., ;
+		Top = 174, ;
+		Width = 202
+		*< END OBJECT: BaseClass="textbox" />
+
 	ADD OBJECT 'pgf1.pgAddresses.txtBillPhone' AS textbox WITH ;
 		ControlSource = "ThisForm.cBillToPhone", ;
 		Height = 23, ;
@@ -520,7 +566,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 92, ;
 		Name = "txtShipCity", ;
 		SelectOnEntry = .T., ;
-		Top = 318, ;
+		Top = 346, ;
 		Width = 170
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -530,7 +576,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 92, ;
 		Name = "txtShipCompany", ;
 		SelectOnEntry = .T., ;
-		Top = 234, ;
+		Top = 262, ;
 		Width = 374
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -540,8 +586,18 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 92, ;
 		Name = "txtShipCountry", ;
 		SelectOnEntry = .T., ;
-		Top = 346, ;
+		Top = 374, ;
 		Width = 120
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgAddresses.txtShipFax' AS textbox WITH ;
+		ControlSource = "ThisForm.cShipToFax", ;
+		Height = 23, ;
+		Left = 264, ;
+		Name = "txtShipFax", ;
+		SelectOnEntry = .T., ;
+		Top = 402, ;
+		Width = 202
 		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'pgf1.pgAddresses.txtShipPhone' AS textbox WITH ;
@@ -550,7 +606,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 264, ;
 		Name = "txtShipPhone", ;
 		SelectOnEntry = .T., ;
-		Top = 346, ;
+		Top = 374, ;
 		Width = 202
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -560,7 +616,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 368, ;
 		Name = "txtShipPostal", ;
 		SelectOnEntry = .T., ;
-		Top = 318, ;
+		Top = 346, ;
 		Width = 98
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -570,7 +626,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 296, ;
 		Name = "txtShipState", ;
 		SelectOnEntry = .T., ;
-		Top = 318, ;
+		Top = 346, ;
 		Width = 36
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -580,7 +636,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 92, ;
 		Name = "txtShipToLine1", ;
 		SelectOnEntry = .T., ;
-		Top = 262, ;
+		Top = 290, ;
 		Width = 374
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -590,7 +646,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 92, ;
 		Name = "txtShipToLine2", ;
 		SelectOnEntry = .T., ;
-		Top = 290, ;
+		Top = 318, ;
 		Width = 374
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -653,7 +709,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 27, ;
 		Left = 376, ;
 		Name = "cmdBrowseCustomerTerms", ;
-		Top = 142, ;
+		Top = 110, ;
 		Width = 85
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -663,7 +719,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblCageCode", ;
-		Top = 110, ;
+		Top = 78, ;
 		Width = 90
 		*< END OBJECT: BaseClass="label" />
 
@@ -673,7 +729,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 32, ;
 		Left = 16, ;
 		Name = "lblCustomerTermsPath", ;
-		Top = 141, ;
+		Top = 109, ;
 		Width = 93, ;
 		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
@@ -698,23 +754,13 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 90
 		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgf1.pgContact.lblWebsite' AS label WITH ;
-		Alignment = 1, ;
-		Caption = "Website", ;
-		Height = 17, ;
-		Left = 16, ;
-		Name = "lblWebsite", ;
-		Top = 80, ;
-		Width = 90
-		*< END OBJECT: BaseClass="label" />
-
 	ADD OBJECT 'pgf1.pgContact.txtCageCode' AS textbox WITH ;
 		ControlSource = "ThisForm.cCageCode", ;
 		Height = 23, ;
 		Left = 111, ;
 		Name = "txtCageCode", ;
 		SelectOnEntry = .T., ;
-		Top = 108, ;
+		Top = 76, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -725,7 +771,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Name = "txtCustomerTermsImportPath", ;
 		SelectOnEntry = .T., ;
 		ToolTipText = "Folder for Sage CUSTOMER TERMS and List.CSV and HPA App Export.CSV. Blank = \\server\HPAData\Quotes\", ;
-		Top = 144, ;
+		Top = 112, ;
 		Width = 255
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -749,16 +795,6 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
 
-	ADD OBJECT 'pgf1.pgContact.txtWebsite' AS textbox WITH ;
-		ControlSource = "ThisForm.cWebsite", ;
-		Height = 23, ;
-		Left = 111, ;
-		Name = "txtWebsite", ;
-		SelectOnEntry = .T., ;
-		Top = 78, ;
-		Width = 350
-		*< END OBJECT: BaseClass="textbox" />
-
 	ADD OBJECT 'pgf1.pgIdentity.lblDBAName' AS label WITH ;
 		Alignment = 1, ;
 		Caption = "DBA", ;
@@ -769,6 +805,17 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 90
 		*< END OBJECT: BaseClass="label" />
 
+	ADD OBJECT 'pgf1.pgIdentity.lblInvoiceSendLine' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Send invoices to", ;
+		Height = 33, ;
+		Left = 16, ;
+		Name = "lblInvoiceSendLine", ;
+		Top = 168, ;
+		Width = 90, ;
+		WordWrap = .T.
+		*< END OBJECT: BaseClass="label" />
+
 	ADD OBJECT 'pgf1.pgIdentity.lblLegalName' AS label WITH ;
 		Alignment = 1, ;
 		Caption = "Legal name", ;
@@ -777,6 +824,17 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Name = "lblLegalName", ;
 		Top = 20, ;
 		Width = 90
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgIdentity.lblMaterialCertSendLine' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Material certs to", ;
+		Height = 33, ;
+		Left = 16, ;
+		Name = "lblMaterialCertSendLine", ;
+		Top = 208, ;
+		Width = 90, ;
+		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgf1.pgIdentity.lblShortName' AS label WITH ;
@@ -800,6 +858,16 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 90
 		*< END OBJECT: BaseClass="label" />
 
+	ADD OBJECT 'pgf1.pgIdentity.lblWebsite' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Website", ;
+		Height = 17, ;
+		Left = 16, ;
+		Name = "lblWebsite", ;
+		Top = 140, ;
+		Width = 90
+		*< END OBJECT: BaseClass="label" />
+
 	ADD OBJECT 'pgf1.pgIdentity.txtDBAName' AS textbox WITH ;
 		ControlSource = "ThisForm.cDBAName", ;
 		Height = 23, ;
@@ -810,6 +878,17 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
 
+	ADD OBJECT 'pgf1.pgIdentity.txtInvoiceSendLine' AS textbox WITH ;
+		ControlSource = "ThisForm.cInvoiceSendLine", ;
+		Height = 23, ;
+		Left = 111, ;
+		Name = "txtInvoiceSendLine", ;
+		SelectOnEntry = .T., ;
+		ToolTipText = "PO report footer: invoice remittance line", ;
+		Top = 172, ;
+		Width = 430
+		*< END OBJECT: BaseClass="textbox" />
+
 	ADD OBJECT 'pgf1.pgIdentity.txtLegalName' AS textbox WITH ;
 		ControlSource = "ThisForm.cLegalName", ;
 		Height = 23, ;
@@ -818,6 +897,17 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		SelectOnEntry = .T., ;
 		Top = 18, ;
 		Width = 350
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgIdentity.txtMaterialCertSendLine' AS textbox WITH ;
+		ControlSource = "ThisForm.cMaterialCertSendLine", ;
+		Height = 23, ;
+		Left = 111, ;
+		Name = "txtMaterialCertSendLine", ;
+		SelectOnEntry = .T., ;
+		ToolTipText = "PO report footer: material certification send-to line", ;
+		Top = 212, ;
+		Width = 430
 		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'pgf1.pgIdentity.txtShortName' AS textbox WITH ;
@@ -838,6 +928,17 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		SelectOnEntry = .T., ;
 		Top = 108, ;
 		Width = 350
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgIdentity.txtWebsite' AS textbox WITH ;
+		ControlSource = "ThisForm.cWebsite", ;
+		Height = 23, ;
+		Left = 111, ;
+		Name = "txtWebsite", ;
+		SelectOnEntry = .T., ;
+		ToolTipText = "Shown at the bottom of HTML email banners", ;
+		Top = 138, ;
+		Width = 430
 		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'pgf1.pgLogo.cmdClearIcon' AS commandbutton WITH ;
@@ -967,7 +1068,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	ADD OBJECT 'pgf1.pgLogo.lblReportBmpInfo' AS label WITH ;
 		AutoSize = .F., ;
 		Caption = "SQL ReportImage -> MEM\Company_Rpt_Logo.bmp -> graphics\Company_Rpt_Logo.bmp for FRX.", ;
-		Height = 34, ;
+		Height = 28, ;
 		Left = 16, ;
 		Name = "lblReportBmpInfo", ;
 		Top = 336, ;
@@ -991,7 +1092,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShortNameHint", ;
-		Top = 429, ;
+		Top = 412, ;
 		Width = 371
 		*< END OBJECT: BaseClass="label" />
 
@@ -1001,7 +1102,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 17, ;
 		Left = 16, ;
 		Name = "lblShortNameTitle", ;
-		Top = 385, ;
+		Top = 368, ;
 		Width = 200
 		*< END OBJECT: BaseClass="label" />
 
@@ -1011,7 +1112,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Left = 16, ;
 		Name = "txtShortNameBranding", ;
 		SelectOnEntry = .T., ;
-		Top = 403, ;
+		Top = 386, ;
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
 	
@@ -1048,7 +1149,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	ENDPROC
 
 	PROCEDURE loaddata
-		LOCAL laP[28], i, lcP, lcProp, xVal
+		LOCAL laP[32], i, lcP, lcProp, xVal
 		IF VARTYPE(goCompany) # "O"
 			DO PROGS\load_CompanyProfile
 		ENDIF
@@ -1062,27 +1163,31 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		laP[5] = "SalesEmail"
 		laP[6] = "QualityEmail"
 		laP[7] = "Website"
-		laP[8] = "CageCode"
-		laP[9] = "CertHeaderText"
-		laP[10] = "CertCertifyText"
-		laP[11] = "CertFooterText"
-		laP[12] = "CustomerTermsImportPath"
-		laP[13] = "BillToCompany"
-		laP[14] = "BillToAddr1"
-		laP[15] = "BillToAddr2"
-		laP[16] = "BillToCity"
-		laP[17] = "BillToState"
-		laP[18] = "BillToPostal"
-		laP[19] = "BillToCountry"
-		laP[20] = "BillToPhone"
-		laP[21] = "ShipToCompany"
-		laP[22] = "ShipToAddr1"
-		laP[23] = "ShipToAddr2"
-		laP[24] = "ShipToCity"
-		laP[25] = "ShipToState"
-		laP[26] = "ShipToPostal"
-		laP[27] = "ShipToCountry"
-		laP[28] = "ShipToPhone"
+		laP[8] = "InvoiceSendLine"
+		laP[9] = "MaterialCertSendLine"
+		laP[10] = "CageCode"
+		laP[11] = "CertHeaderText"
+		laP[12] = "CertCertifyText"
+		laP[13] = "CertFooterText"
+		laP[14] = "CustomerTermsImportPath"
+		laP[15] = "BillToCompany"
+		laP[16] = "BillToAddr1"
+		laP[17] = "BillToAddr2"
+		laP[18] = "BillToCity"
+		laP[19] = "BillToState"
+		laP[20] = "BillToPostal"
+		laP[21] = "BillToCountry"
+		laP[22] = "BillToPhone"
+		laP[23] = "BillToFax"
+		laP[24] = "ShipToCompany"
+		laP[25] = "ShipToAddr1"
+		laP[26] = "ShipToAddr2"
+		laP[27] = "ShipToCity"
+		laP[28] = "ShipToState"
+		laP[29] = "ShipToPostal"
+		laP[30] = "ShipToCountry"
+		laP[31] = "ShipToPhone"
+		laP[32] = "ShipToFax"
 		FOR i = 1 TO ALEN(laP)
 			lcP = laP[i]
 			lcProp = "c" + lcP
@@ -1140,6 +1245,8 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		lcSQL = lcSQL + "SalesEmail = "+CompanyProfile_SQLQuote(Thisform.cSalesEmail)+", "
 		lcSQL = lcSQL + "QualityEmail = "+CompanyProfile_SQLQuote(Thisform.cQualityEmail)+", "
 		lcSQL = lcSQL + "Website = "+CompanyProfile_SQLQuote(Thisform.cWebsite)+", "
+		lcSQL = lcSQL + "InvoiceSendLine = "+CompanyProfile_SQLQuote(Thisform.cInvoiceSendLine)+", "
+		lcSQL = lcSQL + "MaterialCertSendLine = "+CompanyProfile_SQLQuote(Thisform.cMaterialCertSendLine)+", "
 		lcSQL = lcSQL + "CageCode = "+CompanyProfile_SQLQuote(Thisform.cCageCode)+", "
 		lcSQL = lcSQL + "CustomerTermsImportPath = "+CompanyProfile_SQLQuote(Thisform.cCustomerTermsImportPath)+", "
 		lcSQL = lcSQL + "CertHeaderText = "+CompanyProfile_SQLQuote(Thisform.cCertHeaderText)+", "
@@ -1153,6 +1260,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		lcSQL = lcSQL + "BillToPostal = "+CompanyProfile_SQLQuote(Thisform.cBillToPostal)+", "
 		lcSQL = lcSQL + "BillToCountry = "+CompanyProfile_SQLQuote(Thisform.cBillToCountry)+", "
 		lcSQL = lcSQL + "BillToPhone = "+CompanyProfile_SQLQuote(Thisform.cBillToPhone)+", "
+		lcSQL = lcSQL + "BillToFax = "+CompanyProfile_SQLQuote(Thisform.cBillToFax)+", "
 		lcSQL = lcSQL + "ShipToCompany = "+CompanyProfile_SQLQuote(Thisform.cShipToCompany)+", "
 		lcSQL = lcSQL + "ShipToAddr1 = "+CompanyProfile_SQLQuote(Thisform.cShipToAddr1)+", "
 		lcSQL = lcSQL + "ShipToAddr2 = "+CompanyProfile_SQLQuote(Thisform.cShipToAddr2)+", "
@@ -1161,6 +1269,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		lcSQL = lcSQL + "ShipToPostal = "+CompanyProfile_SQLQuote(Thisform.cShipToPostal)+", "
 		lcSQL = lcSQL + "ShipToCountry = "+CompanyProfile_SQLQuote(Thisform.cShipToCountry)+", "
 		lcSQL = lcSQL + "ShipToPhone = "+CompanyProfile_SQLQuote(Thisform.cShipToPhone)+", "
+		lcSQL = lcSQL + "ShipToFax = "+CompanyProfile_SQLQuote(Thisform.cShipToFax)+", "
 		lcSQL = lcSQL + "ModifiedDate = SYSDATETIME() "
 		lcSQL = lcSQL + "WHERE CompanyId = 1"
 		nRet = SQLEXEC(Thisform.nConnHandle, lcSQL)
@@ -1188,6 +1297,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Thisform.cShipToPostal = Thisform.cBillToPostal
 		Thisform.cShipToCountry = Thisform.cBillToCountry
 		Thisform.cShipToPhone = Thisform.cBillToPhone
+		Thisform.cShipToFax = Thisform.cBillToFax
 		
 		ThisForm.Refresh
 	ENDPROC

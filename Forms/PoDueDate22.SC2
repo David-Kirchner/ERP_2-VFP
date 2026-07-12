@@ -1248,7 +1248,7 @@ DEFINE CLASS frmpoduedate AS form
 		*	ThisForm.chkDELIVEREDPO.Value	= tPurchaseOrder.DELIVERED
 		*	ThisForm.chkCANCELPO.Value	= tPurchaseOrder.CANCELled
 		*	ThisForm.chkSPS1.Value		= tPurchaseOrder.Sheet_PK
-		*	ThisForm.chkSERVICESPO.Value	= tPurchaseOrder.Services
+		*	ThisForm.chkLab_Service.Value	= tPurchaseOrder.Services
 		*	ThisForm.chkCONVSERV.Value	= tPurchaseOrder.ConvServ
 		*	ThisForm.chkEQUIPMENT.Value	= tPurchaseOrder.Equipment
 			

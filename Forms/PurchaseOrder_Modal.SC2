@@ -64,7 +64,7 @@ DEFINE CLASS purchaseorder AS formset
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.txtReceivedBy" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.lblBy" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.txtAlloy" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.chkServicesPO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.chkLab_Service" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.cmdDelete" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.edtCond_Spec" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmPOMaint.pf1.pgEdit.edtMisc_Purch" UniqueID="" Timestamp="" />
@@ -770,9 +770,9 @@ DEFINE CLASS purchaseorder AS formset
 		pgfPO.pgPODesc.chkRandLen.Alignment = 0, ;
 		pgfPO.pgPODesc.chkRandLen.Name = "chkRandLen", ;
 		pgfPO.pgPODesc.chkRandLen.TabIndex = 41, ;
-		pgfPO.pgPODesc.chkServicesPO.Alignment = 0, ;
-		pgfPO.pgPODesc.chkServicesPO.Name = "chkServicesPO", ;
-		pgfPO.pgPODesc.chkServicesPO.TabIndex = 81, ;
+		pgfPO.pgPODesc.chkLab_Service.Alignment = 0, ;
+		pgfPO.pgPODesc.chkLab_Service.Name = "chkLab_Service", ;
+		pgfPO.pgPODesc.chkLab_Service.TabIndex = 81, ;
 		pgfPO.pgPODesc.chkSPS1.Alignment = 0, ;
 		pgfPO.pgPODesc.chkSPS1.Name = "chkSPS1", ;
 		pgfPO.pgPODesc.chkSPS1.TabIndex = 79, ;
@@ -3026,7 +3026,7 @@ DEFINE CLASS purchaseorder AS formset
 		Width = 80
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'frmPOMaint.pf1.pgEdit.chkServicesPO' AS checkbox WITH ;
+	ADD OBJECT 'frmPOMaint.pf1.pgEdit.chkLab_Service' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 236,233,216, ;
 		BackStyle = 0, ;
@@ -3036,7 +3036,7 @@ DEFINE CLASS purchaseorder AS formset
 		Enabled = .T., ;
 		Height = 17, ;
 		Left = 523, ;
-		Name = "chkServicesPO", ;
+		Name = "chkLab_Service", ;
 		TabIndex = 25, ;
 		ToolTipText = "Services - Purchases without a Material Reciept or Due In.", ;
 		Top = 170, ;
@@ -6947,7 +6947,7 @@ DEFINE CLASS purchaseorder AS formset
 		ThisFormSet.frmPOMaint.pf1.pgEdit.edtMisc_Purch.Refresh
 		
 		**************
-		ThisFormSet.frmPOMaint.pf1.pgEdit.chkServicesPO.Value 	= PrepareSQLchk(PurchaseOrder.Services,'Services')
+		ThisFormSet.frmPOMaint.pf1.pgEdit.chkLab_Service.Value 	= PrepareSQLchk(PurchaseOrder.Services,'Services')
 		ThisFormSet.frmPOMaint.pf1.pgEdit.chkConvServ.Value		= PrepareSQLchk(PurchaseOrder.ConvServ,'ConvServ')
 		ThisFormSet.frmPOMaint.pf1.pgEdit.chkEquipment.Value	= PrepareSQLchk(PurchaseOrder.Equipment,'Equipment')
 		ThisFormSet.frmPOMaint.pf1.pgEdit.chkComplete.Value		= PrepareSQLchk(PurchaseOrder.Delivered,'Delivered')
@@ -7315,7 +7315,7 @@ DEFINE CLASS purchaseorder AS formset
 		
 		
 		PRIVATE lServices,lConvServ,lEquipment
-		lServices = PrepareSQLchk(ThisFormSet.frmPO.pgfPO.pgPODesc.chkServicesPO.Value,'Services')
+		lServices = PrepareSQLchk(ThisFormSet.frmPO.pgfPO.pgPODesc.chkLab_Service.Value,'Services')
 		lConvServ = PrepareSQLchk(ThisFormSet.frmPO.pgfPO.pgPODesc.chkConvServ.Value,'ConvServ')
 		lEquipment= PrepareSQLchk(ThisFormSet.frmPO.pgfPO.pgPODesc.chkEquipment.Value,'Equipment')
 		ThisFormSet.frmPO.pgfPO.pgPODesc.lblPerUnit.Caption	= FormUnitCaption(pForm,lServices,lConvServ,lEquipment,ThisFormSet.nConnHandle)
@@ -10715,7 +10715,7 @@ DEFINE CLASS purchaseorder AS formset
 		
 	ENDPROC
 
-	PROCEDURE frmPOMaint.pf1.pgEdit.chkServicesPO.Click
+	PROCEDURE frmPOMaint.pf1.pgEdit.chkLab_Service.Click
 		PRIVATE lThisVal,cPOitem, cSQL, nSQLEXEC
 		cPOitem = PurchaseOrder.POitem
 		
@@ -12075,7 +12075,7 @@ DEFINE CLASS purchaseorder AS formset
 		ThisFormSet.frmPOMaint.pf1.PgEdit.lblSz3.Top 	= 137 + nHeight
 		ThisFormSet.frmPOMaint.pf1.PgEdit.txtSz3.Top 	= 149 + nHeight
 		
-		ThisFormSet.frmPOMaint.pf1.PgEdit.chkServicesPO.Top 	= 170 + nHeight
+		ThisFormSet.frmPOMaint.pf1.PgEdit.chkLab_Service.Top 	= 170 + nHeight
 		ThisFormSet.frmPOMaint.pf1.PgEdit.chkConvServ.Top 		= 170 + nHeight
 		
 		ThisFormSet.frmPOMaint.pf1.PgEdit.lblReceipt.Top 	= 172 + nHeight

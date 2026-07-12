@@ -40,6 +40,87 @@ FUNCTION CompanyBranding_PsSingleQuotedPath
 	RETURN lcQ + STRTRAN(ALLTRIM(EVL(tcPath, "")), lcQ, lcQ + lcQ) + lcQ
 
 *--------------------------------------------------------------------
+* data:image/png;base64,... from Branding Report Logo (for HTML email <img src>).
+FUNCTION CompanyBranding_ReportLogoDataUri
+	LOCAL lcBmp, lcOut, lcPs1, lcCmd, lcUri, lcScript
+
+	= CompanyBranding_EnsureReportBmpPublic()
+	= CacheCompanyReportBmpFile(0, .F.)
+	lcBmp = GetCompanyReportBmpPath()
+	IF EMPTY(lcBmp) OR !FILE(lcBmp)
+		RETURN ""
+	ENDIF
+
+	lcOut = ADDBS(SYS(2023)) + "erp_rpt_logo_uri.txt"
+	lcPs1 = ADDBS(SYS(2023)) + "erp_rpt_logo_uri.ps1"
+	IF FILE(lcOut)
+		ERASE (lcOut)
+	ENDIF
+	IF FILE(lcPs1)
+		ERASE (lcPs1)
+	ENDIF
+
+	* Write .ps1 — avoid VFP [...] strings that contain "]" (causes syntax error).
+	lcScript = "Add-Type -AssemblyName System.Drawing" + CHR(13)+CHR(10)
+	lcScript = lcScript + "$i=[System.Drawing.Image]::FromFile(" + CompanyBranding_PsSingleQuotedPath(lcBmp) + ")" + CHR(13)+CHR(10)
+	lcScript = lcScript + "$ms=New-Object System.IO.MemoryStream" + CHR(13)+CHR(10)
+	lcScript = lcScript + "$i.Save($ms,[System.Drawing.Imaging.ImageFormat]::Png)" + CHR(13)+CHR(10)
+	lcScript = lcScript + "$i.Dispose()" + CHR(13)+CHR(10)
+	lcScript = lcScript + "$b64=[Convert]::ToBase64String($ms.ToArray())" + CHR(13)+CHR(10)
+	lcScript = lcScript + "$ms.Dispose()" + CHR(13)+CHR(10)
+	lcScript = lcScript + "[IO.File]::WriteAllText(" + CompanyBranding_PsSingleQuotedPath(lcOut) + ",('data:image/png;base64,'+$b64))" + CHR(13)+CHR(10)
+	STRTOFILE(lcScript, lcPs1, 0)
+
+	lcCmd = "powershell -NoProfile -ExecutionPolicy Bypass -File " + CompanyBranding_PsSingleQuotedPath(lcPs1)
+	RUN /W &lcCmd
+
+	IF FILE(lcPs1)
+		ERASE (lcPs1)
+	ENDIF
+	IF !FILE(lcOut)
+		RETURN ""
+	ENDIF
+	lcUri = ALLTRIM(FILETOSTR(lcOut))
+	ERASE (lcOut)
+	IF LEFT(LOWER(lcUri), 22) # "data:image/png;base64,"
+		RETURN ""
+	ENDIF
+	RETURN lcUri
+
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_ReportLogoHtmlImg
+	LPARAMETERS tnHeight
+	LOCAL lcUri, lcAlt, lnH, lcName
+
+	IF VARTYPE(tnHeight) # "N" OR tnHeight < 1
+		lnH = 69
+	ELSE
+		lnH = tnHeight
+	ENDIF
+
+	lcUri = CompanyBranding_ReportLogoDataUri()
+	IF EMPTY(lcUri)
+		RETURN ""
+	ENDIF
+
+	lcAlt = "Company Logo"
+	IF !"COMPANY_REPORT" $ UPPER(SET("PROCEDURE"))
+		IF FILE("REPORTS\company_report.prg")
+			SET PROCEDURE TO REPORTS\company_report.prg ADDITIVE
+		ENDIF
+	ENDIF
+	IF TYPE("CompanyReport_Name()") = "U"
+		* leave default alt
+	ELSE
+		lcName = ALLTRIM(CompanyReport_Name())
+		IF !EMPTY(lcName)
+			lcAlt = STRTRAN(lcName, ["], [])
+		ENDIF
+	ENDIF
+
+	RETURN [<img alt="] + lcAlt + [" src="] + lcUri + [" height="] + ALLTRIM(STR(lnH)) + [/>]
+
+*--------------------------------------------------------------------
 FUNCTION CompanyBranding_ReportLogoMemPath
 	LOCAL lcRoot, lcPath, laLegacy[2], i
 
@@ -815,22 +896,49 @@ FUNCTION CompanyBranding_ExtToMime
 	ENDCASE
 
 *--------------------------------------------------------------------
+*--------------------------------------------------------------------
+FUNCTION CompanyBranding_FileLooksLikeBmp
+	LPARAMETERS tcPath
+	LOCAL nH, lcSig
+
+	IF EMPTY(tcPath) OR !FILE(tcPath)
+		RETURN .F.
+	ENDIF
+	nH = FOPEN(tcPath, 0)
+	IF nH < 0
+		RETURN .F.
+	ENDIF
+	lcSig = FREAD(nH, 2)
+	FCLOSE(nH)
+	RETURN lcSig == "BM"
+
+*--------------------------------------------------------------------
 FUNCTION CompanyBranding_WriteBlob
 	LPARAMETERS xData, tcPath
 
-	LOCAL nH
+	LOCAL nH, lcHex, lcBin, i
 
 	IF EMPTY(xData) OR EMPTY(tcPath)
 		RETURN .F.
 	ENDIF
 
+	* Character/memo that is hex text of a BMP ("424D...") — decode to binary first
+	IF TYPE("xData") $ "CM"
+		lcHex = UPPER(CHRTRAN(ALLTRIM(xData), CHR(13) + CHR(10) + " " + CHR(9), ""))
+		IF LEN(lcHex) >= 4 AND LEFT(lcHex, 4) == "424D" ;
+				AND MOD(LEN(lcHex), 2) = 0 ;
+				AND LEN(CHRTRAN(lcHex, "0123456789ABCDEF", "")) = 0
+			lcBin = ""
+			FOR i = 1 TO LEN(lcHex) STEP 2
+				lcBin = lcBin + CHR(EVALUATE("0x" + SUBSTR(lcHex, i, 2)))
+			ENDFOR
+			IF LEFT(lcBin, 2) == "BM"
+				xData = CREATEBINARY(lcBin)
+			ENDIF
+		ENDIF
+	ENDIF
+
 	DO CASE
-		CASE TYPE("xData") = "M"
-			STRTOFILE(xData, tcPath, 0)
-			RETURN FILE(tcPath)
-		CASE TYPE("xData") = "C"
-			STRTOFILE(xData, tcPath, 0)
-			RETURN FILE(tcPath)
 		CASE TYPE("xData") = "Q"
 			nH = FCREATE(tcPath)
 			IF nH < 0
@@ -838,6 +946,12 @@ FUNCTION CompanyBranding_WriteBlob
 			ENDIF
 			FWRITE(nH, xData)
 			FCLOSE(nH)
+			RETURN FILE(tcPath)
+		CASE TYPE("xData") = "M"
+			STRTOFILE(xData, tcPath, 0)
+			RETURN FILE(tcPath)
+		CASE TYPE("xData") = "C"
+			STRTOFILE(xData, tcPath, 0)
 			RETURN FILE(tcPath)
 		OTHERWISE
 			RETURN .F.
@@ -1140,18 +1254,23 @@ FUNCTION CacheCompanyReportBmpFile
 	ENDIF
 
 	IF CompanyBranding_BlobHasData(xData)
-		IF FILE(lcPath) AND CompanyBranding_BlobMatchesFile(xData, lcPath)
+		IF FILE(lcPath) AND CompanyBranding_BlobMatchesFile(xData, lcPath) ;
+				AND CompanyBranding_FileLooksLikeBmp(lcPath)
 			gCompanyReportBmpPath = lcPath
+			= CompanyBranding_SyncGraphicsReportBmp(lcPath)
+			= ErpEnsureReportsGraphicsLink()
 			RETURN .T.
 		ENDIF
 		= CompanyBranding_WriteBlob(xData, lcPath)
 		gCompanyReportBmpPath = lcPath
 		= CompanyBranding_SyncGraphicsReportBmp(lcPath)
+		= ErpEnsureReportsGraphicsLink()
 		RETURN FILE(lcPath)
 	ENDIF
 
-	IF FILE(lcPath)
+	IF FILE(lcPath) AND CompanyBranding_FileLooksLikeBmp(lcPath)
 		gCompanyReportBmpPath = lcPath
+		= ErpEnsureReportsGraphicsLink()
 		RETURN .T.
 	ENDIF
 	RETURN .F.

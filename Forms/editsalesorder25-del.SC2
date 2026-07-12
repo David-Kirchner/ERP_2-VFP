@@ -8196,9 +8196,9 @@ DEFINE CLASS editsalesorder AS formset
 		pgfPO.pgPODesc.chkRandLen.Alignment = 0, ;
 		pgfPO.pgPODesc.chkRandLen.Name = "chkRandLen", ;
 		pgfPO.pgPODesc.chkRandLen.TabIndex = 41, ;
-		pgfPO.pgPODesc.chkServicesPO.Alignment = 0, ;
-		pgfPO.pgPODesc.chkServicesPO.Name = "chkServicesPO", ;
-		pgfPO.pgPODesc.chkServicesPO.TabIndex = 81, ;
+		pgfPO.pgPODesc.chkLab_Service.Alignment = 0, ;
+		pgfPO.pgPODesc.chkLab_Service.Name = "chkLab_Service", ;
+		pgfPO.pgPODesc.chkLab_Service.TabIndex = 81, ;
 		pgfPO.pgPODesc.chkSPS1.Alignment = 0, ;
 		pgfPO.pgPODesc.chkSPS1.Name = "chkSPS1", ;
 		pgfPO.pgPODesc.chkSPS1.TabIndex = 79, ;

@@ -35688,7 +35688,7 @@ IF VARTYPE(pcCustomerID) != "C"
 ENDIF
 
 PRIVATE cCompany, cCustomerID
-cCompany	= PrepareSQLtxt(pcCompany,'Company',30)
+cCompany	= PrepareSQLtxt(pcCompany,'Company',100)
 cCustomerID	= PrepareSQLtxt(pcCustomerID,'CustomerID',20)
 
 IF EMPTY(cCompany) OR EMPTY(cCustomerID)
@@ -35779,7 +35779,7 @@ IF VARTYPE(pcCompany) != "C"
 ENDIF
 
 PRIVATE cCompany
-cCompany	= PrepareSQLtxt(pcCompany,'Company',30)
+cCompany	= PrepareSQLtxt(pcCompany,'Company',100)
 
 
 IF EMPTY(cCompany)
@@ -35881,7 +35881,7 @@ ENDIF
 nConn = CheckSQLConnection(nConn)
 
 cPhone	= PrepareSQLtxt(cPhone,'Phone',10)
-cCompany= PrepareSQLtxt(cCompany,'Company',30)
+cCompany= PrepareSQLtxt(cCompany,'Company',100)
 cName	= PrepareSQLtxt(cName,'Name',25)
 
 
@@ -37365,7 +37365,7 @@ nConn = CheckSQLConnection(nConn)
 PRIVATE cAlias, cSQL 
 cAlias = ALIAS()
 
-cVendor = ALLTRIM(PrepareSQLtxt(cVendor,'Company',30))
+cVendor = ALLTRIM(PrepareSQLtxt(cVendor,'Company',100))
 
 IF USED('tmpPQSL_svc')
 	USE IN tmpPQSL_svc
@@ -37547,7 +37547,7 @@ ELSE
 	lNewConn = .T.
 ENDIF
 nConn = CheckSQLConnection(nConn)
-cCompany= PrepareSQLtxt(cCompany,'Company',30)
+cCompany= PrepareSQLtxt(cCompany,'Company',100)
 
 PRIVATE cAlias 
 cAlias = ALIAS()
@@ -37612,12 +37612,15 @@ ENDIF
 nConn = CheckSQLConnection(nConn)
 
 PRIVATE cCompany, cContact
-cCompany = PrepareSQLtxt( pcCompany, 'Company', 30 )
+* Vendor.Company is varchar(100) — do not trim to PurchaseOrder's old 30-char width
+cCompany = PrepareSQLtxt( pcCompany, 'Company', 100 )
 cContact = PrepareSQLtxt( pcContact, 'Contact', 20 )
 
-cSQL = "INSERT INTO dbo.Vendor (Company,Contact) VALUES "
+* Required NOT NULL columns (no defaults for vendor_type / QAApproved / Inactive / Metal)
+cSQL = "INSERT INTO dbo.Vendor (Company,Contact,vendor_type,QAApproved,QAType,Inactive,Metal,LastEdit,VQS_NotRequired) VALUES "
 cSQL = cSQL + "('"+cCompany +"'"
-cSQL = cSQL + ",'"+cContact +"')"
+cSQL = cSQL + ",'"+cContact +"'"
+cSQL = cSQL + ",0,1,0,0,0,GETDATE(),1)"
 
 nSQLEXEC = SQLEXEC(nConn, cSQL )
 
@@ -37667,7 +37670,7 @@ IF USED("Vendor")
 	USE IN Vendor
 ENDIF
 
-cCompany = PrepareSQLtxt( cCompany, 'Company', 30 )
+cCompany = PrepareSQLtxt( cCompany, 'Company', 100 )
 
 PRIVATE cSQL, nSQLEXEC 
 IF VARTYPE(nVendCode) = "N"
@@ -37757,7 +37760,7 @@ ELSE
 ENDIF
 nConn = CheckSQLConnection(nConn)
 
-cCompany = PrepareSQLtxt( cCompany, 'Company', 30 )
+cCompany = PrepareSQLtxt( cCompany, 'Company', 100 )
 
 PRIVATE cAlias 
 cAlias = ALIAS()
@@ -39006,7 +39009,7 @@ IF USED('tmpPQSL_PeachID')
 ENDIF
 SELECT 0
 
-cCompany = PrepareSQLtxt(cCompany,'Company',30)
+cCompany = PrepareSQLtxt(cCompany,'Company',100)
 IF nConn > 0 
 
 	cSQL = "SELECT TOP 1 V1.VendCode FROM dbo.Vendor V1 WITH(NOLOCK) "

@@ -18,7 +18,14 @@ Applies to FoxBin2Prg pairs: `SC2↔SCX`, `VC2↔VCX`, `FR2↔FRX`, `MN2↔MNX`,
 cmd /c E:\VFP\ERP_2\tools\run_ensure_text_current.bat Forms\quotes.sc2
 ```
 
-Or from VFP: `DO tools\ensure_foxbin_text_current.prg WITH "Forms\quotes.sc2"`
+Prefer the **batch** (not `DO ensure_…` alone): the PRG only checks timestamps; the bat launches `foxbin2prg_b2p.prg` in a **separate** VFP process when needed. Nested `RUN /W vfp9` from VFP hangs / Error 202.
+
+Hang / progress signals:
+- `tools\_foxbin_ensure_status.txt` — last step (stale = hung check)
+- `tools\_foxbin_ensure_action.txt` — `CURRENT|…` or `NEED_BIN2PRG|…`
+- Bat kills VFP after timeout (60s check / 120s BIN2PRG) and exits **124**
+
+After editing `ensure_foxbin_text_current.prg`, delete `tools\ensure_foxbin_text_current.fxp`. Check `tools\foxbin_sync.log` for `ENSURE` / `NEED_BIN2PRG` / `ENSURE_BIN2PRG_OK`.
 
 ## After editing text
 
@@ -28,15 +35,15 @@ Always run **PRG2BIN** so runtime uses the updated binary.
 cmd /c E:\VFP\ERP_2\tools\run_prg2bin_one.bat Forms\quotes.sc2
 ```
 
-Or from VFP: `DO tools\prg2bin_one.prg WITH "Forms\quotes.sc2"`
+(`run_prg2bin_one.bat` calls `foxbin2prg_p2b.prg` directly — do not nest VFP via `RUN /W`.)
 
 ## Agent workflow (required)
 
 When you change any `*.SC2` (or other FoxBin2Prg text file):
 
-1. **Before** first edit → `ensure_foxbin_text_current` if binary may be newer.
+1. **Before** first edit → `run_ensure_text_current.bat` if binary may be newer.
 2. Edit the text file.
-3. **After** edits → `prg2bin_one` for that file (mandatory).
-4. Do **not** loop `DO foxbin2prg … PRG2BIN` many times in one VFP session.
+3. **After** edits → `run_prg2bin_one.bat` for that file (mandatory).
+4. Do **not** nest `RUN /W vfp9` from inside VFP for FoxBin.
 
-Runners live in `tools\foxbin2prg\foxbin2prg_b2p.prg` (BIN2PRG) and `foxbin2prg_p2b.prg` (PRG2BIN).
+Runners: `tools\foxbin2prg\foxbin2prg_b2p.prg` (BIN2PRG), `tools\foxbin2prg\foxbin2prg_p2b.prg` (PRG2BIN).

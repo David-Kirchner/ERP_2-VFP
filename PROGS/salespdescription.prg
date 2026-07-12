@@ -59,6 +59,13 @@ IF nConn > 0
 
 		USE IN tmpSqlAns
 	ENDIF
+
+	IF !EMPTY(lcSalesPName) AND ATC(" ", ALLTRIM(lcSalesPName)) = 0
+		IF NOT "PROC_SETUP" $ SET("PROCEDURE")
+			SET PROCEDURE TO Progs\Proc_Setup ADDITIVE
+		ENDIF
+		lcSalesPName = AppSetup_Login_DisplayName(lcSalesPName, nConn)
+	ENDIF
 	
 	SQLDISCONNECT( nConn )
 ELSE
