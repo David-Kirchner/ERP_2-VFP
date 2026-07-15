@@ -120,6 +120,7 @@ method opens all five before `REPORT FORM`.
 | PO number | STR(HpaPo)+'-'+STR(SalesNum)+SalesP; ItemPO per line | never |
 | Revision | 'Ver '+STR(PO_No.PO_Rev) | PO_Rev = 0 |
 | Vendor block | Company; VendorContact.addr1/addr2/city/st/zip/country; Attn: contact; phone/fax/email | per-line when NULL or empty |
+| Vendor Phone/Fax | Digits only in VendorContact.Phone/Fax (10 US digits). Report masks `(123) 456-7890`. Never store dotted/float phones. | |
 | Ship-to Tipton | hard-coded address block | ShipWhere >= 2 |
 | Ship-to direct | shipaddr.company/addr1/addr2/city+st+zip+country; BLIND SHIP | ShipWhere <= 1 |
 | Order Date | TTOD(OrderDate) | never |

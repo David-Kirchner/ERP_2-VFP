@@ -5533,6 +5533,7 @@ cSQL = cSQL + ",OtherP,OtherFld, Order_Qty,Order_PU,Order_P"
 cSQL = cSQL + ",SalesNum,ShipVia,OrderDate,JobNumber,Terms,FOB,ShipWhere"
 cSQL = cSQL + " FROM dbo.PurchaseOrder "
 cSQL = cSQL + " WHERE HPAPO = "+STR(nHPAPO)+""
+cSQL = cSQL + " ORDER BY POitem"
 
 nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPOConf')
 DO WHILE nSQLEXEC = 0
@@ -5576,13 +5577,23 @@ PRIVATE cPOName, cPOCompany, nPOshipAddr, cPOEmail, cPOPhone, cPOFax, cSalesRep,
 PRIVATE nShipWhere, cAddrWhich, cHpaPhone, cHpaFax, cHpaCountry, cLogoImg, cWebsiteHtml
 cPOName		= tmpPOConf.POSalesP
 cPOCompany	= tmpPOConf.Company
-nPOshipAddr = PrepareSQLnum(tmpPOConf.POshipAddr,'POshipAddr',-3)
-nShipWhere	= PrepareSQLnum(tmpPOConf.ShipWhere,'ShipWhere',-1)
-cPOEmail	= VendorContactEmail_ContactID(tmpPOConf.ContactID)
-cPOPhone	= VendorContactPhone_ContactID(tmpPOConf.ContactID)
-cPOFax		= VendorContactFax_ContactID(tmpPOConf.ContactID)
-cSalesRep	= AppSetup_Get_SalesRep_SalesP(tmpPOConf.SalesP)
-nAdmendment	= PrepareSQLnum(tmpPOConf.Amendment,'Amendment',-1)
+nPOshipAddr = IIF(ISNULL(tmpPOConf.POshipAddr), 0, INT(VAL(TRANSFORM(tmpPOConf.POshipAddr))))
+nShipWhere	= IIF(ISNULL(tmpPOConf.ShipWhere), 0, INT(VAL(TRANSFORM(tmpPOConf.ShipWhere))))
+cPOEmail	= ""
+cPOPhone	= ""
+cPOFax		= ""
+cSalesRep	= ""
+nAdmendment	= IIF(ISNULL(tmpPOConf.Amendment), 0, INT(VAL(TRANSFORM(tmpPOConf.Amendment))))
+TRY
+	cPOEmail = VendorContactEmail_ContactID(tmpPOConf.ContactID)
+	cPOPhone = VendorContactPhone_ContactID(tmpPOConf.ContactID)
+	cPOFax = VendorContactFax_ContactID(tmpPOConf.ContactID)
+CATCH
+ENDTRY
+TRY
+	cSalesRep = AppSetup_Get_SalesRep_SalesP(tmpPOConf.SalesP)
+CATCH
+ENDTRY
 
 IF NOT "COMPANY_BRANDING" $ UPPER(SET("PROCEDURE"))
 	IF FILE("PROGS\company_branding.prg")
@@ -5596,14 +5607,74 @@ IF NOT "COMPANY_REPORT" $ UPPER(SET("PROCEDURE"))
 ENDIF
 
 cAddrWhich = CompanyReport_WhichFromPO(nShipWhere, nPOshipAddr)
-cHpaPhone = CompanyReport_AddrPhone(cAddrWhich)
-cHpaFax = CompanyReport_AddrFax(cAddrWhich)
-cHpaCountry = CompanyReport_AddressField(cAddrWhich, "Country")
+cHpaPhone = CompanyReport_NzText(CompanyReport_AddrPhone(cAddrWhich))
+cHpaFax = CompanyReport_NzText(CompanyReport_AddrFax(cAddrWhich))
+cHpaCountry = CompanyReport_NzText(CompanyReport_AddressField(cAddrWhich, "Country"))
 IF EMPTY(cHpaCountry)
 	cHpaCountry = "United States of America"
 ENDIF
 cLogoImg = CompanyBranding_ReportLogoHtmlImg(69)
 cWebsiteHtml = CompanyReport_WebsiteHtml()
+
+* Vendor To: address (same source as purchaseorder14.frx VendorContact.*)
+PRIVATE cVendAddr1, cVendAddr2, cVendCity, cVendST, cVendZip, cVendCountry
+PRIVATE cVendPhoneFmt, cVendFaxFmt
+cVendAddr1 = ""
+cVendAddr2 = ""
+cVendCity = ""
+cVendST = ""
+cVendZip = ""
+cVendCountry = ""
+cVendPhoneFmt = CompanyReport_PhoneMask(cPOPhone)
+cVendFaxFmt = CompanyReport_PhoneMask(cPOFax)
+IF USED("tmpPOVendAddr")
+	USE IN tmpPOVendAddr
+ENDIF
+IF PrepareSQLnum(tmpPOConf.ContactID,'ContactID',-3) > 0
+	PRIVATE cSQLVA, nSQLVA
+	cSQLVA = "SELECT Addr1, Addr2, City, ST, Zip, Country, Phone, Fax FROM dbo.VendorContact WITH (NOLOCK) "
+	cSQLVA = cSQLVA + " WHERE ContactID = " + ALLTRIM(STR(tmpPOConf.ContactID))
+	nSQLVA = SQLEXEC(nConn, cSQLVA, "tmpPOVendAddr")
+	IF nSQLVA > 0 AND USED("tmpPOVendAddr") AND RECCOUNT("tmpPOVendAddr") > 0
+		SELECT tmpPOVendAddr
+		cVendAddr1 = CompanyReport_NzText(tmpPOVendAddr.Addr1)
+		cVendAddr2 = CompanyReport_NzText(tmpPOVendAddr.Addr2)
+		cVendCity = CompanyReport_NzText(tmpPOVendAddr.City)
+		cVendST = CompanyReport_NzText(tmpPOVendAddr.ST)
+		cVendZip = CompanyReport_NzText(tmpPOVendAddr.Zip)
+		cVendCountry = CompanyReport_NzText(tmpPOVendAddr.Country)
+		IF !EMPTY(CompanyReport_NzText(tmpPOVendAddr.Phone))
+			cVendPhoneFmt = CompanyReport_PhoneMask(tmpPOVendAddr.Phone)
+		ENDIF
+		IF !EMPTY(CompanyReport_NzText(tmpPOVendAddr.Fax))
+			cVendFaxFmt = CompanyReport_PhoneMask(tmpPOVendAddr.Fax)
+		ENDIF
+		USE IN tmpPOVendAddr
+	ENDIF
+ENDIF
+* Fallback to Vendor address when contact address is empty
+IF EMPTY(cVendAddr1) AND EMPTY(cVendCity) AND PrepareSQLnum(tmpPOConf.VendCode,'VendCode',-3) > 0
+	IF USED("tmpPOVendHdr")
+		USE IN tmpPOVendHdr
+	ENDIF
+	cSQLVA = "SELECT Addr1, Addr2, City, ST, Zip, Country, telephone FROM dbo.Vendor WITH (NOLOCK) "
+	cSQLVA = cSQLVA + " WHERE VendCode = " + ALLTRIM(STR(tmpPOConf.VendCode))
+	nSQLVA = SQLEXEC(nConn, cSQLVA, "tmpPOVendHdr")
+	IF nSQLVA > 0 AND USED("tmpPOVendHdr") AND RECCOUNT("tmpPOVendHdr") > 0
+		SELECT tmpPOVendHdr
+		cVendAddr1 = CompanyReport_NzText(tmpPOVendHdr.Addr1)
+		cVendAddr2 = CompanyReport_NzText(tmpPOVendHdr.Addr2)
+		cVendCity = CompanyReport_NzText(tmpPOVendHdr.City)
+		cVendST = CompanyReport_NzText(tmpPOVendHdr.ST)
+		cVendZip = CompanyReport_NzText(tmpPOVendHdr.Zip)
+		cVendCountry = CompanyReport_NzText(tmpPOVendHdr.Country)
+		IF EMPTY(cVendPhoneFmt) AND !EMPTY(CompanyReport_NzText(tmpPOVendHdr.telephone))
+			cVendPhoneFmt = CompanyReport_PhoneMask(tmpPOVendHdr.telephone)
+		ENDIF
+		USE IN tmpPOVendHdr
+	ENDIF
+ENDIF
+SELECT tmpPOConf
 
 m.MsgHeader = ''
 m.MsgHeader = m.MsgHeader +"<!DOCTYPE html> " &&trigger in Send_HTML_Email
@@ -5612,144 +5683,208 @@ m.MsgHeader = m.MsgHeader +"<head>"
 m.MsgHeader = m.MsgHeader +"<title>Purchase Order Confirmation</title>"
 m.MsgHeader = m.MsgHeader +[<style type="text/css">]
 m.MsgHeader = m.MsgHeader +".styleRightAlign{text-align: right;}"
-*m.MsgHeader = m.MsgHeader +".styleTableHeadersRow{background-color: #4D5079;color: #FFFFFF;}"
 m.MsgHeader = m.MsgHeader +".styleTableHeadersRow{background-color: #D1EAF1;color: #000000;}"
 m.MsgHeader = m.MsgHeader +[.styleTextAlignCenter{text-align: center;}]
 m.MsgHeader = m.MsgHeader +[.auto-style1 {background-color: #FFFF66;}]
 m.MsgHeader = m.MsgHeader +[.styleFullWidth { width: 100%;}]
 m.MsgHeader = m.MsgHeader +[.stylePOitem { width: 126px;}]
 m.MsgHeader = m.MsgHeader +[.styleAlloy { width: 308px;}]
-
+m.MsgHeader = m.MsgHeader +[.coHdr { font-family: Arial, Helvetica, sans-serif; }]
+m.MsgHeader = m.MsgHeader +[.coHdrPhone { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; font-weight: bold; }]
+m.MsgHeader = m.MsgHeader +[.poAddr { font-family: "Courier New", Courier, monospace; font-size: 10pt; font-weight: bold; }]
+m.MsgHeader = m.MsgHeader +[.poAddrLbl { font-family: "Courier New", Courier, monospace; font-size: 10pt; font-weight: bold; vertical-align: top; }]
 m.MsgHeader = m.MsgHeader +"</style>"
 m.MsgHeader = m.MsgHeader +"</head>"
 m.MsgHeader = m.MsgHeader +"<body>"
 m.MsgHeader = m.MsgHeader +"<header>"
-m.MsgHeader = m.MsgHeader +[<table style="border: thin none #000000; width: 480pt; ">]
+* Same look as purchaseorder14.frx: logo | company name + PHONE/FAX/Email | PO# box
+m.MsgHeader = m.MsgHeader +[<table class="coHdr" style="border: thin none #000000; width: 540pt; ">]
 m.MsgHeader = m.MsgHeader +"<tr>"
-m.MsgHeader = m.MsgHeader +[<td style="width: 165pt; vertical-align: top;">]
+m.MsgHeader = m.MsgHeader +[<td style="width: 150pt; vertical-align: top;">]
 IF !EMPTY(cLogoImg)
 	m.MsgHeader = m.MsgHeader + cLogoImg
 ELSE
-	* Branding Report Logo unavailable ? omit broken remote HPALogo URL
 	m.MsgHeader = m.MsgHeader +[&nbsp;]
 ENDIF
 m.MsgHeader = m.MsgHeader +[</td>]
-m.MsgHeader = m.MsgHeader +[<td style="width: 192pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<h2></h2>] &&Purchase Order
-m.MsgHeader = m.MsgHeader +[</td>]
-m.MsgHeader = m.MsgHeader +[<td style="width: 123pt; text-align: left; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<strong>Sent</strong> ]+DTOC(DATE())+[<br />]
-*m.MsgHeader = m.MsgHeader +[<strong></strong><br /><br />]
-m.MsgHeader = m.MsgHeader +[<br />]
-m.MsgHeader = m.MsgHeader +[<strong>Purchase Order # ]+STR(nHPAPO)+[</strong>]
-IF nAdmendment>0
-	m.MsgHeader = m.MsgHeader +[<br />]
-	m.MsgHeader = m.MsgHeader +[<strong>Admendment ]+ALLTRIM(STR(nAdmendment))+[</strong>]
+m.MsgHeader = m.MsgHeader +[<td style="width: 230pt; vertical-align: top; text-align: center;">]
+m.MsgHeader = m.MsgHeader +[<div style="font-size: 16pt; font-weight: bold;">]+CompanyReport_HtmlSafe(CompanyReport_Name())+[</div>]
+m.MsgHeader = m.MsgHeader +[<div class="coHdrPhone" style="margin-top: 4pt;">]
+IF !EMPTY(CompanyReport_PoHeaderPhone())
+	m.MsgHeader = m.MsgHeader + CompanyReport_HtmlSafe(CompanyReport_PoHeaderPhone()) + [<br />]
 ENDIF
+IF !EMPTY(CompanyReport_PoHeaderFax())
+	m.MsgHeader = m.MsgHeader + CompanyReport_HtmlSafe(CompanyReport_PoHeaderFax()) + [<br />]
+ENDIF
+IF !EMPTY(CompanyReport_PoHeaderEmail())
+	m.MsgHeader = m.MsgHeader +[<span style="font-weight: normal;">]+CompanyReport_HtmlSafe(CompanyReport_PoHeaderEmail())+[</span><br />]
+ENDIF
+m.MsgHeader = m.MsgHeader +[</div>]
+m.MsgHeader = m.MsgHeader +[</td>]
+m.MsgHeader = m.MsgHeader +[<td style="width: 140pt; text-align: center; vertical-align: top;">]
+m.MsgHeader = m.MsgHeader +[<div style="border: 1px solid #000000; padding: 4pt 6pt;">]
+m.MsgHeader = m.MsgHeader +[<div style="font-size: 11pt; font-weight: bold;">PURCHASE ORDER</div>]
+m.MsgHeader = m.MsgHeader +[<hr style="border: none; border-top: 1px solid #000000; margin: 4pt 0;" />]
+* Same PO# expression as purchaseorder14.frx: HpaPo-SalesNum+SalesP
+PRIVATE cPoNumDisp, cSalesPDisp, nSalesNumHdr
+cSalesPDisp = CompanyReport_NzText(tmpPOConf.SalesP)
+nSalesNumHdr = IIF(ISNULL(tmpPOConf.SalesNum), 0, tmpPOConf.SalesNum)
+cPoNumDisp = ALLTRIM(STR(nHPAPO)) + [-] + ALLTRIM(STR(nSalesNumHdr)) + cSalesPDisp
+m.MsgHeader = m.MsgHeader +[<div style="font-size: 14pt; font-weight: bold; font-family: 'Courier New', Courier, monospace;">]+CompanyReport_HtmlSafe(cPoNumDisp)+[</div>]
+IF nAdmendment>0
+	m.MsgHeader = m.MsgHeader +[<div style="font-size: 10pt; font-weight: bold;">Amendment ]+ALLTRIM(STR(nAdmendment))+[</div>]
+ENDIF
+m.MsgHeader = m.MsgHeader +[</div>]
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[</tr>]
 m.MsgHeader = m.MsgHeader +[</table>]
 m.MsgHeader = m.MsgHeader +[</header>]
 m.MsgHeader = m.MsgHeader +[<br />]
-m.MsgHeader = m.MsgHeader +[<br />]
-m.MsgHeader = m.MsgHeader +[<table style="border: thin none #000000; width: 480pt; ">]
+* To: | Ship to: | Send Bill: ? Courier New like purchaseorder14.frx
+m.MsgHeader = m.MsgHeader +[<table style="border: thin none #000000; width: 540pt; ">]
 m.MsgHeader = m.MsgHeader +[<tr>]
-m.MsgHeader = m.MsgHeader +[<td style="width: 32pt; vertical-align: top;"></td>]
-m.MsgHeader = m.MsgHeader +[<td style="width: 54pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<strong>Buy from:</strong>]
-m.MsgHeader = m.MsgHeader +[</td>]
-m.MsgHeader = m.MsgHeader +[<td style="width: 150pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +PrepareSQLtxt(cPOName,'Name',50)+[<br />]
-m.MsgHeader = m.MsgHeader +PrepareSQLtxt(cPOCompany,'Company',100)+[<br />]
-m.MsgHeader = m.MsgHeader +PrepareSQLtxt(cPOEmail,'email',60)+[<br />]
-m.MsgHeader = m.MsgHeader +[P ]+PrepareSQLtxt(cPOPhone,'Phone ',20)+[<br />]
-m.MsgHeader = m.MsgHeader +[F ]+PrepareSQLtxt(cPOFax,'Fax',20)
-m.MsgHeader = m.MsgHeader +[</td>]
-m.MsgHeader = m.MsgHeader +[<td style="width: 72pt; text-align: left; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[<strong>Contact:</strong>]
-m.MsgHeader = m.MsgHeader +[</td>]
-m.MsgHeader = m.MsgHeader +[<td style="width: 150pt; vertical-align: top;">]
-m.MsgHeader = m.MsgHeader +[]+ALLTRIM(cSalesRep)+[<br />]
-
-m.MsgHeader = m.MsgHeader + POShipAddrST(nPOShipAddr,nConn)+[<br />]  &&Street Addr
-m.MsgHeader = m.MsgHeader + POShipAddrCity(nPOShipAddr,nConn)+[<br />]  &&City, State and Zip
-
-m.MsgHeader = m.MsgHeader + ALLTRIM(cHpaCountry) + [<br />]
-IF !EMPTY(cHpaPhone)
-	m.MsgHeader = m.MsgHeader +[P ]+ALLTRIM(cHpaPhone)+[<br />]
+* --- To: (vendor / VendorContact) ---
+m.MsgHeader = m.MsgHeader +[<td class="poAddrLbl" style="width: 28pt;">To:</td>]
+m.MsgHeader = m.MsgHeader +[<td class="poAddr" style="width: 155pt; vertical-align: top;">]
+cPOCompany = CompanyReport_NzText(PrepareSQLtxt(cPOCompany,'Company',100))
+cPOName = CompanyReport_NzText(PrepareSQLtxt(cPOName,'Name',50))
+cPOEmail = CompanyReport_NzText(PrepareSQLtxt(cPOEmail,'email',60))
+IF !EMPTY(cPOCompany)
+	m.MsgHeader = m.MsgHeader + CompanyReport_HtmlSafe(cPOCompany) + [<br />]
 ENDIF
-IF !EMPTY(cHpaFax)
-	m.MsgHeader = m.MsgHeader +[F ]+ALLTRIM(cHpaFax)+[<br />]
+IF !EMPTY(cVendAddr1)
+	m.MsgHeader = m.MsgHeader + CompanyReport_HtmlSafe(cVendAddr1) + [<br />]
 ENDIF
-IF !EMPTY(cWebsiteHtml)
-	m.MsgHeader = m.MsgHeader + cWebsiteHtml
+IF !EMPTY(cVendAddr2)
+	m.MsgHeader = m.MsgHeader + CompanyReport_HtmlSafe(cVendAddr2) + [<br />]
 ENDIF
+PRIVATE cVendCityLine
+* Match FRX: city+", "+st+" "+zip+" "+country (spaces, not commas before country)
+cVendCityLine = ALLTRIM(cVendCity)
+IF !EMPTY(cVendST)
+	cVendCityLine = ALLTRIM(cVendCityLine + IIF(EMPTY(cVendCityLine), "", ", ") + cVendST)
+ENDIF
+IF !EMPTY(cVendZip)
+	cVendCityLine = ALLTRIM(cVendCityLine + IIF(EMPTY(cVendCityLine), "", " ") + cVendZip)
+ENDIF
+IF !EMPTY(cVendCountry)
+	cVendCityLine = ALLTRIM(cVendCityLine + IIF(EMPTY(cVendCityLine), "", " ") + cVendCountry)
+ENDIF
+IF !EMPTY(cVendCityLine)
+	m.MsgHeader = m.MsgHeader + CompanyReport_HtmlSafe(cVendCityLine) + [<br />]
+ENDIF
+IF !EMPTY(cVendPhoneFmt)
+	m.MsgHeader = m.MsgHeader +[Phone:]+CompanyReport_HtmlSafe(cVendPhoneFmt)+[<br />]
+ENDIF
+IF !EMPTY(cVendFaxFmt)
+	m.MsgHeader = m.MsgHeader +[Fax:]+CompanyReport_HtmlSafe(cVendFaxFmt)+[<br />]
+ENDIF
+IF !EMPTY(cPOEmail)
+	m.MsgHeader = m.MsgHeader +[Email:]+CompanyReport_HtmlSafe(cPOEmail)+[<br />]
+ENDIF
+IF !EMPTY(cPOName)
+	m.MsgHeader = m.MsgHeader +[Sales Person: ]+CompanyReport_HtmlSafe(cPOName)+[<br />]
+ENDIF
+m.MsgHeader = m.MsgHeader +[</td>]
+* --- Ship to: Company Profile ShipTo* ---
+m.MsgHeader = m.MsgHeader +[<td class="poAddrLbl" style="width: 50pt;">Ship to:</td>]
+m.MsgHeader = m.MsgHeader +[<td class="poAddr" style="width: 140pt; vertical-align: top; border-right: 1px solid #000000; padding-right: 6pt;">]
+m.MsgHeader = m.MsgHeader + CompanyReport_HtmlAddrBlock("SHIP")
+m.MsgHeader = m.MsgHeader +[</td>]
+* --- Send Bill: Company Profile BillTo* ---
+m.MsgHeader = m.MsgHeader +[<td class="poAddrLbl" style="width: 58pt; padding-left: 6pt;">Send Bill:</td>]
+m.MsgHeader = m.MsgHeader +[<td class="poAddr" style="width: 140pt; vertical-align: top;">]
+m.MsgHeader = m.MsgHeader + CompanyReport_HtmlAddrBlock("BILL")
 m.MsgHeader = m.MsgHeader +[</td>]
 m.MsgHeader = m.MsgHeader +[</tr>]
 m.MsgHeader = m.MsgHeader +[</table>]
-m.MsgHeader = m.MsgHeader +[<br />]
 m.MsgHeader = m.MsgHeader +[<br />]
 
 m.MsgNoteHTML = m.MsgHeader
 ********************************
 *Sub Header: 
 PRIVATE nSalesNum,cShipVia,dOrderDate,cJobNumber,cTerms,cFOB
-nSalesNum	= PrepareSQLnum(tmpPOConf.SalesNum,'SalesNum',-3)
-cShipVia	= PrepareSQLtxt(tmpPOConf.ShipVia,'ShipVia',20)
-dOrderDate	= PrepareSQLdate(tmpPOConf.OrderDate,'OrderDate')
-cJobNumber	= PrepareSQLtxt(tmpPOConf.JobNumber,'JobNumber',20)
-cTerms	= PrepareSQLtxt(tmpPOConf.Terms,'Terms',50)
-cFOB	= PrepareSQLtxt(tmpPOConf.FOB,'FOB',50)
+SELECT tmpPOConf
+nSalesNum	= IIF(ISNULL(tmpPOConf.SalesNum), 0, INT(VAL(TRANSFORM(tmpPOConf.SalesNum))))
+cShipVia	= CompanyReport_NzText(tmpPOConf.ShipVia)
+DO CASE
+CASE VARTYPE(tmpPOConf.OrderDate) = "T"
+	dOrderDate = TTOD(tmpPOConf.OrderDate)
+CASE VARTYPE(tmpPOConf.OrderDate) = "D"
+	dOrderDate = tmpPOConf.OrderDate
+OTHERWISE
+	dOrderDate = {}
+ENDCASE
+* Use EVALUATE so PRIVATE/field name collisions cannot blank JobNumber
+cJobNumber	= ALLTRIM(NVL(EVALUATE("tmpPOConf.JobNumber"), ""))
+IF UPPER(cJobNumber) == "NULL" OR cJobNumber == ".NULL."
+	cJobNumber = ""
+ENDIF
+cTerms	= CompanyReport_NzText(tmpPOConf.Terms)
+cFOB	= CompanyReport_NzText(tmpPOConf.FOB)
 
-m.MsgNoteHTML = m.MsgNoteHTML +[<p>]
+* Info bar - purchaseorder14.frx: HPA / Ship Via | Order Date / Job Number (Courier)
+m.MsgNoteHTML = m.MsgNoteHTML +[<table style="border-style: double; border-width: 3pt; border-color: #000000; width: 540pt; font-family: 'Courier New', Courier, monospace; font-size: 10pt; font-weight: bold;">]
+m.MsgNoteHTML = m.MsgNoteHTML +[<tr>]
+m.MsgNoteHTML = m.MsgNoteHTML +[<td style="width: 270pt; vertical-align: top; padding: 3pt 6pt;">]
+m.MsgNoteHTML = m.MsgNoteHTML +[HPA: ]
 IF nSalesNum > 0
-	m.MsgNoteHTML = m.MsgNoteHTML +[HPA Sales Number# ]+ALLTRIM(STR(nSalesNum))
+	m.MsgNoteHTML = m.MsgNoteHTML + ALLTRIM(STR(nSalesNum))
 ENDIF
-IF NOT EMPTY(cShipVia)
-	m.MsgNoteHTML = m.MsgNoteHTML +[		ShipVia: ]+ALLTRIM(cShipVia)
+m.MsgNoteHTML = m.MsgNoteHTML +[</td>]
+m.MsgNoteHTML = m.MsgNoteHTML +[<td style="width: 270pt; vertical-align: top; padding: 3pt 6pt;">]
+m.MsgNoteHTML = m.MsgNoteHTML +[Ship Via: ]+CompanyReport_HtmlSafe(ALLTRIM(EVL(cShipVia, "")))
+m.MsgNoteHTML = m.MsgNoteHTML +[</td>]
+m.MsgNoteHTML = m.MsgNoteHTML +[</tr>]
+m.MsgNoteHTML = m.MsgNoteHTML +[<tr>]
+m.MsgNoteHTML = m.MsgNoteHTML +[<td style="vertical-align: top; padding: 3pt 6pt;">]
+m.MsgNoteHTML = m.MsgNoteHTML +[Order Date: ]+DTOC(dOrderDate)
+m.MsgNoteHTML = m.MsgNoteHTML +[</td>]
+m.MsgNoteHTML = m.MsgNoteHTML +[<td style="vertical-align: top; padding: 3pt 6pt;">]
+m.MsgNoteHTML = m.MsgNoteHTML +[Job Number: ]+CompanyReport_HtmlSafe(cJobNumber)
+m.MsgNoteHTML = m.MsgNoteHTML +[</td>]
+m.MsgNoteHTML = m.MsgNoteHTML +[</tr>]
+m.MsgNoteHTML = m.MsgNoteHTML +[</table>]
+IF NOT EMPTY(cTerms) OR NOT EMPTY(cFOB)
+	m.MsgNoteHTML = m.MsgNoteHTML +[<div style="font-family: 'Courier New', Courier, monospace; font-size: 10pt; font-weight: bold; margin-top: 4pt;">]
+	IF NOT EMPTY(cTerms)
+		m.MsgNoteHTML = m.MsgNoteHTML +[Terms: ]+CompanyReport_HtmlSafe(cTerms)
+	ENDIF
+	IF NOT EMPTY(cFOB)
+		m.MsgNoteHTML = m.MsgNoteHTML + IIF(EMPTY(cTerms), "", [&nbsp;&nbsp;]) + [FOB: ]+CompanyReport_HtmlSafe(cFOB)
+	ENDIF
+	m.MsgNoteHTML = m.MsgNoteHTML +[</div>]
 ENDIF
-IF nSalesNum > 0 OR NOT EMPTY(cShipVia)
-	*add Break
-	m.MsgNoteHTML = m.MsgNoteHTML +[<br />]
-ENDIF
-
-m.MsgNoteHTML = m.MsgNoteHTML +[ Order Date: ]+DTOC(dOrderDate)
-IF NOT EMPTY(cJobNumber) AND ALLTRIM(cJobNumber) != "0"
-	m.MsgNoteHTML = m.MsgNoteHTML +[		JobNumber: ]+ALLTRIM(cJobNumber)
-ENDIF
-*add Break
 m.MsgNoteHTML = m.MsgNoteHTML +[<br />]
 
-IF NOT EMPTY(cTerms)
-	m.MsgNoteHTML = m.MsgNoteHTML +[ Terms:]+cTerms+[<br />]
-ENDIF
-IF NOT EMPTY(cFOB)
-	m.MsgNoteHTML = m.MsgNoteHTML +[ FOB:]+cFOB+[<br />]
-ENDIF
-
-
 ********************************
-*where p1 is hpapo, p2 is orderint, p3 is vendcode and p4 is contactID
-m.MsgNoteHTML = m.MsgNoteHTML +[<p><font color="red"> Please Confirm the receipt of this PO by clicking here: </font><a href="]
-m.MsgNoteHTML = m.MsgNoteHTML +"https://webservices.highperformancealloys.com/ConfirmPO.aspx?p1="+ALLTRIM(STR(nHPAPO))
-m.MsgNoteHTML = m.MsgNoteHTML +"&p2="+ALLTRIM(STR(tmpPOConf.OrderInt))
-m.MsgNoteHTML = m.MsgNoteHTML +"&p3="+ALLTRIM(STR(tmpPOConf.VendCode))
-m.MsgNoteHTML = m.MsgNoteHTML +"&p4="+ALLTRIM(STR(tmpPOConf.ContactID))
-m.MsgNoteHTML = m.MsgNoteHTML +[">Confirm PO receipt</a>]
+* Confirm PO link only when Company Profile ConfirmPOUrl is set
+PRIVATE cConfirmHref
+cConfirmHref = CompanyReport_ConfirmPOHref(nHPAPO, PrepareSQLnum(tmpPOConf.OrderInt,'OrderInt',-3), ;
+	PrepareSQLnum(tmpPOConf.VendCode,'VendCode',-3), PrepareSQLnum(tmpPOConf.ContactID,'ContactID',-3))
+m.MsgNoteHTML = m.MsgNoteHTML +[<p><font color="red"> Please Confirm the receipt of this PO]
+IF !EMPTY(cConfirmHref)
+	m.MsgNoteHTML = m.MsgNoteHTML +[ by clicking here: </font><a href="]+cConfirmHref+[">Confirm PO receipt</a>]
+ELSE
+	m.MsgNoteHTML = m.MsgNoteHTML +[</font>]
+ENDIF
 m.MsgNoteHTML = m.MsgNoteHTML  +[<br />]
 m.MsgNoteHTML = m.MsgNoteHTML +[Or reply to this Email]
 m.MsgNoteHTML = m.MsgNoteHTML  +[<br />]
 m.MsgNoteHTML = m.MsgNoteHTML  +[<br />]
 
 ********************************
-m.MsgNoteHTML = m.MsgNoteHTML +[<table style="border-style: solid solid double solid; border-width: thin thin medium thin; border-color: #000000; width: 480pt; ">]
+m.MsgNoteHTML = m.MsgNoteHTML +[<table style="border-style: solid solid double solid; border-width: thin thin medium thin; border-color: #000000; width: 540pt; ">]
 ***********************
 
 *Company,POshipaddr,ContactID
 *m.MsgNoteHTML = m.MsgNoteHTML +[Company ]+tmpPOConf.Company+[<br />]
 *m.MsgNoteHTML = m.MsgNoteHTML +[Ship Addr ]+STR(tmpPOConf.POshipaddr)+[<br />]
 *m.MsgNoteHTML = m.MsgNoteHTML +[ContactID ]+STR(tmpPOConf.ContactID)+[<br />]
-SCAN
+* Get_PUstr_from_nPU changes work area - use DO WHILE + SKIP IN tmpPOConf (not SCAN)
+SELECT tmpPOConf
+GO TOP
+DO WHILE NOT EOF("tmpPOConf")
 	*Alloy,Form,ItemDescription,CC,Pieces,thck,Sz2,Sz3,RandLen,DispAlloy,Due_Min,Due_Max
 *	m.MsgNoteHTML = m.MsgNoteHTML+[<tr style="vertical-align: top">]
 	m.MsgNoteHTML = m.MsgNoteHTML +[<tr class="styleTableHeadersRow">]
@@ -5789,6 +5924,7 @@ SCAN
 	*ENDIF
 
 	m.MsgNoteHTML = m.MsgNoteHTML+" " + Get_PU_Price_String(tmpPOConf.Order_PU, tmpPOConf.Order_Qty, tmpPOConf.Order_P)
+	SELECT tmpPOConf
 	
 	m.MsgNoteHTML = m.MsgNoteHTML+[</td>]
 	m.MsgNoteHTML = m.MsgNoteHTML+[<td>]
@@ -5805,6 +5941,7 @@ SCAN
 	m.MsgNoteHTML = m.MsgNoteHTML+[<tr><td style="vertical-align: top">]
 	IF tmpPOConf.Order_Qty > 1	&&do Not display Qty(0) or Qty(1)
 		cPU_Label = Get_PUstr_from_nPU(tmpPOConf.Order_PU, nConn )
+		SELECT tmpPOConf
 		IF LEN(cPU_Label)>0
 			m.MsgNoteHTML = m.MsgNoteHTML+"("+Remove0(tmpPOConf.Order_Qty,12,4,.F.)+" "+cPU_Label+"). "
 		ELSE
@@ -5845,7 +5982,9 @@ SCAN
 *	m.MsgNoteHTML = m.MsgNoteHTML +[</td>]
 	m.MsgNoteHTML = m.MsgNoteHTML +[</tr>]
 	
-ENDSCAN
+	SELECT tmpPOConf
+	SKIP IN tmpPOConf
+ENDDO
 
 m.MsgNoteHTML = m.MsgNoteHTML +[</table>]
 m.MsgNoteHTML = m.MsgNoteHTML +[<br />]
@@ -5889,10 +6028,13 @@ FWRITE( nFileNum, m.MsgNoteHTML )
 FCLOSE(nFileNum)
 
 
-PRIVATE loHyperlink 
-loHyperlink = CREATEOBJECT("Hyperlink")
-loHyperlink.navigateto(cFile)
-RELEASE loHyperlink 
+* Skip browser when gSkipPoConfHtmlNav is .T. (batch regen / tests)
+IF TYPE("gSkipPoConfHtmlNav") # "L" OR !gSkipPoConfHtmlNav
+	PRIVATE loHyperlink
+	loHyperlink = CREATEOBJECT("Hyperlink")
+	loHyperlink.navigateto(cFile)
+	RELEASE loHyperlink
+ENDIF
 
 IF USED('tmpPOConf')
 	USE IN tmpPOConf
@@ -5949,10 +6091,10 @@ m.cT = m.cT+ [PLEASE ACKNOWLEDGE IMMEDIATELY AND STATE WHEN YOU WILL SHIP.]+[<br
 m.cT = m.cT+ [OUR PURCHASE ORDER NUMBER MUST APPEAR ON ALL RELATED PACKAGES AND FORMS.]+[<br />]
 m.cT = m.cT+ [ ]+[<br />]
 m.cT = m.cT+ [This Purchase Order and activities hereunder may be within the jurisdiction of the Department ]+[<br />]
-m.cT = m.cT+ [of Energy and/or Department of Defense.  Any knowing and willful act of falsify, conceal or]+[<br />]
+m.cT = m.cT+ [of Energy and/or Department of Defense.  Any knowing and willful act to falsify, conceal or]+[<br />]
 m.cT = m.cT+ [alter a material fact, or any false, fraudulent, or fictitious statement or representation in]+[<br />]
 m.cT = m.cT+ [connection with the performance of work under this Purchase Order may be punishable in accor-]+[<br />]
-m.cT = m.cT+ [dance with Federal Statutes.  Verification on-site by HPA or it's customer may be necessary]+[<br />]
+m.cT = m.cT+ [dance with Federal Statutes.  Verification on-site by ]+CompanyReport_ShortName()+[ or its customer may be necessary]+[<br />]
 m.cT = m.cT+ [if stated in the contract and does not absolve the vendor of the responsibility to provide]+[<br />]
 m.cT = m.cT+ [acceptable product, nor preclude subsequent rejection by the customer.]+[<br />]
 m.cT = m.cT+ [ ]+[<br />]
@@ -6031,40 +6173,13 @@ m.MsgFooter = m.MsgFooter +[<td class="styleTextAlignCenter" colspan="3">]
 m.MsgFooter = m.MsgFooter +[<hr />]
 m.MsgFooter = m.MsgFooter +[</td>]
 m.MsgFooter = m.MsgFooter +[</tr>]
-m.MsgFooter = m.MsgFooter +[<tr>]
-m.MsgFooter = m.MsgFooter +[<td style="width: 138pt; vertical-align: top; text-align: center;">]
-m.MsgFooter = m.MsgFooter +[Windfall Production Center<br />]
-m.MsgFooter = m.MsgFooter +[    1985 E 500 N<br />]
-m.MsgFooter = m.MsgFooter +[    Windfall, IN 46076<br />]
-m.MsgFooter = m.MsgFooter +[    United States of America<br />]
-m.MsgFooter = m.MsgFooter +[    P 765-945-8230<br />]
-m.MsgFooter = m.MsgFooter +[    P 800-472-5569<br />]
-m.MsgFooter = m.MsgFooter +[    F 765-945-8294]
-m.MsgFooter = m.MsgFooter +[</td>]
-m.MsgFooter = m.MsgFooter +[<td style="width: 126pt; vertical-align: top; text-align: center;">]
-m.MsgFooter = m.MsgFooter +[Tipton Production Center<br />]
-m.MsgFooter = m.MsgFooter +[    444 Wilson St<br />]
-m.MsgFooter = m.MsgFooter +[    Tipton, IN 46072<br />]
-m.MsgFooter = m.MsgFooter +[    United States of America<br />]
-m.MsgFooter = m.MsgFooter +[    P 765-675-8875<br />]
-m.MsgFooter = m.MsgFooter +[    P 800-472-5569<br />]
-m.MsgFooter = m.MsgFooter +[    F 765-945-8294]
-m.MsgFooter = m.MsgFooter +[</td>]
-m.MsgFooter = m.MsgFooter +[<td style="width: 126pt; vertical-align: top; text-align: center;">]
-m.MsgFooter = m.MsgFooter +[Remit to<br />]
-m.MsgFooter = m.MsgFooter +[P.O. Box 40<br />]
-m.MsgFooter = m.MsgFooter +[Tipton, IN 46072<br />]
-m.MsgFooter = m.MsgFooter +[United States of America<br />]
-m.MsgFooter = m.MsgFooter +[P 765-945-8230<br />]
-m.MsgFooter = m.MsgFooter +[P 800-472-5569<br />]
-m.MsgFooter = m.MsgFooter +[F 765-945-8294]
-m.MsgFooter = m.MsgFooter +[</td>]
-m.MsgFooter = m.MsgFooter +[</tr>]
-m.MsgFooter = m.MsgFooter +[<tr>]
-m.MsgFooter = m.MsgFooter +[<td class="styleTextAlignCenter" colspan="2">]
-m.MsgFooter = m.MsgFooter +[<a href="https://www.SpaceAlloysUSA.com">www.SpaceAlloysUSA.com</a>]
-m.MsgFooter = m.MsgFooter +[</td>]
-m.MsgFooter = m.MsgFooter +[</tr>]
+* Windfall / Tipton / Remit from Company Profile + CompanyPlant
+IF NOT "COMPANY_REPORT" $ UPPER(SET("PROCEDURE"))
+	IF FILE("REPORTS\company_report.prg")
+		SET PROCEDURE TO REPORTS\company_report.prg ADDITIVE
+	ENDIF
+ENDIF
+m.MsgFooter = m.MsgFooter + CompanyReport_HtmlEmailFooterAddrs()
 
 *m.MsgFooter = m.MsgFooter +[<tr>]
 *m.MsgFooter = m.MsgFooter +[<td class="styleTextAlignCenter" colspan="2"> ]

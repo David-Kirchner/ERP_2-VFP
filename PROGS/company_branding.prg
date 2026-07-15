@@ -3,7 +3,8 @@
 *
 * Logo source: dbo.CompanyProfile.LogoImage (cached to MEM\company_logo.*)
 * Icon source: dbo.CompanyProfile.IconImage (cached to MEM\Company_Icon.ico)
-* Report Logo: MEM\Company_Rpt_Logo.bmp (SQL source); FRX: ..\MEM\Company_Rpt_Logo.bmp
+* Report Logo: MEM\Company_Rpt_Logo.bmp (SQL source); FRX: graphics\Company_Rpt_Logo.bmp
+* (avoid ..\MEM\ — VFP resolves that from CURDIR and prompts Open when missing)
 * Forms/ERP:  GetCompanyIconPath() -> MEM\Company_Icon.ico (default ICO\earth-globe.ico)
 *
 * DO InitCompanyBranding   && called from main.prg after load_CompanyProfile
@@ -22,7 +23,7 @@
 #DEFINE BRANDING_PLACEHOLDER_LOGO  "graphics\company_logo_placeholder.png"
 #DEFINE BRANDING_GRAPHICS_ICON   "graphics\earth-globe.ico"
 #DEFINE BRANDING_GRAPHICS_BMP    "graphics\Company_Rpt_Logo.bmp"
-#DEFINE BRANDING_REPORT_LOGO_FRX "..\MEM\Company_Rpt_Logo.bmp"
+#DEFINE BRANDING_REPORT_LOGO_FRX "graphics\Company_Rpt_Logo.bmp"
 
 PUBLIC gCompanyLogoPath
 PUBLIC gCompanyIconPath
@@ -42,13 +43,22 @@ FUNCTION CompanyBranding_PsSingleQuotedPath
 *--------------------------------------------------------------------
 * data:image/png;base64,... from Branding Report Logo (for HTML email <img src>).
 FUNCTION CompanyBranding_ReportLogoDataUri
-	LOCAL lcBmp, lcOut, lcPs1, lcCmd, lcUri, lcScript
+	LOCAL lcBmp, lcOut, lcPs1, lcCmd, lcUri, lcScript, lcCache, lcB64
 
 	= CompanyBranding_EnsureReportBmpPublic()
 	= CacheCompanyReportBmpFile(0, .F.)
 	lcBmp = GetCompanyReportBmpPath()
 	IF EMPTY(lcBmp) OR !FILE(lcBmp)
 		RETURN ""
+	ENDIF
+
+	* Cache beside the BMP so HTML email generation does not depend on RUN/PowerShell.
+	lcCache = FORCEEXT(lcBmp, "datauri")
+	IF FILE(lcCache)
+		lcUri = ALLTRIM(FILETOSTR(lcCache))
+		IF LEFT(LOWER(lcUri), 11) = "data:image/"
+			RETURN lcUri
+		ENDIF
 	ENDIF
 
 	lcOut = ADDBS(SYS(2023)) + "erp_rpt_logo_uri.txt"
@@ -60,7 +70,7 @@ FUNCTION CompanyBranding_ReportLogoDataUri
 		ERASE (lcPs1)
 	ENDIF
 
-	* Write .ps1 — avoid VFP [...] strings that contain "]" (causes syntax error).
+	* Prefer PNG data-URI via PowerShell (matches email clients better).
 	lcScript = "Add-Type -AssemblyName System.Drawing" + CHR(13)+CHR(10)
 	lcScript = lcScript + "$i=[System.Drawing.Image]::FromFile(" + CompanyBranding_PsSingleQuotedPath(lcBmp) + ")" + CHR(13)+CHR(10)
 	lcScript = lcScript + "$ms=New-Object System.IO.MemoryStream" + CHR(13)+CHR(10)
@@ -77,15 +87,59 @@ FUNCTION CompanyBranding_ReportLogoDataUri
 	IF FILE(lcPs1)
 		ERASE (lcPs1)
 	ENDIF
-	IF !FILE(lcOut)
+	IF FILE(lcOut)
+		lcUri = ALLTRIM(FILETOSTR(lcOut))
+		ERASE (lcOut)
+		IF LEFT(LOWER(lcUri), 22) = "data:image/png;base64,"
+			STRTOFILE(lcUri, lcCache, 0)
+			RETURN lcUri
+		ENDIF
+	ENDIF
+
+	* Fallback: embed BMP via MSXML bin.base64 (no PowerShell).
+	lcB64 = CompanyBranding_FileToBase64(lcBmp)
+	IF EMPTY(lcB64)
 		RETURN ""
 	ENDIF
-	lcUri = ALLTRIM(FILETOSTR(lcOut))
-	ERASE (lcOut)
-	IF LEFT(LOWER(lcUri), 22) # "data:image/png;base64,"
-		RETURN ""
-	ENDIF
+	lcUri = "data:image/bmp;base64," + lcB64
+	STRTOFILE(lcUri, lcCache, 0)
 	RETURN lcUri
+
+*--------------------------------------------------------------------
+* Binary file -> base64 (ADODB.Stream + MSXML). Used when PowerShell convert fails.
+FUNCTION CompanyBranding_FileToBase64
+	LPARAMETERS tcFile
+	LOCAL loStream, loXml, loNode, lcB64
+
+	IF EMPTY(tcFile) OR !FILE(tcFile)
+		RETURN ""
+	ENDIF
+	lcB64 = ""
+	TRY
+		loStream = CREATEOBJECT("ADODB.Stream")
+		loStream.Type = 1
+		loStream.Open()
+		loStream.LoadFromFile(tcFile)
+		TRY
+			loXml = CREATEOBJECT("MSXML2.DOMDocument.6.0")
+		CATCH
+			loXml = CREATEOBJECT("MSXML2.DOMDocument")
+		ENDTRY
+		loNode = loXml.createElement("b64")
+		loNode.dataType = "bin.base64"
+		loNode.nodeTypedValue = loStream.Read()
+		loStream.Close()
+		lcB64 = STRTRAN(STRTRAN(ALLTRIM(loNode.Text), CHR(13), ""), CHR(10), "")
+	CATCH
+		lcB64 = ""
+		TRY
+			IF VARTYPE(loStream) = "O"
+				loStream.Close()
+			ENDIF
+		CATCH
+		ENDTRY
+	ENDTRY
+	RETURN lcB64
 
 *--------------------------------------------------------------------
 FUNCTION CompanyBranding_ReportLogoHtmlImg
@@ -118,7 +172,7 @@ FUNCTION CompanyBranding_ReportLogoHtmlImg
 		ENDIF
 	ENDIF
 
-	RETURN [<img alt="] + lcAlt + [" src="] + lcUri + [" height="] + ALLTRIM(STR(lnH)) + [/>]
+	RETURN [<img alt="] + lcAlt + [" src="] + lcUri + [" height="] + ALLTRIM(STR(lnH)) + [" />]
 
 *--------------------------------------------------------------------
 FUNCTION CompanyBranding_ReportLogoMemPath
@@ -599,7 +653,7 @@ FUNCTION CompanyBranding_ConfirmChoose
 			"  - Report letterheads (PO, sales order, certs, logs, etc.)" + CHR(13) + ;
 			"  - Saved to MEM\Company_Rpt_Logo.bmp (canonical report header file)" + CHR(13) + ;
 			"  - Synced from SQL on ERP startup when the file differs" + CHR(13) + ;
-			"  - Reports use picture expression: ..\MEM\Company_Rpt_Logo.bmp" + CHR(13) + CHR(13) + ;
+			"  - Reports use picture expression: graphics\Company_Rpt_Logo.bmp" + CHR(13) + CHR(13) + ;
 			"Practical tips:" + CHR(13) + ;
 			"  - Landscape letterhead strip (logo left, address block right)" + CHR(13) + ;
 			"  - About 600-1200 px wide, 150-250 px tall" + CHR(13) + ;

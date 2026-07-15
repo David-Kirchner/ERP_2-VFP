@@ -12725,29 +12725,52 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		ENDIF
 		
 		* Company Profile UDFs + publish Report Logo BMP before FRX (avoids Open BMP prompt)
-		IF ATC("company_report", SET("PROCEDURE")) = 0 AND FILE("REPORTS\company_report.prg")
-			SET PROCEDURE TO REPORTS\company_report.prg ADDITIVE
-		ENDIF
-		IF ATC("company_branding", SET("PROCEDURE")) = 0 AND FILE("PROGS\company_branding.prg")
-			SET PROCEDURE TO PROGS\company_branding.prg ADDITIVE
-		ENDIF
-		IF TYPE("CompanyReport_EnsureData") = "U"
-			IF TYPE("gERPAppHome") = "C" AND FILE(gERPAppHome + "REPORTS\company_report.prg")
-				SET PROCEDURE TO (gERPAppHome + "REPORTS\company_report.prg") ADDITIVE
+		* Note: TYPE("SomeUdf") is always "U" in VFP — never use it to detect loaded UDFs.
+		IF ATC("company_report", SET("PROCEDURE")) = 0
+			IF FILE("REPORTS\company_report.prg")
+				SET PROCEDURE TO REPORTS\company_report.prg ADDITIVE
+			ELSE
+				IF TYPE("gERPAppHome") = "C" AND FILE(ADDBS(gERPAppHome) + "REPORTS\company_report.prg")
+					SET PROCEDURE TO (ADDBS(gERPAppHome) + "REPORTS\company_report.prg") ADDITIVE
+				ENDIF
 			ENDIF
 		ENDIF
-		IF TYPE("CacheCompanyReportBmpFile") # "U"
-			= CacheCompanyReportBmpFile(ThisForm.nConnHandle, .T.)
+		IF ATC("company_branding", SET("PROCEDURE")) = 0
+			IF FILE("PROGS\company_branding.prg")
+				SET PROCEDURE TO PROGS\company_branding.prg ADDITIVE
+			ELSE
+				IF TYPE("gERPAppHome") = "C" AND FILE(ADDBS(gERPAppHome) + "PROGS\company_branding.prg")
+					SET PROCEDURE TO (ADDBS(gERPAppHome) + "PROGS\company_branding.prg") ADDITIVE
+				ENDIF
+			ENDIF
 		ENDIF
-		IF TYPE("ErpEnsureReportsGraphicsLink") # "U"
-			= ErpEnsureReportsGraphicsLink()
-		ENDIF
-		IF TYPE("CompanyReport_EnsureData") # "U"
+		* Always preload profile/plant so report UDFs return values (not blank / .NULL.)
+		TRY
 			= CompanyReport_EnsureData()
+		CATCH
+		ENDTRY
+		IF ATC("company_branding", SET("PROCEDURE")) > 0
+			TRY
+				= CacheCompanyReportBmpFile(ThisForm.nConnHandle, .T.)
+			CATCH
+			ENDTRY
+			TRY
+				= ErpEnsureReportsGraphicsLink()
+			CATCH
+			ENDTRY
 		ENDIF
-		* FRX picture uses ..\MEM\Company_Rpt_Logo.bmp relative to REPORTS\
-		IF !FILE("MEM\Company_Rpt_Logo.bmp")
-			MESSAGEBOX("Company Report Logo is missing (MEM\Company_Rpt_Logo.bmp)."+CHR(13)+ ;
+		* FRX picture: graphics\Company_Rpt_Logo.bmp (app home AND REPORTS\graphics)
+		* Avoids VFP "Open" dialog when ..\MEM\ resolved from CURDIR (missing file).
+		IF FILE("MEM\Company_Rpt_Logo.bmp")
+			IF TYPE("CompanyBranding_SyncGraphicsReportBmp") # "U" OR ATC("company_branding", SET("PROCEDURE")) > 0
+				TRY
+					= CompanyBranding_SyncGraphicsReportBmp("MEM\Company_Rpt_Logo.bmp")
+				CATCH
+				ENDTRY
+			ENDIF
+		ENDIF
+		IF !FILE("graphics\Company_Rpt_Logo.bmp") AND !FILE("REPORTS\graphics\Company_Rpt_Logo.bmp") AND !FILE("MEM\Company_Rpt_Logo.bmp")
+			MESSAGEBOX("Company Report Logo is missing (graphics\Company_Rpt_Logo.bmp)."+CHR(13)+ ;
 				"Open Company Profile > Branding and choose a Report Logo, then try Print again.", ;
 				48, "Report Logo required")
 			RETURN .F.

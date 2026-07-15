@@ -33,6 +33,8 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtTagline" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.lblWebsite" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtWebsite" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.lblConfirmPOUrl" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtConfirmPOUrl" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.lblInvoiceSendLine" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.txtInvoiceSendLine" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgf1.pgIdentity.lblMaterialCertSendLine" UniqueID="" Timestamp="" />
@@ -132,6 +134,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*p: ccertcertifytext
 		*p: ccertfootertext
 		*p: ccertheadertext
+		*p: cconfirmpourl
 		*p: ccustomertermsimportpath
 		*p: cdbaname
 		*p: cinvoicesendline
@@ -171,6 +174,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		ccertcertifytext = ""
 		ccertfootertext = ""
 		ccertheadertext = ""
+		cconfirmpourl = ""
 		ccustomertermsimportpath = ""
 		cdbaname = ""
 		cinvoicesendline = ""
@@ -811,7 +815,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 33, ;
 		Left = 16, ;
 		Name = "lblInvoiceSendLine", ;
-		Top = 168, ;
+		Top = 200, ;
 		Width = 90, ;
 		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
@@ -832,7 +836,18 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Height = 33, ;
 		Left = 16, ;
 		Name = "lblMaterialCertSendLine", ;
-		Top = 208, ;
+		Top = 240, ;
+		Width = 90, ;
+		WordWrap = .T.
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgIdentity.lblConfirmPOUrl' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Confirm PO URL", ;
+		Height = 33, ;
+		Left = 16, ;
+		Name = "lblConfirmPOUrl", ;
+		Top = 164, ;
 		Width = 90, ;
 		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
@@ -885,7 +900,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Name = "txtInvoiceSendLine", ;
 		SelectOnEntry = .T., ;
 		ToolTipText = "PO report footer: invoice remittance line", ;
-		Top = 172, ;
+		Top = 204, ;
 		Width = 430
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -906,7 +921,18 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Name = "txtMaterialCertSendLine", ;
 		SelectOnEntry = .T., ;
 		ToolTipText = "PO report footer: material certification send-to line", ;
-		Top = 212, ;
+		Top = 244, ;
+		Width = 430
+		*< END OBJECT: BaseClass="textbox" />
+
+	ADD OBJECT 'pgf1.pgIdentity.txtConfirmPOUrl' AS textbox WITH ;
+		ControlSource = "ThisForm.cConfirmPOUrl", ;
+		Height = 23, ;
+		Left = 111, ;
+		Name = "txtConfirmPOUrl", ;
+		SelectOnEntry = .T., ;
+		ToolTipText = "Base URL for PO HTML confirm link (e.g. https://host/ConfirmPO.aspx). Leave blank to omit the link.", ;
+		Top = 170, ;
 		Width = 430
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -1149,7 +1175,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	ENDPROC
 
 	PROCEDURE loaddata
-		LOCAL laP[32], i, lcP, lcProp, xVal
+		LOCAL laP[33], i, lcP, lcProp, xVal
 		IF VARTYPE(goCompany) # "O"
 			DO PROGS\load_CompanyProfile
 		ENDIF
@@ -1163,31 +1189,32 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		laP[5] = "SalesEmail"
 		laP[6] = "QualityEmail"
 		laP[7] = "Website"
-		laP[8] = "InvoiceSendLine"
-		laP[9] = "MaterialCertSendLine"
-		laP[10] = "CageCode"
-		laP[11] = "CertHeaderText"
-		laP[12] = "CertCertifyText"
-		laP[13] = "CertFooterText"
-		laP[14] = "CustomerTermsImportPath"
-		laP[15] = "BillToCompany"
-		laP[16] = "BillToAddr1"
-		laP[17] = "BillToAddr2"
-		laP[18] = "BillToCity"
-		laP[19] = "BillToState"
-		laP[20] = "BillToPostal"
-		laP[21] = "BillToCountry"
-		laP[22] = "BillToPhone"
-		laP[23] = "BillToFax"
-		laP[24] = "ShipToCompany"
-		laP[25] = "ShipToAddr1"
-		laP[26] = "ShipToAddr2"
-		laP[27] = "ShipToCity"
-		laP[28] = "ShipToState"
-		laP[29] = "ShipToPostal"
-		laP[30] = "ShipToCountry"
-		laP[31] = "ShipToPhone"
-		laP[32] = "ShipToFax"
+		laP[8] = "ConfirmPOUrl"
+		laP[9] = "InvoiceSendLine"
+		laP[10] = "MaterialCertSendLine"
+		laP[11] = "CageCode"
+		laP[12] = "CertHeaderText"
+		laP[13] = "CertCertifyText"
+		laP[14] = "CertFooterText"
+		laP[15] = "CustomerTermsImportPath"
+		laP[16] = "BillToCompany"
+		laP[17] = "BillToAddr1"
+		laP[18] = "BillToAddr2"
+		laP[19] = "BillToCity"
+		laP[20] = "BillToState"
+		laP[21] = "BillToPostal"
+		laP[22] = "BillToCountry"
+		laP[23] = "BillToPhone"
+		laP[24] = "BillToFax"
+		laP[25] = "ShipToCompany"
+		laP[26] = "ShipToAddr1"
+		laP[27] = "ShipToAddr2"
+		laP[28] = "ShipToCity"
+		laP[29] = "ShipToState"
+		laP[30] = "ShipToPostal"
+		laP[31] = "ShipToCountry"
+		laP[32] = "ShipToPhone"
+		laP[33] = "ShipToFax"
 		FOR i = 1 TO ALEN(laP)
 			lcP = laP[i]
 			lcProp = "c" + lcP
@@ -1245,6 +1272,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		lcSQL = lcSQL + "SalesEmail = "+CompanyProfile_SQLQuote(Thisform.cSalesEmail)+", "
 		lcSQL = lcSQL + "QualityEmail = "+CompanyProfile_SQLQuote(Thisform.cQualityEmail)+", "
 		lcSQL = lcSQL + "Website = "+CompanyProfile_SQLQuote(Thisform.cWebsite)+", "
+		lcSQL = lcSQL + "ConfirmPOUrl = "+CompanyProfile_SQLQuote(Thisform.cConfirmPOUrl)+", "
 		lcSQL = lcSQL + "InvoiceSendLine = "+CompanyProfile_SQLQuote(Thisform.cInvoiceSendLine)+", "
 		lcSQL = lcSQL + "MaterialCertSendLine = "+CompanyProfile_SQLQuote(Thisform.cMaterialCertSendLine)+", "
 		lcSQL = lcSQL + "CageCode = "+CompanyProfile_SQLQuote(Thisform.cCageCode)+", "

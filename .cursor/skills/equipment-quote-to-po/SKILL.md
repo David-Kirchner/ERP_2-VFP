@@ -75,6 +75,20 @@ Zip) and capture its identity `ContactID` the same way. The contact address
 is what prints on the PO, so populate VendorContact address fields even if
 they duplicate the Vendor.
 
+**Phone / Fax storage (required):** store **digits only** — typically 10 US
+digits with no spaces, dashes, parentheses, or dots (e.g. `5022978686`,
+not `502.297.8686`, not `5022978686.0`). Never use a numeric/decimal insert
+for phone/fax; always quote as a string. The PO report formats display as
+`(502) 297-8686`. Strip formatting from the quote before INSERT/UPDATE:
+
+```sql
+-- Example: keep only digits, then take last 10
+-- '502.297.8686' -> '5022978686'
+```
+
+If the quote has no street address, STOP and ask before inserting — blank
+`VendorContact.Addr1`/`City` prints a To: block with company name only.
+
 ### 3. Resolve ship-to / bill-to from Company Profile
 
 Print PO refuses to run when `POShipAddr` is 0/empty

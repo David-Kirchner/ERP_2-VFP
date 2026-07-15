@@ -355,7 +355,7 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="80208.333" hpos="1666.667" height="1666.667" width="21145.833" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="1" fontsize="9" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="80208.333" hpos="1666.667" height="1666.667" width="21145.833" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="1" fontsize="9" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
@@ -367,7 +367,7 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="94270.833" hpos="2708.333" height="1666.667" width="21145.833" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="1" fontsize="9" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="94270.833" hpos="2708.333" height="1666.667" width="21145.833" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="1" fontsize="9" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
@@ -565,8 +565,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["P.O. Box 40
-"]]>
+	<expr><![CDATA["P.O. Box 40"]]>
 	<supexpr><![CDATA[PurchaseOrder.ShipWhere < 2]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -584,13 +583,13 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="8958.333" hpos="31250.000" height="1666.667" width="20104.167" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Verdana" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="6" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="8958.333" hpos="31250.000" height="1666.667" width="20104.167" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Verdana" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="6" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["Email Sales@SpaceAlloysUSA.com"]]>
+	<expr><![CDATA[CompanyReport_PoHeaderEmail()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -632,13 +631,13 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="29687.500" hpos="8229.167" height="1666.667" width="2500.000" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="3" supgroup="0" supvalchng=".F." 
-	<picture><![CDATA[]]>
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="29687.500" hpos="8229.167" height="1666.667" width="2500.000" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="3" supgroup="0" supvalchng=".F." 
+	<picture><![CDATA[""]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA"]]>
+	<expr><![CDATA[CompanyReport_ShortName()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -734,8 +733,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[Company]]>
-	<supexpr><![CDATA[]]>
+	<expr><![CDATA[CompanyReport_NzText(Company)]]>
+	<supexpr><![CDATA[!EMPTY(CompanyReport_NzText(Company))]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>
@@ -890,8 +889,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[shipaddr.company]]>
-	<supexpr><![CDATA[PurchaseOrder.ShipWhere > 1]]>
+	<expr><![CDATA[CompanyReport_NzText(ShipAddr.Company)]]>
+	<supexpr><![CDATA[!EMPTY(CompanyReport_NzText(ShipAddr.Company))]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>
@@ -902,8 +901,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[shipaddr.addr1]]>
-	<supexpr><![CDATA[PurchaseOrder.ShipWhere > 1]]>
+	<expr><![CDATA[CompanyReport_NzText(ShipAddr.Addr1)]]>
+	<supexpr><![CDATA[!EMPTY(CompanyReport_NzText(ShipAddr.Addr1))]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>
@@ -914,8 +913,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[shipaddr.addr2]]>
-	<supexpr><![CDATA[PurchaseOrder.ShipWhere > 1]]>
+	<expr><![CDATA[CompanyReport_NzText(ShipAddr.Addr2)]]>
+	<supexpr><![CDATA[!EMPTY(CompanyReport_NzText(ShipAddr.Addr2))]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>
@@ -926,7 +925,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[ALLTRIM(shipaddr.city)+IIF(EMPTY(shipaddr.city),"",", ")+ALLTRIM(shipaddr.st)+" "+ALLTRIM(shipaddr.zip)+" "+ALLTRIM(shipaddr.country)]]>
+	<expr><![CDATA[ALLTRIM(CompanyReport_NzText(ShipAddr.city))+IIF(EMPTY(CompanyReport_NzText(ShipAddr.city)),"",", ")+ALLTRIM(CompanyReport_NzText(ShipAddr.st))+" "+ALLTRIM(CompanyReport_NzText(ShipAddr.zip))+" "+ALLTRIM(CompanyReport_NzText(ShipAddr.country))]]>
 	<supexpr><![CDATA[PurchaseOrder.ShipWhere > 1]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -938,8 +937,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[ShipAddr.Contact]]>
-	<supexpr><![CDATA[PurchaseOrder.ShipWhere > 1]]>
+	<expr><![CDATA[CompanyReport_NzText(ShipAddr.Contact)]]>
+	<supexpr><![CDATA[!EMPTY(CompanyReport_NzText(ShipAddr.Contact))]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>
@@ -986,8 +985,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[VendorContact.addr1]]>
-	<supexpr><![CDATA[]]>
+	<expr><![CDATA[CompanyReport_NzText(VendorContact.Addr1)]]>
+	<supexpr><![CDATA[!EMPTY(CompanyReport_NzText(VendorContact.Addr1))]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>
@@ -998,8 +997,8 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[VendorContact.addr2]]>
-	<supexpr><![CDATA[]]>
+	<expr><![CDATA[CompanyReport_NzText(VendorContact.Addr2)]]>
+	<supexpr><![CDATA[!EMPTY(CompanyReport_NzText(VendorContact.Addr2))]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>
@@ -1010,7 +1009,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA[ALLTRIM(VendorContact.city)+IIF(EMPTY(VendorContact.city),"",", ")+ALLTRIM(VendorContact.st)+" "+ALLTRIM(VendorContact.zip)+" "+ALLTRIM(VendorContact.country)]]>
+	<expr><![CDATA[ALLTRIM(CompanyReport_NzText(ShipAddr.city))+IIF(EMPTY(CompanyReport_NzText(ShipAddr.city)),"",", ")+ALLTRIM(CompanyReport_NzText(ShipAddr.st))+" "+ALLTRIM(CompanyReport_NzText(ShipAddr.zip))+" "+ALLTRIM(CompanyReport_NzText(ShipAddr.country))]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1064,7 +1063,7 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="0.000" hpos="208.333" height="3645.833" width="50520.833" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="255" fillgreen="255" fillblue="255" pensize="0" penpat="0" fillpat="0" fontface="Verdana" fontstyle="1" fontsize="22" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="3" supgroup="0" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="0.000" hpos="208.333" height="3645.833" width="50520.833" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="255" fillgreen="255" fillblue="255" pensize="0" penpat="0" fillpat="0" fontface="Verdana" fontstyle="1" fontsize="22" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="3" supgroup="0" supvalchng=".F." 
 	<picture><![CDATA["@I"]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
@@ -1076,25 +1075,25 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="5000.000" hpos="32708.333" height="1666.667" width="17604.167" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="255" fillgreen="255" fillblue="255" pensize="0" penpat="0" fillpat="0" fontface="Verdana" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="0" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="5000.000" hpos="32708.333" height="1666.667" width="17604.167" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="255" fillgreen="255" fillblue="255" pensize="0" penpat="0" fillpat="0" fontface="Verdana" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="0" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["PHONE (765) 675-8871"]]>
+	<expr><![CDATA[CompanyReport_PoHeaderPhone()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="6875.000" hpos="34895.833" height="1666.667" width="15416.667" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="255" fillgreen="255" fillblue="255" pensize="0" penpat="0" fillpat="0" fontface="Verdana" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="0" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="6875.000" hpos="34895.833" height="1666.667" width="15416.667" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="255" fillgreen="255" fillblue="255" pensize="0" penpat="0" fillpat="0" fontface="Verdana" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="0" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["FAX (765) 675-7051"]]>
+	<expr><![CDATA[CompanyReport_PoHeaderFax()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1136,7 +1135,7 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="106562.500" hpos="5000.000" height="1666.667" width="45833.333" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="106562.500" hpos="5000.000" height="1666.667" width="45833.333" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="1" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
@@ -1173,7 +1172,7 @@ COLOR=2
 </Reportes>
 <Reportes 
 	platform="WINDOWS " uniqueid="" timestamp="0" objtype="17" objcode="0" name="" vpos="3645.833" hpos="1458.333" height="8958.333" width="20104.167" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="0" fillgreen="0" fillblue="0" pensize="0" penpat="0" fillpat="0" fontface="" fontstyle="0" fontsize="0" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".T." bottom=".F." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="1" spacing="0" double=".F." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="0" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="6" supvalchng=".F." 
-	<picture><![CDATA["..\MEM\Company_Rpt_Logo.bmp"]]>
+	<picture><![CDATA["graphics\Company_Rpt_Logo.bmp"]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[0]]>
@@ -1376,7 +1375,7 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="61979.167" hpos="2500.000" height="1458.333" width="36562.500" order="M" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Arial" fontstyle="0" fontsize="8" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="6" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="61979.167" hpos="2500.000" height="1458.333" width="36562.500" order="M" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Arial" fontstyle="0" fontsize="8" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="6" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
@@ -1418,7 +1417,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["PLEASE ACKNOWLEDGE IMMEDIATELY AND STATE WHEN YOU WILL SHIP."]]>
+	<expr><![CDATA["Please acknowledge this Purchase Order immediately and confirm your ship date."]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1430,7 +1429,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["OUR PURCHASE ORDER NUMBER MUST APPEAR ON ALL RELATED PACKAGES AND FORMS."]]>
+	<expr><![CDATA["Our Purchase Order number must appear on all related packages, packing lists, and forms."]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1466,7 +1465,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["of Energy and/or Department of Defense.  Any knowing and willful act of falsify, conceal or"]]>
+	<expr><![CDATA["of Energy and/or Department of Defense.  Any knowing and willful act to falsify, conceal, or"]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1484,13 +1483,13 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="145104.170" hpos="2291.667" height="1666.667" width="79166.667" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="-1" penblue="-1" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="0" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="145104.170" hpos="2291.667" height="1666.667" width="79166.667" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="-1" penblue="-1" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="0" fontsize="10" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["accordance with Federal Statutes.  Verification on-site by HPA or its customer may be necessary"]]>
+	<expr><![CDATA[CompanyReport_PoSiteVerifyLine()]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1532,7 +1531,7 @@ COLOR=2
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="110520.830" hpos="1666.667" height="1458.333" width="65625.000" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="-1" penblue="-1" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="0" fontsize="8" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".T." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="110520.830" hpos="1666.667" height="1458.333" width="65625.000" order="" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="-1" penblue="-1" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Courier New" fontstyle="0" fontsize="8" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".T." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".F." suprpcol="0" supgroup="0" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
@@ -1550,8 +1549,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["- Mercury Free:  The material shall not have come in contact with or have been contaminated 
-    by mercury or other low melting point metals."]]>
+	<expr><![CDATA["- Mercury Free:  The material shall not have come in contact with or have been contaminated     by mercury or other low melting point metals."]]>
 	<supexpr><![CDATA[NOT (PurchaseOrder.Services or PurchaseOrder.Equipment)]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1575,9 +1573,7 @@ COLOR=2
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA['2. Material test reports/certifications MUST include the following statement verbatim:
-"The recording of false, fictitious, or fraudulent statements on this document may be punishable 
-as a felony under Federal Statutes, including Federal Law Title 18,']]>
+	<expr><![CDATA['2. Material test reports/certifications MUST include the following statement verbatim:"The recording of false, fictitious, or fraudulent statements on this document may be punishable as a felony under Federal Statutes, including Federal Law Title 18,']]>
 	<supexpr><![CDATA[NOT (PurchaseOrder.Services or PurchaseOrder.Equipment)]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1601,8 +1597,7 @@ as a felony under Federal Statutes, including Federal Law Title 18,']]>
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["5. Cut material shall meet tolerance standards specified on this purchase order or ASTM and/or ASME tolerance 
-standards when not specified, including out-of-square, and shall allow for cleanup to the dimensions specified."]]>
+	<expr><![CDATA["5. Cut material shall meet tolerance standards specified on this purchase order or ASTM and/or ASME tolerance standards when not specified, including out-of-square, and shall allow for cleanup to the dimensions specified."]]>
 	<supexpr><![CDATA[NOT (PurchaseOrder.Services or PurchaseOrder.Equipment)]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1620,7 +1615,7 @@ standards when not specified, including out-of-square, and shall allow for clean
 	<user><![CDATA[]]>
 </Reportes>
 <Reportes 
-	platform="WINDOWS " uniqueid="" timestamp="0" objtype="5" objcode="0" name="" vpos="67083.333" hpos="45104.167" height="1458.333" width="29895.833" order="M" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Arial" fontstyle="0" fontsize="8" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="6" supvalchng=".F." 
+	platform="WINDOWS " uniqueid="" timestamp="0" objtype="8" objcode="0" name="" vpos="67083.333" hpos="45104.167" height="1458.333" width="29895.833" order="M" unique=".F." environ=".F." boxchar=" " fillchar=" " pengreen="0" penblue="0" fillred="-1" fillgreen="-1" fillblue="-1" pensize="0" penpat="0" fillpat="0" fontface="Arial" fontstyle="0" fontsize="8" mode="1" ruler="0" rulerlines="0" grid=".F." gridv="0" gridh="0" float=".F." stretch=".F." stretchtop=".F." top=".F." bottom=".T." suptype="0" suprest="0" norepeat=".F." resetrpt="0" pagebreak=".F." colbreak=".F." resetpage=".F." general="0" spacing="0" double=".T." swapheader=".F." swapfooter=".F." ejectbefor=".F." ejectafter=".F." plain=".F." summary=".F." addalias=".F." offset="0" topmargin="0" botmargin="0" totaltype="0" resettotal="0" resoid="1" curpos=".F." supalways=".T." supovflow=".T." suprpcol="0" supgroup="6" supvalchng=".F." 
 	<picture><![CDATA[]]>
 	<tag><![CDATA[]]>
 	<tag2><![CDATA[]]>
@@ -1638,7 +1633,7 @@ standards when not specified, including out-of-square, and shall allow for clean
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA["HPA insures all shipments. Please do NOT add insurance to shipment."]]>
+	<expr><![CDATA["We insure all shipments. Please do NOT add insurance to the shipment."]]>
 	<supexpr><![CDATA[]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>
@@ -1698,8 +1693,7 @@ standards when not specified, including out-of-square, and shall allow for clean
 	<tag2><![CDATA[]]>
 	<penred><![CDATA[-1]]>
 	<style><![CDATA[]]>
-	<expr><![CDATA['4. Material test reports/certifications MUST include a statement of compliance if the material alloy 
-supplied meets the requirements of DFARS 252.225-7001,7002,7008,7009 "Preference for Domestic Specialty Metals.']]>
+	<expr><![CDATA['4. Material test reports/certifications MUST include a statement of compliance if the material alloy supplied meets the requirements of DFARS 252.225-7001,7002,7008,7009 "Preference for Domestic Specialty Metals.']]>
 	<supexpr><![CDATA[NOT (PurchaseOrder.Services or PurchaseOrder.Equipment)]]>
 	<comment><![CDATA[]]>
 	<user><![CDATA[]]>

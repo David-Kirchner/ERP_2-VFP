@@ -54,10 +54,19 @@ FOR i = 1 TO ALEN(laFld, 1)
 			ADDPROPERTY(goCompany, lcFld, xVal)
 		CASE lcType = "M"
 			xVal = EVALUATE("curCompany." + lcFld)
-			ADDPROPERTY(goCompany, lcFld, xVal)
+			* TRANSFORM(.NULL.) -> literal ".NULL." — never store that
+			IF ISNULL(xVal)
+				ADDPROPERTY(goCompany, lcFld, "")
+			ELSE
+				ADDPROPERTY(goCompany, lcFld, xVal)
+			ENDIF
 		OTHERWISE
 			xVal = EVALUATE("curCompany." + lcFld)
-			ADDPROPERTY(goCompany, lcFld, TRANSFORM(xVal))
+			IF ISNULL(xVal)
+				ADDPROPERTY(goCompany, lcFld, "")
+			ELSE
+				ADDPROPERTY(goCompany, lcFld, ALLTRIM(TRANSFORM(xVal)))
+			ENDIF
 	ENDCASE
 ENDFOR
 USE IN curCompany
