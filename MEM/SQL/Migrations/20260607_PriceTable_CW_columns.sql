@@ -1,3 +1,0 @@
--- REMOVED: PriceTable no longer stores CWCnt/CWMin/etc.
--- Cold-work stats come from dbo.f_CC_CL_* functions (see 01_01 Create HPAlloy database and functions.sql).
--- If 20260607 columns were applied, run 20260607_Drop_PriceTable_CW_columns.sql instead.

@@ -1,0 +1,15 @@
+---
+description: ERP SQL scripts live on OneDrive (not under MEM\SQL in the repo)
+alwaysApply: true
+---
+
+# SQL scripts location (OneDrive)
+
+The ERP SQL script tree was moved out of this repo for OneDrive sync and its own git remote:
+
+- **Canonical path:** `C:\Users\talkt\OneDrive - Space Alloys USA\SQL`
+- **GitHub:** https://github.com/David-Kirchner/SQL-ERP_2
+- **Pointer in this repo:** `MEM\SQL\README.md` only
+- **Former tree (removed):** tracked files under `E:\VFP\ERP_2\MEM\SQL\...`
+
+When reading, editing, or adding SQL under Config / Create ERP_new / QBO / etc., use the OneDrive location / `SQL-ERP_2` repo. Do not recreate the old tree under `MEM\SQL` unless the user asks for a junction/symlink.
