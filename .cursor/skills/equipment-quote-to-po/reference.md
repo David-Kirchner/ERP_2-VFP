@@ -1,7 +1,7 @@
 # Reference: Equipment PO field mapping and print requirements
 
 Derived from `LIBS/purchaseorder.VC2` (PO form save/print logic),
-`REPORTS/purchaseorder14.fr2` (decompiled report), and live data patterns in
+`REPORTS/purchaseorder26.fr2` (decompiled report), and live data patterns in
 `dbo.PurchaseOrder` (536 historical Equipment POs).
 
 ## Column mapping — dbo.PurchaseOrder
@@ -109,7 +109,7 @@ One row per HPApo, auto-created by the `PurchaseOrder_Insert` trigger.
 Columns: `HPAPO`, `PO_Rev` (prints "Ver n" when > 0), `Cancelled`,
 `Changing`, `Printed`, `Reconciled`.
 
-## What purchaseorder14.frx prints (per band)
+## What purchaseorder26.frx prints (per band)
 
 Report cursors required open at print time: `PurchaseOrder` (filtered to the
 HPApo), `PO_No`, `ShipAddr`, `Vendor`, `VendorContact` — the ERP's PrintPO
@@ -119,8 +119,8 @@ method opens all five before `REPORT FORM`.
 |---|---|---|
 | PO number | STR(HpaPo)+'-'+STR(SalesNum)+SalesP; ItemPO per line | never |
 | Revision | 'Ver '+STR(PO_No.PO_Rev) | PO_Rev = 0 |
-| Vendor block | Company; VendorContact.addr1/addr2/city/st/zip/country; Attn: contact; phone/fax/email | per-line when NULL or empty |
-| Vendor Phone/Fax | Digits only in VendorContact.Phone/Fax (10 US digits). Report masks `(123) 456-7890`. Never store dotted/float phones. | |
+| Vendor block | Company; VendorContact.addr1/addr2/city/st/zip/country; phone/fax/email; Sales Person = POSalesP | per-line when NULL or empty. **Incomplete VendorContact address is a data defect — fix Contact before reprinting.** |
+| Vendor Phone/Fax/Cell | Digits only in VendorContact.Phone/Fax/CellPhone (10 US digits). Report masks `(123) 456-7890`. Never store dotted/float phones. | |
 | Ship-to Tipton | hard-coded address block | ShipWhere >= 2 |
 | Ship-to direct | shipaddr.company/addr1/addr2/city+st+zip+country; BLIND SHIP | ShipWhere <= 1 |
 | Order Date | TTOD(OrderDate) | never |

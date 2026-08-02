@@ -1722,7 +1722,7 @@ DEFINE CLASS frmpoduedate AS form
 		SELECT purchaseOrder
 		IF nHpaPo > 0
 		
-			REPORT FORM reports\PurchaseOrder14.FRX FOR purchaseOrder.HpaPo = nHpaPo PREVIEW
+			REPORT FORM reports\PurchaseOrder26.FRX FOR purchaseOrder.HpaPo = nHpaPo PREVIEW
 			*NOCONSOLE TO PRINTER
 		
 		ELSE

@@ -205,6 +205,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 	*</PropValue>
 
 	ADD OBJECT 'cmdClose' AS commandbutton WITH ;
+		BackColor = 255,128,128, ;
 		Cancel = .T., ;
 		Caption = "Close", ;
 		Height = 27, ;
@@ -224,6 +225,7 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		*< END OBJECT: BaseClass="commandbutton" />
 
 	ADD OBJECT 'cmdSave' AS commandbutton WITH ;
+		BackColor = 128,255,128, ;
 		Caption = "Save", ;
 		Height = 27, ;
 		Left = 320, ;
@@ -799,6 +801,17 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Width = 350
 		*< END OBJECT: BaseClass="textbox" />
 
+	ADD OBJECT 'pgf1.pgIdentity.lblConfirmPOUrl' AS label WITH ;
+		Alignment = 1, ;
+		Caption = "Confirm PO URL", ;
+		Height = 33, ;
+		Left = 16, ;
+		Name = "lblConfirmPOUrl", ;
+		Top = 164, ;
+		Width = 90, ;
+		WordWrap = .T.
+		*< END OBJECT: BaseClass="label" />
+
 	ADD OBJECT 'pgf1.pgIdentity.lblDBAName' AS label WITH ;
 		Alignment = 1, ;
 		Caption = "DBA", ;
@@ -841,17 +854,6 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgf1.pgIdentity.lblConfirmPOUrl' AS label WITH ;
-		Alignment = 1, ;
-		Caption = "Confirm PO URL", ;
-		Height = 33, ;
-		Left = 16, ;
-		Name = "lblConfirmPOUrl", ;
-		Top = 164, ;
-		Width = 90, ;
-		WordWrap = .T.
-		*< END OBJECT: BaseClass="label" />
-
 	ADD OBJECT 'pgf1.pgIdentity.lblShortName' AS label WITH ;
 		Alignment = 1, ;
 		Caption = "Short name (window title)", ;
@@ -882,6 +884,17 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		Top = 140, ;
 		Width = 90
 		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgf1.pgIdentity.txtConfirmPOUrl' AS textbox WITH ;
+		ControlSource = "ThisForm.cConfirmPOUrl", ;
+		Height = 23, ;
+		Left = 111, ;
+		Name = "txtConfirmPOUrl", ;
+		SelectOnEntry = .T., ;
+		ToolTipText = "Base URL for PO HTML confirm link (e.g. https://host/ConfirmPO.aspx). Leave blank to omit the link.", ;
+		Top = 170, ;
+		Width = 430
+		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'pgf1.pgIdentity.txtDBAName' AS textbox WITH ;
 		ControlSource = "ThisForm.cDBAName", ;
@@ -922,17 +935,6 @@ DEFINE CLASS frmcompanyprofile_maint AS form
 		SelectOnEntry = .T., ;
 		ToolTipText = "PO report footer: material certification send-to line", ;
 		Top = 244, ;
-		Width = 430
-		*< END OBJECT: BaseClass="textbox" />
-
-	ADD OBJECT 'pgf1.pgIdentity.txtConfirmPOUrl' AS textbox WITH ;
-		ControlSource = "ThisForm.cConfirmPOUrl", ;
-		Height = 23, ;
-		Left = 111, ;
-		Name = "txtConfirmPOUrl", ;
-		SelectOnEntry = .T., ;
-		ToolTipText = "Base URL for PO HTML confirm link (e.g. https://host/ConfirmPO.aspx). Leave blank to omit the link.", ;
-		Top = 170, ;
 		Width = 430
 		*< END OBJECT: BaseClass="textbox" />
 

@@ -11,7 +11,7 @@ description: >-
 # Equipment Quote to Purchase Order
 
 Creates an Equipment PO in SQL Server so it prints correctly on
-`REPORTS\purchaseorder14.frx`. An "Equipment PO" is a normal
+`REPORTS\purchaseorder26.frx`. An "Equipment PO" is a normal
 `dbo.PurchaseOrder` row with `Equipment = 1`: the metal fields (Alloy, Form,
 CC, CL, sizes) stay blank, the printed description comes from `Misc_Purch`,
 and pricing is per-piece or per-lot.
@@ -32,13 +32,13 @@ server/database, confirm with the user before writing anywhere else.
 Track progress with this checklist:
 
 ```
-- [ ] 1. Parse the quote
-- [ ] 2. Resolve vendor and contact (STOP and ask if not found)
+- [ ] 1. Parse the quote (include vendor street + phones from letterhead/signature)
+- [ ] 2. Resolve Vendor + VendorContact address completeness (STOP / INSERT / UPDATE)
 - [ ] 3. Resolve ship-to / bill-to from Company Profile
 - [ ] 4. Allocate the PO number
-- [ ] 5. Insert PurchaseOrder line(s)
+- [ ] 5. Insert PurchaseOrder line(s) with ContactID
 - [ ] 6. Verify PO_No header + set Est_Frght
-- [ ] 7. Print-readiness check and report
+- [ ] 7. Print-readiness check (To: must show street/city, not only ST country)
 ```
 
 ### 1. Parse the quote
@@ -55,39 +55,49 @@ Extract:
 Ask the user for anything material that is missing (at minimum: vendor,
 description, quantity, price).
 
-### 2. Resolve vendor and contact
+### 2. Resolve vendor and contact (required before any PO insert)
+
+**Do this while parsing the quote — do not wait until after PurchaseOrder
+lines exist.** The print **To:** block comes from `dbo.VendorContact`
+(`Addr1`/`Addr2`/`City`/`ST`/`Zip`/`Country` + Phone/Email), not from
+`PurchaseOrder.Company` alone. Blank contact address prints company + state/
+country only (e.g. `KY USA`).
 
 ```sql
-SELECT VendCode, Company, Contact FROM dbo.Vendor
+SELECT VendCode, Company, Addr1, City, ST, Zip, Country, telephone, email
+FROM dbo.Vendor
 WHERE Company LIKE '%<name fragment>%' AND ISNULL(Inactive,0) = 0;
 
-SELECT ContactID, Contact, Phone, Email FROM dbo.VendorContact
+SELECT ContactID, VendCode, Contact, Phone, CellPhone, Fax, Email,
+       Addr1, Addr2, City, ST, Zip, Country, JobTitle, Inactive
+FROM dbo.VendorContact
 WHERE VendCode = <VendCode> AND ISNULL(Inactive,0) = 0;
 ```
 
-**If no vendor matches, STOP and ask the user** whether to create a new
-Vendor/VendorContact or pick an existing one. Never create vendor rows
-without explicit approval. When approved, insert `dbo.Vendor` (Company,
-Addr1, Addr2, City, ST, Zip, Country, telephone, email) — `VendCode` is an
-identity column, capture it with `SCOPE_IDENTITY()`. Then insert
-`dbo.VendorContact` (VendCode, Contact, Phone, Fax, Email, Addr1, City, ST,
-Zip) and capture its identity `ContactID` the same way. The contact address
-is what prints on the PO, so populate VendorContact address fields even if
-they duplicate the Vendor.
+Match the quote contact (name / email / phone). Then gate on address:
 
-**Phone / Fax storage (required):** store **digits only** — typically 10 US
-digits with no spaces, dashes, parentheses, or dots (e.g. `5022978686`,
-not `502.297.8686`, not `5022978686.0`). Never use a numeric/decimal insert
-for phone/fax; always quote as a string. The PO report formats display as
-`(502) 297-8686`. Strip formatting from the quote before INSERT/UPDATE:
+| Situation | Action |
+|---|---|
+| No Vendor | STOP — ask create vs pick existing |
+| Vendor ok, no VendorContact | STOP — ask approval, then **INSERT** Contact with full Addr1/City/ST/Zip/Country + phones/email |
+| Contact exists, Addr1 or City blank, quote/email has address | **UPDATE** VendorContact (digits-only phones). Prefer updating the matched ContactID over inserting a duplicate |
+| Contact complete | Capture `ContactID` for PO insert |
+
+Also keep `dbo.Vendor` header address in sync when it is blank and the
+quote has a street — lookups and some screens use Vendor as well as Contact.
+
+**Never create vendor/contact rows without explicit approval.** When
+approved, insert `dbo.Vendor` first (`VendCode` identity → `SCOPE_IDENTITY()`),
+then `dbo.VendorContact` (same address fields even if they duplicate Vendor).
+Store phones as **digits only** (10 US digits), quoted as strings — never
+decimal/float.
 
 ```sql
--- Example: keep only digits, then take last 10
--- '502.297.8686' -> '5022978686'
+-- '502.297.8686' / '502.664.4429' -> '5022978686' / '5026644429'
 ```
 
-If the quote has no street address, STOP and ask before inserting — blank
-`VendorContact.Addr1`/`City` prints a To: block with company name only.
+If neither the quote nor SQL has street/city, STOP and ask before inserting
+the PO — do not ship a print-ready PO with an empty To: street.
 
 ### 3. Resolve ship-to / bill-to from Company Profile
 
@@ -269,4 +279,4 @@ resolve to real Vendor/VendorContact rows, `Misc_Purch` non-empty,
 Report back to the user: PO number, each `POitem` with description and total,
 vendor and contact used, ship/bill codes used, **Est_Frght**, and anything left
 blank (terms, FOB, due date) that they may want to fill before printing from the
-ERP (PurchaseOrder screen > Print, which runs `purchaseorder14.frx`).
+ERP (PurchaseOrder screen > Print, which runs `purchaseorder26.frx`).

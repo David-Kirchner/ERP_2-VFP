@@ -12822,16 +12822,33 @@ IF USED('tmpPSTK_TBL_POi')
 		cTBL = PrepareSQLtxt(tmpPSTK_TBL_POi.TBL,'TBL',1)
 		
 		IF RECCOUNT('tmpPSTK_TBL_POi') > 1
+			* Prefer PurchaseOrder.TBL over SortOrder (Broker-first) so multi-heat stays on the PO list
+			PRIVATE cPO_TBL_P, cTBL2, cMess
+			cPO_TBL_P = ''
+			cSQL = "SELECT TBL FROM dbo.PurchaseOrder WITH(NOLOCK) WHERE POitem = dbo.f_ProperPOitem('"+cPOItem+"')"
+			nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSTK_PO_TBLp')
+			IF nSQLEXEC > 0 AND USED('tmpPSTK_PO_TBLp') AND RECCOUNT('tmpPSTK_PO_TBLp') > 0
+				cPO_TBL_P = PrepareSQLtxt(tmpPSTK_PO_TBLp.TBL,'TBL',1)
+			ENDIF
+			IF USED('tmpPSTK_PO_TBLp')
+				USE IN tmpPSTK_PO_TBLp
+			ENDIF
+			IF cPO_TBL_P="S" OR cPO_TBL_P="B" OR cPO_TBL_P="W"
+				SELECT tmpPSTK_TBL_POi
+				GO TOP
+				LOCATE FOR ALLTRIM(TBL) = cPO_TBL_P
+				IF FOUND()
+					cTBL = cPO_TBL_P
+				ENDIF
+			ENDIF
 			SELECT tmpPSTK_TBL_POi
+			GO TOP
 			SKIP
 			cTBL2 = PrepareSQLtxt(tmpPSTK_TBL_POi.TBL,'TBL',1)
-			PRIVATE cMess
 			cMess = "Found POitem '"+cPOItem+"' in more than 1 table!"+CHR(13)
-			cMess = cMess + "First in Table "+cTBL+" "+CHR(13)
-			cMess = cMess + "Second in Table "+cTBL2+" "+CHR(13)+CHR(13)
+			cMess = cMess + "Returning Table "+cTBL+" (PO.TBL='"+cPO_TBL_P+"')"+CHR(13)
+			cMess = cMess + "Also found Table "+cTBL2+" "+CHR(13)+CHR(13)
 			cMess = cMess + "Verify StockLst and Broker entries."+CHR(13)
-			cMess = cMess + "Something is wrong here."+CHR(13)+CHR(13)
-			cMess = cMess +"Function is just returning Table '"+cTBL+"'."
 			TrackError( cMess+CHR(13)+cSQL ,"Extra Tables","Proc_StockLst:getTBL_Process_POitem()",LINENO())
 			
 			MESSAGEBOX( cMess,0+48,"Bad, make sure Stock is correct!!")
@@ -13677,12 +13694,13 @@ ENDIF
 
 ***********************************
 IF NOT (cTBL="S" OR cTBL="B" OR cTBL="W")
-	*Second Try -try Receiving Table
-	cSQL = " SELECT StockTable AS TBL " 
+	*Second Try - latest Receiving.StockTable for this POitem (multi-heat can have many rows)
+	cSQL = " SELECT TOP 1 StockTable AS TBL " 
 	cSQL = cSQL + " FROM dbo.Receiving "
 	cSQL = cSQL + " WHERE POitem = dbo.f_ProperPOitem('"+cPOitem+"')"
 	cSQL = cSQL + " AND LEN( ISNULL(StockTable,'') )>0 "
 	cSQL = cSQL + " AND StockTable <>'N' "
+	cSQL = cSQL + " ORDER BY ID DESC "
 
 	SELECT 0
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSTK_TBL_POi')
@@ -13723,20 +13741,34 @@ ENDIF
 ***************************
 
 IF LEN(cTBL)=0
-	*Third Try, INCOMING Process 
-	cSQL = "SELECT 'S' AS TBL FROM dbo.StockLst_Process "
-	cSQL = cSQL+" WHERE PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
-	cSQL = cSQL+" AND ( Process_ID='INCOMING' OR Process_ID='NOT2HPA' )"
+	*Third Try, INCOMING Process — prefer PurchaseOrder.TBL when both S and B exist
+	PRIVATE cPO_TBL
+	cPO_TBL = ''
+	cSQL = "SELECT TBL FROM dbo.PurchaseOrder WITH(NOLOCK) WHERE POitem = dbo.f_ProperPOitem('"+cPOitem+"')"
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSTK_PO_TBL')
+	IF nSQLEXEC > 0 AND USED('tmpPSTK_PO_TBL') AND RECCOUNT('tmpPSTK_PO_TBL') > 0
+		cPO_TBL = PrepareSQLtxt(tmpPSTK_PO_TBL.TBL,'TBL',1)
+	ENDIF
+	IF USED('tmpPSTK_PO_TBL')
+		USE IN tmpPSTK_PO_TBL
+	ENDIF
 
+	cSQL = "SELECT TBL FROM ("
+	cSQL = cSQL+" SELECT 'S' AS TBL FROM dbo.StockLst_Process "
+	cSQL = cSQL+" WHERE PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
+	cSQL = cSQL+" AND ( Process_ID='INCOMING' OR Process_ID='NOT2HPA' OR Process_ID='PARTRECV' )"
 	cSQL = cSQL+" UNION "
 	cSQL = cSQL+" SELECT 'B' AS TBL FROM dbo.BrokerLst_Process "
 	cSQL = cSQL+" WHERE PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
-	cSQL = cSQL+" AND Process_ID='INCOMING' "
-
+	cSQL = cSQL+" AND ( Process_ID='INCOMING' OR Process_ID='NOT2HPA' OR Process_ID='PARTRECV' )"
 	cSQL = cSQL+" UNION "
 	cSQL = cSQL+" SELECT 'W' AS TBL FROM dbo.WIPLst_Process "
 	cSQL = cSQL+" WHERE PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
-	cSQL = cSQL+" AND Process_ID='INCOMING'"
+	cSQL = cSQL+" AND ( Process_ID='INCOMING' OR Process_ID='NOT2HPA' OR Process_ID='PARTRECV' )"
+	cSQL = cSQL+" ) X"
+	IF cPO_TBL="S" OR cPO_TBL="B" OR cPO_TBL="W"
+		cSQL = cSQL+" ORDER BY CASE WHEN TBL='"+cPO_TBL+"' THEN 0 ELSE 1 END, TBL"
+	ENDIF
 
 	SELECT 0
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSTK_TBL_POi')
@@ -13768,11 +13800,13 @@ IF LEN(cTBL)=0
 		IF RECCOUNT('tmpPSTK_TBL_POi') > 0
 			cTBL = PrepareSQLtxt(tmpPSTK_TBL_POi.TBL,'TBL',1)
 			RecordTest( 'Record Test Data.', "Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"getTBL_POitem('"+cPOitem+"') Third try = '"+cTBL+"'"+CHR(13)+HTML_POitem(cPOitem,.T.)+CHR(13)+cSQL )
-	*		IF RECCOUNT('tmpPSTK_TBL_POi') > 1
-	*			TrackError("Extra Tables","Found WO_Detail "+ALLTRIM(STR(nWO_Detail))+" as more than 1 table!"+CHR(13)+"Be carefull."+CHR(13)+"Function is returning Table '"+cTBL+"'.","Proc_StockLst:getTBL_POitem()",LINENO())
-	*			MESSAGEBOX( "Found WO_Detail "+ALLTRIM(STR(nWO_Detail))+" as more than 1 table!"+CHR(13)+"Be carefull. getTBL_POitem()"+CHR(13)+"Function is returning Table '"+cTBL+"'.",0+48,"Warning")
-	*		ENDIF
-
+			IF RECCOUNT('tmpPSTK_TBL_POi') > 1
+				PRIVATE cMess
+				cMess = "POitem '"+cPOitem+"' has Incoming/PartRecv in more than one list (Stock/Broker/WIP)."+CHR(13)
+				cMess = cMess + "Using table '"+cTBL+"' (PO.TBL='"+cPO_TBL+"'). Clean the other list."
+				TrackError(cMess+CHR(13)+cSQL,"Extra Tables","Proc_StockLst:getTBL_POitem()",LINENO())
+				MESSAGEBOX(cMess,0+48,"Stock/Broker mix — verify!")
+			ENDIF
 		ENDIF
 
 		USE IN tmpPSTK_TBL_POi
@@ -13781,18 +13815,32 @@ ENDIF
 
 ************************
 IF LEN(cTBL)=0
-	*try again 4rd Stock_Master
-	cSQL = "SELECT 'S' AS TBL FROM dbo.StockLst_Master "
+	*try again 4th Stock_Master — prefer PurchaseOrder.TBL when both S and B exist
+	PRIVATE cPO_TBL4
+	cPO_TBL4 = ''
+	cSQL = "SELECT TBL FROM dbo.PurchaseOrder WITH(NOLOCK) WHERE POitem = dbo.f_ProperPOitem('"+cPOitem+"')"
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSTK_PO_TBL4')
+	IF nSQLEXEC > 0 AND USED('tmpPSTK_PO_TBL4') AND RECCOUNT('tmpPSTK_PO_TBL4') > 0
+		cPO_TBL4 = PrepareSQLtxt(tmpPSTK_PO_TBL4.TBL,'TBL',1)
+	ENDIF
+	IF USED('tmpPSTK_PO_TBL4')
+		USE IN tmpPSTK_PO_TBL4
+	ENDIF
+
+	cSQL = "SELECT TBL FROM ("
+	cSQL = cSQL+" SELECT 'S' AS TBL FROM dbo.StockLst_Master "
 	cSQL = cSQL+" WHERE PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
-	
 	cSQL = cSQL+" UNION "
 	cSQL = cSQL+" SELECT 'B' AS TBL FROM dbo.BrokerLst_Master "
 	cSQL = cSQL+" WHERE PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
-	
 	cSQL = cSQL+" UNION "
 	cSQL = cSQL+" SELECT 'W' AS TBL FROM dbo.WIPLst_Master "
 	cSQL = cSQL+" WHERE PO_item = dbo.f_ProperPOitem('"+cPOitem+"')"
-	
+	cSQL = cSQL+" ) X"
+	IF cPO_TBL4="S" OR cPO_TBL4="B" OR cPO_TBL4="W"
+		cSQL = cSQL+" ORDER BY CASE WHEN TBL='"+cPO_TBL4+"' THEN 0 ELSE 1 END, TBL"
+	ENDIF
+
 	SELECT 0
 	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPSTK_TBL_POi')
 
@@ -13823,6 +13871,13 @@ IF LEN(cTBL)=0
 		IF RECCOUNT('tmpPSTK_TBL_POi') > 0
 			cTBL = PrepareSQLtxt(tmpPSTK_TBL_POi.TBL,'TBL',1)
 			RecordTest( 'Record Test Data.', "Proc_StockLst:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"getTBL_POitem('"+cPOitem+"') Fourth try = '"+cTBL+"'"+CHR(13)+HTML_POitem(cPOitem,.T.)+CHR(13)+cSQL )
+			IF RECCOUNT('tmpPSTK_TBL_POi') > 1
+				PRIVATE cMess4
+				cMess4 = "POitem '"+cPOitem+"' has Master rows in more than one list."+CHR(13)
+				cMess4 = cMess4 + "Using table '"+cTBL+"' (PO.TBL='"+cPO_TBL4+"'). Clean the other list."
+				TrackError(cMess4+CHR(13)+cSQL,"Extra Tables","Proc_StockLst:getTBL_POitem()",LINENO())
+				MESSAGEBOX(cMess4,0+48,"Stock/Broker mix — verify!")
+			ENDIF
 		ENDIF
 
 		USE IN tmpPSTK_TBL_POi

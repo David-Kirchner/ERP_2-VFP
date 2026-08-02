@@ -29,7 +29,7 @@ TRY
 CATCH
 	cLastVersion = ''
 ENDTRY
-* Dev (.APP): no compiled ERP.EXE revision — use date for dbo.Errors.Revision
+* Dev (.APP): no compiled SAUSA-ERP.EXE revision — use date for dbo.Errors.Revision
 IF EMPTY(ALLTRIM(cLastVersion))
 	cLastVersion = "DEV " + DTOC(DATE())
 ENDIF

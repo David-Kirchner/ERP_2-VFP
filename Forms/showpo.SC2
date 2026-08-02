@@ -72,7 +72,7 @@ DEFINE CLASS frmshowpo AS embossedform OF "..\..\hpa_dk\libs\wizstyle.vcx"
 	*< OBJECTDATA: ObjPath="txtStock" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="edtMisc_Purch" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkSPS1" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="chkLab_Service" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="chkServicesPO" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkConvServ" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkEquipment" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="txtOrder_P" UniqueID="" Timestamp="" />
@@ -232,7 +232,7 @@ DEFINE CLASS frmshowpo AS embossedform OF "..\..\hpa_dk\libs\wizstyle.vcx"
 		ZOrderSet = 58
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'chkLab_Service' AS checkbox WITH ;
+	ADD OBJECT 'chkServicesPO' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 212,208,200, ;
 		BackStyle = 0, ;
@@ -242,7 +242,7 @@ DEFINE CLASS frmshowpo AS embossedform OF "..\..\hpa_dk\libs\wizstyle.vcx"
 		Enabled = .F., ;
 		Height = 12, ;
 		Left = 132, ;
-		Name = "chkLab_Service", ;
+		Name = "chkServicesPO", ;
 		TabIndex = 67, ;
 		Top = 346, ;
 		Visible = .T., ;
@@ -1581,7 +1581,7 @@ DEFINE CLASS frmshowpo AS embossedform OF "..\..\hpa_dk\libs\wizstyle.vcx"
 			ThisForm.chkDELIVEREDPO.Value	= tPurchaseOrder.DELIVERED
 			ThisForm.chkCANCELPO.Value	= tPurchaseOrder.CANCELled
 			ThisForm.chkSPS1.Value		= tPurchaseOrder.Sheet_PK
-			ThisForm.chkLab_Service.Value	= tPurchaseOrder.Services
+			ThisForm.chkSERVICESPO.Value	= tPurchaseOrder.Services
 			ThisForm.chkCONVSERV.Value	= tPurchaseOrder.ConvServ
 			ThisForm.chkEQUIPMENT.Value	= tPurchaseOrder.Equipment
 			
@@ -2096,7 +2096,7 @@ DEFINE CLASS frmshowpo AS embossedform OF "..\..\hpa_dk\libs\wizstyle.vcx"
 		SELECT purchaseOrder
 		IF nHpaPo > 0
 		
-			REPORT FORM reports\PurchaseOrder14.FRX FOR purchaseOrder.HpaPo = nHpaPo PREVIEW
+			REPORT FORM reports\PurchaseOrder26.FRX FOR purchaseOrder.HpaPo = nHpaPo PREVIEW
 			*NOCONSOLE TO PRINTER
 		
 		ELSE

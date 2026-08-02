@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SAUSA-ERP per-machine MSI for GPO Software Installation -->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+
+	<Package Name="SAUSA-ERP"
+	         Language="1033"
+	         Manufacturer="Space Alloys USA"
+	         Version="$(var.ProductVersion)"
+	         UpgradeCode="D1EDE303-871E-438E-A8A1-66011B5AE2B7"
+	         Scope="perMachine"
+	         Compressed="yes">
+
+		<SummaryInformation Description="SAUSA-ERP (Visual FoxPro) — Production client for BobWhite\SAUSA" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of SAUSA-ERP is already installed. Remove it first if you need to install an older build."
+		              Schedule="afterInstallInitialize" />
+
+		<MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+		<!-- Per-machine Program Files (x86) — VFP is 32-bit -->
+		<StandardDirectory Id="ProgramFilesFolder">
+			<Directory Id="CompanyFolder" Name="SAUSA">
+				<Directory Id="INSTALLFOLDER" Name="SAUSA-ERP">
+					<Directory Id="MEMFOLDER" Name="MEM" />
+					<Directory Id="GRAPHICSFOLDER" Name="GRAPHICS" />
+				</Directory>
+			</Directory>
+		</StandardDirectory>
+
+		<StandardDirectory Id="ProgramMenuFolder">
+			<Directory Id="ProgramMenuCompany" Name="SAUSA">
+				<Directory Id="ProgramMenuApp" Name="SAUSA-ERP" />
+			</Directory>
+		</StandardDirectory>
+
+		<StandardDirectory Id="DesktopFolder" />
+
+		<Property Id="ARPPRODUCTICON" Value="AppIcon.ico" />
+		<Icon Id="AppIcon.ico" SourceFile="payload\AppIcon.ico" />
+
+		<Feature Id="ProductFeature" Title="SAUSA-ERP" Level="1" ConfigurableDirectory="INSTALLFOLDER">
+			<ComponentGroupRef Id="AppComponents" />
+			<ComponentGroupRef Id="RuntimeComponents" />
+			<ComponentGroupRef Id="ShortcutComponents" />
+		</Feature>
+	</Package>
+
+	<!-- Application files -->
+	<Fragment>
+		<ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">
+			<Component Id="cmpExe" Guid="62D6FF44-1A50-4429-8EE1-853D60E2AB3C">
+				<File Id="filExe" Source="payload\SAUSA-ERP.exe" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpEnv" Guid="*">
+				<File Id="filEnv" Source="payload\ERP_Environment.xml" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpConfig" Guid="*">
+				<File Id="filConfig" Source="payload\config.fpw" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpMemDir" Guid="*" Directory="MEMFOLDER">
+				<!-- Users must write SalesP.MEM / ERPSetup.MEM here -->
+				<CreateFolder>
+					<util:PermissionEx User="Users" GenericAll="yes" />
+				</CreateFolder>
+				<File Id="filCompanyIcon" Source="payload\MEM\Company_Icon.ico" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpGraphics" Guid="*" Directory="GRAPHICSFOLDER">
+				<File Id="filErpIcon" Source="payload\GRAPHICS\ERP_Company.ico" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<!-- VFP 9 runtime (x86) beside the EXE -->
+	<Fragment>
+		<ComponentGroup Id="RuntimeComponents" Directory="INSTALLFOLDER">
+			<Component Id="cmpVfp9r" Guid="*">
+				<File Id="filVfp9r" Source="payload\runtime\vfp9r.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpVfp9renu" Guid="*">
+				<File Id="filVfp9renu" Source="payload\runtime\VFP9RENU.DLL" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpVfp9t" Guid="*">
+				<File Id="filVfp9t" Source="payload\runtime\vfp9t.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpMsvcr71" Guid="*">
+				<File Id="filMsvcr71" Source="payload\runtime\msvcr71.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpMsvcp71" Guid="*">
+				<File Id="filMsvcp71" Source="payload\runtime\msvcp71.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpRptBuilder" Guid="*">
+				<File Id="filRptBuilder" Source="payload\runtime\ReportBuilder.app" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpRptOutput" Guid="*">
+				<File Id="filRptOutput" Source="payload\runtime\ReportOutput.app" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpRptPreview" Guid="*">
+				<File Id="filRptPreview" Source="payload\runtime\ReportPreview.app" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+
+	<!-- Shortcuts (All Users when Scope=perMachine) -->
+	<Fragment>
+		<ComponentGroup Id="ShortcutComponents">
+			<Component Id="cmpStartMenu" Guid="*" Directory="ProgramMenuApp">
+				<Shortcut Id="scStartMenu"
+				          Name="SAUSA-ERP"
+				          Description="Space Alloys USA ERP"
+				          Target="[INSTALLFOLDER]SAUSA-ERP.exe"
+				          WorkingDirectory="INSTALLFOLDER"
+				          Icon="AppIcon.ico" />
+				<RemoveFolder Id="rmProgramMenuApp" Directory="ProgramMenuApp" On="uninstall" />
+				<RemoveFolder Id="rmProgramMenuCompany" Directory="ProgramMenuCompany" On="uninstall" />
+				<RegistryValue Root="HKLM" Key="Software\SAUSA\SAUSA-ERP" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+			<Component Id="cmpDesktop" Guid="*" Directory="DesktopFolder">
+				<Shortcut Id="scDesktop"
+				          Name="SAUSA-ERP"
+				          Description="Space Alloys USA ERP"
+				          Target="[INSTALLFOLDER]SAUSA-ERP.exe"
+				          WorkingDirectory="INSTALLFOLDER"
+				          Icon="AppIcon.ico" />
+				<RegistryValue Root="HKLM" Key="Software\SAUSA\SAUSA-ERP" Name="DesktopShortcut" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

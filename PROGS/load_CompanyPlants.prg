@@ -61,4 +61,4 @@ ENDIF
 
 SQLDISCONNECT(nConn)
 RETURN .T.
-
+

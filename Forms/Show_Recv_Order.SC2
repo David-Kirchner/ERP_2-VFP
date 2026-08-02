@@ -53,7 +53,7 @@ DEFINE CLASS frmshow_recv_order AS form
 	*< OBJECTDATA: ObjPath="lblForm" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="lblOrder_QTY" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="txtAlloyPO" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="chkLab_Service" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="chkServicesPO" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkConvServ" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkEquipment" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkReconciled" UniqueID="" Timestamp="" />
@@ -135,7 +135,7 @@ DEFINE CLASS frmshow_recv_order AS form
 		Desktop = .T.
 		DoCreate = .T.
 		Height = 440
-		Icon = graphics\earth-globe.ico
+		Icon = graphics\earth.ico
 		MaxButton = .F.
 		MDIForm = .T.
 		Name = "frmShow_Recv_Order"
@@ -221,7 +221,7 @@ DEFINE CLASS frmshow_recv_order AS form
 		Width = 80
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'chkLab_Service' AS checkbox WITH ;
+	ADD OBJECT 'chkServicesPO' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 236,233,216, ;
 		BackStyle = 0, ;
@@ -231,7 +231,7 @@ DEFINE CLASS frmshow_recv_order AS form
 		Enabled = .T., ;
 		Height = 17, ;
 		Left = 12, ;
-		Name = "chkLab_Service", ;
+		Name = "chkServicesPO", ;
 		TabIndex = 18, ;
 		ToolTipText = "Services - Purchases without a Material Reciept or Due In.", ;
 		Top = 64, ;
@@ -1223,11 +1223,12 @@ DEFINE CLASS frmshow_recv_order AS form
 						cSQL = cSQL + " FROM dbo.Stocklst_Master WITH(NOLOCK) M "
 						cSQL = cSQL + " INNER JOIN dbo.Stocklst_Detail WITH(NOLOCK) D ON M.ID=D.ID "
 					CASE ThisForm.cTBL = "B"
-						cSQL = cSQL + " FROM dbo.BrokerLst_Master WITH(NOLOCK) "
-						cSQL = cSQL + " INNER JOIN dbo.Stocklst_Detail WITH(NOLOCK) D ON M.ID=D.ID "
+						* Was wrongly joining BrokerLst_Master to StockLst_Detail (mixed tables on multi-heat).
+						cSQL = cSQL + " FROM dbo.BrokerLst_Master WITH(NOLOCK) M "
+						cSQL = cSQL + " INNER JOIN dbo.BrokerLst_Detail WITH(NOLOCK) D ON M.ID=D.ID "
 					CASE ThisForm.cTBL = "W"
-						cSQL = cSQL + " FROM dbo.WIPLst_Master WITH(NOLOCK) "
-						cSQL = cSQL + " INNER JOIN dbo.Stocklst_Detail WITH(NOLOCK) D ON M.ID=D.ID "
+						cSQL = cSQL + " FROM dbo.WIPLst_Master WITH(NOLOCK) M "
+						cSQL = cSQL + " INNER JOIN dbo.WIPLst_Detail WITH(NOLOCK) D ON M.ID=D.ID "
 					ENDCASE
 					IF Proper_PO_item(ThisForm.cPOitem) <> Proper_PO_Item('')
 					* WHERE history='New Partial Receive '
@@ -2427,7 +2428,7 @@ DEFINE CLASS frmshow_recv_order AS form
 				ThisForm.txtS_QTY.Value		= PrepareSQLnum(tmpPO.StockLst_QTY,'QTY',-5)
 				ThisForm.txtS_P.Value		 = PrepareSQLnum(tmpPO.StockLst_P,'S_P',-5)
 				ThisForm.txtOrder_LBS.Value = tmpPO.Pounds
-				ThisForm.chkLab_Service.Value = tmpPO.Services
+				ThisForm.chkServicesPO.Value = tmpPO.Services
 				ThisForm.chkConvServ.Value	= tmpPO.ConvServ
 				ThisForm.chkEquipment.Value	= tmpPO.Equipment
 				ThisForm.chkComplete.Value	= tmpPO.Delivered

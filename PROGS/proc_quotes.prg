@@ -5616,7 +5616,7 @@ ENDIF
 cLogoImg = CompanyBranding_ReportLogoHtmlImg(69)
 cWebsiteHtml = CompanyReport_WebsiteHtml()
 
-* Vendor To: address (same source as purchaseorder14.frx VendorContact.*)
+* Vendor To: address (same source as purchaseorder26.frx VendorContact.*)
 PRIVATE cVendAddr1, cVendAddr2, cVendCity, cVendST, cVendZip, cVendCountry
 PRIVATE cVendPhoneFmt, cVendFaxFmt
 cVendAddr1 = ""
@@ -5697,7 +5697,7 @@ m.MsgHeader = m.MsgHeader +"</style>"
 m.MsgHeader = m.MsgHeader +"</head>"
 m.MsgHeader = m.MsgHeader +"<body>"
 m.MsgHeader = m.MsgHeader +"<header>"
-* Same look as purchaseorder14.frx: logo | company name + PHONE/FAX/Email | PO# box
+* Same look as purchaseorder26.frx: logo | company name + PHONE/FAX/Email | PO# box
 m.MsgHeader = m.MsgHeader +[<table class="coHdr" style="border: thin none #000000; width: 540pt; ">]
 m.MsgHeader = m.MsgHeader +"<tr>"
 m.MsgHeader = m.MsgHeader +[<td style="width: 150pt; vertical-align: top;">]
@@ -5725,7 +5725,7 @@ m.MsgHeader = m.MsgHeader +[<td style="width: 140pt; text-align: center; vertica
 m.MsgHeader = m.MsgHeader +[<div style="border: 1px solid #000000; padding: 4pt 6pt;">]
 m.MsgHeader = m.MsgHeader +[<div style="font-size: 11pt; font-weight: bold;">PURCHASE ORDER</div>]
 m.MsgHeader = m.MsgHeader +[<hr style="border: none; border-top: 1px solid #000000; margin: 4pt 0;" />]
-* Same PO# expression as purchaseorder14.frx: HpaPo-SalesNum+SalesP
+* Same PO# expression as purchaseorder26.frx: HpaPo-SalesNum+SalesP
 PRIVATE cPoNumDisp, cSalesPDisp, nSalesNumHdr
 cSalesPDisp = CompanyReport_NzText(tmpPOConf.SalesP)
 nSalesNumHdr = IIF(ISNULL(tmpPOConf.SalesNum), 0, tmpPOConf.SalesNum)
@@ -5740,7 +5740,7 @@ m.MsgHeader = m.MsgHeader +[</tr>]
 m.MsgHeader = m.MsgHeader +[</table>]
 m.MsgHeader = m.MsgHeader +[</header>]
 m.MsgHeader = m.MsgHeader +[<br />]
-* To: | Ship to: | Send Bill: ? Courier New like purchaseorder14.frx
+* To: | Ship to: | Send Bill: ? Courier New like purchaseorder26.frx
 m.MsgHeader = m.MsgHeader +[<table style="border: thin none #000000; width: 540pt; ">]
 m.MsgHeader = m.MsgHeader +[<tr>]
 * --- To: (vendor / VendorContact) ---
@@ -5823,7 +5823,7 @@ ENDIF
 cTerms	= CompanyReport_NzText(tmpPOConf.Terms)
 cFOB	= CompanyReport_NzText(tmpPOConf.FOB)
 
-* Info bar - purchaseorder14.frx: HPA / Ship Via | Order Date / Job Number (Courier)
+* Info bar - purchaseorder26.frx: HPA / Ship Via | Order Date / Job Number (Courier)
 m.MsgNoteHTML = m.MsgNoteHTML +[<table style="border-style: double; border-width: 3pt; border-color: #000000; width: 540pt; font-family: 'Courier New', Courier, monospace; font-size: 10pt; font-weight: bold;">]
 m.MsgNoteHTML = m.MsgNoteHTML +[<tr>]
 m.MsgNoteHTML = m.MsgNoteHTML +[<td style="width: 270pt; vertical-align: top; padding: 3pt 6pt;">]

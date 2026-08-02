@@ -12885,14 +12885,14 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 			IF lPrintEvenTheCancelled
 				*do NOT Print Sheet Packing Instructions
 				*NC is to Not print Cancelled items
-				IF FILE('\reports\PurchaseOrder14.FRX')
+				IF FILE('\reports\PurchaseOrder26.FRX')
 					IF VARTYPE(oPForm) = "O"
 						oPform.Visible = .T.
 					ELSE
 						oPForm = CREATEOBJECT('PrintPreview')
 						oPform.Visible = .T.
 					ENDIF
-					REPORT FORM \reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+					REPORT FORM \reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 					IF VARTYPE(oPForm) = "O"
 						oPform.Visible = .F.
 					ENDIF
@@ -12903,7 +12903,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 							oPForm = CREATEOBJECT('PrintPreview')
 							oPform.Visible = .T.
 						ENDIF
-						REPORT FORM \reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+						REPORT FORM \reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 						IF VARTYPE(oPForm) = "O"
 							IF VARTYPE(oPForm) = "O"
 								oPform.Visible = .F.
@@ -12911,14 +12911,14 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 						ENDIF
 					ENDIF
 				ELSE
-					IF FILE('reports\PurchaseOrder14.FRX')
+					IF FILE('reports\PurchaseOrder26.FRX')
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .T.
 						ELSE
 							oPForm = CREATEOBJECT('PrintPreview')
 							oPform.Visible = .T.
 						ENDIF
-						REPORT FORM reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+						REPORT FORM reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .F.
 						ENDIF
@@ -12930,18 +12930,18 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 								oPForm = CREATEOBJECT('PrintPreview')
 								oPform.Visible = .T.
 							ENDIF
-							REPORT FORM reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+							REPORT FORM reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 							IF VARTYPE(oPForm) = "O"
 								oPform.Visible = .F.
 							ENDIF
 		
 						ENDIF
 					ELSE
-						WAIT WINDOW "Report form '\reports\PurchaseOrder14' not found" NOWAIT
+						WAIT WINDOW "Report form '\reports\PurchaseOrder26' not found" NOWAIT
 					ENDIF
 				ENDIF
 			ELSE
-				IF FILE('\reports\PurchaseOrder14nc.FRX')
+				IF FILE('\reports\PurchaseOrder26nc.FRX')
 					IF VARTYPE(oPForm) = "O"
 						oPform.Visible = .T.
 					ELSE
@@ -12949,7 +12949,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 						oPform.Visible = .T.
 					ENDIF
 					
-					REPORT FORM \reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+					REPORT FORM \reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 					IF VARTYPE(oPForm) = "O"
 						oPform.Visible = .F.
 					ENDIF
@@ -12961,21 +12961,21 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 							oPForm = CREATEOBJECT('PrintPreview')
 							oPform.Visible = .T.
 						ENDIF
-						REPORT FORM \reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+						REPORT FORM \reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .F.
 						ENDIF
 		
 					ENDIF
 				ELSE
-					IF FILE('reports\PurchaseOrder14nc.FRX')
+					IF FILE('reports\PurchaseOrder26nc.FRX')
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .T.
 						ELSE
 							oPForm = CREATEOBJECT('PrintPreview')
 							oPform.Visible = .T.
 						ENDIF
-						REPORT FORM reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+						REPORT FORM reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .F.
 						ENDIF
@@ -12987,28 +12987,28 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 								oPForm = CREATEOBJECT('PrintPreview')
 								oPform.Visible = .T.
 							ENDIF
-							REPORT FORM reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+							REPORT FORM reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 							IF VARTYPE(oPForm) = "O"
 								oPform.Visible = .F.
 							ENDIF
 		
 						ENDIF
 					ELSE
-						WAIT WINDOW "Report form 'reports\PurchaseOrder14nc' not found" NOWAIT
+						WAIT WINDOW "Report form 'reports\PurchaseOrder26nc' not found" NOWAIT
 					ENDIF
 				ENDIF
 			ENDIF
 		ELSE
 			*Print Sheet Pack Policy
 			IF lPrintEvenTheCancelled
-				IF FILE('\reports\PurchaseOrder14_sheet.FRX')
+				IF FILE('\reports\PurchaseOrder26_sheet.FRX')
 					IF VARTYPE(oPForm) = "O"
 						oPform.Visible = .T.
 					ELSE
 						oPForm = CREATEOBJECT('PrintPreview')
 						oPform.Visible = .T.
 					ENDIF
-					REPORT FORM \reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+					REPORT FORM \reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 					IF VARTYPE(oPForm) = "O"
 						oPform.Visible = .F.
 					ENDIF
@@ -13020,46 +13020,46 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 							oPForm = CREATEOBJECT('PrintPreview')
 							oPform.Visible = .T.
 						ENDIF
-						REPORT FORM \reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+						REPORT FORM \reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .F.
 						ENDIF
 		
 					ENDIF
 				ELSE
-					IF FILE('reports\PurchaseOrder14_sheet.FRX')
+					IF FILE('reports\PurchaseOrder26_sheet.FRX')
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .T.
 						ELSE
 							oPForm = CREATEOBJECT('PrintPreview')
 							oPform.Visible = .T.
 						ENDIF
-						REPORT FORM reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+						REPORT FORM reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .F.
 						ENDIF
 		
 						IF MESSAGEBOX("Do you need a second print?",4+32,"Reprint?") = 6
 							oPform.Visible = .T.
-							REPORT FORM reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+							REPORT FORM reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 							IF VARTYPE(oPForm) = "O"
 								oPform.Visible = .F.
 							ENDIF
 		
 						ENDIF
 					ELSE
-						WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheet' not found" NOWAIT
+						WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheet' not found" NOWAIT
 					ENDIF
 				ENDIF
 			ELSE
-				IF FILE('\reports\PurchaseOrder14_sheetNC.FRX')
+				IF FILE('\reports\PurchaseOrder26_sheetNC.FRX')
 					IF VARTYPE(oPForm) = "O"
 						oPform.Visible = .T.
 					ELSE
 						oPForm = CREATEOBJECT('PrintPreview')
 						oPform.Visible = .T.
 					ENDIF
-					REPORT FORM \reports\PurchaseOrder14_sheetNC.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+					REPORT FORM \reports\PurchaseOrder26_sheetNC.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 					IF VARTYPE(oPForm) = "O"
 						oPform.Visible = .F.
 					ENDIF
@@ -13071,21 +13071,21 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 							oPForm = CREATEOBJECT('PrintPreview')
 							oPform.Visible = .T.
 						ENDIF
-						REPORT FORM \reports\PurchaseOrder14_sheetNC.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+						REPORT FORM \reports\PurchaseOrder26_sheetNC.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .F.
 						ENDIF
 		
 					ENDIF
 				ELSE
-					IF FILE('reports\PurchaseOrder14_sheetNC.FRX')
+					IF FILE('reports\PurchaseOrder26_sheetNC.FRX')
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .T.
 						ELSE
 							oPForm = CREATEOBJECT('PrintPreview')
 							oPform.Visible = .T.
 						ENDIF
-						REPORT FORM reports\PurchaseOrder14_sheetNC.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+						REPORT FORM reports\PurchaseOrder26_sheetNC.FRX FOR HpaPo = nHpaPo PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 						IF VARTYPE(oPForm) = "O"
 							oPform.Visible = .F.
 						ENDIF
@@ -13097,14 +13097,14 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 								oPForm = CREATEOBJECT('PrintPreview')
 								oPform.Visible = .T.
 							ENDIF
-							REPORT FORM reports\PurchaseOrder14_sheetNC.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
+							REPORT FORM reports\PurchaseOrder26_sheetNC.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT &&PREVIEW WINDOW PrintPreview IN WINDOW PrintPreview
 							IF VARTYPE(oPForm) = "O"
 								oPform.Visible = .F.
 							ENDIF
 		
 						ENDIF
 					ELSE
-						WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheetNC' not found" NOWAIT
+						WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheetNC' not found" NOWAIT
 					ENDIF
 				ENDIF
 			ENDIF
@@ -13117,7 +13117,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 		
 		***************************************************
 		IF MESSAGEBOX("Do you want to Email this as PDF?",4+32,"Email PO?") = 6
-			IF FILE('reports\PurchaseOrder14.FRX')	
+			IF FILE('reports\PurchaseOrder26.FRX')	
 				
 				PRIVATE cEmail,	cEmailTo, cEmailFrom, cEmailFrom2, cFileName,cFileName2,cNewPDFName,cSubject,cMessage
 				PRIVATE nPrinters,lWinFax,CT
@@ -13215,54 +13215,54 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 				SELECT PurchaseOrder
 				IF lPrintSheetPk
 					IF lPrintEvenTheCancelled
-						IF FILE('reports\PurchaseOrder14_sheet.FRX')
-							*REPORT FORM \reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER 
-							REPORT FORM reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo Object loListener
+						IF FILE('reports\PurchaseOrder26_sheet.FRX')
+							*REPORT FORM \reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER 
+							REPORT FORM reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo Object loListener
 							
 							WAIT WINDOW "Making PDF" Timeout 2
 							
 							*PO_No_SetPrinted( nHpaPo, ThisForm.nConnHandle )
 							
 						ELSE
-							WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheet' not found" NOWAIT
+							WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheet' not found" NOWAIT
 						ENDIF
 					ELSE
-						IF FILE('reports\PurchaseOrder14_sheetnc.FRX')
-							*REPORT FORM \reports\PurchaseOrder14_sheetnc.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
-							REPORT FORM reports\PurchaseOrder14_sheetNC.FRX FOR HpaPo = nHpaPo AND !PurchaseOrder.cancelled Object loListener
+						IF FILE('reports\PurchaseOrder26_sheetnc.FRX')
+							*REPORT FORM \reports\PurchaseOrder26_sheetnc.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
+							REPORT FORM reports\PurchaseOrder26_sheetNC.FRX FOR HpaPo = nHpaPo AND !PurchaseOrder.cancelled Object loListener
 							
 							WAIT WINDOW "Making PDF" Timeout 2
 							
 							*PO_No_SetPrinted( nHpaPo, ThisForm.nConnHandle )
 							
 						ELSE
-							WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheetnc' not found" NOWAIT
+							WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheetnc' not found" NOWAIT
 						ENDIF
 					ENDIF
 				ELSE
 					IF lPrintEvenTheCancelled
-						IF FILE('reports\PurchaseOrder14.FRX')
-							*REPORT FORM \reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
-							REPORT FORM reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo Object loListener
+						IF FILE('reports\PurchaseOrder26.FRX')
+							*REPORT FORM \reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
+							REPORT FORM reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo Object loListener
 							
 							WAIT WINDOW "Making PDF" Timeout 2
 							
 							*PO_No_SetPrinted( nHpaPo, ThisForm.nConnHandle )
 							
 						ELSE
-							WAIT WINDOW "Report form 'reports\PurchaseOrder14' not found" NOWAIT
+							WAIT WINDOW "Report form 'reports\PurchaseOrder26' not found" NOWAIT
 						ENDIF
 					ELSE
-						IF FILE('reports\PurchaseOrder14nc.FRX')
-							*REPORT FORM \reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
-							REPORT FORM reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo AND !PurchaseOrder.cancelled Object loListener
+						IF FILE('reports\PurchaseOrder26nc.FRX')
+							*REPORT FORM \reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
+							REPORT FORM reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo AND !PurchaseOrder.cancelled Object loListener
 							
 							WAIT WINDOW "Making PDF" Timeout 2
 							
 							*PO_No_SetPrinted( nHpaPo, ThisForm.nConnHandle )
 							
 						ELSE
-							WAIT WINDOW "Report form 'reports\PurchaseOrder14nc' not found" NOWAIT
+							WAIT WINDOW "Report form 'reports\PurchaseOrder26nc' not found" NOWAIT
 						ENDIF
 					ENDIF
 				ENDIF
@@ -13309,7 +13309,7 @@ DEFINE CLASS purchaseorder AS form 		&& Purchase Order
 					MESSAGEBOX("Was not able to create PDF."+CHR(13)+cFileName,0,"Nothing to Send")
 				ENDIF
 			ELSE
-				WAIT WINDOW "Report form 'reports\PurchaseOrder14.FRX' not found" TIMEOUT 4
+				WAIT WINDOW "Report form 'reports\PurchaseOrder26.FRX' not found" TIMEOUT 4
 			ENDIF
 		ENDIF		&&Email
 		

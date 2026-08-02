@@ -13,3 +13,58 @@ The ERP SQL script tree was moved out of this repo for OneDrive sync and its own
 - **Former tree (removed):** tracked files under `E:\VFP\ERP_2\MEM\SQL\...`
 
 When reading, editing, or adding SQL under Config / Create ERP_new / QBO / etc., use the OneDrive location / `SQL-ERP_2` repo. Do not recreate the old tree under `MEM\SQL` unless the user asks for a junction/symlink.
+
+## Servers / database
+
+Same DB name **`SAUSA`** on every instance (not `ERP_2`).
+
+| Role | Server | IP | Use |
+|------|--------|----|-----|
+| Home / Development | `SuperMicro` | `192.168.31.172` | VFP coding + local SQL scripts |
+| Production | `BobWhite` | `192.168.5.3` | Deployed EXE / live domain users |
+| Domain test (optional) | `SA-WS-DK-26` | `192.168.5.88` | Extra domain test copy |
+
+VFP `ERP_Environment.xml`: **Development** → SuperMicro; **Production** → BobWhite. See `SERVERS.md` in the SQL repo.
+
+## Project name: SAUSA-ERP
+
+The user may say **SAUSA-ERP** to mean the whole product: VFP app repo (`E:\VFP\ERP_2`, GitHub `ERP_2-VFP`) **plus** SQL database/scripts (`SAUSA` DB, OneDrive `SQL` / GitHub `SQL-ERP_2`). Treat that name as code + data together unless they clearly mean only one side.
+
+## Who runs SQL where
+
+- **This Cursor session (home SuperMicro):** can run scripts against **local** SQL (`SuperMicro` / `SAUSA`). Do **not** assume connectivity or Windows auth to **BobWhite** (or other domain SQL) from here.
+- **Domain PC (SAUSA):** Claude (or the user) runs create/deploy scripts against **BobWhite** (and optional `SA-WS-DK-26`).
+- **OneDrive sync:** script/doc edits from either side land in `C:\Users\talkt\OneDrive - Space Alloys USA\SQL`. **Every time you work in that folder, re-read it** (status/diff/`SERVERS.md`/recent files) — do not trust an earlier session’s snapshot; watch for new commits, RUN-ORDER notes, and schema changes from the domain agent.
+
+## Script Tools (VS / .NET workers)
+
+VS-run tools (notably **QboBridge**) live on OneDrive — **not** under `E:\VFP\ERP_2\tools`:
+
+- **Canonical path:** `C:\Users\talkt\OneDrive - Space Alloys USA\Script Tools`
+- **QboBridge:** `C:\Users\talkt\OneDrive - Space Alloys USA\Script Tools\QboBridge`
+
+When documenting or running the worker, use `\Script Tools\QboBridge` (or the full OneDrive path). Do **not** recreate or reference `ERP_2\tools\QboBridge`. FoxBin / VFP helper scripts remain under `E:\VFP\ERP_2\tools`.
+
+## Create ERP_new filename map (2026-07-19)
+
+Prefer current names; do not revive the old HPAlloy-titled create scripts:
+
+| Old | New |
+|-----|-----|
+| `01_0x Create HPAlloy …` | `01_0x Create new ERP …` |
+| `02 Create from HPAlloy_Archive.sql` | `02 Fill from HPAlloy_Archive.sql` |
+| `03 Create from HPAlloyNR.sql` | `03 Fill from HPAlloyNR.sql` |
+| `04 Create Views.sql` | `04 Create new ERP Views.sql` |
+| `06 Create Diagrams.sql` | `06 Create new ERP Diagrams.sql` |
+| `25_Seed_TopLine_Equipment_PO1000.sql` | `32_Seed_TopLine_Equipment_PO1000.sql` |
+| `Config/12_CompanyProfile_AddrFax_Website.sql` | `Config/22_CompanyProfile_AddrFax_Website.sql` |
+
+`01 Create from HPAlloy.original.bak` — historical reference only; never run. BobWhite build: `Run-SAUSA-Build-BobWhite.ps1`.
+
+## Database Mail (David decision 2026-07-19 / build split 2026-07-20; Dev policy 2026-07-21)
+
+- **Ignore Copilot** email plans/runbooks for near-term (IP relay / dedicated SQL static IP).
+- **Create path:** never runs `Config\23_DatabaseMail_SAUSA-ERP.sql`.
+- **SuperMicro Development:** **Do not set up Database Mail.** Testing must **never send email**. `Run-SAUSA-Build.ps1 -Environment Development` **always** applies `Create ERP_new\90_Dev_NoDatabaseMail.sql` (stops mailer, no-ops `p_eMail_Send*`). Never run Config `23` on SuperMicro.
+- **BobWhite Production:** live mail later via Config `23` when mailbox+password ready; then `-InstallTriggers` / optional `-SeedPO1000`.
+- Paste passwords in SSMS only — never commit.

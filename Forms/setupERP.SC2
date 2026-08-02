@@ -783,6 +783,19 @@ DEFINE CLASS erpsetup AS form
 			ENDIF
 		ENDIF
 		
+		* Fresh DB first-run: leftover MEM\SalesP.MEM (e.g. 'D') must land in dbo.AppSetup
+		* under LoginUN (short Windows name: talkt). Domain logins still use the short
+		* name from SYS(0); AppUsers keeps SAUSA\user / BobWhite\user separately.
+		IF TYPE("ThisForm.SalesP") = "C" AND !EMPTY(ALLTRIM(ThisForm.LoginUN))
+			PRIVATE cMemSalesP
+			cMemSalesP = UPPER(ALLTRIM(ThisForm.SalesP))
+			IF !EMPTY(cMemSalesP) AND cMemSalesP != "0"
+				IF NOT AppSetup_SalesP_Exists(cMemSalesP)
+					AppSetup_Update_Ans(cMemSalesP, ThisForm.LoginUN, "SalesP")
+				ENDIF
+			ENDIF
+		ENDIF
+		
 		IF FILE(SYS(5)+SYS(2003) +"\Scripts.mem")
 			ThisForm.cmdRunScripts.Enabled = .T.
 		ENDIF
@@ -919,7 +932,9 @@ DEFINE CLASS erpsetup AS form
 			ENDIF
 			
 			IF SalesP!="0"
-				AppSetup_Update_Ans( SalesP, ThisForm.SalesP, "SalesP" )
+				* UN must be LoginUN (Windows user), not the SalesP initial.
+				* Wrong: AppSetup_Update_Ans( SalesP, ThisForm.SalesP, "SalesP" )
+				AppSetup_Update_Ans( SalesP, ThisForm.LoginUN, "SalesP" )
 			ENDIF
 		ENDIF
 		
@@ -1007,10 +1022,10 @@ DEFINE CLASS erpsetup AS form
 		ENDIF
 			
 		
-		*IF cSalesPinit != "0"
-		*	AppSetup_Update_Ans( cSalesPinit, ThisForm.LoginUN, "SalesP" )
-		*	*AppSetup_Update_Ans( pcAns, pcUN, pcPRP, pConn )
-		*ENDIF
+		IF cSalesPinit != "0" AND !EMPTY(ALLTRIM(ThisForm.LoginUN))
+			AppSetup_Update_Ans( cSalesPinit, ThisForm.LoginUN, "SalesP" )
+			*AppSetup_Update_Ans( pcAns, pcUN, pcPRP, pConn )
+		ENDIF
 		
 		wait window 'Stored to disk' nowait
 		ThisForm.SalespTXT.Value = cSalesPinit

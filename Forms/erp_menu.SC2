@@ -167,6 +167,11 @@ DEFINE CLASS hpa AS form
 			ENDIF
 		ENDIF
 		
+		* Drop all class/procedure libraries so IDE rebuild is not blocked
+		SET CLASSLIB TO
+		SET PROCEDURE TO
+		SET LIBRARY TO
+		
 		IF TYPE('lcLastSetPath')="C"	
 			IF EMPTY(lcLastSetPath)
 				SET PATH TO
@@ -219,6 +224,12 @@ DEFINE CLASS hpa AS form
 		DO CASE
 		
 		******* Accounting ********
+		CASE tNodeText = "QBO Sync Status"
+			IF WEXIST("frmQboSync_Maint")
+				ACTIVATE WINDOW frmQboSync_Maint
+			ELSE
+				DO PROGS\QboSync_maint
+			ENDIF
 		CASE tNodeText = "Accounting Costing"
 			IF WEXIST("frmAccountingCosting")
 				ACTIVATE WINDOW frmAccountingCosting
@@ -494,6 +505,13 @@ DEFINE CLASS hpa AS form
 				DO FORM "Forms\Receive_Order_PW.SCX"
 			ENDIF 
 			
+		CASE tNodeText = "SO History"
+			IF WEXIST("frmSO_History")
+				ACTIVATE WINDOW frmSO_History
+			ELSE
+				DO PROGS\SO_History
+			ENDIF
+
 		CASE tNodeText == "ReView SO"
 			IF WEXIST("frmSales_Review")
 				ACTIVATE WINDOW frmSales_Review
@@ -538,6 +556,13 @@ DEFINE CLASS hpa AS form
 				ACTIVATE WINDOW WorkOrder
 			ELSE
 				DO FORM "Forms\WorkOrder.SCX"
+			ENDIF
+		
+		CASE tNodeText = "WO Material"
+			IF WEXIST("frmWO_Material")
+				ACTIVATE WINDOW frmWO_Material
+			ELSE
+				DO PROGS\WO_Material
 			ENDIF
 			
 		******* StockList ********
@@ -799,6 +824,13 @@ DEFINE CLASS hpa AS form
 				DO FORM "Forms\WorkOrder.SCX"
 			ENDIF
 		
+		CASE tNodeText = "WO Material"
+			IF WEXIST("frmWO_Material")
+				ACTIVATE WINDOW frmWO_Material
+			ELSE
+				DO PROGS\WO_Material
+			ENDIF
+		
 		*CASE tNodeText == "WO Status"
 		*	MESSAGEBOX("Work in progress",0,"NA")
 		
@@ -886,6 +918,12 @@ DEFINE CLASS hpa AS form
 			ENDIF
 		CASE tNodeText = "Company Profile"
 			DO PROGS\CompanyProfile_maint
+		CASE tNodeText = "ISO Documents" OR tNodeText = "ISO Document Maint"
+			IF WEXIST("frmIsoDocument_Maint")
+				ACTIVATE WINDOW frmIsoDocument_Maint
+			ELSE
+				DO PROGS\IsoDocument_maint
+			ENDIF
 		CASE tNodeText = "SQL Database Roles"
 			DO FORM "Forms\AppSqlRole_Maint.scx"
 		CASE tNodeText = "App Permissions"
@@ -985,6 +1023,7 @@ DEFINE CLASS hpa AS form
 		*
 		******* Accounting  ********
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"Accounting","Accounting")  &&must start with the Add(,,
+		nodX = ThisForm.oleListViewHPA.Nodes.Add("Accounting",4,,"QBO Sync Status")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Accounting",4,,"Accounting Costing")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Accounting",4,,"Customer Terms")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Accounting",4,,"Dead Certs")
@@ -1044,12 +1083,14 @@ DEFINE CLASS hpa AS form
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"Receiving")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"Receive Order PW")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"ReView SO")
+		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"SO History")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"RMA")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"Sales Orders")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"SalesOrder Items")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"SO Late")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"Ship")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"Work Order")
+		nodX = ThisForm.oleListViewHPA.Nodes.Add("Sales",4,,"WO Material")
 		
 		******* StockLst ***********
 		nodX = ThisForm.oleListViewHPA.Nodes.Add(,,"StockLst","Stock List")
@@ -1108,6 +1149,7 @@ DEFINE CLASS hpa AS form
 		*nodX = ThisForm.oleListViewHPA.Nodes.Add("Man",4,,"Thermal Couple Use")
 		
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Man",4,,"Work Order")
+		nodX = ThisForm.oleListViewHPA.Nodes.Add("Man",4,,"WO Material")
 		*nodX = ThisForm.oleListViewHPA.Nodes.Add("Man",4,,"WO Status")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Man",4,,"Wire Log")
 		
@@ -1124,6 +1166,7 @@ DEFINE CLASS hpa AS form
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Pipe Weight")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"StockLst SQL Maint")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Company Profile")
+		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"ISO Document Maint")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"SQL Database Roles")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"App Permissions")
 		nodX = ThisForm.oleListViewHPA.Nodes.Add("Main",4,,"Shipping Address")
@@ -1696,7 +1739,14 @@ DEFINE CLASS hpa AS form
 			ENDIF
 		ENDIF
 		
-		CLOSE DATABASE
+		TRY
+			CLOSE TABLES ALL
+		CATCH
+		ENDTRY
+		TRY
+			CLOSE DATABASES ALL
+		CATCH
+		ENDTRY
 		
 		ThisForm.Release
 		CLEAR EVENTS 

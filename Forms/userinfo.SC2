@@ -751,7 +751,7 @@ DEFINE CLASS frmuserinfo AS shadowform OF "..\libs\wizshdow.vcx"
 		
 		
 		***************************
-		LOCAL cSalesP, nLoopCount, lInsertRec
+		LOCAL cSalesP, nLoopCount, lInsertRec, nIdx
 		lInsertRec = .F.
 		
 		IF lHaveSalesP
@@ -838,18 +838,32 @@ DEFINE CLASS frmuserinfo AS shadowform OF "..\libs\wizshdow.vcx"
 						MESSAGEBOX( "Initail ADDED!"+CHR(13)+CHR(13)+"Have another Sales Person pass you an Inquire to get started."+CHR(13)+CHR(13)+"Hit 'Save' when done.",0+64,"Ready to add new 'User Info'")
 					ENDIF
 				ENDIF
-		
-				IF USED('tmpSalesPInit')
-					*SELECT DISTINCT Setup.Un, Setup.Ans FROM tmpSalesPInit WHERE Setup.prp = "SalesP" INTO ARRAY aEmployees
-					SELECT ANS FROM tmpSalesPInit INTO ARRAY aSalesP
-					
-					USE IN tmpSalesPInit
-		
-				ENDIF
 			ENDIF
 			
 		ENDIF
 		*************************
+		* Always rebuild spinner from AppSetup (VFP skips INTO ARRAY when 0 rows).
+		PRIVATE cSQL, nSQLEXEC
+		DIMENSION aSalesP[1]
+		aSalesP[1] = ""
+		IF USED('tmpSalesPInit')
+			USE IN tmpSalesPInit
+		ENDIF
+		SELECT 0
+		cSQL = "SELECT DISTINCT [ANS] FROM dbo.AppSetup WITH(NOLOCK) "
+		cSQL = cSQL+" WHERE LEN( ISNULL([ANS],'') )> 0"
+		cSQL = cSQL+" AND [Prp] = 'SalesP'"
+		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpSalesPInit')
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpSalesPInit')
+		ENDDO
+		IF nSQLEXEC > 0 AND USED('tmpSalesPInit') AND RECCOUNT('tmpSalesPInit') > 0
+			SELECT ANS FROM tmpSalesPInit INTO ARRAY aSalesP
+		ENDIF
+		IF USED('tmpSalesPInit')
+			USE IN tmpSalesPInit
+		ENDIF
 		ThisForm.spnSalesP.clear
 		******************
 		ThisForm.spnSalesP.ColumnCount =ALEN(aSalesP)
@@ -860,8 +874,8 @@ DEFINE CLASS frmuserinfo AS shadowform OF "..\libs\wizshdow.vcx"
 		
 		*this.addListitem("(All Employees)",1,1)
 		nLoopCount = 1
-		
-		FOR EACH cSalesP IN aSalesP
+		FOR nIdx = 1 TO ALEN(aSalesP)
+			cSalesP = aSalesP[nIdx]
 			IF !EMPTY(cSalesP)
 				nLoopCount = nLoopCount + 1
 				ThisForm.spnSalesP.addListitem(ALLTRIM(cSalesP),nLoopCount,1)
@@ -1170,7 +1184,7 @@ DEFINE CLASS frmuserinfo AS shadowform OF "..\libs\wizshdow.vcx"
 	ENDPROC
 
 	PROCEDURE spnSalesP.Init
-		LOCAL cSalesP, nLoopCount
+		LOCAL cSalesP, nLoopCount, nIdx
 		
 		this.clear
 		
@@ -1208,12 +1222,15 @@ DEFINE CLASS frmuserinfo AS shadowform OF "..\libs\wizshdow.vcx"
 			SQLExecError(cSQL, ThisForm.nConnHandle, nSQLEXEC, 'tmpSalesPInit')
 		ENDIF
 		
+		* VFP does not create INTO ARRAY when 0 rows — seed before SELECT.
+		DIMENSION aSalesP[1]
+		aSalesP[1] = ""
 		IF USED('tmpSalesPInit')
 			*SELECT DISTINCT Setup.Un, Setup.Ans FROM tmpSalesPInit WHERE Setup.prp = "SalesP" INTO ARRAY aEmployees
-			SELECT ANS FROM tmpSalesPInit INTO ARRAY aSalesP
-			
+			IF RECCOUNT('tmpSalesPInit') > 0
+				SELECT ANS FROM tmpSalesPInit INTO ARRAY aSalesP
+			ENDIF
 			USE IN tmpSalesPInit
-		
 		ENDIF
 		
 		This.ColumnCount =ALEN(aSalesP)
@@ -1224,8 +1241,8 @@ DEFINE CLASS frmuserinfo AS shadowform OF "..\libs\wizshdow.vcx"
 		
 		*this.addListitem("(All Employees)",1,1)
 		nLoopCount = 1
-		
-		FOR EACH cSalesP IN aSalesP
+		FOR nIdx = 1 TO ALEN(aSalesP)
+			cSalesP = aSalesP[nIdx]
 			IF !EMPTY(cSalesP)
 				nLoopCount = nLoopCount + 1
 				this.addListitem(ALLTRIM(cSalesP),nLoopCount,1)

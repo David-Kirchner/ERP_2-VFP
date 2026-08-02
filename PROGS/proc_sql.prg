@@ -32251,12 +32251,31 @@ SELECT 0
 PRIVATE nID_Detail
 ID_Detail = 0
 
-PRIVATE cSQL, nSQLEXEC
-cSQL =        " SELECT ID_Detail, 'S' as STK FROM dbo.StockLst_Detail WITH(NOLOCK) WHERE ReceivingID = "+ALLTRIM(STR( pnReceiveID ))
-cSQL = cSQL + " UNION "
+PRIVATE cSQL, nSQLEXEC, cRecvTBL, cSTK
+cRecvTBL = ''
+cSTK = ''
+cSQL = "SELECT StockTable FROM dbo.Receiving WITH(NOLOCK) WHERE ID = "+ALLTRIM(STR(pnReceiveID))
+IF nConn > 0
+	nSQLEXEC = SQLEXEC(nConn, cSQL, 'tmpPQSL_RecvTBL')
+	IF nSQLEXEC > 0 AND USED('tmpPQSL_RecvTBL') AND RECCOUNT('tmpPQSL_RecvTBL') > 0
+		cRecvTBL = PrepareSQLtxt(tmpPQSL_RecvTBL.StockTable,'StockTable',1)
+	ENDIF
+	IF USED('tmpPQSL_RecvTBL')
+		USE IN tmpPQSL_RecvTBL
+	ENDIF
+ENDIF
+
+* Prefer Receiving.StockTable so multi-heat does not pick Stock when row is Broker (or vice versa)
+cSQL = "SELECT TOP 1 ID_Detail, STK FROM ("
+cSQL = cSQL + " SELECT ID_Detail, 'S' as STK FROM dbo.StockLst_Detail WITH(NOLOCK) WHERE ReceivingID = "+ALLTRIM(STR( pnReceiveID ))
+cSQL = cSQL + " UNION ALL "
 cSQL = cSQL + " SELECT ID_Detail, 'B' as STK FROM dbo.BrokerLst_Detail WITH(NOLOCK) WHERE ReceivingID = "+ALLTRIM(STR( pnReceiveID ))
-cSQL = cSQL + " UNION "
+cSQL = cSQL + " UNION ALL "
 cSQL = cSQL + " SELECT ID_Detail, 'W' as STK FROM dbo.WIPLst_Detail WITH(NOLOCK) WHERE ReceivingID = "+ALLTRIM(STR( pnReceiveID ))
+cSQL = cSQL + " ) X"
+IF cRecvTBL="S" OR cRecvTBL="B" OR cRecvTBL="W"
+	cSQL = cSQL + " ORDER BY CASE WHEN STK='"+cRecvTBL+"' THEN 0 ELSE 1 END, STK"
+ENDIF
 
 
 IF nConn > 0

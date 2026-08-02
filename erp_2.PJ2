@@ -438,10 +438,10 @@ WITH loProject.FILES
 	.ADD('reports\pricetableline.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\pricetablesum.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\proforma.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\purchaseorder14.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\purchaseorder14_sheet.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\purchaseorder14_sheetnc.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\purchaseorder14nc.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('reports\purchaseorder26.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('reports\purchaseorder26_sheet.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('reports\purchaseorder26_sheetnc.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('reports\purchaseorder26nc.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\quote09.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\quote_no.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\quotereprint.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />

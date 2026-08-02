@@ -305,7 +305,7 @@ FUNCTION CompanyReport_BillToLine
 	RETURN CompanyReport_AddressLine("BILL", tnLine)
 
 *--------------------------------------------------------------------
-* City, ST ZIP Country on one line (matches purchaseorder14 ShipAddr city field).
+* City, ST ZIP Country on one line (matches purchaseorder26 ShipAddr city field).
 FUNCTION CompanyReport_CityStZip
 	LPARAMETERS tcWhich
 	LOCAL lcCityLine, lcWhich
@@ -654,7 +654,7 @@ FUNCTION CompanyReport_HtmlBillRemitColumn
 	RETURN lcHtml + [</td>]
 
 *--------------------------------------------------------------------
-* Contact/ship block lines from Company Profile Bill/Ship — match purchaseorder14.frx
+* Contact/ship block lines from Company Profile Bill/Ship — match purchaseorder26.frx
 * (company / streets / city line only; never phone — AddressLine can promote PH: into lines 1-4).
 FUNCTION CompanyReport_HtmlAddrBlock
 	LPARAMETERS tcWhich
@@ -743,7 +743,7 @@ FUNCTION CompanyReport_AddressLine
 	laLines[1] = CompanyReport_AddressField(tcWhich, "Company")
 	laLines[2] = CompanyReport_AddressField(tcWhich, "Addr1")
 	laLines[3] = CompanyReport_AddressField(tcWhich, "Addr2")
-	* Same city line as purchaseorder14.frx: City, ST ZIP Country
+	* Same city line as purchaseorder26.frx: City, ST ZIP Country
 	lcCityLine = ALLTRIM(CompanyReport_AddressField(tcWhich, "City"))
 	IF !EMPTY(CompanyReport_AddressField(tcWhich, "State"))
 		lcCityLine = ALLTRIM(lcCityLine + IIF(EMPTY(lcCityLine), "", ", ") + CompanyReport_AddressField(tcWhich, "State"))
@@ -769,3 +769,131 @@ FUNCTION CompanyReport_AddressLine
 		ENDIF
 	ENDFOR
 	RETURN ""
+
+*--------------------------------------------------------------------
+* ISO / FM document label for printed reports.
+* FRX: CompanyReport_IsoDoc("PurchaseOrder26")  ->  "FM-74-04-01 REV.B"
+* dbo.IsoDocument stores IsoCode (FM-74-04-01) + IsoCodeRev (B) separately;
+* this UDF combines them. ReportKey = JUSTSTEM of the .frx.
+FUNCTION CompanyReport_IsoDoc
+	LPARAMETERS tcReportKey
+	LOCAL lcKey, lcCode, lcRev
+
+	lcKey = CompanyReport_IsoDoc_NormalizeKey(tcReportKey)
+	IF EMPTY(lcKey)
+		RETURN ""
+	ENDIF
+	= CompanyReport_EnsureIsoDocs()
+	lcCode = ""
+	lcRev = ""
+	IF USED("csrReportIsoDoc")
+		SELECT csrReportIsoDoc
+		LOCATE FOR UPPER(ALLTRIM(reportkey)) == UPPER(lcKey)
+		IF FOUND()
+			lcCode = CompanyReport_NzText(csrReportIsoDoc.isocode)
+			lcRev = CompanyReport_NzText(csrReportIsoDoc.isocoderev)
+		ENDIF
+	ENDIF
+	RETURN CompanyReport_IsoDoc_Format(lcCode, lcRev)
+
+*--------------------------------------------------------------------
+* Combine FM number + revision letter for print: "FM-74-04-01 REV.B"
+FUNCTION CompanyReport_IsoDoc_Format
+	LPARAMETERS tcIsoCode, tcIsoCodeRev
+	LOCAL lcCode, lcRev
+
+	lcCode = CompanyReport_NzText(tcIsoCode)
+	lcRev = UPPER(CompanyReport_NzText(tcIsoCodeRev))
+	* Strip accidental embedded REV from code (legacy rows)
+	IF ATC(" REV.", UPPER(lcCode)) > 0
+		IF EMPTY(lcRev)
+			lcRev = ALLTRIM(SUBSTR(lcCode, ATC(" REV.", UPPER(lcCode)) + 5))
+		ENDIF
+		lcCode = ALLTRIM(LEFT(lcCode, ATC(" REV.", UPPER(lcCode)) - 1))
+	ENDIF
+	IF EMPTY(lcCode)
+		RETURN ""
+	ENDIF
+	IF EMPTY(lcRev)
+		RETURN lcCode
+	ENDIF
+	RETURN lcCode + " REV." + lcRev
+
+*--------------------------------------------------------------------
+FUNCTION CompanyReport_IsoDoc_NormalizeKey
+	LPARAMETERS tcReportKey
+	LOCAL lc
+	lc = CompanyReport_NzText(tcReportKey)
+	IF EMPTY(lc)
+		RETURN ""
+	ENDIF
+	lc = JUSTSTEM(lc)
+	RETURN ALLTRIM(lc)
+
+*--------------------------------------------------------------------
+* Load dbo.IsoDocument into csrReportIsoDoc (once per session / on reload).
+FUNCTION CompanyReport_EnsureIsoDocs
+	LPARAMETERS tlForce
+	LOCAL nConn, llOwn, lcSQL, nRet, lcKey, lcCode, lcRev, lcTitle
+
+	IF VARTYPE(tlForce) # "L"
+		tlForce = .F.
+	ENDIF
+	IF USED("csrReportIsoDoc") AND !tlForce
+		RETURN .T.
+	ENDIF
+	IF USED("csrReportIsoDoc")
+		USE IN csrReportIsoDoc
+	ENDIF
+	CREATE CURSOR csrReportIsoDoc (reportkey C(80), isocode C(80), isocoderev C(10), title C(200))
+
+	nConn = 0
+	llOwn = .F.
+	IF TYPE("gReportSqlConn") = "N" AND gReportSqlConn > 0
+		nConn = gReportSqlConn
+	ENDIF
+	IF nConn < 1
+		IF NOT "PROC_SETUP" $ UPPER(SET("PROCEDURE"))
+			IF FILE("PROGS\proc_setup.prg")
+				SET PROCEDURE TO PROGS\proc_setup.prg ADDITIVE
+			ENDIF
+		ENDIF
+		TRY
+			nConn = get_SQLSTRINGCONNECT()
+			llOwn = (nConn > 0)
+		CATCH
+			nConn = 0
+		ENDTRY
+	ENDIF
+	IF nConn < 1
+		RETURN .F.
+	ENDIF
+
+	lcSQL = "SELECT ReportKey, IsoCode, ISNULL(IsoCodeRev,'') AS IsoCodeRev, ISNULL(Title,'') AS Title "
+	lcSQL = lcSQL + "FROM dbo.IsoDocument WITH (NOLOCK) "
+	lcSQL = lcSQL + "WHERE Active = 1 ORDER BY SortOrder, ReportKey"
+	nRet = SQLEXEC(nConn, lcSQL, "tmpIsoDoc")
+	IF nRet > 0 AND USED("tmpIsoDoc")
+		SELECT tmpIsoDoc
+		SCAN
+			lcKey = CompanyReport_NzText(tmpIsoDoc.ReportKey)
+			lcCode = CompanyReport_NzText(tmpIsoDoc.IsoCode)
+			lcRev = CompanyReport_NzText(tmpIsoDoc.IsoCodeRev)
+			lcTitle = CompanyReport_NzText(tmpIsoDoc.Title)
+			IF !EMPTY(lcKey) AND !EMPTY(lcCode)
+				INSERT INTO csrReportIsoDoc (reportkey, isocode, isocoderev, title) ;
+					VALUES (lcKey, lcCode, lcRev, lcTitle)
+			ENDIF
+		ENDSCAN
+		USE IN tmpIsoDoc
+	ENDIF
+	IF llOwn AND nConn > 0
+		SQLDISCONNECT(nConn)
+	ENDIF
+	SELECT csrReportIsoDoc
+	GO TOP
+	RETURN .T.
+
+*--------------------------------------------------------------------
+FUNCTION CompanyReport_ReloadIsoDocs
+	RETURN CompanyReport_EnsureIsoDocs(.T.)

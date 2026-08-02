@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="Windows-1252" standalone="yes"?>
+<!-- Shipped with SAUSA-ERP MSI for domain clients → BobWhite / SAUSA -->
+<ERPEnvironment>
+	<ActiveProfile>Production</ActiveProfile>
+	<Profiles>
+		<Profile name="Production" server="BobWhite" database="SAUSA" reportServer="BobWhite"/>
+		<Profile name="Development" server="SuperMicro" database="SAUSA" reportServer="SuperMicro"/>
+		<Profile name="DomainTest" server="SA-WS-DK-26" database="SAUSA" reportServer="SA-WS-DK-26"/>
+	</Profiles>
+	<Databases>
+		<Database>SAUSA</Database>
+	</Databases>
+	<Company>
+		<SignaturesRoot>\\BobWhite\SQL\Company\Signatures</SignaturesRoot>
+	</Company>
+</ERPEnvironment>

@@ -265,8 +265,11 @@ FUNCTION CompanyBranding_ReadBinaryFile
 	ENDIF
 	nSize = FSEEK(nH, 0, 2)
 	FSEEK(nH, 0, 0)
-	cData = SPACE(nSize)
-	= FREAD(nH, @cData)
+	IF nSize <= 0
+		FCLOSE(nH)
+		RETURN ""
+	ENDIF
+	cData = FREAD(nH, nSize)
 	FCLOSE(nH)
 	RETURN cData
 
@@ -641,7 +644,7 @@ FUNCTION CompanyBranding_ConfirmChoose
 			"Where it shows:" + CHR(13) + ;
 			"  - Windows taskbar and ERP main window title bar" + CHR(13) + ;
 			"  - Forms that apply company branding (menu, setup, quotes, etc.)" + CHR(13) + ;
-			"  - Built ERP.EXE icon (MEM\Company_Icon.ico)" + CHR(13) + CHR(13) + ;
+			"  - Built SAUSA-ERP.EXE icon (MEM\Company_Icon.ico)" + CHR(13) + CHR(13) + ;
 			"Practical tips:" + CHR(13) + ;
 			"  - Use a true Windows .ico file" + CHR(13) + ;
 			"  - Include 16x16, 32x32, and 48x48 sizes in the .ico" + CHR(13) + ;

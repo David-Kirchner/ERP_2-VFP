@@ -1,0 +1,9 @@
+_SCREEN.Visible=.F.
+SET TALK OFF
+SET SAFETY OFF
+SET EXCLUSIVE ON
+USE E:\VFP\ERP_2\REPORTS\purchaseorder26nc.frx EXCLUSIVE
+REPLACE EXPR WITH [CompanyReport_IsoDoc("PurchaseOrder26nc")] FOR "CompanyReport_IsoDoc" $ EXPR OR "FM-74-04-01" $ EXPR
+STRTOFILE("nc fixed n="+TRANSFORM(_TALLY)+CHR(13)+CHR(10),"E:\VFP\ERP_2\TEMP\po26_iso_wire.log",1)
+USE
+QUIT

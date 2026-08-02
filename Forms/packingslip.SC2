@@ -7205,7 +7205,7 @@ DEFINE CLASS packingslip AS form
 			m.MsgNoteHTML = CreateHTML_PS_Conf( ThisForm.PackingSlipNo, cEmailAddress, cEmailHPAsp, nShipAddr, cSalesRep, nBillAddr  )
 		
 			PRIVATE m.MsgSubject 
-			m.MsgSubject = "HPAlloy PackingSlip #"+ALLTRIM(STR(ThisForm.PackingSlipNo))
+			m.MsgSubject = CompanyReport_ShortName()+" PackingSlip #"+ALLTRIM(STR(ThisForm.PackingSlipNo))
 		
 			IF MESSAGEBOX("Are you sure want to Email this Packingslip?",4,"Send Email?") = 6
 				PRIVATE lQuiet, lNoHeadder

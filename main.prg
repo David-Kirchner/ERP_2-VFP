@@ -408,8 +408,15 @@ DO FORM Forms\ERP_Menu
 READ EVENTS			&&??Memo1: Alias 'SALESQUOTE' is not found.. 2019-01-31 2019-05-15 ??
 *: Variable 'CFORMSORT' is not found.. 2019-11-06 ???
 
+* Unload classlibs/procs so the IDE can rebuild (frees LIBS\wizembss.vcx etc.)
+DO myShutDown WITH .T.
+
 * Reset the global error handler
-ON ERROR &cOldError
+IF TYPE("cOldError") = "C" AND !EMPTY(cOldError)
+	ON ERROR &cOldError
+ELSE
+	ON ERROR
+ENDIF
 
 
 * Project resolution markers for API functions
@@ -421,8 +428,42 @@ Procedure  GetFileVersion
 
 
 *********************************************************
+* Prefer root myShutDown.prg (ON SHUTDOWN DO myShutDown). Kept here if APP embeds it.
 PROCEDURE myShutDown
+LPARAMETERS tlUnloadOnly
+IF VARTYPE(tlUnloadOnly) != "L"
+	tlUnloadOnly = .F.
+ENDIF
+ON SHUTDOWN
+TRY
+	ON ERROR
+CATCH
+ENDTRY
+ON KEY
+LOCAL lnI
+FOR lnI = _SCREEN.FormCount TO 1 STEP -1
+	TRY
+		IF VARTYPE(_SCREEN.Forms[lnI]) = "O"
+			_SCREEN.Forms[lnI].Release
+		ENDIF
+	CATCH
+	ENDTRY
+ENDFOR
+TRY
+	CLOSE TABLES ALL
+CATCH
+ENDTRY
+TRY
+	CLOSE DATABASES ALL
+CATCH
+ENDTRY
+SET CLASSLIB TO
+SET PROCEDURE TO
+SET LIBRARY TO
 CLEAR EVENTS
-ON ShutDown
-QUIT
+* Unload-only (.T.) after READ EVENTS — stay in IDE. Else QUIT.
+IF NOT tlUnloadOnly
+	QUIT
+ENDIF
+ENDPROC
 *********************************************************

@@ -242,7 +242,7 @@ DEFINE CLASS modify_stock4order AS form
 		enterweight1 = .F.
 		enterweight3 = .F.
 		Height = 380
-		Icon = graphics\earth-globe.ico
+		Icon = graphics\earth.ico
 		MDIForm = .T.
 		modify_stocklst_how = ''
 		Name = "modify_stock4order"
@@ -5782,6 +5782,30 @@ DEFINE CLASS modify_stock4order AS form
 			IF nSQLEXEC < 0
 				SQLEXECError(cSQL, ThisForm.nConnhandle, nSQLEXEC, "updateWO")
 				RecordError(nSQLEXEC,'SQL Error',PROGRAM(),LINENO(1), cSQL )
+			ENDIF
+		ENDIF
+		
+		IF lOK
+			* P3 — GrabLb + CONSUME ledger row
+			IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+				SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+			ENDIF
+			PRIVATE nGrabLb, cGrabHeat, cGrabLot, nWOD
+			nGrabLb = 0
+			IF USED("tmpStkSum") AND RECCOUNT("tmpStkSum") > 0
+				SELECT tmpStkSum
+				CALCULATE SUM(Weight) TO nGrabLb
+			ENDIF
+			IF nGrabLb = 0
+				nGrabLb = PrepareSQLnum(ThisForm.txtWeight3.Value,'Weight',9,1)
+			ENDIF
+			cGrabHeat = PrepareSQLtxt(ThisForm.txtHeat.Value,'Heat',50)
+			cGrabLot = PrepareSQLtxt(ThisForm.txtLot.Value,'Lot',10)
+			nWOD = PrepareSQLnum(ThisForm.nWO_Detail,'WO_Detail',-3)
+			= WO_SetGrab(ThisForm.nWO, nGrabLb, cGrabHeat, cGrabLot, cTBL, nID_Detail, ThisForm.nConnHandle)
+			IF nWOD > 0
+				= WO_Ledger_Add(ThisForm.nWO, nWOD, "CONSUME", nGrabLb, nGrabLb, cGrabLot, "", ;
+					"", 0, 0, "", 0, nNewWIP_ID_Detail, "Consume to WIP", ThisForm.nConnHandle)
 			ENDIF
 		ENDIF
 		
@@ -16189,8 +16213,21 @@ DEFINE CLASS modify_stock4order AS form
 			ThisForm.TrackUserEdit("Moving from WIP ID:"+ALLTRIM(STR(nID))+" to Stock")
 			nNewID_Master = Move_WIPLst_StockLst( nID, nID_Detail, ThisForm.nConnHandle )
 		ENDIF
-		
+
 		IF nNewID_Master  > 0
+			IF cTbl = "W"
+				* P3 — REMNANT / WIP→Stock ledger
+				IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+					SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+				ENDIF
+				PRIVATE nWORem, nWODRem
+				nWORem = PrepareSQLnum(ThisForm.nWO,'WO',-3)
+				nWODRem = PrepareSQLnum(ThisForm.nWO_Detail,'WO_Detail',-3)
+				IF nWORem > 0 AND nWODRem > 0
+					= WO_Ledger_Add(nWORem, nWODRem, "REMNANT", 0, 0, "", "", ;
+						"", 0, 0, "", 0, nID_Detail, "WIP to Stock", ThisForm.nConnHandle)
+				ENDIF
+			ENDIF
 			ThisForm.Modify_StockLst_How = "DONE"
 			*- Write Report
 			ThisForm.Visible = .F.

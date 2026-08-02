@@ -1,18 +1,21 @@
-<?xml version="1.0" encoding="Windows-1252" standalone="yes"?>
-<!-- Active profile = server preset only (Production or Development). -->
-<!-- Database is chosen independently; override in ERP_Environment.local.xml -->
-<!-- reportServer: SSRS host; may differ from data server (SuperMicro has no SSRS). -->
-<ERPEnvironment>
-	<ActiveProfile>Development</ActiveProfile>
-	<Profiles>
-		<Profile name="Production" server="Server26" database="ERP_1" reportServer="Server26"/>
-		<Profile name="Development" server="SuperMicro" database="ERP_1" reportServer="Server26"/>
-	</Profiles>
-	<Databases>
-		<Database>ERP_1</Database>
-		<Database>ERP_2</Database>
-	</Databases>
-	<Company>
-		<SignaturesRoot>\\SuperMicro\SQL\Company\Signatures</SignaturesRoot>
-	</Company>
-</ERPEnvironment>
+<?xml version="1.0" encoding="Windows-1252" standalone="yes"?>
+<!-- Active profile = server preset (Production or Development). -->
+<!-- Database may be overridden in ERP_Environment.local.xml -->
+<!-- Home Dev: SuperMicro 192.168.31.172 · Prod: BobWhite 192.168.5.3 · Opt domain test: SA-WS-DK-26 -->
+<!-- Deployed EXE on SAUSA domain: set ActiveProfile to Production (or ship a local override). -->
+<ERPEnvironment>
+	<ActiveProfile>Development</ActiveProfile>
+	<Profiles>
+		<Profile name="Production" server="BobWhite" database="SAUSA" reportServer="BobWhite"/>
+		<Profile name="Development" server="SuperMicro" database="SAUSA" reportServer="SuperMicro"/>
+		<Profile name="DomainTest" server="SA-WS-DK-26" database="SAUSA" reportServer="SA-WS-DK-26"/>
+	</Profiles>
+	<Databases>
+		<Database>SAUSA</Database>
+		<Database>ERP_1</Database>
+		<Database>ERP_2</Database>
+	</Databases>
+	<Company>
+		<SignaturesRoot>\\BobWhite\SQL\Company\Signatures</SignaturesRoot>
+	</Company>
+</ERPEnvironment>

@@ -40,6 +40,9 @@ DEFINE CLASS workorder AS formset
 	*< OBJECTDATA: ObjPath="frmWorkOrder.Shape3" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.Shape1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.txtWO" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="frmWorkOrder.lblShape" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="frmWorkOrder.lblPool" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="frmWorkOrder.cmdSplitBar" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.lblAlloy" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.txtAlloy" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.txtPieces" UniqueID="" Timestamp="" />
@@ -150,6 +153,7 @@ DEFINE CLASS workorder AS formset
 	*< OBJECTDATA: ObjPath="frmWorkOrder.Label15" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.txtFinishLot" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.cmdCreateLot" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="frmWorkOrder.cmdLogProcess" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.txtStartSize" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.lblStartDia" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="frmWorkOrder.txtCW" UniqueID="" Timestamp="" />
@@ -642,6 +646,7 @@ DEFINE CLASS workorder AS formset
 		*p: clocatefor		&& Used by ImportWordOrder and Find buttons.
 		*p: co_id
 		*p: cwhat2
+		*p: cwoshape		&& P5 LINEAR/SPLIT badge (L/S)
 		*p: fcc
 		*p: fcl
 		*p: init_import
@@ -660,13 +665,13 @@ DEFINE CLASS workorder AS formset
 	*</DefinedPropArrayMethod>
 
 	*<PropValue>
-		Icon = graphics\earth-globe.ico
 		aforms = .F.
 		AutoRelease = .T.
 		cc = ''
 		cl = ''
 		clocatefor = ''
 		cwhat2 = ''
+		cwoshape = 'L'
 		DataSession = 2
 		fcc = ''
 		fcl = ''
@@ -2226,6 +2231,7 @@ DEFINE CLASS workorder AS formset
 		pgfPO.pgPOAddress.Label10.Name = "Label10", ;
 		pgfPO.pgPOAddress.Label11.Name = "Label11", ;
 		pgfPO.pgPOAddress.Label12.Name = "Label12", ;
+		pgfPO.pgPOAddress.Label2.Name = "Label2", ;
 		pgfPO.pgPOAddress.Label4.Name = "Label4", ;
 		pgfPO.pgPOAddress.Label5.Name = "Label5", ;
 		pgfPO.pgPOAddress.Label8.Name = "Label8", ;
@@ -2265,6 +2271,7 @@ DEFINE CLASS workorder AS formset
 		pgfPO.pgPOAddress.txtContact.Name = "txtContact", ;
 		pgfPO.pgPOAddress.txtCountry.Name = "txtCountry", ;
 		pgfPO.pgPOAddress.txtEmail.Name = "txtEmail", ;
+		pgfPO.pgPOAddress.txtEst_Frght.Name = "txtEst_Frght", ;
 		pgfPO.pgPOAddress.txtFax.Name = "txtFax", ;
 		pgfPO.pgPOAddress.txtFOB.Name = "txtFOB", ;
 		pgfPO.pgPOAddress.txtHPAPO.Name = "txtHPAPO", ;
@@ -2285,6 +2292,9 @@ DEFINE CLASS workorder AS formset
 		pgfPO.pgPODesc.chkIntP.Alignment = 0, ;
 		pgfPO.pgPODesc.chkIntP.Name = "chkIntP", ;
 		pgfPO.pgPODesc.chkIntP.TabIndex = 90, ;
+		pgfPO.pgPODesc.chkLab_Service.Alignment = 0, ;
+		pgfPO.pgPODesc.chkLab_Service.Name = "chkLab_Service", ;
+		pgfPO.pgPODesc.chkLab_Service.TabIndex = 87, ;
 		pgfPO.pgPODesc.ChkMetric.Alignment = 0, ;
 		pgfPO.pgPODesc.ChkMetric.Name = "ChkMetric", ;
 		pgfPO.pgPODesc.ChkMetric.TabIndex = 44, ;
@@ -2294,9 +2304,6 @@ DEFINE CLASS workorder AS formset
 		pgfPO.pgPODesc.chkRandLen.Alignment = 0, ;
 		pgfPO.pgPODesc.chkRandLen.Name = "chkRandLen", ;
 		pgfPO.pgPODesc.chkRandLen.TabIndex = 43, ;
-		pgfPO.pgPODesc.chkLab_Service.Alignment = 0, ;
-		pgfPO.pgPODesc.chkLab_Service.Name = "chkLab_Service", ;
-		pgfPO.pgPODesc.chkLab_Service.TabIndex = 87, ;
 		pgfPO.pgPODesc.chkSPS1.Alignment = 0, ;
 		pgfPO.pgPODesc.chkSPS1.Name = "chkSPS1", ;
 		pgfPO.pgPODesc.chkSPS1.TabIndex = 86, ;
@@ -2685,6 +2692,8 @@ DEFINE CLASS workorder AS formset
 		pgfPO.pgVendor.Label8.Name = "Label8", ;
 		pgfPO.pgVendor.lblApproved1.Name = "lblApproved1", ;
 		pgfPO.pgVendor.lblCity.Name = "lblCity", ;
+		pgfPO.pgVendor.lblDiscount.Name = "lblDiscount", ;
+		pgfPO.pgVendor.lblFreight.Name = "lblFreight", ;
 		pgfPO.pgVendor.lblPeachID.Name = "lblPeachID", ;
 		pgfPO.pgVendor.lblPOBuyFrom.Name = "lblPOBuyFrom", ;
 		pgfPO.pgVendor.lblReportNote.Name = "lblReportNote", ;
@@ -2702,6 +2711,8 @@ DEFINE CLASS workorder AS formset
 		pgfPO.pgVendor.txtCity.Name = "txtCity", ;
 		pgfPO.pgVendor.txtCompany.Name = "txtCompany", ;
 		pgfPO.pgVendor.txtCountry.Name = "txtCountry", ;
+		pgfPO.pgVendor.txtDiscount.Name = "txtDiscount", ;
+		pgfPO.pgVendor.txtFreight.Name = "txtFreight", ;
 		pgfPO.pgVendor.txtLastEdit.Name = "txtLastEdit", ;
 		pgfPO.pgVendor.txtPeachID.Name = "txtPeachID", ;
 		pgfPO.pgVendor.txtST.Name = "txtST", ;
@@ -5273,11 +5284,11 @@ DEFINE CLASS workorder AS formset
 		AutoSize = .F., ;
 		Caption = "", ;
 		Centered = .F., ;
-		DownPicture = GRAPHICS\pushpint.bmp, ;
+		DownPicture = graphics\pushpint.bmp, ;
 		Height = 22, ;
 		Left = 176, ;
 		Name = "chkPinFWeight", ;
-		Picture = GRAPHICS\pushpinb.bmp, ;
+		Picture = graphics\pushpinb.bmp, ;
 		PictureMargin = 0, ;
 		PicturePosition = 14, ;
 		PictureSpacing = 0, ;
@@ -5294,11 +5305,11 @@ DEFINE CLASS workorder AS formset
 		AutoSize = .F., ;
 		Caption = "", ;
 		Centered = .F., ;
-		DownPicture = GRAPHICS\pushpint.bmp, ;
+		DownPicture = graphics\pushpint.bmp, ;
 		Height = 22, ;
 		Left = 182, ;
 		Name = "chkPinSWeight", ;
-		Picture = GRAPHICS\pushpinb.bmp, ;
+		Picture = graphics\pushpinb.bmp, ;
 		PictureMargin = 0, ;
 		PicturePosition = 14, ;
 		PictureSpacing = 0, ;
@@ -5537,7 +5548,7 @@ DEFINE CLASS workorder AS formset
 		Height = 24, ;
 		Left = 113, ;
 		Name = "cmdCalcS", ;
-		Picture = GRAPHICS\transform.jpg, ;
+		Picture = graphics\transform.jpg, ;
 		TabIndex = 33, ;
 		ToolTipText = "Calc Start Weight", ;
 		Top = 61, ;
@@ -5617,7 +5628,7 @@ DEFINE CLASS workorder AS formset
 		Height = 24, ;
 		Left = 108, ;
 		Name = "cmdFcalc", ;
-		Picture = GRAPHICS\transform.jpg, ;
+		Picture = graphics\transform.jpg, ;
 		TabIndex = 80, ;
 		ToolTipText = "Calc Finish Weight", ;
 		Top = 258, ;
@@ -5668,6 +5679,22 @@ DEFINE CLASS workorder AS formset
 		TabIndex = 162, ;
 		Top = 518, ;
 		Width = 60
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'frmWorkOrder.cmdLogProcess' AS commandbutton WITH ;
+		BackColor = 200,220,255, ;
+		Caption = "Cut/CG/UT...", ;
+		Enabled = .T., ;
+		FontBold = .T., ;
+		Height = 23, ;
+		Left = 252, ;
+		Name = "cmdLogProcess", ;
+		TabIndex = 156, ;
+		TabStop = .F., ;
+		ToolTipText = "Log Cut / CG / UT / Turn / Straighten with StartLb and EndLb (same Lot).", ;
+		Top = 468, ;
+		Visible = .T., ;
+		Width = 95
 		*< END OBJECT: BaseClass="commandbutton" />
 
 	ADD OBJECT 'frmWorkOrder.cmdPrint' AS commandbutton WITH ;
@@ -5771,7 +5798,7 @@ DEFINE CLASS workorder AS formset
 		Height = 24, ;
 		Left = 8, ;
 		Name = "cmdResetCW", ;
-		Picture = GRAPHICS\transform.jpg, ;
+		Picture = graphics\transform.jpg, ;
 		TabIndex = 81, ;
 		ToolTipText = "Reset CW, Recalculate", ;
 		Top = 412, ;
@@ -5831,6 +5858,21 @@ DEFINE CLASS workorder AS formset
 		Top = 387, ;
 		Visible = .T., ;
 		Width = 43
+		*< END OBJECT: BaseClass="commandbutton" />
+
+	ADD OBJECT 'frmWorkOrder.cmdSplitBar' AS commandbutton WITH ;
+		BackColor = 255,200,120, ;
+		Caption = "Split bar...", ;
+		Enabled = .T., ;
+		FontBold = .T., ;
+		Height = 25, ;
+		Left = 522, ;
+		Name = "cmdSplitBar", ;
+		TabIndex = 155, ;
+		ToolTipText = "Allocate pounds from this bar into a new finish branch (sets WO to SPLIT).", ;
+		Top = 325, ;
+		Visible = .T., ;
+		Width = 90
 		*< END OBJECT: BaseClass="commandbutton" />
 
 	ADD OBJECT 'frmWorkOrder.cmdViewStock' AS commandbutton WITH ;
@@ -6156,8 +6198,9 @@ DEFINE CLASS workorder AS formset
 		Left = 61, ;
 		Name = "lblChooseF_SOitem", ;
 		TabIndex = 99, ;
-		ToolTipText = "Click to Select a Finishing SO", ;
+		ToolTipText = "Use CONNECT ORDERS / WO Detail SO panel (fSOitem deprecated).", ;
 		Top = 307, ;
+		Visible = .F., ;
 		Width = 50
 		*< END OBJECT: BaseClass="label" />
 
@@ -6675,6 +6718,20 @@ DEFINE CLASS workorder AS formset
 		WordWrap = .F.
 		*< END OBJECT: BaseClass="label" />
 
+	ADD OBJECT 'frmWorkOrder.lblPool' AS label WITH ;
+		Alignment = 0, ;
+		AutoSize = .F., ;
+		BackColor = 255,230,180, ;
+		Caption = "", ;
+		FontBold = .T., ;
+		Height = 18, ;
+		Left = 100, ;
+		Name = "lblPool", ;
+		Top = 70, ;
+		Visible = .F., ;
+		Width = 280
+		*< END OBJECT: BaseClass="label" />
+
 	ADD OBJECT 'frmWorkOrder.lblProj' AS label WITH ;
 		AutoSize = .F., ;
 		BackStyle = 0, ;
@@ -6732,6 +6789,20 @@ DEFINE CLASS workorder AS formset
 		TabIndex = 51, ;
 		Top = 144, ;
 		Width = 24
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'frmWorkOrder.lblShape' AS label WITH ;
+		Alignment = 2, ;
+		AutoSize = .F., ;
+		BackColor = 180,220,180, ;
+		Caption = "LINEAR", ;
+		FontBold = .T., ;
+		Height = 20, ;
+		Left = 100, ;
+		Name = "lblShape", ;
+		Top = 48, ;
+		Visible = .T., ;
+		Width = 72
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'frmWorkOrder.lblShowConsumed' AS label WITH ;
@@ -7489,8 +7560,9 @@ DEFINE CLASS workorder AS formset
 		Name = "txtFSOitem", ;
 		ReadOnly = .T., ;
 		TabIndex = 100, ;
-		ToolTipText = "Click to open SO in browser and Print", ;
+		ToolTipText = "Deprecated - use CONNECT ORDERS / WorkOrder_Detail_SO", ;
 		Top = 304, ;
+		Visible = .F., ;
 		Width = 80
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -12822,6 +12894,14 @@ DEFINE CLASS workorder AS formset
 						ThisFormSet.frmWorkOrder.chklPrc_Stock.Value	= PrepareSQLchk(tmpWO.lPrc_Stock,'lPrc_Stock')
 						ThisFormSet.frmWorkOrder.chkStkConsumed.Value	= PrepareSQLchk(tmpWO.StkConsumed,'StkConsumed')
 		
+						* P5 shape badge
+						IF TYPE("tmpWO.WO_Shape") = "C"
+							ThisFormSet.cWOShape = UPPER(LEFT(ALLTRIM(EVL(tmpWO.WO_Shape,"L")),1))
+						ELSE
+							ThisFormSet.cWOShape = "L"
+						ENDIF
+						ThisFormSet.ApplyWO_ShapeBadge()
+		
 						*ThisFormSet.Refresh_frmChooseWO_Detail(tmpWO.WO)
 							*CALLS: ThisFormSet.Refresh_frmWorkOrder_FPOitem(pfPOitem)
 						
@@ -13092,6 +13172,13 @@ DEFINE CLASS workorder AS formset
 						
 						ThisFormSet.frmWorkOrder.chklPrc_Stock.Value	= PrepareSQLchk(tmpWO.lPrc_Stock,'lPrc_Stock')
 						ThisFormSet.frmWorkOrder.chkStkConsumed.Value	= PrepareSQLchk(tmpWO.StkConsumed,'StkConsumed')
+		
+						IF TYPE("tmpWO.WO_Shape") = "C"
+							ThisFormSet.cWOShape = UPPER(LEFT(ALLTRIM(EVL(tmpWO.WO_Shape,"L")),1))
+						ELSE
+							ThisFormSet.cWOShape = "L"
+						ENDIF
+						ThisFormSet.ApplyWO_ShapeBadge()
 		
 						*ThisFormSet.Refresh_frmChooseWO_Detail(tmpWO.WO)
 						
@@ -21023,7 +21110,8 @@ DEFINE CLASS workorder AS formset
 		    cUpdate = cUpdate + ",fDueDate='"+IIF(EMPTY(dfDueDate),'',DTOC(dfDueDate))+"'"
 		    cUpdate = cUpdate + ",fDescript='"+cFDescript+"'"
 		
-			cUpdate = cUpdate + ",fSOitem = dbo.f_ProperSOitem('"+cFSoItem+"')"
+			* P5 — stop writing fSOitem (use WorkOrder_Detail_SO / CONNECT ORDERS)
+			*cUpdate = cUpdate + ",fSOitem = dbo.f_ProperSOitem('"+cFSoItem+"')"
 			cUpdate = cUpdate + ",fPOitem = dbo.f_ProperPOitem('"+cFPoItem+"')"
 		    cUpdate = cUpdate + ",fPieces="+STR(nFPieces,7,0)+""
 		    cUpdate = cUpdate + ",fAlloy='"+cFAlloy+"'"
@@ -21123,34 +21211,18 @@ DEFINE CLASS workorder AS formset
 					RecordError(nSQLEXEC,'SQL Error',PROGRAM(),LINENO(1), cSQL )
 				ENDIF		
 		
+				* P5 — maintain WorkOrder_Detail_SO + Sales.WO_Detail from that set
+				IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+					SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+				ENDIF
 				IF Proper_SO_item(cFSoItem) != Proper_SO_item("")
-					*Update SO with WO_Detail
-					cSQL = "UPDATE dbo.Sales SET WO_Detail="+STR(nWO_Detail)
-					*cSQL = cSQL + ",IntP="+IIF(lIntP,'1','0')
-					cSQL = cSQL + " WHERE SOitem = dbo.f_ProperSOitem('"+cFSOitem+"')"
-					
-					nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL )
-					DO WHILE nSQLEXEC = 0
-						WAIT WINDOW 'SQL' TIMEOUT 1
-						nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL )
-					ENDDO
-					IF nSQLEXEC < 0 &&Try again!
-						nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL, "")
-						DO WHILE nSQLEXEC = 0
-							WAIT WINDOW 'SQL 2' TIMEOUT 1
-							nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL, "")
-							
-							IF nSQLEXEC < 0
-								IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
-									nSQLEXEC = 0
-								ENDIF
-							ENDIF
-						ENDDO
-					ENDIF
-					IF nSQLEXEC < 0
-						SQLEXECError(cSQL , ThisFormSet.nConnHandle, nSQLEXEC, '')
-						RecordError(nSQLEXEC,'SQL Error',PROGRAM(),LINENO(1), cSQL )
-					ENDIF
+					= WO_Detail_SO_Upsert(nWO_Detail, cFSoItem, nFWeight, ThisFormSet.nConnHandle)
+				ENDIF
+				cSQL = "UPDATE dbo.Sales SET WO_Detail = " + STR(nWO_Detail)
+				cSQL = cSQL + " WHERE SOitem IN (SELECT SOitem FROM dbo.WorkOrder_Detail_SO WHERE WO_Detail = " + STR(nWO_Detail) + ")"
+				nSQLEXEC = SQLEXEC(ThisFormSet.nConnHandle, cSQL)
+				IF nSQLEXEC < 0
+					SQLEXECError(cSQL, ThisFormSet.nConnHandle, nSQLEXEC, '')
 				ENDIF
 				
 				***********************************************
@@ -21417,8 +21489,21 @@ DEFINE CLASS workorder AS formset
 				IF Count_WOinWO( nWO, ThisFormSet.nConnHandle, "COMPLETE" ) > 0 &&was already Complete
 					*no change
 				ELSE
-					*Try to mark as Complete
-					*
+					* P3 — Split pool must balance within ±1 lb before Complete
+					IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+						SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+					ENDIF
+					PRIVATE nUnaccPool, lPoolOK
+					nUnaccPool = 0
+					lPoolOK = WO_Pool_CanComplete(nWO, ThisFormSet.nConnHandle, @nUnaccPool)
+					IF NOT lPoolOK
+						MESSAGEBOX("SPLIT WO pool is out of balance by "+ALLTRIM(STR(nUnaccPool,9,1))+ ;
+							" lb (limit ±1)."+CHR(13)+ ;
+							"Cannot mark Complete until branches + scrap + remnant account for GrabLb.", ;
+							0+48, "WO Pool")
+						ThisFormset.frmWorkOrder.chkCmplt.Value = 0
+						lCmplt = .F.
+					ENDIF
 				ENDIF	
 			ELSE
 				*is not Complete
@@ -22617,6 +22702,8 @@ DEFINE CLASS workorder AS formset
 		PRIVATE lComplete, lCancelled
 		lComplete = PrepareSQLlogic(ThisFormset.frmWorkOrder.chkfCmplt.Value,'fCmplt')  	&&lCmplt is WO -lComplete is WO Detail
 		lCancelled	= PrepareSQLlogic(ThisFormset.frmWorkOrder.chkfCncld.Value,'fCncld')	&&lCncld is WO -lCancelled is Detail
+		
+		ThisFormSet.ApplyWO_ShapeBadge()
 		
 		DO CASE 
 		CASE cWhat = 'ENABLE'
@@ -24444,6 +24531,21 @@ DEFINE CLASS workorder AS formset
 		***********
 		IF lSQLgood AND nMaster_ID > 0 AND nID_Detail > 0 AND nWO_Detail > 0
 			ThisFormSet.Show_frmStock_Produced(nWO_Detail)
+		ENDIF
+		
+		IF lSQLgood
+			* P3 — LIST_STOCK ledger
+			IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+				SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+			ENDIF
+			PRIVATE nListLb, cListLot
+			nListLb = nFWeight
+			IF nListLb = 0
+				nListLb = nTotFinishW
+			ENDIF
+			cListLot = IIF(nFinishLot > 0, ALLTRIM(STR(nFinishLot)), "")
+			= WO_Ledger_Add(nWO, nWO_Detail, "LIST_STOCK", nListLb, nListLb, cListLot, "", ;
+				cFinishM, 0, 0, "", nFinishLot, nID_Detail, "List to Stock INCOMING", ThisFormSet.nConnHandle)
 		ENDIF
 		
 		RETURN lSQLgood
@@ -29407,6 +29509,23 @@ DEFINE CLASS workorder AS formset
 		ELSE
 		
 			ThisFormSet.SaveMachLot( cMach, nLot, nWO_Detail )
+		
+			* P3 — property-changing machine lot → ledger
+			IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+				SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+			ENDIF
+			PRIVATE cPCode, nWOLedg, nLbLedg, cLotLedg
+			cPCode = WO_Machine_ProcessCode(cMach)
+			IF NOT EMPTY(cPCode)
+				nWOLedg = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtWO.Value,'WO',-3)
+				nLbLedg = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtFWeight.Value,'Weight',9,1)
+				IF nLbLedg = 0
+					nLbLedg = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtWeight.Value,'Weight',9,1)
+				ENDIF
+				cLotLedg = ALLTRIM(STR(nLot))
+				= WO_Ledger_Add(nWOLedg, nWO_Detail, cPCode, nLbLedg, nLbLedg, cLotLedg, "", ;
+					cMach, 0, 0, "", nLot, 0, "Create machine lot", ThisFormSet.nConnHandle)
+			ENDIF
 			
 			*DO FORM Forms\ShowvGFMlog WITH nLot, cAlloy	
 			*DO FORM Forms\GFMlog WITH nLot
@@ -30403,6 +30522,103 @@ DEFINE CLASS workorder AS formset
 		MESSAGEBOX(cMess,0+64,"Helpfull Information.")
 	ENDPROC
 
+	PROCEDURE frmWorkOrder.cmdLogProcess.Click
+		* P6/P7 - Cut/CG/UT + StartLb/EndLb + optional Minutes -> burden
+		LOCAL nWO, nDet, cCode, cAns, nStart, nEnd, cLot, nID, nDef, nMin, nAC
+		nWO = ThisFormSet.nWO
+		IF nWO < 1
+			MESSAGEBOX("Save the Work Order first.", 48, "Log process")
+			RETURN
+		ENDIF
+		nDet = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtWO_Detail.Value,'WO_Detail',-3)
+		IF nDet < 1
+			MESSAGEBOX("Select or save a WO Detail first.", 48, "Log process")
+			RETURN
+		ENDIF
+		IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+			SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+		ENDIF
+		cCode = UPPER(ALLTRIM(INPUTBOX( ;
+			"Process code:"+CHR(13)+"CUT, CG, UT, TURN, or STRAIGHTEN", ;
+			"Log Cut/CG/UT...", "CUT")))
+		IF EMPTY(cCode)
+			RETURN
+		ENDIF
+		IF cCode = "CLG"
+			cCode = "CG"
+		ENDIF
+		IF NOT WO_Is_LbOnly_Process(cCode)
+			MESSAGEBOX("Use CUT, CG, UT, TURN, or STRAIGHTEN."+CHR(13)+ ;
+				"(Property machines use Create Lot.)", 48, "Log process")
+			RETURN
+		ENDIF
+		nDef = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtFWeight.Value,'Weight',9,1)
+		IF nDef <= 0
+			nDef = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtWeight.Value,'Weight',9,1)
+		ENDIF
+		cAns = INPUTBOX("Start pounds (StartLb):", "Log "+cCode, ALLTRIM(STR(nDef,9,1)))
+		IF EMPTY(ALLTRIM(cAns))
+			RETURN
+		ENDIF
+		nStart = VAL(cAns)
+		IF nStart <= 0
+			MESSAGEBOX("StartLb must be greater than zero.", 48, "Log process")
+			RETURN
+		ENDIF
+		cAns = INPUTBOX("End pounds (EndLb):", "Log "+cCode, ALLTRIM(STR(nStart,9,1)))
+		IF EMPTY(ALLTRIM(cAns))
+			RETURN
+		ENDIF
+		nEnd = VAL(cAns)
+		IF nEnd < 0
+			MESSAGEBOX("EndLb cannot be negative.", 48, "Log process")
+			RETURN
+		ENDIF
+		cAns = INPUTBOX("Minutes at process (blank = 0):", "Log "+cCode, "0")
+		nMin = IIF(EMPTY(ALLTRIM(cAns)), 0, VAL(cAns))
+		IF nMin < 0
+			nMin = 0
+		ENDIF
+		cLot = ALLTRIM(TRANSFORM(ThisFormSet.frmWorkOrder.txtFinishLot.Value))
+		IF EMPTY(cLot) OR cLot = "0"
+			cLot = ALLTRIM(TRANSFORM(ThisFormSet.frmWorkOrder.txtFollowLot.Value))
+		ENDIF
+		IF cLot = "0"
+			cLot = ""
+		ENDIF
+		IF MESSAGEBOX(cCode+"  Start "+ALLTRIM(STR(nStart,9,1))+ ;
+				" -> End "+ALLTRIM(STR(nEnd,9,1))+ ;
+				IIF(nMin>0,"  "+ALLTRIM(STR(nMin,9,1))+" min","")+ ;
+				IIF(EMPTY(cLot),"","  Lot "+cLot)+CHR(13)+ ;
+				"Write ledger step (same Lot, no new machine lot)?", ;
+				4+32, "Log process") # 6
+			RETURN
+		ENDIF
+		nID = WO_Log_Lb_Process(nWO, nDet, cCode, nStart, nEnd, cLot, ;
+			cCode+" Start/End lb", nMin, ThisFormSet.nConnHandle)
+		IF nID < 1
+			MESSAGEBOX("Ledger write failed - check ProcessCode / SQL.", 16, "Log process")
+			RETURN
+		ENDIF
+		IF nEnd # nDef AND TYPE("ThisFormSet.frmWorkOrder.txtFWeight") = "O"
+			ThisFormSet.frmWorkOrder.txtFWeight.Value = nEnd
+		ENDIF
+		IF nMin > 0 AND MESSAGEBOX("Propose stock + burden $ into AcctCosting for WO "+ ;
+				ALLTRIM(STR(nWO))+"?", 4+32, "Burden -> AcctCosting") = 6
+			nAC = WO_Propose_Burden_Acct(nWO, ThisFormSet.nConnHandle)
+			IF nAC > 0
+				MESSAGEBOX(cCode+" logged (ledger "+ALLTRIM(STR(nID))+")."+CHR(13)+ ;
+					"AcctCosting AC_ID "+ALLTRIM(STR(nAC))+" proposed.", 64, "Log process")
+			ELSE
+				MESSAGEBOX(cCode+" logged (ledger "+ALLTRIM(STR(nID))+")."+CHR(13)+ ;
+					"AcctCosting propose failed - check SQL.", 48, "Log process")
+			ENDIF
+		ELSE
+			MESSAGEBOX(cCode+" logged (ledger ID "+ALLTRIM(STR(nID))+")."+CHR(13)+ ;
+				"Open WO Material to review the step chain.", 64, "Log process")
+		ENDIF
+	ENDPROC
+
 	PROCEDURE frmWorkOrder.cmdPrint.Click
 		ThisFormSet.PrintWorkOrder_Production("Print")
 		
@@ -31306,6 +31522,77 @@ DEFINE CLASS workorder AS formset
 		*!*		ENDIF
 		*!*	ENDIF		
 		
+	ENDPROC
+
+	PROCEDURE frmWorkOrder.cmdSplitBar.Click
+		* P5 — allocate branch pounds; sets WO_Shape='S' via p_WO_Split_Alloc
+		LOCAL nWO, nParent, nBranchLb, cAns, nNew, cAlloy, cForm, nThck, nSz2, cLot, cHeat
+		nWO = ThisFormSet.nWO
+		IF nWO < 1
+			MESSAGEBOX("Save the Work Order first.", 48, "Split bar")
+			RETURN
+		ENDIF
+		IF UPPER(EVL(ThisFormSet.cWOShape,"L")) = "S"
+			MESSAGEBOX("This WO is already SPLIT. Add another detail or use WO Material.", 64, "Split bar")
+			RETURN
+		ENDIF
+		nParent = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtWO_Detail.Value,'WO_Detail',-3)
+		nBranchLb = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtFWeight.Value,'Weight',9,1)
+		IF nBranchLb <= 0
+			nBranchLb = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtWeight.Value,'Weight',9,1)
+		ENDIF
+		cAns = INPUTBOX("Pounds to allocate to the new finish branch:", "Split bar...", ;
+			ALLTRIM(STR(nBranchLb,9,1)))
+		IF EMPTY(ALLTRIM(cAns))
+			RETURN
+		ENDIF
+		nBranchLb = VAL(cAns)
+		IF nBranchLb <= 0
+			MESSAGEBOX("Branch pounds must be greater than zero.", 48, "Split bar")
+			RETURN
+		ENDIF
+		IF MESSAGEBOX("Allocate "+ALLTRIM(STR(nBranchLb,9,1))+" lb into a new finish branch?"+CHR(13)+ ;
+				"This sets the Work Order shape to SPLIT.", 4+32, "Split bar...") # 6
+			RETURN
+		ENDIF
+		IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+			SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+		ENDIF
+		cAlloy = PrepareSQLtxt(ThisFormSet.frmWorkOrder.txtFAlloy.Value,'Alloy',12)
+		IF EMPTY(ALLTRIM(cAlloy))
+			cAlloy = PrepareSQLtxt(ThisFormSet.frmWorkOrder.txtAlloy.Value,'Alloy',12)
+		ENDIF
+		cForm = PrepareSQLtxt(ThisFormSet.frmWorkOrder.cmbFForm.Value,'Form',2)
+		IF EMPTY(ALLTRIM(cForm))
+			cForm = PrepareSQLtxt(ThisFormSet.frmWorkOrder.cmbForm.Value,'Form',2)
+		ENDIF
+		nThck = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtFThck.Value,'Thck',10,4)
+		IF nThck = 0
+			nThck = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtThck.Value,'Thck',10,4)
+		ENDIF
+		nSz2 = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtFSz2.Value,'Sz2',9,3)
+		IF nSz2 = 0
+			nSz2 = PrepareSQLnum(ThisFormSet.frmWorkOrder.txtSz2.Value,'Sz2',9,3)
+		ENDIF
+		cLot = ALLTRIM(TRANSFORM(ThisFormSet.frmWorkOrder.txtFinishLot.Value))
+		IF EMPTY(cLot) OR cLot = "0"
+			cLot = ALLTRIM(TRANSFORM(ThisFormSet.frmWorkOrder.txtFollowLot.Value))
+		ENDIF
+		IF cLot = "0"
+			cLot = ""
+		ENDIF
+		cHeat = ALLTRIM(TRANSFORM(ThisFormSet.frmWorkOrder.txtHeat.Value))
+		nNew = WO_Split_Alloc(nWO, nParent, nBranchLb, cAlloy, cForm, nThck, nSz2, ;
+			cLot, cHeat, "Split branch", "F", ThisFormSet.nConnHandle)
+		IF nNew < 1
+			MESSAGEBOX("Split failed - check SQL / WO_Detail.", 16, "Split bar")
+			RETURN
+		ENDIF
+		ThisFormSet.cWOShape = "S"
+		ThisFormSet.EditByWO(nWO)
+		ThisFormSet.Refresh_frmWorkOrder_Detail(nNew)
+		ThisFormSet.ApplyWO_ShapeBadge()
+		MESSAGEBOX("Created WO_Detail "+ALLTRIM(STR(nNew))+" ("+ALLTRIM(STR(nBranchLb,9,1))+" lb).", 64, "Split bar")
 	ENDPROC
 
 	PROCEDURE frmWorkOrder.cmdViewStock.Click

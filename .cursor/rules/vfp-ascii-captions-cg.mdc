@@ -1,0 +1,27 @@
+---
+description: VFP captions use ASCII only; centerless grind process code is CG (not CLG).
+alwaysApply: true
+---
+
+# VFP strings + process code CG
+
+## Centerless grind = `CG`
+
+- Process code is **`CG`**, not `CLG`.
+- Captions/tooltips/prompts: `Cut/CG/UT...` (not Cut/CLG/...).
+- SQL catalog `WorkOrder_ProcessCode`, ledger rows, burden `DefaultRateCode`, and `WO_Is_LbOnly_Process` must use `CG`.
+
+## No fancy Unicode in VFP UI text
+
+VFP/FoxBin often store captions as Windows-1252. UTF-8 punctuation becomes mojibake like `â€` / `â€¦`.
+
+In `Forms\*.SC2`, `*.prg` captions, MessageBox/InputBox titles, and ToolTipText:
+
+| Avoid | Use instead |
+|-------|-------------|
+| `…` (ellipsis) | `...` |
+| `—` / `–` (em/en dash) | `-` |
+| `'` `'` `"` `"` (smart quotes) | `'` `"` |
+| `→` | `->` |
+
+SQL comments/docs may keep Unicode; **VFP UI strings must stay ASCII**.

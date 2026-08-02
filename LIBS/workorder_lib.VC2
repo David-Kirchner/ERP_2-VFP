@@ -2401,6 +2401,12 @@ DEFINE CLASS wo_detail_so AS form 		&& Workorder Detail to Orders screen
 				SQLEXECError(cSQL,ThisForm.nConnHandle, nSQLEXEC, 'tmpOTrackINS')
 				RecordError(nSQLEXEC,'SQL Error',PROGRAM(),LINENO(1), cSQL )
 			ENDIF
+
+			* P5 — also maintain WorkOrder_Detail_SO (authoritative many-SOitem link)
+			IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+				SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+			ENDIF
+			= WO_Detail_SO_Upsert(ThisForm.nWO_Detail, cSOitem, nQTY, ThisForm.nConnHandle)
 		
 		ENDIF
 		ThisForm.Get_Orders_Track()
@@ -2538,6 +2544,11 @@ DEFINE CLASS wo_detail_so AS form 		&& Workorder Detail to Orders screen
 			IF nSQLEXEC < 0
 				SQLEXECError(cSQL,ThisForm.nConnHandle, nSQLEXEC, 'tmpOTrackINS')
 				RecordError(nSQLEXEC,'SQL Error',PROGRAM(),LINENO(1), cSQL )
+			ELSE
+				IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+					SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+				ENDIF
+				= WO_Detail_SO_Upsert(ThisForm.nWO_Detail, cSOitem, nQTY, ThisForm.nConnHandle)
 			ENDIF
 		
 			ThisForm.Get_Orders_Track()

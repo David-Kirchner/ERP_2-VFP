@@ -287,6 +287,8 @@ WITH loProject.FILES
 	.ADD('forms\wo_detail_notes.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\wo_detail_so.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\wo_detail_view_notes.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('forms\wo_material.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('forms\so_history.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\workorder.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\workorder_process.scx')		&& *< FileMetadata: Type="K" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('forms\wpipe.scx')		&& *< FileMetadata: Type="K" Cpid="0" Timestamp="0" ID="0" ObjRev="544" User="" />
@@ -438,6 +440,8 @@ WITH loProject.FILES
 	.ADD('reports\company_report.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\companybranding_maint.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\companyprofile_maint.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('progs\wo_material.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
+	.ADD('progs\so_history.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\createhpadsn.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\erp_environment_ui.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="544" User="" />
 	.ADD('progs\sql_certs.prg')		&& *< FileMetadata: Type="P" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
@@ -528,10 +532,10 @@ WITH loProject.FILES
 	.ADD('reports\proforma-wf.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\proforma.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\proforma09.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\purchaseorder14.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\purchaseorder14_sheet.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\purchaseorder14_sheetnc.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
-	.ADD('reports\purchaseorder14nc.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('reports\purchaseorder26.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('reports\purchaseorder26_sheet.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('reports\purchaseorder26_sheetnc.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
+	.ADD('reports\purchaseorder26nc.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\quote09.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\quote_no.frx')		&& *< FileMetadata: Type="R" Cpid="1252" Timestamp="0" ID="0" ObjRev="0" User="" />
 	.ADD('reports\quotereprint.frx')		&& *< FileMetadata: Type="R" Cpid="0" Timestamp="0" ID="0" ObjRev="0" User="" />

@@ -831,9 +831,8 @@ IF nConn > 0
 	IF USED('tmpPSP_SQL2')
 		IF tmpPSP_SQL2.Cntd > 0
 			lReturn = .T.
-		ELSE
-			RecordError( 0, 'Error Title', "Proc_SQL:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1), LINENO(),"VFP message: No nSoldCode Parameter" )
 		ENDIF
+		* Not found: TrackError below — do not RecordError (was wrong "No nSoldCode Parameter").
 
 		USE IN tmpPSP_SQL2
 	ENDIF
@@ -857,7 +856,7 @@ IF pSalesP = "*"
 ENDIF
 
 IF NOT lReturn 
-	TrackError("Did not find SalesP '"+pSalesP+"'",cSQL,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
+	TrackError("Did not find SalesP '"+pSalesP+"' in dbo.AppSetup (Prp=SalesP). Register via ERP Setup or User Info.",cSQL,"Proc_Setup:"+PROGRAM()+" @"+PROGRAM(PROGRAM(-1)-1),LINENO())
 ENDIF
 
 RETURN lReturn 
@@ -3375,6 +3374,58 @@ RETURN lReturn
 ENDPROC
 
 ********************************* 
+FUNCTION Get_ERP_ExePath
+* Path to built EXE for aGETFILEVERSION. Prefers SAUSA-ERP.EXE, falls back to ERP.EXE.
+LOCAL lcRoot, lcHome, i, lcCand
+DIMENSION laName[2]
+laName[1] = "SAUSA-ERP.EXE"
+laName[2] = "ERP.EXE"
+
+lcRoot = ""
+IF TYPE("gERPAppHome") = "C" AND !EMPTY(gERPAppHome)
+	lcRoot = ADDBS(gERPAppHome)
+ELSE
+	IF TYPE("LoginAppHome") = "C" AND !EMPTY(LoginAppHome)
+		lcRoot = ADDBS(LoginAppHome)
+	ELSE
+		lcRoot = ADDBS(SYS(5) + SYS(2003))
+	ENDIF
+ENDIF
+lcHome = ADDBS(ALLTRIM(HOME()))
+
+FOR i = 1 TO 2
+	lcCand = lcRoot + laName[i]
+	IF FILE(lcCand)
+		RETURN lcCand
+	ENDIF
+	IF FILE(laName[i])
+		RETURN FULLPATH(laName[i])
+	ENDIF
+	lcCand = lcHome + laName[i]
+	IF FILE(lcCand)
+		RETURN lcCand
+	ENDIF
+	lcCand = "C:\Program Files (x86)\SAUSA\" + laName[i]
+	IF FILE(lcCand)
+		RETURN lcCand
+	ENDIF
+	lcCand = "C:\Program Files\SAUSA\" + laName[i]
+	IF FILE(lcCand)
+		RETURN lcCand
+	ENDIF
+	lcCand = "C:\Program Files (x86)\HPA\" + laName[i]
+	IF FILE(lcCand)
+		RETURN lcCand
+	ENDIF
+	lcCand = "C:\Program Files\HPA\" + laName[i]
+	IF FILE(lcCand)
+		RETURN lcCand
+	ENDIF
+ENDFOR
+RETURN ""
+ENDFUNC
+
+********************************* 
 PROC HPAAppLoad 
 PARAMETER cVersion
 *Records Version, called in LOAD procedure of ERP menu.
@@ -3389,24 +3440,11 @@ cUserName = ALLTRIM(  RIGHT( cMach_User, LEN(cMach_User)-AT("#",cMach_User)-1 ) 
 cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
 
 PRIVATE nArraySize, aArrayName, cHPAFile
-IF FILE("C:\Program Files\HPA\ERP.EXE")
-	nArraySize = aGETFILEVERSION(aArrayName, "C:\Program Files\HPA\ERP.EXE")
+cHPAFile = Get_ERP_ExePath()
+IF !EMPTY(cHPAFile)
+	nArraySize = aGETFILEVERSION(aArrayName, cHPAFile)
 ELSE
-	IF FILE("ERP.EXE")
-		nArraySize = aGETFILEVERSION(aArrayName, "ERP.EXE")
-	ELSE
-		cHPAFile = ALLTRIM(HOME())+"ERP.EXE" 
-		IF FILE(cHPAFile)
-			nArraySize = aGETFILEVERSION(aArrayName, (cHPAFile))
-		ELSE			
-			cHPAFile = SYS(5)+SYS(2003)+"ERP.EXE" 
-			IF FILE(cHPAFile)
-				nArraySize = aGETFILEVERSION(aArrayName, (cHPAFile))
-			ELSE
-				nArraySize = 0
-			ENDIF
-		ENDIF
-	ENDIF
+	nArraySize = 0
 ENDIF
 
 IF nArraySize > 0
@@ -3469,29 +3507,15 @@ cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
 
 *get EXE version into array
 PRIVATE nArraySize, aArrayName, cHPAFile
-IF FILE("ERP.EXE")
-	nArraySize = aGETFILEVERSION(aArrayName, "ERP.EXE")
+cHPAFile = Get_ERP_ExePath()
+IF !EMPTY(cHPAFile)
+	nArraySize = aGETFILEVERSION(aArrayName, cHPAFile)
 ELSE
-	IF FILE("C:\Program Files (x86)\HPA\ERP.EXE")
-		nArraySize = aGETFILEVERSION(aArrayName, "C:\Program Files (x86)\HPA\ERP.EXE")
-	ELSE
-		IF FILE("C:\Program Files\HPA\ERP.EXE")	
-			nArraySize = aGETFILEVERSION(aArrayName, "ERP.EXE")
-		ELSE
-			
-				cHPAFile = ALLTRIM(HOME())+"ERP.EXE" 
-				IF FILE(cHPAFile)
-					nArraySize = aGETFILEVERSION(aArrayName, (cHPAFile))
-				ELSE
-					LoginAppHome = SYS(5)+SYS(2003)+"\ERP"
-					IF NOT FILE(LoginAppHome+"ERP Home.txt")
-						MESSAGEBOX("ERP.EXE file not Found!"+CHR(13)+""+CHR(13)+"This code must be not compiled!",16,"Could not get the EXE version!" )
-					ENDIF
-					nArraySize = 0
-				ENDIF
-			
-		ENDIF
+	LoginAppHome = SYS(5)+SYS(2003)+"\ERP"
+	IF NOT FILE(LoginAppHome+"ERP Home.txt")
+		MESSAGEBOX("SAUSA-ERP.EXE file not Found!"+CHR(13)+""+CHR(13)+"This code must be not compiled!",16,"Could not get the EXE version!" )
 	ENDIF
+	nArraySize = 0
 ENDIF
 
 PRIVATE cLatestVersion, nLatestVersion 	
@@ -3603,23 +3627,11 @@ cMach = LEFT( cMach_User, AT("#",cMach_User)-2 )
 
 *WAIT WINDOW 'aGETFILEVERSION' TIMEOUT 1
 PRIVATE nArraySize, aArrayName, cHPAFile
-IF FILE("C:\Program Files (x86)\HPA\ERP.EXE")
-	nArraySize = aGETFILEVERSION(aArrayName, "C:\Program Files (x86)\HPA\ERP.EXE")
+cHPAFile = Get_ERP_ExePath()
+IF !EMPTY(cHPAFile)
+	nArraySize = aGETFILEVERSION(aArrayName, cHPAFile)
 ELSE
-	IF FILE("C:\Program Files\HPA\ERP.EXE")	
-		nArraySize = aGETFILEVERSION(aArrayName, "ERP.EXE")
-	ELSE
-		IF FILE("ERP.EXE")
-			nArraySize = aGETFILEVERSION(aArrayName, "ERP.EXE")
-		ELSE
-			cHPAFile = ALLTRIM(HOME())+"ERP.EXE" 
-			IF FILE(cHPAFile)
-				nArraySize = aGETFILEVERSION(aArrayName, (cHPAFile))
-			ELSE
-				nArraySize = 0
-			ENDIF
-		ENDIF
-	ENDIF
+	nArraySize = 0
 ENDIF
 
 PRIVATE cLatestVersion, nLatestVersion 	

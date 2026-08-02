@@ -192,7 +192,7 @@ DEFINE CLASS frmrecv_stock AS form
 		Enabled = .T.
 		heat = ''
 		Height = 438
-		Icon = graphics\earth-globe.ico
+		Icon = graphics\earth.ico
 		id_detail = 0
 		id_master = 0
 		Left = 2
@@ -5185,11 +5185,34 @@ DEFINE CLASS frmrecv_stock AS form
 					IF USED("tmpLst_Detail")
 						IF tmpLst_Detail.Cnt = 0
 						
-							*Check Other Table - Reverse names
-							IF cMasterTbl = "StockLst"
-								cMasterTbl = "BrokerLst"
-							ELSE
-								cMasterTbl = "StockLst"
+							* Look in other list for this ReceivingID, but do not silently adopt
+							* Stock↔Broker when PO / Receiving already named the intended table.
+							PRIVATE cOtherTbl, cIntendedTbl, lAllowSwap
+							cOtherTbl = IIF(cMasterTbl = "StockLst", "BrokerLst", "StockLst")
+							cIntendedTbl = UPPER(LEFT(ThisForm.txtTableName1.Value,1))
+							IF EMPTY(cIntendedTbl) AND VARTYPE(ThisForm.cTBL)="C"
+								cIntendedTbl = UPPER(LEFT(ThisForm.cTBL,1))
+							ENDIF
+							lAllowSwap = .T.
+							IF cIntendedTbl="S" OR cIntendedTbl="B" OR cIntendedTbl="W"
+								* Intended table known — only swap if Receiving.StockTable says the other list
+								PRIVATE cRecvST
+								cRecvST = ''
+								cSQL = "SELECT StockTable FROM dbo.Receiving WITH(NOLOCK) WHERE ID = "+STR(pnReceivingID)
+								nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpRecvST')
+								IF nSQLEXEC > 0 AND USED('tmpRecvST') AND RECCOUNT('tmpRecvST') > 0
+									cRecvST = UPPER(LEFT(ALLTRIM(NVL(tmpRecvST.StockTable,'')),1))
+								ENDIF
+								IF USED('tmpRecvST')
+									USE IN tmpRecvST
+								ENDIF
+								IF LEN(cRecvST)=0
+									cRecvST = cIntendedTbl
+								ENDIF
+								lAllowSwap = (UPPER(LEFT(cOtherTbl,1)) = cRecvST)
+							ENDIF
+							IF lAllowSwap
+								cMasterTbl = cOtherTbl
 							ENDIF
 							
 							*dbo.StockLst_Master dbo.BrokerLst_Master
@@ -5290,7 +5313,16 @@ DEFINE CLASS frmrecv_stock AS form
 										ENDIF
 										
 									ELSE
-										*just keep the swapped Table name
+										* Found on other list — keep swap only when Receiving.StockTable agreed
+										IF NOT lAllowSwap
+											cMasterTbl = TableName_TBL(ThisForm.txtTableName1.Value)
+											MESSAGEBOX("ReceivingID "+ALLTRIM(STR(pnReceivingID))+" detail is on a different list than this PO expects."+CHR(13)+;
+												"Staying on "+ThisForm.txtTableName1.Value+" (not auto-switching Stock/Broker)."+CHR(13)+;
+												"Verify StockLst vs BrokerLst for this multi-heat receive.",0+48,"Stock/Broker mismatch")
+										ELSE
+											ThisForm.txtTableName1.Value = cMasterTbl
+											ThisForm.cTBL = UPPER(LEFT(cMasterTbl,1))
+										ENDIF
 									ENDIF
 								ELSE
 									*Not found here either! - Revert to Orig 
@@ -9332,6 +9364,34 @@ DEFINE CLASS frmrecv_stock AS form
 		ENDIF
 		
 		= SQLSETPROP(THISFORM.nConnHandle, 'Transactions', 1)  && 1Auto 2Manual transactions
+
+		* P4 — after successful WO finish receive: RECV_STOCK ledger, SELECTED refresh, email alert
+		IF lOK AND NOT lRollBack AND m.lnWO_Detail > 0
+			IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+				SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+			ENDIF
+			PRIVATE nWOFin, nLbFin, cLotFin, cHeatFin
+			nWOFin = 0
+			IF USED("tmpWOHdrFin")
+				USE IN tmpWOHdrFin
+			ENDIF
+			IF SQLEXEC(ThisForm.nConnHandle, ;
+					"SELECT WO FROM dbo.WorkOrder_Detail WHERE WO_Detail = " + ALLTRIM(STR(m.lnWO_Detail)), ;
+					"tmpWOHdrFin") > 0 AND USED("tmpWOHdrFin") AND RECCOUNT("tmpWOHdrFin") > 0
+				nWOFin = PrepareSQLnum(tmpWOHdrFin.WO, "WO", -3)
+			ENDIF
+			IF USED("tmpWOHdrFin")
+				USE IN tmpWOHdrFin
+			ENDIF
+			nLbFin = PrepareSQLnum(m.lnMWeight, "Weight", 9, 1)
+			IF nLbFin = 0
+				nLbFin = PrepareSQLnum(m.lnS_QTY, "Weight", 9, 1)
+			ENDIF
+			cLotFin = ALLTRIM(EVL(m.lcLot, ""))
+			cHeatFin = ALLTRIM(EVL(m.lcHeat, ""))
+			= WO_Recv_Finish(nWOFin, m.lnWO_Detail, m.lnID_Detail, ThisForm.cTBL, ;
+				m.nReceivingID, nLbFin, cLotFin, cHeatFin, ThisForm.nConnHandle)
+		ENDIF
 		
 		**********************************
 		RETURN lOK

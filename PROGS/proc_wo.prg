@@ -35,6 +35,10 @@
 *GetNext_Sched_Position
 *is_WO
 *Get_QTY_WO
+*
+* P3 ledger: WO_Machine_ProcessCode WO_Ledger_Add WO_SetGrab WO_Pool_CanComplete WO_Split_Alloc
+* P4 receive: WO_Refresh_Selected_SO WO_Recv_Stock_Notify WO_Recv_Finish
+* P5: WO_Detail_SO_Upsert
 
 ***********************************************************************************************
 
@@ -393,11 +397,15 @@ ENDIF
 
 IF nConn > 0 
 
-	cSQL = "SELECT WO.WO "
+	* Prefer WorkOrder_Detail_SO; keep fSOitem / WO.SOitem as legacy fallback (P9 cleanup)
+	cSQL = "SELECT TOP 1 WO.WO "
 	cSQL = cSQL+" FROM dbo.WorkOrder WO "
 	cSQL = cSQL+" LEFT OUTER JOIN dbo.WorkOrder_Detail WOD ON WO.WO = WOD.WO "
-	cSQL = cSQL+" WHERE WO.SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
+	cSQL = cSQL+" LEFT OUTER JOIN dbo.WorkOrder_Detail_SO WOS ON WOS.WO_Detail = WOD.WO_Detail "
+	cSQL = cSQL+" WHERE WOS.SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
+	cSQL = cSQL+" OR WO.SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
 	cSQL = cSQL+" OR WOD.fSOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
+	cSQL = cSQL+" ORDER BY CASE WHEN WOS.SOitem IS NOT NULL THEN 0 ELSE 1 END, WO.WO DESC"
 
 	
 	
@@ -484,9 +492,12 @@ ENDIF
 
 IF nConn > 0 
 
-	cSQL = "SELECT WOD.WO_Detail "
+	cSQL = "SELECT TOP 1 WOD.WO_Detail "
 	cSQL = cSQL+" FROM dbo.WorkOrder_Detail WOD WITH(NOLOCK) "
-	cSQL = cSQL+" WHERE WOD.fSOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
+	cSQL = cSQL+" LEFT OUTER JOIN dbo.WorkOrder_Detail_SO WOS ON WOS.WO_Detail = WOD.WO_Detail "
+	cSQL = cSQL+" WHERE WOS.SOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
+	cSQL = cSQL+" OR WOD.fSOitem = dbo.f_ProperSOitem('"+cSOitem+"')"
+	cSQL = cSQL+" ORDER BY CASE WHEN WOS.SOitem IS NOT NULL THEN 0 ELSE 1 END, WOD.WO_Detail DESC"
 	
 	
 	SELECT 0
@@ -3822,5 +3833,754 @@ ENDIF
 RETURN nQTY 
 ENDPROC
 
+
+***********************************************************************************************
+* P3 — Work Order material ledger write helpers
+***********************************************************************************************
+
+FUNCTION WO_Machine_ProcessCode
+PARAMETERS tcMach
+* cCode = WO_Machine_ProcessCode(cMach)
+LOCAL lc
+lc = UPPER(ALLTRIM(EVL(tcMach,"")))
+DO CASE
+CASE EMPTY(lc)
+	RETURN ""
+CASE "GFM" $ lc
+	RETURN "GFM"
+CASE "SWAGE" $ lc
+	RETURN "SWAGE"
+CASE "HEAT" $ lc OR lc = "HT"
+	RETURN "HT"
+CASE "DRAW" $ lc AND "WIRE" $ lc
+	RETURN "WIRE"
+CASE "DRAW" $ lc
+	RETURN "DRAW"
+CASE "ROLL" $ lc
+	RETURN "ROLL"
+CASE "WIRE" $ lc
+	RETURN "WIRE"
+CASE "LAKE" $ lc OR "OPEN DIE" $ lc OR "OPENDIE" $ lc
+	RETURN "LAKEERIE"
+OTHERWISE
+	RETURN ""
+ENDCASE
+ENDFUNC
+
+FUNCTION WO_Is_LbOnly_Process
+PARAMETERS tcCode
+* .T. when process keeps same Lot (Cut/CG/UT/turn/straighten)
+LOCAL lc
+lc = UPPER(ALLTRIM(EVL(tcCode,"")))
+IF lc = "CLG"
+	lc = "CG"
+ENDIF
+RETURN INLIST(lc, "CUT", "CG", "UT", "TURN", "STRAIGHTEN")
+ENDFUNC
+
+FUNCTION WO_Log_Lb_Process
+PARAMETERS tnWO, tnWO_Detail, tcProcessCode, tnStartLb, tnEndLb, tcLot, tcNotes, tnMinutes, tpConn
+* nID = WO_Log_Lb_Process(nWO, nWO_Detail, cCode, nStartLb, nEndLb, cLot, cNotes, nMinutes, nConn)
+* Ledger-only (same Lot). ScrapLb = max(0, Start-End). Optional Minutes -> burden.
+LOCAL lc, nScrap, nID, nStart, nEnd, cLot, nMin
+lc = UPPER(ALLTRIM(EVL(tcProcessCode,"")))
+IF lc = "CLG"
+	lc = "CG"
+ENDIF
+IF NOT WO_Is_LbOnly_Process(lc)
+	RETURN 0
+ENDIF
+IF VARTYPE(tnWO) # "N" OR tnWO < 1 OR VARTYPE(tnWO_Detail) # "N" OR tnWO_Detail < 1
+	RETURN 0
+ENDIF
+nStart = IIF(VARTYPE(tnStartLb) = "N", tnStartLb, 0)
+nEnd = IIF(VARTYPE(tnEndLb) = "N", tnEndLb, nStart)
+IF nStart <= 0
+	RETURN 0
+ENDIF
+IF nEnd < 0
+	nEnd = 0
+ENDIF
+nScrap = MAX(0, nStart - nEnd)
+cLot = ALLTRIM(EVL(tcLot,""))
+IF VARTYPE(tcNotes) # "C"
+	tcNotes = ""
+ENDIF
+IF EMPTY(ALLTRIM(tcNotes))
+	tcNotes = lc + " Start/End lb"
+ENDIF
+nMin = IIF(VARTYPE(tnMinutes) = "N", tnMinutes, 0)
+nID = WO_Ledger_Add(tnWO, tnWO_Detail, lc, nStart, nEnd, cLot, "", ;
+	"", nScrap, 0, "", 0, 0, tcNotes, tpConn, nMin)
+RETURN nID
+ENDFUNC
+
+PROCEDURE WO_Ledger_Add
+PARAMETERS tnWO, tnWO_Detail, tcProcessCode, tnStartLb, tnEndLb, tcLot, tcLotPrior, ;
+	tcMachine, tnScrapLb, tnSpecimenLb, tcLogTable, tnLogKey, tnWIP_ID_Detail, tcNotes, tpConn, tnMinutes
+* nID = WO_Ledger_Add(nWO, nWO_Detail, cProcessCode, nStartLb, nEndLb, cLot, cLotPrior, ;
+*   cMachine, nScrapLb, nSpecimenLb, cLogTable, nLogKey, nWIP_ID_Detail, cNotes, nConn [, nMinutes])
+LOCAL nConn, lNew, cSQL, nSQLEXEC, nID, cAlias, nMin
+nID = 0
+IF VARTYPE(tnWO) # "N" OR tnWO < 1 OR VARTYPE(tnWO_Detail) # "N" OR tnWO_Detail < 1
+	RETURN 0
+ENDIF
+IF VARTYPE(tcProcessCode) # "C" OR EMPTY(ALLTRIM(tcProcessCode))
+	RETURN 0
+ENDIF
+IF VARTYPE(tnStartLb) # "N"
+	tnStartLb = 0
+ENDIF
+IF VARTYPE(tnEndLb) # "N"
+	tnEndLb = tnStartLb
+ENDIF
+IF VARTYPE(tcLot) # "C"
+	tcLot = ""
+ENDIF
+IF VARTYPE(tcLotPrior) # "C"
+	tcLotPrior = ""
+ENDIF
+IF VARTYPE(tcMachine) # "C"
+	tcMachine = ""
+ENDIF
+IF VARTYPE(tnScrapLb) # "N"
+	tnScrapLb = 0
+ENDIF
+IF VARTYPE(tnSpecimenLb) # "N"
+	tnSpecimenLb = 0
+ENDIF
+IF VARTYPE(tcLogTable) # "C"
+	tcLogTable = ""
+ENDIF
+IF VARTYPE(tnLogKey) # "N"
+	tnLogKey = 0
+ENDIF
+IF VARTYPE(tnWIP_ID_Detail) # "N"
+	tnWIP_ID_Detail = 0
+ENDIF
+IF VARTYPE(tcNotes) # "C"
+	tcNotes = ""
+ENDIF
+nMin = IIF(VARTYPE(tnMinutes) = "N", tnMinutes, 0)
+
+cAlias = ALIAS()
+lNew = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNew = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN 0
+ENDIF
+
+IF USED("tmpWOLedgIns")
+	USE IN tmpWOLedgIns
+ENDIF
+
+cSQL = "EXEC dbo.p_WO_Detail_Process_ins "
+cSQL = cSQL + " @WO = " + ALLTRIM(STR(tnWO))
+cSQL = cSQL + ",@WO_Detail = " + ALLTRIM(STR(tnWO_Detail))
+cSQL = cSQL + ",@ProcessCode = '" + STRTRAN(ALLTRIM(tcProcessCode), "'", "''") + "'"
+cSQL = cSQL + ",@StartLb = " + ALLTRIM(STR(tnStartLb, 12, 1))
+cSQL = cSQL + ",@EndLb = " + ALLTRIM(STR(tnEndLb, 12, 1))
+IF EMPTY(ALLTRIM(tcLot))
+	cSQL = cSQL + ",@Lot = NULL"
+ELSE
+	cSQL = cSQL + ",@Lot = '" + STRTRAN(PADR(ALLTRIM(tcLot),10), "'", "''") + "'"
+ENDIF
+IF EMPTY(ALLTRIM(tcLotPrior))
+	cSQL = cSQL + ",@LotPrior = NULL"
+ELSE
+	cSQL = cSQL + ",@LotPrior = '" + STRTRAN(PADR(ALLTRIM(tcLotPrior),10), "'", "''") + "'"
+ENDIF
+IF EMPTY(ALLTRIM(tcMachine))
+	cSQL = cSQL + ",@Machine = NULL"
+ELSE
+	cSQL = cSQL + ",@Machine = '" + STRTRAN(ALLTRIM(tcMachine), "'", "''") + "'"
+ENDIF
+cSQL = cSQL + ",@ScrapLb = " + ALLTRIM(STR(tnScrapLb, 12, 1))
+cSQL = cSQL + ",@SpecimenLb = " + ALLTRIM(STR(tnSpecimenLb, 12, 1))
+IF EMPTY(ALLTRIM(tcLogTable))
+	cSQL = cSQL + ",@LogTable = NULL"
+ELSE
+	cSQL = cSQL + ",@LogTable = '" + STRTRAN(ALLTRIM(tcLogTable), "'", "''") + "'"
+ENDIF
+IF tnLogKey > 0
+	cSQL = cSQL + ",@LogKey = " + ALLTRIM(STR(tnLogKey))
+ELSE
+	cSQL = cSQL + ",@LogKey = NULL"
+ENDIF
+IF tnWIP_ID_Detail > 0
+	cSQL = cSQL + ",@WIP_ID_Detail = " + ALLTRIM(STR(tnWIP_ID_Detail))
+ELSE
+	cSQL = cSQL + ",@WIP_ID_Detail = NULL"
+ENDIF
+IF EMPTY(ALLTRIM(tcNotes))
+	cSQL = cSQL + ",@Notes = NULL"
+ELSE
+	cSQL = cSQL + ",@Notes = '" + STRTRAN(LEFT(ALLTRIM(tcNotes),200), "'", "''") + "'"
+ENDIF
+IF nMin > 0
+	cSQL = cSQL + ",@Minutes = " + ALLTRIM(STR(nMin, 12, 1))
+ENDIF
+
+nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWOLedgIns")
+DO WHILE nSQLEXEC = 0
+	WAIT WINDOW "SQL" TIMEOUT 1
+	nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWOLedgIns")
+ENDDO
+IF nSQLEXEC < 0
+	SQLEXECError(cSQL, nConn, nSQLEXEC, "tmpWOLedgIns")
+ELSE
+	IF USED("tmpWOLedgIns") AND RECCOUNT("tmpWOLedgIns") > 0
+		nID = PrepareSQLnum(tmpWOLedgIns.Exp, "ID", -3)
+	ENDIF
+ENDIF
+IF USED("tmpWOLedgIns")
+	USE IN tmpWOLedgIns
+ENDIF
+IF lNew
+	SQLDISCONNECT(nConn)
+ENDIF
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN nID
+ENDPROC
+
+PROCEDURE WO_SetGrab
+PARAMETERS tnWO, tnGrabLb, tcHeat, tcLot, tcTBL, tnID_Detail, tpConn
+* nRows = WO_SetGrab(nWO, nGrabLb, cHeat, cLot, cTBL, nID_Detail, nConn)
+LOCAL nConn, lNew, cSQL, nSQLEXEC, nRows, cAlias
+nRows = 0
+IF VARTYPE(tnWO) # "N" OR tnWO < 1 OR VARTYPE(tnGrabLb) # "N"
+	RETURN 0
+ENDIF
+IF VARTYPE(tcHeat) # "C"
+	tcHeat = ""
+ENDIF
+IF VARTYPE(tcLot) # "C"
+	tcLot = ""
+ENDIF
+IF VARTYPE(tcTBL) # "C"
+	tcTBL = ""
+ENDIF
+IF VARTYPE(tnID_Detail) # "N"
+	tnID_Detail = 0
+ENDIF
+cAlias = ALIAS()
+lNew = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNew = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN 0
+ENDIF
+IF USED("tmpWOGrab")
+	USE IN tmpWOGrab
+ENDIF
+cSQL = "EXEC dbo.p_WO_SetGrab "
+cSQL = cSQL + " @WO = " + ALLTRIM(STR(tnWO))
+cSQL = cSQL + ",@GrabLb = " + ALLTRIM(STR(tnGrabLb, 12, 1))
+IF EMPTY(ALLTRIM(tcHeat))
+	cSQL = cSQL + ",@GrabHeat = NULL"
+ELSE
+	cSQL = cSQL + ",@GrabHeat = '" + STRTRAN(ALLTRIM(tcHeat), "'", "''") + "'"
+ENDIF
+IF EMPTY(ALLTRIM(tcLot))
+	cSQL = cSQL + ",@GrabLot = NULL"
+ELSE
+	cSQL = cSQL + ",@GrabLot = '" + STRTRAN(PADR(ALLTRIM(tcLot),10), "'", "''") + "'"
+ENDIF
+IF EMPTY(ALLTRIM(tcTBL))
+	cSQL = cSQL + ",@GrabTBL = NULL"
+ELSE
+	cSQL = cSQL + ",@GrabTBL = '" + LEFT(ALLTRIM(tcTBL),1) + "'"
+ENDIF
+IF tnID_Detail > 0
+	cSQL = cSQL + ",@GrabID_Detail = " + ALLTRIM(STR(tnID_Detail))
+ELSE
+	cSQL = cSQL + ",@GrabID_Detail = NULL"
+ENDIF
+nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWOGrab")
+IF nSQLEXEC > 0 AND USED("tmpWOGrab") AND RECCOUNT("tmpWOGrab") > 0
+	nRows = PrepareSQLnum(tmpWOGrab.Exp, "EXP", -3)
+ENDIF
+IF USED("tmpWOGrab")
+	USE IN tmpWOGrab
+ENDIF
+IF lNew
+	SQLDISCONNECT(nConn)
+ENDIF
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN nRows
+ENDPROC
+
+PROCEDURE WO_Pool_CanComplete
+PARAMETERS tnWO, tpConn, tnUnaccOut
+* lOK = WO_Pool_CanComplete(nWO, nConn [, @nUnaccountedLb])
+LOCAL nConn, lNew, cSQL, nSQLEXEC, lOK, cAlias, nUnacc
+lOK = .T.
+nUnacc = 0
+IF VARTYPE(tnWO) # "N" OR tnWO < 1
+	RETURN .T.
+ENDIF
+cAlias = ALIAS()
+lNew = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNew = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN .T.
+ENDIF
+IF USED("tmpWOPool")
+	USE IN tmpWOPool
+ENDIF
+cSQL = "EXEC dbo.p_WO_Pool_CanComplete @WO = " + ALLTRIM(STR(tnWO))
+nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWOPool")
+IF nSQLEXEC > 0 AND USED("tmpWOPool") AND RECCOUNT("tmpWOPool") > 0
+	lOK = (PrepareSQLnum(tmpWOPool.Exp, "EXP", -1) = 1)
+	nUnacc = PrepareSQLnum(tmpWOPool.UnaccountedLb, "UnaccountedLb", 9, 1)
+ENDIF
+IF USED("tmpWOPool")
+	USE IN tmpWOPool
+ENDIF
+IF lNew
+	SQLDISCONNECT(nConn)
+ENDIF
+IF VARTYPE(tnUnaccOut) = "N"
+	tnUnaccOut = nUnacc
+ENDIF
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN lOK
+ENDPROC
+
+PROCEDURE WO_Split_Alloc
+PARAMETERS tnWO, tnParentDet, tnBranchLb, tcAlloy, tcForm, tnThck, tnSz2, tcLot, tcHeat, ;
+	tcDescript, tcRole, tpConn
+* nNewWO_Detail = WO_Split_Alloc(nWO, nParentWO_Detail, nBranchLb, cAlloy, cForm, nThck, nSz2, ;
+*   cLot, cHeat, cDescript, cRole [F/R/X], nConn)
+LOCAL nConn, lNew, cSQL, nSQLEXEC, nNew, cAlias
+nNew = 0
+IF VARTYPE(tnWO) # "N" OR tnWO < 1 OR VARTYPE(tnBranchLb) # "N" OR tnBranchLb <= 0
+	RETURN 0
+ENDIF
+IF VARTYPE(tnParentDet) # "N"
+	tnParentDet = 0
+ENDIF
+IF VARTYPE(tcRole) # "C" OR EMPTY(tcRole)
+	tcRole = "F"
+ENDIF
+cAlias = ALIAS()
+lNew = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNew = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN 0
+ENDIF
+IF USED("tmpWOSplit")
+	USE IN tmpWOSplit
+ENDIF
+cSQL = "EXEC dbo.p_WO_Split_Alloc "
+cSQL = cSQL + " @WO = " + ALLTRIM(STR(tnWO))
+cSQL = cSQL + ",@ParentWO_Detail = " + ALLTRIM(STR(tnParentDet))
+cSQL = cSQL + ",@BranchLb = " + ALLTRIM(STR(tnBranchLb, 12, 1))
+cSQL = cSQL + ",@DetailRole = '" + LEFT(UPPER(ALLTRIM(tcRole)),1) + "'"
+IF VARTYPE(tcAlloy) = "C" AND NOT EMPTY(tcAlloy)
+	cSQL = cSQL + ",@fAlloy = '" + STRTRAN(PADR(ALLTRIM(tcAlloy),12), "'", "''") + "'"
+ENDIF
+IF VARTYPE(tcForm) = "C" AND NOT EMPTY(tcForm)
+	cSQL = cSQL + ",@fForm = '" + LEFT(ALLTRIM(tcForm),2) + "'"
+ENDIF
+IF VARTYPE(tnThck) = "N"
+	cSQL = cSQL + ",@fThck = " + ALLTRIM(STR(tnThck, 14, 4))
+ENDIF
+IF VARTYPE(tnSz2) = "N"
+	cSQL = cSQL + ",@fSz2 = " + ALLTRIM(STR(tnSz2, 13, 3))
+ENDIF
+IF VARTYPE(tcLot) = "C" AND NOT EMPTY(tcLot)
+	cSQL = cSQL + ",@Lot = '" + STRTRAN(PADR(ALLTRIM(tcLot),10), "'", "''") + "'"
+ENDIF
+IF VARTYPE(tcHeat) = "C" AND NOT EMPTY(tcHeat)
+	cSQL = cSQL + ",@Heat = '" + STRTRAN(ALLTRIM(tcHeat), "'", "''") + "'"
+ENDIF
+IF VARTYPE(tcDescript) = "C" AND NOT EMPTY(tcDescript)
+	cSQL = cSQL + ",@Descript = '" + STRTRAN(LEFT(ALLTRIM(tcDescript),100), "'", "''") + "'"
+ENDIF
+nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWOSplit")
+IF nSQLEXEC > 0 AND USED("tmpWOSplit") AND RECCOUNT("tmpWOSplit") > 0
+	nNew = PrepareSQLnum(tmpWOSplit.Exp, "EXP", -3)
+ENDIF
+IF USED("tmpWOSplit")
+	USE IN tmpWOSplit
+ENDIF
+IF lNew
+	SQLDISCONNECT(nConn)
+ENDIF
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN nNew
+ENDPROC
+
+PROCEDURE WO_Refresh_Selected_SO
+PARAMETERS tnWO_Detail, tnID_Detail, tcTBL, tnReceivingID, tpConn
+* nCnt = WO_Refresh_Selected_SO(nWO_Detail, nID_Detail, cTBL, nReceivingID, nConn)
+LOCAL nConn, lNew, cSQL, nSQLEXEC, nCnt, cAlias, cTBL
+nCnt = 0
+IF VARTYPE(tnWO_Detail) # "N" OR tnWO_Detail < 1 OR VARTYPE(tnID_Detail) # "N" OR tnID_Detail < 1
+	RETURN 0
+ENDIF
+IF VARTYPE(tcTBL) # "C" OR EMPTY(ALLTRIM(tcTBL))
+	cTBL = "S"
+ELSE
+	cTBL = UPPER(LEFT(ALLTRIM(tcTBL),1))
+ENDIF
+IF VARTYPE(tnReceivingID) # "N"
+	tnReceivingID = 0
+ENDIF
+cAlias = ALIAS()
+lNew = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNew = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN 0
+ENDIF
+IF USED("tmpWOSelRef")
+	USE IN tmpWOSelRef
+ENDIF
+cSQL = "EXEC dbo.p_WO_Refresh_Selected_SO "
+cSQL = cSQL + " @WO_Detail = " + ALLTRIM(STR(tnWO_Detail))
+cSQL = cSQL + ",@ID_Detail = " + ALLTRIM(STR(tnID_Detail))
+cSQL = cSQL + ",@TBL = '" + cTBL + "'"
+cSQL = cSQL + ",@ReceivingID = " + ALLTRIM(STR(tnReceivingID))
+nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWOSelRef")
+IF nSQLEXEC > 0 AND USED("tmpWOSelRef") AND RECCOUNT("tmpWOSelRef") > 0
+	nCnt = PrepareSQLnum(tmpWOSelRef.Exp, "EXP", -3)
+ENDIF
+IF USED("tmpWOSelRef")
+	USE IN tmpWOSelRef
+ENDIF
+IF lNew
+	SQLDISCONNECT(nConn)
+ENDIF
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN nCnt
+ENDPROC
+
+PROCEDURE WO_Recv_Stock_Notify
+PARAMETERS tnWO_Detail, tnID_Detail, tnReceivingID, tpConn
+* nLogID = WO_Recv_Stock_Notify(nWO_Detail, nID_Detail, nReceivingID, nConn)
+LOCAL nConn, lNew, cSQL, nSQLEXEC, nID, cAlias
+nID = 0
+IF VARTYPE(tnWO_Detail) # "N" OR tnWO_Detail < 1
+	RETURN 0
+ENDIF
+IF VARTYPE(tnID_Detail) # "N"
+	tnID_Detail = 0
+ENDIF
+IF VARTYPE(tnReceivingID) # "N"
+	tnReceivingID = 0
+ENDIF
+cAlias = ALIAS()
+lNew = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNew = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN 0
+ENDIF
+IF USED("tmpWORecvNfy")
+	USE IN tmpWORecvNfy
+ENDIF
+cSQL = "EXEC dbo.p_WO_Recv_Stock_Notify "
+cSQL = cSQL + " @WO_Detail = " + ALLTRIM(STR(tnWO_Detail))
+IF tnID_Detail > 0
+	cSQL = cSQL + ",@ID_Detail = " + ALLTRIM(STR(tnID_Detail))
+ENDIF
+IF tnReceivingID > 0
+	cSQL = cSQL + ",@ReceivingID = " + ALLTRIM(STR(tnReceivingID))
+ENDIF
+nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWORecvNfy")
+IF nSQLEXEC > 0 AND USED("tmpWORecvNfy") AND RECCOUNT("tmpWORecvNfy") > 0
+	nID = PrepareSQLnum(tmpWORecvNfy.Exp, "EXP", -3)
+ENDIF
+IF USED("tmpWORecvNfy")
+	USE IN tmpWORecvNfy
+ENDIF
+IF lNew
+	SQLDISCONNECT(nConn)
+ENDIF
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN nID
+ENDPROC
+
+PROCEDURE WO_Detail_SO_Upsert
+PARAMETERS tnWO_Detail, tcSOitem, tnLbPlanned, tpConn
+* nRows = WO_Detail_SO_Upsert(nWO_Detail, cSOitem, nLbPlanned, nConn)
+LOCAL nConn, lNew, cSQL, nSQLEXEC, nRows, cAlias, cSO, nLb
+nRows = 0
+IF VARTYPE(tnWO_Detail) # "N" OR tnWO_Detail < 1 OR VARTYPE(tcSOitem) # "C"
+	RETURN 0
+ENDIF
+cSO = ALLTRIM(tcSOitem)
+IF EMPTY(cSO) OR UPPER(cSO) = "STOCK"
+	RETURN 0
+ENDIF
+IF VARTYPE(tnLbPlanned) # "N"
+	tnLbPlanned = 0
+ENDIF
+nLb = tnLbPlanned
+cAlias = ALIAS()
+lNew = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNew = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN 0
+ENDIF
+IF USED("tmpWODSOUp")
+	USE IN tmpWODSOUp
+ENDIF
+cSQL = "IF NOT EXISTS (SELECT 1 FROM dbo.WorkOrder_Detail_SO WITH (UPDLOCK, HOLDLOCK) "
+cSQL = cSQL + " WHERE WO_Detail = " + ALLTRIM(STR(tnWO_Detail))
+cSQL = cSQL + " AND SOitem = dbo.f_ProperSOitem('" + STRTRAN(cSO, "'", "''") + "')) "
+cSQL = cSQL + " INSERT INTO dbo.WorkOrder_Detail_SO (WO_Detail, SOitem, LbPlanned, WhoAdd, WhenAdd) "
+cSQL = cSQL + " VALUES (" + ALLTRIM(STR(tnWO_Detail))
+cSQL = cSQL + ", dbo.f_ProperSOitem('" + STRTRAN(cSO, "'", "''") + "')"
+cSQL = cSQL + ", " + ALLTRIM(STR(nLb, 12, 1))
+cSQL = cSQL + ", LEFT(SUSER_SNAME(),50), GETDATE()); "
+cSQL = cSQL + " ELSE UPDATE dbo.WorkOrder_Detail_SO SET LbPlanned = CASE WHEN " + ALLTRIM(STR(nLb,12,1))
+cSQL = cSQL + " > 0 THEN " + ALLTRIM(STR(nLb,12,1)) + " ELSE LbPlanned END "
+cSQL = cSQL + " WHERE WO_Detail = " + ALLTRIM(STR(tnWO_Detail))
+cSQL = cSQL + " AND SOitem = dbo.f_ProperSOitem('" + STRTRAN(cSO, "'", "''") + "'); "
+cSQL = cSQL + " SELECT EXP = @@ROWCOUNT;"
+nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWODSOUp")
+IF nSQLEXEC > 0 AND USED("tmpWODSOUp") AND RECCOUNT("tmpWODSOUp") > 0
+	nRows = PrepareSQLnum(tmpWODSOUp.Exp, "EXP", -3)
+ENDIF
+IF USED("tmpWODSOUp")
+	USE IN tmpWODSOUp
+ENDIF
+IF lNew
+	SQLDISCONNECT(nConn)
+ENDIF
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN nRows
+ENDPROC
+
+PROCEDURE WO_Recv_Finish
+PARAMETERS tnWO, tnWO_Detail, tnID_Detail, tcTBL, tnReceivingID, tnLb, tcLot, tcHeat, tpConn
+* lOK = WO_Recv_Finish(nWO, nWO_Detail, nID_Detail, cTBL, nReceivingID, nLb, cLot, cHeat, nConn)
+* P4: RECV_STOCK ledger + SELECTED refresh + SalesP/foreman alert (Dev email no-op).
+LOCAL nConn, lOwn, nLedg, nSel, nNfy, cLot, nLb
+IF VARTYPE(tnWO_Detail) # "N" OR tnWO_Detail < 1
+	RETURN .F.
+ENDIF
+IF VARTYPE(tnWO) # "N" OR tnWO < 1
+	tnWO = 0
+ENDIF
+IF VARTYPE(tnID_Detail) # "N"
+	tnID_Detail = 0
+ENDIF
+IF VARTYPE(tcTBL) # "C" OR EMPTY(ALLTRIM(tcTBL))
+	tcTBL = "S"
+ENDIF
+IF VARTYPE(tnReceivingID) # "N"
+	tnReceivingID = 0
+ENDIF
+IF VARTYPE(tnLb) # "N"
+	tnLb = 0
+ENDIF
+IF VARTYPE(tcLot) # "C"
+	tcLot = ""
+ENDIF
+IF VARTYPE(tcHeat) # "C"
+	tcHeat = ""
+ENDIF
+lOwn = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lOwn = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN .F.
+ENDIF
+IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
+	SET PROCEDURE TO PROGS\proc_wo ADDITIVE
+ENDIF
+IF tnWO < 1
+	* resolve WO from detail
+	IF USED("tmpWOFinWO")
+		USE IN tmpWOFinWO
+	ENDIF
+	IF SQLEXEC(nConn, "SELECT WO FROM dbo.WorkOrder_Detail WHERE WO_Detail = " + ALLTRIM(STR(tnWO_Detail)), "tmpWOFinWO") > 0 ;
+			AND USED("tmpWOFinWO") AND RECCOUNT("tmpWOFinWO") > 0
+		tnWO = PrepareSQLnum(tmpWOFinWO.WO, "WO", -3)
+	ENDIF
+	IF USED("tmpWOFinWO")
+		USE IN tmpWOFinWO
+	ENDIF
+ENDIF
+cLot = ALLTRIM(tcLot)
+nLb = tnLb
+IF tnWO > 0
+	nLedg = WO_Ledger_Add(tnWO, tnWO_Detail, "RECV_STOCK", nLb, nLb, cLot, "", ;
+		"", 0, 0, "Receiving", tnReceivingID, tnID_Detail, ;
+		"Receive finish Heat "+ALLTRIM(tcHeat), nConn)
+ENDIF
+IF tnID_Detail > 0
+	nSel = WO_Refresh_Selected_SO(tnWO_Detail, tnID_Detail, tcTBL, tnReceivingID, nConn)
+ENDIF
+nNfy = WO_Recv_Stock_Notify(tnWO_Detail, tnID_Detail, tnReceivingID, nConn)
+* P8 — Chatter stub (no app yet; logs CHATTER_DEFERRED)
+= WO_Alert_Chatter_Stub("RECV_STOCK", tnWO, tnWO_Detail, tnID_Detail, tnReceivingID, ;
+	"WO finish received", "Chatter deferred — email already logged.", nConn)
+IF lOwn
+	SQLDISCONNECT(nConn)
+ENDIF
+RETURN .T.
+ENDPROC
+
+FUNCTION WO_Propose_Burden_Acct
+PARAMETERS tnWO, tpConn
+* nAC = WO_Propose_Burden_Acct(nWO, nConn)
+LOCAL nConn, lNew, cSQL, nSQLEXEC, nAC, cAlias
+nAC = 0
+IF VARTYPE(tnWO) # "N" OR tnWO < 1
+	RETURN 0
+ENDIF
+cAlias = ALIAS()
+lNew = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNew = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN 0
+ENDIF
+IF USED("tmpWOPropBur")
+	USE IN tmpWOPropBur
+ENDIF
+cSQL = "EXEC dbo.p_WO_Propose_Burden_Acct @WO = " + ALLTRIM(STR(tnWO))
+nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWOPropBur")
+IF nSQLEXEC > 0 AND USED("tmpWOPropBur") AND RECCOUNT("tmpWOPropBur") > 0
+	nAC = PrepareSQLnum(tmpWOPropBur.Exp, "AC_ID", -3)
+ENDIF
+IF USED("tmpWOPropBur")
+	USE IN tmpWOPropBur
+ENDIF
+IF lNew
+	SQLDISCONNECT(nConn)
+ENDIF
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN nAC
+ENDFUNC
+
+FUNCTION WO_Alert_Chatter_Stub
+PARAMETERS tcAlertType, tnWO, tnWO_Detail, tnID_Detail, tnReceivingID, tcSubject, tcBody, tpConn
+* nID = WO_Alert_Chatter_Stub(cType, nWO, nWO_Detail, nID_Detail, nReceivingID, cSubject, cBody, nConn)
+LOCAL nConn, lNew, cSQL, nSQLEXEC, nID, cAlias
+nID = 0
+IF VARTYPE(tcAlertType) # "C" OR EMPTY(ALLTRIM(tcAlertType))
+	RETURN 0
+ENDIF
+cAlias = ALIAS()
+lNew = .F.
+IF VARTYPE(tpConn) = "N" AND tpConn > 0
+	nConn = tpConn
+ELSE
+	nConn = get_SQLSTRINGCONNECT()
+	lNew = .T.
+ENDIF
+nConn = CheckSQLConnection(nConn)
+IF nConn < 1
+	RETURN 0
+ENDIF
+IF USED("tmpWOChat")
+	USE IN tmpWOChat
+ENDIF
+cSQL = "EXEC dbo.p_WO_Alert_Chatter_Stub "
+cSQL = cSQL + " @AlertType = '" + STRTRAN(ALLTRIM(tcAlertType), "'", "''") + "'"
+IF VARTYPE(tnWO) = "N" AND tnWO > 0
+	cSQL = cSQL + ",@WO = " + ALLTRIM(STR(tnWO))
+ENDIF
+IF VARTYPE(tnWO_Detail) = "N" AND tnWO_Detail > 0
+	cSQL = cSQL + ",@WO_Detail = " + ALLTRIM(STR(tnWO_Detail))
+ENDIF
+IF VARTYPE(tnID_Detail) = "N" AND tnID_Detail > 0
+	cSQL = cSQL + ",@ID_Detail = " + ALLTRIM(STR(tnID_Detail))
+ENDIF
+IF VARTYPE(tnReceivingID) = "N" AND tnReceivingID > 0
+	cSQL = cSQL + ",@ReceivingID = " + ALLTRIM(STR(tnReceivingID))
+ENDIF
+IF VARTYPE(tcSubject) = "C" AND NOT EMPTY(ALLTRIM(tcSubject))
+	cSQL = cSQL + ",@SubjectEmail = '" + STRTRAN(LEFT(ALLTRIM(tcSubject),200), "'", "''") + "'"
+ENDIF
+IF VARTYPE(tcBody) = "C" AND NOT EMPTY(ALLTRIM(tcBody))
+	cSQL = cSQL + ",@BodyEmail = '" + STRTRAN(LEFT(ALLTRIM(tcBody),4000), "'", "''") + "'"
+ENDIF
+nSQLEXEC = SQLEXEC(nConn, cSQL, "tmpWOChat")
+IF nSQLEXEC > 0 AND USED("tmpWOChat") AND RECCOUNT("tmpWOChat") > 0
+	nID = PrepareSQLnum(tmpWOChat.Exp, "ID", -3)
+ENDIF
+IF USED("tmpWOChat")
+	USE IN tmpWOChat
+ENDIF
+IF lNew
+	SQLDISCONNECT(nConn)
+ENDIF
+IF NOT EMPTY(cAlias) AND USED(cAlias)
+	SELECT (cAlias)
+ENDIF
+RETURN nID
+ENDFUNC
 
 ***********************************************************************************************

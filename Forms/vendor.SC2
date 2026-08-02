@@ -4329,42 +4329,42 @@ DEFINE CLASS vendor AS formset
 		*!*				*do NOT Print Sheet Packing Instructions
 		*!*				*NC is to Not print Cancelled items
 		*!*				IF lPrintEvenCancelled
-		*!*					IF FILE('reports\PurchaseOrder14.FRX')
-		*!*						REPORT FORM reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo PREVIEW
+		*!*					IF FILE('reports\PurchaseOrder26.FRX')
+		*!*						REPORT FORM reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo PREVIEW
 		*!*						IF MESSAGEBOX("Do you need a second print?",4+32,'Reprint.') = 6
-		*!*							REPORT FORM reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo TO PRINTER Prompt
+		*!*							REPORT FORM reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo TO PRINTER Prompt
 		*!*						ENDIF
 		*!*					ELSE
-		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder14' not found" NOWAIT
+		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder26' not found" NOWAIT
 		*!*					ENDIF
 		*!*				ELSE
-		*!*					IF FILE('reports\PurchaseOrder14nc.FRX')
-		*!*						REPORT FORM reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo  AND !purchaseorder.cancelled PREVIEW
+		*!*					IF FILE('reports\PurchaseOrder26nc.FRX')
+		*!*						REPORT FORM reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo  AND !purchaseorder.cancelled PREVIEW
 		*!*						IF MESSAGEBOX("Do you need a second print?",4+32,'Reprint.') = 6
-		*!*							REPORT FORM reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled TO PRINTER PROMPT
+		*!*							REPORT FORM reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled TO PRINTER PROMPT
 		*!*						ENDIF
 		*!*					ELSE
-		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder14nc' not found" NOWAIT
+		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder26nc' not found" NOWAIT
 		*!*					ENDIF
 		*!*				ENDIF
 		*!*			ELSE
 		*!*				IF lPrintEvenCancelled
-		*!*					IF FILE('reports\PurchaseOrder14_sheet.FRX')
-		*!*						REPORT FORM reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo PREVIEW
+		*!*					IF FILE('reports\PurchaseOrder26_sheet.FRX')
+		*!*						REPORT FORM reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo PREVIEW
 		*!*						IF MESSAGEBOX("Do you need a second print?",4+32,'Reprint.') = 6
-		*!*							REPORT FORM reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT
+		*!*							REPORT FORM reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo TO PRINTER PROMPT
 		*!*						ENDIF
 		*!*					ELSE
-		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheet' not found" NOWAIT
+		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheet' not found" NOWAIT
 		*!*					ENDIF
 		*!*				ELSE
-		*!*					IF FILE('reports\PurchaseOrder14_sheetNC.FRX')
-		*!*						REPORT FORM reports\PurchaseOrder14_sheetNC.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled PREVIEW
+		*!*					IF FILE('reports\PurchaseOrder26_sheetNC.FRX')
+		*!*						REPORT FORM reports\PurchaseOrder26_sheetNC.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled PREVIEW
 		*!*						IF MESSAGEBOX("Do you need a second print?",4+32,'Reprint.') = 6
-		*!*							REPORT FORM reports\PurchaseOrder14_sheetNC.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled TO PRINTER PROMPT
+		*!*							REPORT FORM reports\PurchaseOrder26_sheetNC.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled TO PRINTER PROMPT
 		*!*						ENDIF
 		*!*					ELSE
-		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheetNC' not found" NOWAIT
+		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheetNC' not found" NOWAIT
 		*!*					ENDIF
 		*!*				ENDIF
 		*!*			ENDIF
@@ -4501,30 +4501,30 @@ DEFINE CLASS vendor AS formset
 		*!*			SELECT PurchaseOrder
 		*!*			IF lPrintSheetPk
 		*!*				IF lPrintEvenCancelled
-		*!*					IF FILE('reports\PurchaseOrder14_sheet.FRX')
-		*!*						REPORT FORM reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
+		*!*					IF FILE('reports\PurchaseOrder26_sheet.FRX')
+		*!*						REPORT FORM reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
 		*!*					ELSE
-		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheet' not found" NOWAIT
+		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheet' not found" NOWAIT
 		*!*					ENDIF
 		*!*				ELSE
-		*!*					IF FILE('reports\PurchaseOrder14_sheetnc.FRX')
-		*!*						REPORT FORM reports\PurchaseOrder14_sheetnc.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled NOCONSOLE TO PRINTER
+		*!*					IF FILE('reports\PurchaseOrder26_sheetnc.FRX')
+		*!*						REPORT FORM reports\PurchaseOrder26_sheetnc.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled NOCONSOLE TO PRINTER
 		*!*					ELSE
-		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheetnc' not found" NOWAIT
+		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheetnc' not found" NOWAIT
 		*!*					ENDIF
 		*!*				ENDIF
 		*!*			ELSE
 		*!*				IF lPrintEvenCancelled
-		*!*					IF FILE('reports\PurchaseOrder14.FRX')
-		*!*						REPORT FORM reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
+		*!*					IF FILE('reports\PurchaseOrder26.FRX')
+		*!*						REPORT FORM reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
 		*!*					ELSE
-		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder14' not found" NOWAIT
+		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder26' not found" NOWAIT
 		*!*					ENDIF
 		*!*				ELSE
-		*!*					IF FILE('reports\PurchaseOrder14nc.FRX')
-		*!*						REPORT FORM reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled NOCONSOLE TO PRINTER
+		*!*					IF FILE('reports\PurchaseOrder26nc.FRX')
+		*!*						REPORT FORM reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled NOCONSOLE TO PRINTER
 		*!*					ELSE
-		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder14NC' not found" NOWAIT
+		*!*						WAIT WINDOW "Report form 'reports\PurchaseOrder26NC' not found" NOWAIT
 		*!*					ENDIF
 		*!*				ENDIF
 		*!*			ENDIF
@@ -4581,7 +4581,7 @@ DEFINE CLASS vendor AS formset
 		*!*		PRIVATE cEmail 
 		
 		*!*		IF MESSAGEBOX("Do you want to Email?",4+32) = 6
-		*!*			IF FILE('reports\PurchaseOrder14.FRX')
+		*!*			IF FILE('reports\PurchaseOrder26.FRX')
 		*!*				
 		*!*				cEmail = ""
 		*!*				IF lFoundVendor
@@ -4670,34 +4670,34 @@ DEFINE CLASS vendor AS formset
 		*!*						SELECT PurchaseOrder
 		*!*						IF lPrintSheetPk
 		*!*							IF lPrintEvenCancelled
-		*!*								IF FILE('reports\PurchaseOrder14_sheet.FRX')
-		*!*									*REPORT FORM \reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER 
-		*!*									REPORT FORM reports\PurchaseOrder14_sheet.FRX FOR HpaPo = nHpaPo Object loListener
+		*!*								IF FILE('reports\PurchaseOrder26_sheet.FRX')
+		*!*									*REPORT FORM \reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER 
+		*!*									REPORT FORM reports\PurchaseOrder26_sheet.FRX FOR HpaPo = nHpaPo Object loListener
 		*!*								ELSE
-		*!*									WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheet' not found" NOWAIT
+		*!*									WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheet' not found" NOWAIT
 		*!*								ENDIF
 		*!*							ELSE
-		*!*								IF FILE('reports\PurchaseOrder14_sheetnc.FRX')
-		*!*									*REPORT FORM \reports\PurchaseOrder14_sheetnc.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
-		*!*									REPORT FORM reports\PurchaseOrder14_sheetNC.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled Object loListener
+		*!*								IF FILE('reports\PurchaseOrder26_sheetnc.FRX')
+		*!*									*REPORT FORM \reports\PurchaseOrder26_sheetnc.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
+		*!*									REPORT FORM reports\PurchaseOrder26_sheetNC.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled Object loListener
 		*!*								ELSE
-		*!*									WAIT WINDOW "Report form 'reports\PurchaseOrder14_sheetnc' not found" NOWAIT
+		*!*									WAIT WINDOW "Report form 'reports\PurchaseOrder26_sheetnc' not found" NOWAIT
 		*!*								ENDIF
 		*!*							ENDIF
 		*!*						ELSE
 		*!*							IF lPrintEvenCancelled
-		*!*								IF FILE('reports\PurchaseOrder14.FRX')
-		*!*									*REPORT FORM \reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
-		*!*									REPORT FORM reports\PurchaseOrder14.FRX FOR HpaPo = nHpaPo Object loListener
+		*!*								IF FILE('reports\PurchaseOrder26.FRX')
+		*!*									*REPORT FORM \reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
+		*!*									REPORT FORM reports\PurchaseOrder26.FRX FOR HpaPo = nHpaPo Object loListener
 		*!*								ELSE
-		*!*									WAIT WINDOW "Report form 'reports\PurchaseOrder14' not found" NOWAIT
+		*!*									WAIT WINDOW "Report form 'reports\PurchaseOrder26' not found" NOWAIT
 		*!*								ENDIF
 		*!*							ELSE
-		*!*								IF FILE('reports\PurchaseOrder14nc.FRX')
-		*!*									*REPORT FORM \reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
-		*!*									REPORT FORM reports\PurchaseOrder14nc.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled Object loListener
+		*!*								IF FILE('reports\PurchaseOrder26nc.FRX')
+		*!*									*REPORT FORM \reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo NOCONSOLE TO PRINTER
+		*!*									REPORT FORM reports\PurchaseOrder26nc.FRX FOR HpaPo = nHpaPo AND !purchaseorder.cancelled Object loListener
 		*!*								ELSE
-		*!*									WAIT WINDOW "Report form 'reports\PurchaseOrder14nc' not found" NOWAIT
+		*!*									WAIT WINDOW "Report form 'reports\PurchaseOrder26nc' not found" NOWAIT
 		*!*								ENDIF
 		*!*							ENDIF
 		*!*						ENDIF
@@ -4722,7 +4722,7 @@ DEFINE CLASS vendor AS formset
 		*!*				ENDCASE
 		*!*				
 		*!*			ELSE
-		*!*				WAIT WINDOW "Report form 'reports\PurchaseOrder14.FRX' not found" TIMEOUT 4
+		*!*				WAIT WINDOW "Report form 'reports\PurchaseOrder26.FRX' not found" TIMEOUT 4
 		*!*			ENDIF
 		
 		*!*		ENDIF
