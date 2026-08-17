@@ -179,14 +179,14 @@ DEFINE CLASS frmreceiving AS form
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.DIM31" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.LBLFROM_ID1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.FROM_ID1" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pf.pgStockLst.lblQuantity" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.lblPounds" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pf.pgStockLst.S_QTY" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.Pounds1" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pf.pgStockLst.LBLDESCRIPT1" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pf.pgStockLst.DESCRIPT1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.Embossedlabel15" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.S_P" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pf.pgStockLst.S_QTY" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pf.pgStockLst.lblQuantity" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pf.pgStockLst.LBLDESCRIPT1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pf.pgStockLst.DESCRIPT1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.Embossedlabel1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.Embossedlabel2" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pf.pgStockLst.ALLOY1" UniqueID="" Timestamp="" />
@@ -293,6 +293,7 @@ DEFINE CLASS frmreceiving AS form
 		*m: save_purchaseorder
 		*m: setgridreceiving
 		*m: showpoitem
+		*m: showrejectreasontab
 		*m: viewtab
 		*m: wild_search_poitem
 		*p: nconnhandle
@@ -310,7 +311,7 @@ DEFINE CLASS frmreceiving AS form
 		DataSession = 2
 		DoCreate = .T.
 		Height = 371
-		Icon = graphics\earth-globe.ico
+		Icon = ..\
 		LockScreen = .F.
 		MinHeight = 300
 		MinWidth = 600
@@ -383,7 +384,7 @@ DEFINE CLASS frmreceiving AS form
 		Height = 59, ;
 		Left = 175, ;
 		Name = "cmdReportReceiving", ;
-		Picture = GRAPHICS\report.ico, ;
+		Picture = graphics\report.ico, ;
 		TabIndex = 3, ;
 		ToolTipText = "Open Raptor Report of this Receive", ;
 		Top = 318, ;
@@ -405,7 +406,7 @@ DEFINE CLASS frmreceiving AS form
 		*< END OBJECT: BaseClass="commandbutton" />
 
 	ADD OBJECT 'pf' AS pageframe WITH ;
-		ActivePage = 1, ;
+		ActivePage = 2, ;
 		ErasePage = .T., ;
 		Height = 318, ;
 		Left = 12, ;
@@ -419,6 +420,7 @@ DEFINE CLASS frmreceiving AS form
 		Page1.Enabled = .T., ;
 		Page1.Name = "pgDetail", ;
 		Page1.PageOrder = 2, ;
+		Page1.Visible = .F., ;
 		Page2.Caption = "View", ;
 		Page2.Name = "pgEdit", ;
 		Page2.PageOrder = 1, ;
@@ -434,7 +436,8 @@ DEFINE CLASS frmreceiving AS form
 		Page5.PageOrder = 5, ;
 		Page6.Caption = "Reject Reason", ;
 		Page6.Name = "pgRejectReason", ;
-		Page6.PageOrder = 6
+		Page6.PageOrder = 6, ;
+		Page6.Visible = .F.
 		*< END OBJECT: BaseClass="pageframe" />
 
 	ADD OBJECT 'pf.pgBrowse.GridBR' AS grid WITH ;
@@ -1239,7 +1242,7 @@ DEFINE CLASS frmreceiving AS form
 		Alignment = 0, ;
 		Caption = "Mill Trace", ;
 		ControlSource = "", ;
-		Enabled = .T., ;
+		Enabled = .F., ;
 		Height = 18, ;
 		Left = 550, ;
 		Name = "chkMillTrace", ;
@@ -1326,7 +1329,7 @@ DEFINE CLASS frmreceiving AS form
 		Height = 21, ;
 		Left = 542, ;
 		Name = "cmdEdit", ;
-		ToolTipText = "Takes you to ADD tab to Edit Current record.", ;
+		ToolTipText = "Opens Receive Edit for the current record.", ;
 		Top = 244, ;
 		Width = 78
 		*< END OBJECT: BaseClass="commandbutton" />
@@ -2684,7 +2687,7 @@ DEFINE CLASS frmreceiving AS form
 		BackStyle = 0, ;
 		Caption = "Prime ", ;
 		ControlSource = "", ;
-		Enabled = .T., ;
+		Enabled = .F., ;
 		Height = 17, ;
 		Left = 360, ;
 		Name = "chkPrime", ;
@@ -2704,6 +2707,7 @@ DEFINE CLASS frmreceiving AS form
 		BackStyle = 0, ;
 		Caption = "Random Length", ;
 		ControlSource = "", ;
+		Enabled = .F., ;
 		Height = 17, ;
 		Left = 302, ;
 		Name = "chkRandLen", ;
@@ -4007,7 +4011,7 @@ DEFINE CLASS frmreceiving AS form
 		IF VARTYPE(pcSOitem) = "C"
 			IF pcSOitem = "WORKORDER"
 				ThisForm.Receive_WorkOrder(pnRMA)
-				ThisForm.pf.ActivePage = 1
+				ThisForm.pf.ActivePage = 2
 			ELSE
 				IF ThisForm.nRMA > 0
 					ThisForm.RMA_Receive(pcSOitem)
@@ -4026,7 +4030,7 @@ DEFINE CLASS frmreceiving AS form
 						
 				ThisForm.SetGridReceiving()
 				ThisForm.RefreshEditTab()
-				ThisForm.pf.ActivePage = 1
+				ThisForm.pf.ActivePage = 2
 				*ThisForm.pf.pgStockLst.Vcr1.CmdNext.Enabled = .T.
 				ThisForm.pf.pgEdit.Vcr1.cmdNext.Enabled = .t.
 				
@@ -4037,7 +4041,15 @@ DEFINE CLASS frmreceiving AS form
 		
 		*ThisForm.GetBy_ReceivingID( Receiving.ID )
 		
-		ThisForm.pf.ActivePage = 1
+		ThisForm.pf.pgDetail.Visible = .F.
+		ThisForm.pf.ActivePage = 2
+		ThisForm.pf.pgEdit.chkMillTrace.Enabled = .F.
+		ThisForm.pf.pgBrowse.GridBR.clmSpecs.Visible = .F.
+		ThisForm.pf.pgBrowse.GridBR.clmComments.Visible = .F.
+		ThisForm.pf.pgBrowse.GridBR.clmWhoAdd.Visible = .F.
+		ThisForm.pf.pgBrowse.GridBR.clmWheAdd.Visible = .F.
+		ThisForm.pf.pgBrowse.GridBR.clmID_Master.Visible = .F.
+		ThisForm.ShowRejectReasonTab()
 		nHPAPO = Proper_PO_Item_PO(Receiving.POitem)
 		IF nHPAPO > 0
 			ThisForm.pf.pgEdit.txtFindText.Value = ALLTRIM(STR(nHPAPO))
@@ -4756,8 +4768,35 @@ DEFINE CLASS frmreceiving AS form
 		
 		ThisForm.pf.pgEdit.txtRejectReason.Value = Receiving.RejectReason
 		
+		ThisForm.ShowRejectReasonTab()
 		
 		SELECT Receiving
+	ENDPROC
+
+	PROCEDURE showrejectreasontab
+		*ThisForm.ShowRejectReasonTab()
+		* View already shows reject PC/reason. This tab is PO/SO notes for Hold or reject.
+
+		PRIVATE lShow, lHold, nRejectPC, cRejectReason
+		lShow = .F.
+
+		IF USED("Receiving")
+			IF RECCOUNT("Receiving") > 0
+				lHold = PrepareSQLlogic(Receiving.Hold,'Hold')
+				nRejectPC = PrepareSQLnum(Receiving.RejectPC,'RejectPC',-3)
+				cRejectReason = PrepareSQLtxt(Receiving.RejectReason,'RejectReason',255)
+				IF lHold OR nRejectPC > 0 OR LEN(ALLTRIM(cRejectReason)) > 0
+					lShow = .T.
+				ENDIF
+			ENDIF
+		ENDIF
+
+		ThisForm.pf.pgRejectReason.Visible = lShow
+		IF NOT lShow
+			IF ThisForm.pf.ActivePage = 6
+				ThisForm.pf.ActivePage = 2
+			ENDIF
+		ENDIF
 	ENDPROC
 
 	PROCEDURE refreshstocklst
@@ -7214,6 +7253,8 @@ DEFINE CLASS frmreceiving AS form
 			ENDIF
 		ENDIF
 		
+		ThisForm.ShowRejectReasonTab()
+		
 	ENDPROC
 
 	PROCEDURE pf.pgEdit.chkPOcomplete.Valid
@@ -8348,6 +8389,7 @@ DEFINE CLASS frmreceiving AS form
 		
 		This.Parent.grdReceiving.REFRESH
 		This.Parent.grdReceiving.SetFocus
+		ThisForm.ShowRejectReasonTab()
 	ENDPROC
 
 	PROCEDURE pf.pgFind.Click
@@ -8755,6 +8797,7 @@ DEFINE CLASS frmreceiving AS form
 
 	PROCEDURE pf.pgRejectReason.Vcr1.recordpointermoved
 		ThisForm.RefresRejectReasonTab()
+		ThisForm.ShowRejectReasonTab()
 	ENDPROC
 
 	PROCEDURE pf.pgStockLst.Click

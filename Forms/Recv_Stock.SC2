@@ -127,6 +127,7 @@ DEFINE CLASS frmrecv_stock AS form
 	*< OBJECTDATA: ObjPath="txtMaxLbs" UniqueID="" Timestamp="" />
 
 	*<DefinedPropArrayMethod>
+		*m: applydockfactstostock
 		*m: changeform
 		*m: checksave
 		*m: create_incoming_process
@@ -192,7 +193,7 @@ DEFINE CLASS frmrecv_stock AS form
 		Enabled = .T.
 		heat = ''
 		Height = 438
-		Icon = graphics\earth.ico
+		Icon = ..\
 		id_detail = 0
 		id_master = 0
 		Left = 2
@@ -242,7 +243,7 @@ DEFINE CLASS frmrecv_stock AS form
 		SelectOnEntry = .T., ;
 		TabIndex = 74, ;
 		Top = 210, ;
-		Visible = .T., ;
+		Visible = .F., ;
 		Width = 150
 		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="textbox" />
 
@@ -252,7 +253,7 @@ DEFINE CLASS frmrecv_stock AS form
 		BackColor = 255,255,200, ;
 		Caption = "Certs ", ;
 		ControlSource = "", ;
-		Enabled = .T., ;
+		Enabled = .F., ;
 		Height = 17, ;
 		Left = 376, ;
 		Name = "chkCert", ;
@@ -295,6 +296,7 @@ DEFINE CLASS frmrecv_stock AS form
 		ToolTipText = "The last date this line item was touched.", ;
 		Top = 383, ;
 		Value = 1, ;
+		Visible = .F., ;
 		Width = 180
 		*< END OBJECT: BaseClass="checkbox" />
 
@@ -304,7 +306,7 @@ DEFINE CLASS frmrecv_stock AS form
 		BackColor = 255,255,200, ;
 		Caption = "Mill Trace ", ;
 		ControlSource = "", ;
-		Enabled = .T., ;
+		Enabled = .F., ;
 		Height = 17, ;
 		Left = 435, ;
 		Name = "chkMillTrace", ;
@@ -367,7 +369,7 @@ DEFINE CLASS frmrecv_stock AS form
 		TabIndex = 55, ;
 		TabStop = .F., ;
 		Top = 168, ;
-		Visible = .T., ;
+		Visible = .F., ;
 		Width = 20
 		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="textbox" />
 
@@ -480,6 +482,7 @@ DEFINE CLASS frmrecv_stock AS form
 		TabStop = .F., ;
 		ToolTipText = "Ask for a new Table Standard. By email to add a Price Table line.", ;
 		Top = 70, ;
+		Visible = .F., ;
 		Width = 48
 		*< END OBJECT: BaseClass="commandbutton" />
 
@@ -600,7 +603,7 @@ DEFINE CLASS frmrecv_stock AS form
 		SelectOnEntry = .T., ;
 		TabIndex = 79, ;
 		Top = 304, ;
-		Visible = .T., ;
+		Visible = .F., ;
 		Width = 312
 		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="editbox" />
 
@@ -726,7 +729,7 @@ DEFINE CLASS frmrecv_stock AS form
 		Left = 236, ;
 		MaxLength = 40, ;
 		Name = "HEAT1", ;
-		ReadOnly = .F., ;
+		ReadOnly = .T., ;
 		SelectOnEntry = .T., ;
 		TabIndex = 44, ;
 		Top = 24, ;
@@ -805,6 +808,7 @@ DEFINE CLASS frmrecv_stock AS form
 		TabIndex = 70, ;
 		ToolTipText = "Location Max Pounds", ;
 		Top = 164, ;
+		Visible = .F., ;
 		Width = 40
 		*< END OBJECT: BaseClass="label" />
 
@@ -828,7 +832,7 @@ DEFINE CLASS frmrecv_stock AS form
 		Name = "lblBrandName", ;
 		TabIndex = 73, ;
 		Top = 214, ;
-		Visible = .T., ;
+		Visible = .F., ;
 		Width = 67
 		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="label" />
 
@@ -855,7 +859,7 @@ DEFINE CLASS frmrecv_stock AS form
 		Name = "LBLCLASS1", ;
 		TabIndex = 54, ;
 		Top = 172, ;
-		Visible = .T., ;
+		Visible = .F., ;
 		Width = 57
 		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="label" />
 
@@ -891,6 +895,7 @@ DEFINE CLASS frmrecv_stock AS form
 		TabIndex = 68, ;
 		ToolTipText = "Location Current Pounds", ;
 		Top = 164, ;
+		Visible = .F., ;
 		Width = 40
 		*< END OBJECT: BaseClass="label" />
 
@@ -1135,6 +1140,7 @@ DEFINE CLASS frmrecv_stock AS form
 		Name = "lblReceipt", ;
 		TabIndex = 78, ;
 		Top = 292, ;
+		Visible = .F., ;
 		Width = 80, ;
 		WordWrap = .F.
 		*< END OBJECT: BaseClass="label" />
@@ -1146,7 +1152,8 @@ DEFINE CLASS frmrecv_stock AS form
 		Left = 252, ;
 		Name = "lblReceivedBy", ;
 		TabIndex = 81, ;
-		Top = 360
+		Top = 360, ;
+		Visible = .F.
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'lblrecvID' AS embossedlabel WITH ;
@@ -1340,7 +1347,7 @@ DEFINE CLASS frmrecv_stock AS form
 		InputMask = "XXXXXXXXXX", ;
 		Left = 236, ;
 		Name = "LOT1", ;
-		ReadOnly = .F., ;
+		ReadOnly = .T., ;
 		SelectOnEntry = .T., ;
 		TabIndex = 46, ;
 		Top = 48, ;
@@ -1461,6 +1468,7 @@ DEFINE CLASS frmrecv_stock AS form
 		Name = "ReceivedBy1", ;
 		TabIndex = 82, ;
 		Top = 372, ;
+		Visible = .F., ;
 		Width = 73
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -1555,6 +1563,7 @@ DEFINE CLASS frmrecv_stock AS form
 		TabIndex = 69, ;
 		ToolTipText = "Location Current Pounds", ;
 		Top = 161, ;
+		Visible = .F., ;
 		Width = 72
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -1583,6 +1592,7 @@ DEFINE CLASS frmrecv_stock AS form
 		TabIndex = 71, ;
 		ToolTipText = "Location Max Pounds", ;
 		Top = 161, ;
+		Visible = .F., ;
 		Width = 72
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -1653,7 +1663,7 @@ DEFINE CLASS frmrecv_stock AS form
 		ReadOnly = .F., ;
 		SelectOnEntry = .T., ;
 		TabIndex = 38, ;
-		ToolTipText = "Most forms are Pounds but could be Foot or Piece.", ;
+		ToolTipText = "ERP Acct QTY from dock R_QTY. Confirm or adjust.", ;
 		Top = 362, ;
 		Visible = .T., ;
 		Width = 77
@@ -1714,6 +1724,60 @@ DEFINE CLASS frmrecv_stock AS form
 		Width = 60
 		*< END OBJECT: ClassLib="..\libs\wizembss.vcx" BaseClass="textbox" />
 	
+	PROCEDURE applydockfactstostock
+		*ThisForm.ApplyDockFactsToStock()
+		* Re-apply Receiving dock facts after PO/stock loaders. S_QTY follows R_QTY; S_P/S_PU from R_P/R_PU (PO StockLst_*).
+		
+		PRIVATE nReceivingID
+		nReceivingID = PrepareSQLnum(ThisForm.nReceivingID,'ReceivingID',-3)
+		IF nReceivingID <= 0
+			RETURN
+		ENDIF
+		
+		PRIVATE cSQL, nSQLEXEC
+		cSQL = "SELECT Heat, Lot, Cert, MillTrace, R_QTY, R_P, R_PU "
+		cSQL = cSQL + " FROM dbo.Receiving WHERE ID = "+ALLTRIM(STR(nReceivingID))
+		
+		IF USED("tmpDockFacts")
+			USE IN tmpDockFacts
+		ENDIF
+		SELECT 0
+		
+		nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpDockFacts')
+		DO WHILE nSQLEXEC = 0
+			WAIT WINDOW 'SQL' TIMEOUT 1
+			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, 'tmpDockFacts')
+		ENDDO
+		IF nSQLEXEC < 0
+			nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, "tmpDockFacts")
+			DO WHILE nSQLEXEC = 0
+				WAIT WINDOW 'SQL 2' TIMEOUT 1
+				nSQLEXEC = SQLEXEC(ThisForm.nConnHandle, cSQL, "tmpDockFacts")
+				IF nSQLEXEC < 0
+					IF MESSAGEBOX("SQL FAILED!"+CHR(13)+"Do you want to try again?",4+48,"ERROR") = 6
+						nSQLEXEC = 0
+					ENDIF
+				ENDIF
+			ENDDO
+		ENDIF
+		IF nSQLEXEC < 0
+			SQLEXECError(cSQL, ThisForm.nConnHandle, nSQLEXEC, 'tmpDockFacts')
+		ELSE
+			IF USED("tmpDockFacts")
+				IF RECCOUNT("tmpDockFacts") > 0
+					ThisForm.HEAT1.Value = PrepareSQLtxt(tmpDockFacts.Heat,'Heat',50)
+					ThisForm.LOT1.Value = PrepareSQLtxt(tmpDockFacts.Lot,'Lot',10)
+					ThisForm.chkCert.Value = PrepareSQLchk(tmpDockFacts.Cert,'Cert')
+					ThisForm.chkMillTrace.Value = PrepareSQLchk(tmpDockFacts.MillTrace,'MillTrace')
+					ThisForm.txtS_QTY.Value = PrepareSQLnum(tmpDockFacts.R_QTY,'R_QTY',18,4)
+					ThisForm.txtR_P.Value = PrepareSQLnum(tmpDockFacts.R_P,'R_P',18,4)
+					ThisForm.txtS_PU.Value = PrepareSQLnum(tmpDockFacts.R_PU,'R_PU',-1)
+				ENDIF
+				USE IN tmpDockFacts
+			ENDIF
+		ENDIF
+	ENDPROC
+
 	PROCEDURE changeform
 		PARAMETER pWhat
 		*ThisForm.ChangeForm("ADD")
@@ -4493,9 +4557,11 @@ DEFINE CLASS frmrecv_stock AS form
 		
 					ThisForm.txtLBS.Value	= tmpReceiving.ActualW
 					ThisForm.txtS_QTY.Value	= tmpReceiving.R_QTY
+					ThisForm.txtR_P.Value	= PrepareSQLnum(tmpReceiving.R_P,'R_P',18,4)
+					ThisForm.txtS_PU.Value	= PrepareSQLnum(tmpReceiving.R_PU,'R_PU',-1)
 					ThisForm.Specs1.Value	= ShowSQLtxt(tmpReceiving.Specs,'Specs',160,.F.,.T.)
 					ThisForm.Heat1.Value	= tmpReceiving.Heat
-					ThisForm.Lot1.Value		= ''
+					ThisForm.Lot1.Value		= PrepareSQLtxt(tmpReceiving.Lot,'Lot',10)
 					ThisForm.PO_Item1.Value	= Proper_PO_Item(tmpReceiving.POItem)
 					
 					PRIVATE dPODueDate1, dPODueDate2
@@ -6219,6 +6285,30 @@ DEFINE CLASS frmrecv_stock AS form
 		
 		ThisForm.getMill()
 		ThisForm.chkMillTrace.Value = PrepareSQLchk(plMillTrace,'MillTrace')
+		
+		* Dock Heat/Lot/Cert/MillTrace are set on Receive_Edit. Recv_Stock confirms form/size/location/dims.
+		ThisForm.HEAT1.ReadOnly = .T.
+		ThisForm.LOT1.ReadOnly = .T.
+		ThisForm.chkCert.Enabled = .F.
+		ThisForm.chkMillTrace.Enabled = .F.
+		ThisForm.chkMarkInvCheck.Visible = .F.
+		ThisForm.cmdRequestStandard.Visible = .F.
+		ThisForm.txtCurrentLBS.Visible = .F.
+		ThisForm.txtMaxLbs.Visible = .F.
+		ThisForm.lblCurrent.Visible = .F.
+		ThisForm.Label1.Visible = .F.
+		ThisForm.edtReceipt.Visible = .F.
+		ThisForm.lblReceipt.Visible = .F.
+		ThisForm.ReceivedBy1.Visible = .F.
+		ThisForm.lblReceivedBy.Visible = .F.
+		ThisForm.BrandName1.Visible = .F.
+		ThisForm.lblBrandName.Visible = .F.
+		ThisForm.CLASS1.Visible = .F.
+		ThisForm.LBLCLASS1.Visible = .F.
+		
+		IF ThisForm.cTBL <> "W" AND ThisForm.nReceivingID > 0
+			ThisForm.ApplyDockFactsToStock()
+		ENDIF
 		
 	ENDPROC
 
@@ -8408,7 +8498,8 @@ DEFINE CLASS frmrecv_stock AS form
 					cSQL = cSQL+ "Descript='"+ALLTRIM(m.lcDescript)+"',"
 					cSQL = cSQL+ "Length='"+ALLTRIM(m.lcLength)+"',"
 		
-					cSQL = cSQL+ "Unit='"+ALLTRIM(cUnitByForm)+"',"
+					* Phase 1c: stop writing Unit (use S_PU)
+					*cSQL = cSQL+ "Unit='"+ALLTRIM(cUnitByForm)+"',"
 					cSQL = cSQL+ "FloorStatus='"+ALLTRIM(m.lcFloorStatus)+"',"
 					cSQL = cSQL+ "class='"+ALLTRIM(m.lcClass)+"',"
 					cSQL = cSQL+ "[Location]='"+ALLTRIM(m.lcLocation)+"',"
@@ -8558,7 +8649,8 @@ DEFINE CLASS frmrecv_stock AS form
 				cSQL = cSQL+ "Descript='"+ALLTRIM(m.lcDescript)+"',"
 				cSQL = cSQL+ "Length='"+ALLTRIM(m.lcLength)+"',"
 		
-				cSQL = cSQL+ "Unit='"+ALLTRIM(cUnitByForm)+"',"
+				* Phase 1c: stop writing Unit (use S_PU)
+				*cSQL = cSQL+ "Unit='"+ALLTRIM(cUnitByForm)+"',"
 				cSQL = cSQL+ "FloorStatus='"+ALLTRIM(m.lcFloorStatus)+"',"
 				cSQL = cSQL+ "class='"+ALLTRIM(m.lcClass)+"',"
 				cSQL = cSQL+ "[Location]='"+ALLTRIM(m.lcLocation)+"',"
@@ -9364,7 +9456,7 @@ DEFINE CLASS frmrecv_stock AS form
 		ENDIF
 		
 		= SQLSETPROP(THISFORM.nConnHandle, 'Transactions', 1)  && 1Auto 2Manual transactions
-
+		
 		* P4 — after successful WO finish receive: RECV_STOCK ledger, SELECTED refresh, email alert
 		IF lOK AND NOT lRollBack AND m.lnWO_Detail > 0
 			IF NOT "PROC_WO" $ UPPER(SET("PROCEDURE"))
@@ -9778,7 +9870,8 @@ DEFINE CLASS frmrecv_stock AS form
 				cSQL = cSQL+ "Descript='"+ALLTRIM(m.lcDescript)+"',"
 				cSQL = cSQL+ "Length='"+ALLTRIM(m.lcLength)+"',"
 		
-				cSQL = cSQL+ "Unit='"+ALLTRIM(cUnitByForm)+"',"
+				* Phase 1c: stop writing Unit (use S_PU)
+				*cSQL = cSQL+ "Unit='"+ALLTRIM(cUnitByForm)+"',"
 				cSQL = cSQL+ "FloorStatus='"+ALLTRIM(m.lcFloorStatus)+"',"
 				cSQL = cSQL+ "class='"+ALLTRIM(m.lcClass)+"',"
 				cSQL = cSQL+ "[Location]='"+ALLTRIM(m.lcLocation)+"',"

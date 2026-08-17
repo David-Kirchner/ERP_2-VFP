@@ -99,7 +99,7 @@ DEFINE CLASS frmreceive_edit AS form
 	*< OBJECTDATA: ObjPath="lblPO_PU" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="lblAcct_PU" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="txtAcct_P" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="chkLab_Service" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="chkServicesPO" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkConvServ" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="chkEquipment" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="cmdEditHeat" UniqueID="" Timestamp="" />
@@ -213,7 +213,7 @@ DEFINE CLASS frmreceive_edit AS form
 		Desktop = .F.
 		DoCreate = .T.
 		Height = 386
-		Icon = graphics\earth-globe.ico
+		Icon = ..\
 		lclone = .F.
 		Left = 16
 		lran_recv_stock = .F.
@@ -360,7 +360,7 @@ DEFINE CLASS frmreceive_edit AS form
 		Width = 126
 		*< END OBJECT: BaseClass="checkbox" />
 
-	ADD OBJECT 'chkLab_Service' AS checkbox WITH ;
+	ADD OBJECT 'chkServicesPO' AS checkbox WITH ;
 		Alignment = 0, ;
 		BackColor = 212,208,200, ;
 		BackStyle = 0, ;
@@ -370,7 +370,7 @@ DEFINE CLASS frmreceive_edit AS form
 		Enabled = .F., ;
 		Height = 18, ;
 		Left = 258, ;
-		Name = "chkLab_Service", ;
+		Name = "chkServicesPO", ;
 		TabIndex = 75, ;
 		ToolTipText = "Order for Service/Lab test, may not have material to receive", ;
 		Top = 283, ;
@@ -612,6 +612,7 @@ DEFINE CLASS frmreceive_edit AS form
 		TabIndex = 44, ;
 		ToolTipText = "Pricing Unit,  Received and Billed should be listed in this Unit!", ;
 		Top = 289, ;
+		Visible = .F., ;
 		Width = 19, ;
 		WordWrap = .F.
 		*< END OBJECT: BaseClass="label" />
@@ -638,10 +639,10 @@ DEFINE CLASS frmreceive_edit AS form
 		Caption = "PU", ;
 		FontBold = .T., ;
 		Height = 17, ;
-		Left = 505, ;
+		Left = 485, ;
 		Name = "lblAcct_PUstr", ;
 		TabIndex = 45, ;
-		ToolTipText = "Pricing Unit,  Received and Billed should be listed in this Unit!", ;
+		ToolTipText = "ERP Acct pricing unit from PO StockLst_PU.", ;
 		Top = 289, ;
 		Width = 33, ;
 		WordWrap = .F.
@@ -657,7 +658,7 @@ DEFINE CLASS frmreceive_edit AS form
 		Left = 432, ;
 		Name = "lblActualLbs", ;
 		TabIndex = 46, ;
-		ToolTipText = "The Quantity that Receiving department counted  measured or see on Scales. Click to copy Pounds to Acct_Qty and Vendor QTY.", ;
+		ToolTipText = "The Quantity that Receiving department counted, measured or see on Scales. Click to copy pounds to ERP Acct QTY when PU is LB.", ;
 		Top = 169, ;
 		Width = 69, ;
 		WordWrap = .F.
@@ -702,6 +703,7 @@ DEFINE CLASS frmreceive_edit AS form
 		Left = 172, ;
 		Name = "lblCheckMelt", ;
 		Top = 193, ;
+		Visible = .F., ;
 		Width = 85
 		*< END OBJECT: BaseClass="label" />
 
@@ -852,6 +854,7 @@ DEFINE CLASS frmreceive_edit AS form
 		TabIndex = 55, ;
 		ToolTipText = "Units that the Supplier would use on Invoice.", ;
 		Top = 231, ;
+		Visible = .F., ;
 		Width = 96, ;
 		WordWrap = .T.
 		*< END OBJECT: BaseClass="label" />
@@ -875,14 +878,14 @@ DEFINE CLASS frmreceive_edit AS form
 	ADD OBJECT 'lblPO' AS label WITH ;
 		Alignment = 2, ;
 		BorderStyle = 1, ;
-		Caption = "How the Vendor priced the metal to HPA", ;
+		Caption = "Vendor Pricing from PO", ;
 		FontBold = .T., ;
 		ForeColor = 255,128,64, ;
 		Height = 62, ;
 		Left = 392, ;
 		Name = "lblPO", ;
 		TabIndex = 83, ;
-		ToolTipText = "Click to retrieve from Purchase Order", ;
+		ToolTipText = "Click to load PO_QTY / PO_P / PO_PU from Purchase Order Order_QTY / Order_P / Order_PU.", ;
 		Top = 316, ;
 		Width = 76, ;
 		WordWrap = .T.
@@ -900,6 +903,7 @@ DEFINE CLASS frmreceive_edit AS form
 		TabIndex = 63, ;
 		ToolTipText = "VENDORs Pricing Units set with Purchase Order", ;
 		Top = 365, ;
+		Visible = .F., ;
 		Width = 19, ;
 		WordWrap = .F.
 		*< END OBJECT: BaseClass="label" />
@@ -925,10 +929,10 @@ DEFINE CLASS frmreceive_edit AS form
 		Caption = "PU", ;
 		FontBold = .T., ;
 		Height = 17, ;
-		Left = 506, ;
+		Left = 473, ;
 		Name = "lblPO_PUstr", ;
 		TabIndex = 64, ;
-		ToolTipText = "VENDORs Pricing Units set with Purchase Order", ;
+		ToolTipText = "Vendor pricing unit from PO Order_PU.", ;
 		Top = 365, ;
 		Width = 36, ;
 		WordWrap = .F.
@@ -938,13 +942,13 @@ DEFINE CLASS frmreceive_edit AS form
 		Alignment = 1, ;
 		AutoSize = .F., ;
 		BackStyle = 0, ;
-		Caption = "HPA  Acct QTY", ;
+		Caption = "ERP Acct QTY", ;
 		Enabled = .T., ;
 		Height = 17, ;
 		Left = 448, ;
 		Name = "lblQTY", ;
 		TabIndex = 57, ;
-		ToolTipText = "Quantity of Units that the Supplier would use on Invoice.", ;
+		ToolTipText = "ERP Acct Standard qty (R_QTY). Dock types this.", ;
 		Top = 248, ;
 		Width = 89, ;
 		WordWrap = .T.
@@ -1037,6 +1041,7 @@ DEFINE CLASS frmreceive_edit AS form
 		TabIndex = 1, ;
 		ToolTipText = "", ;
 		Top = 7, ;
+		Visible = .F., ;
 		Width = 89, ;
 		WordWrap = .F.
 		*< END OBJECT: BaseClass="label" />
@@ -1092,7 +1097,7 @@ DEFINE CLASS frmreceive_edit AS form
 	ADD OBJECT 'txtAcct_P' AS textbox WITH ;
 		Comment = "", ;
 		ControlSource = "", ;
-		DisabledForeColor = 109,109,109, ;
+		DisabledForeColor = 0,0,0, ;
 		Enabled = .F., ;
 		Format = "999999.9999", ;
 		Height = 23, ;
@@ -1102,7 +1107,7 @@ DEFINE CLASS frmreceive_edit AS form
 		SelectOnEntry = .T., ;
 		TabIndex = 59, ;
 		TabStop = .F., ;
-		ToolTipText = "Acct Price per QTY,", ;
+		ToolTipText = "ERP Acct Standard price (R_P) from PO StockLst_P.", ;
 		Top = 267, ;
 		Width = 89
 		*< END OBJECT: BaseClass="textbox" />
@@ -1119,7 +1124,7 @@ DEFINE CLASS frmreceive_edit AS form
 		Name = "txtAcct_Qty", ;
 		SelectOnEntry = .T., ;
 		TabIndex = 58, ;
-		ToolTipText = "Unit Quantity - Not price", ;
+		ToolTipText = "ERP Acct Standard qty (R_QTY). Dock types this.", ;
 		Top = 244, ;
 		Width = 89
 		*< END OBJECT: BaseClass="textbox" />
@@ -1209,6 +1214,7 @@ DEFINE CLASS frmreceive_edit AS form
 		TabStop = .F., ;
 		ToolTipText = "Stock Description", ;
 		Top = 240, ;
+		Visible = .F., ;
 		Width = 202
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -1231,7 +1237,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ToolTipText = "Form", ;
 		Top = 197, ;
 		Value = 0, ;
-		Visible = .T., ;
+		Visible = .F., ;
 		Width = 32
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -1303,6 +1309,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ToolTipText = "ID_Detail", ;
 		Top = 217, ;
 		Value = 0, ;
+		Visible = .F., ;
 		Width = 69
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -1327,6 +1334,7 @@ DEFINE CLASS frmreceive_edit AS form
 		TabStop = .F., ;
 		ToolTipText = "ID_Detail_Process, filled on Save", ;
 		Top = 218, ;
+		Visible = .F., ;
 		Width = 102
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -1349,6 +1357,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ToolTipText = "ID", ;
 		Top = 198, ;
 		Value = 0, ;
+		Visible = .F., ;
 		Width = 69
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -1401,6 +1410,7 @@ DEFINE CLASS frmreceive_edit AS form
 	ADD OBJECT 'txtPO_P' AS textbox WITH ;
 		Comment = "", ;
 		ControlSource = "", ;
+		DisabledForeColor = 0,0,0, ;
 		Enabled = .F., ;
 		Format = "999999.9999", ;
 		Height = 23, ;
@@ -1410,16 +1420,17 @@ DEFINE CLASS frmreceive_edit AS form
 		SelectOnEntry = .T., ;
 		TabIndex = 60, ;
 		TabStop = .F., ;
-		ToolTipText = "Vendor Price per QTY, usually $/LB set by Purchase ORder", ;
+		ToolTipText = "Vendor price (PO_P) from PO Order_P.", ;
 		Top = 340, ;
 		Width = 84
 		*< END OBJECT: BaseClass="textbox" />
 
 	ADD OBJECT 'txtPO_QTY' AS textbox WITH ;
-		BackColor = 255,255,128, ;
+		BackColor = 255,255,255, ;
 		Comment = "", ;
 		ControlSource = "", ;
-		Enabled = .T., ;
+		DisabledForeColor = 0,0,0, ;
+		Enabled = .F., ;
 		Format = "999999.9999", ;
 		Height = 23, ;
 		InputMask = "999999.9999", ;
@@ -1427,7 +1438,8 @@ DEFINE CLASS frmreceive_edit AS form
 		Name = "txtPO_QTY", ;
 		SelectOnEntry = .T., ;
 		TabIndex = 61, ;
-		ToolTipText = "Vendors Quantity", ;
+		TabStop = .F., ;
+		ToolTipText = "Vendor qty (PO_QTY) from PO Order_QTY. Not typed at dock.", ;
 		Top = 318, ;
 		Width = 84
 		*< END OBJECT: BaseClass="textbox" />
@@ -1570,6 +1582,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ToolTipText = "Table", ;
 		Top = 198, ;
 		Value = 0, ;
+		Visible = .F., ;
 		Width = 24
 		*< END OBJECT: BaseClass="textbox" />
 
@@ -2429,7 +2442,7 @@ DEFINE CLASS frmreceive_edit AS form
 			IF nWO_Detail > 0 
 				IF ThisForm.cWhat = 'EDIT -POItem'
 					IF is_Vendor_LabService(nHpaPo, ThisForm.nConnhandle)
-						IF NOT PrepareSQLchk(ThisForm.chkLab_Service.Value,'LabService')
+						IF NOT PrepareSQLchk(ThisForm.chkServicesPO.Value,'LabService')
 							IF MESSAGEBOX("This PO "+ALLTRIM(STR(nHPApo))+" Should be marked as for Testing Service."+CHR(13)+CHR(13)+"This Vendor is for testing material!"+CHR(13)+"Do you still want to continue saving?",4+256+16,"Wrong PO") <> 6
 								lReady2Save = .F.
 							ENDIF
@@ -2487,7 +2500,7 @@ DEFINE CLASS frmreceive_edit AS form
 		
 		**********************
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO		= PrepareSQLlogic(ThisForm.chkLab_Service.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisForm.chkServicesPO.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisForm.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisForm.chkEquipment.VALUE,'Equipment',.F.)
 		
@@ -4509,7 +4522,7 @@ DEFINE CLASS frmreceive_edit AS form
 			ThisForm.txtRMA_No.Value		= 0		&&tmpWO_Recv.RMA_No
 			ThisForm.txtRMA_Detail.Value	= 0
 			
-			ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
+			ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(1,'ConvServ') 	&&WO recieve is for Toll Work!
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -4766,7 +4779,7 @@ DEFINE CLASS frmreceive_edit AS form
 			ThisForm.txtRMA_No.Value		= 0		&&tmpWOD_Recv.RMA_No
 			ThisForm.txtRMA_Detail.Value	= 0
 			
-			ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
+			ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -5119,7 +5132,7 @@ DEFINE CLASS frmreceive_edit AS form
 			
 			ThisForm.edtRejectReason.Visible = .T.
 			
-			ThisForm.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
+			ThisForm.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOitem.ConvServ,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOitem.Equipment,'Equipment')
 			 
@@ -5520,7 +5533,7 @@ DEFINE CLASS frmreceive_edit AS form
 			ThisForm.txtRMA_No.Value		= 0
 			ThisForm.txtRMA_Detail.Value	= 0
 			
-			ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
+			ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -5864,7 +5877,7 @@ DEFINE CLASS frmreceive_edit AS form
 			ThisForm.txtRMA_No.Value		= 0
 			ThisForm.txtRMA_Detail.Value	= 0
 			
-			ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
+			ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -6249,7 +6262,7 @@ DEFINE CLASS frmreceive_edit AS form
 				ThisForm.txtBillW.Value = PrepareSQLnum(tmpReceivingPOitem.BillW,'BillW',9,1)
 			ENDIF
 			
-			ThisForm.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
+			ThisForm.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOitem.ConvServ,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOitem.Equipment,'Equipment')
 		
@@ -6342,7 +6355,7 @@ DEFINE CLASS frmreceive_edit AS form
 			
 			ThisForm.edtRejectReason.Value	= ALLTRIM(ShowSQLtxt(tmpReceivingPOitem.RejectReason,'RejectReason',255))
 			
-			ThisForm.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
+			ThisForm.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOitem.Services,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOitem.ConvServ,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOitem.Equipment,'Equipment')
 			
@@ -7010,9 +7023,9 @@ DEFINE CLASS frmreceive_edit AS form
 					
 		*			ThisForm.Visible = .T.
 					IF Count_POIteminPurchaseOrder( cPOItem, ThisForm.nConnHandle, "SERVICES" ) > 0
-						ThisForm.chkLab_Service.Value= PrepareSQLchk(1,'Services')
+						ThisForm.chkServicesPO.Value= PrepareSQLchk(1,'Services')
 					ELSE
-						ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
+						ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
 					ENDIF
 					IF Count_POIteminPurchaseOrder( cPOItem, ThisForm.nConnHandle, "CONVSERV" ) > 0
 						ThisForm.chkConvServ.Value	= PrepareSQLchk(1,'ConvServ') 
@@ -8502,7 +8515,7 @@ DEFINE CLASS frmreceive_edit AS form
 			
 			ThisForm.edtRejectReason.Value	= ALLTRIM(ShowSQLtxt(tmpReceivingPOi.RejectReason,'RejectReason',255))
 			
-			ThisForm.chkLab_Service.Value= PrepareSQLchk(tmpReceivingPOi.Services,'Services')
+			ThisForm.chkServicesPO.Value= PrepareSQLchk(tmpReceivingPOi.Services,'Services')
 			ThisForm.chkConvServ.Value	= PrepareSQLchk(tmpReceivingPOi.ConvServ,'ConvServ') 
 			ThisForm.chkEquipment.Value	= PrepareSQLchk(tmpReceivingPOi.Equipment,'Equipment')
 		
@@ -9280,7 +9293,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ELSE
 			*Do not Enable unless for a PO ADD
 			IF pcWhat = "ADD"
-				ThisForm.chkLab_Service.Enabled = .T.
+				ThisForm.chkServicesPO.Enabled = .T.
 				ThisForm.chkConvServ.Enabled = .T.
 				ThisForm.chkEquipment.Enabled = .T.
 			ENDIF		
@@ -9401,6 +9414,23 @@ DEFINE CLASS frmreceive_edit AS form
 				ENDIF
 			ENDIF
 		ENDIF
+		
+		* Dock types R_QTY only. Prices and PO_QTY come from the PO. Internal keys stay for save.
+		ThisForm.txtAcct_Qty.Enabled = .T.
+		ThisForm.txtAcct_P.Enabled = .F.
+		ThisForm.txtPO_QTY.Enabled = .F.
+		ThisForm.txtPO_P.Enabled = .F.
+		ThisForm.txtID_Master.Visible = .F.
+		ThisForm.txtID_Detail.Visible = .F.
+		ThisForm.txtID_Detail_Process.Visible = .F.
+		ThisForm.txtTBL.Visible = .F.
+		ThisForm.txtForm.Visible = .F.
+		ThisForm.txtDescript.Visible = .F.
+		ThisForm.lblWhat.Visible = .F.
+		ThisForm.lblCheckMelt.Visible = .F.
+		ThisForm.lblAcct_PU.Visible = .F.
+		ThisForm.lblPO_PU.Visible = .F.
+		ThisForm.lblOrder_Qty.Visible = .F.
 		
 	ENDPROC
 
@@ -12230,7 +12260,7 @@ DEFINE CLASS frmreceive_edit AS form
 							ThisForm.txtRMA_No.Value	= PrepareSQLnum(tmpRMA_D.RMA_No,'RMA_No',-3)
 							ThisForm.txtRMA_Detail.Value = PrepareSQLnum(tmpRMA_D.RMA_Detail_ID,'RMA_Detail_ID',-3)
 							
-							ThisForm.chkLab_Service.Value= PrepareSQLchk(0,'Services')
+							ThisForm.chkServicesPO.Value= PrepareSQLchk(0,'Services')
 							ThisForm.chkConvServ.Value	= PrepareSQLchk(0,'ConvServ') 
 							ThisForm.chkEquipment.Value	= PrepareSQLchk(0,'Equipment')
 		
@@ -12314,7 +12344,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ThisForm.txtRMA_No.Value = 0
 		ThisForm.txtRMA_Detail.Value = 0
 		
-		ThisForm.chkLab_Service.Value= PrepareSQLlogic(0,'Services')
+		ThisForm.chkServicesPO.Value= PrepareSQLlogic(0,'Services')
 		ThisForm.chkConvServ.Value	= PrepareSQLlogic(0,'ConvServ') 
 		ThisForm.chkEquipment.Value	= PrepareSQLlogic(0,'Equipment')
 		
@@ -12740,7 +12770,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ThisForm.chkPass.Value		= PrepareSQLlogic(1,'Pass')
 		ThisForm.chkGoodPapers.Value= PrepareSQLlogic(1,'GoodPapers')
 		
-		ThisForm.chkLab_Service.Value= PrepareSQLlogic(0,'Services')
+		ThisForm.chkServicesPO.Value= PrepareSQLlogic(0,'Services')
 		ThisForm.chkConvServ.Value	= PrepareSQLlogic(0,'ConvServ') 
 		ThisForm.chkEquipment.Value	= PrepareSQLlogic(0,'Equipment')
 		
@@ -12887,7 +12917,7 @@ DEFINE CLASS frmreceive_edit AS form
 		
 		**********************
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO		= PrepareSQLlogic(ThisForm.chkLab_Service.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisForm.chkServicesPO.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisForm.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisForm.chkEquipment.VALUE,'Equipment',.F.)
 		
@@ -15778,7 +15808,7 @@ DEFINE CLASS frmreceive_edit AS form
 		
 		**********************
 		PRIVATE lServicesPO, lConvServ, lEquipment
-		lServicesPO		= PrepareSQLlogic(ThisForm.chkLab_Service.VALUE,'ServicesPO',.F.)
+		lServicesPO		= PrepareSQLlogic(ThisForm.chkServicesPO.VALUE,'ServicesPO',.F.)
 		lConvServ		= PrepareSQLlogic(ThisForm.chkConvServ.VALUE,'ConvServ',.f.)
 		lEquipment		= PrepareSQLlogic(ThisForm.chkEquipment.VALUE,'Equipment',.F.)
 		
@@ -16217,7 +16247,7 @@ DEFINE CLASS frmreceive_edit AS form
 		*ThisForm.ShowPOitemType(cPOitem)
 		
 		IF Proper_PO_item(cPOitem) = Proper_PO_item('')
-			ThisForm.chkLab_Service.Visible = .T.
+			ThisForm.chkServicesPO.Visible = .T.
 			ThisForm.chkConvServ.Visible = .T.
 			ThisForm.chkEquipment.Visible = .T.
 		
@@ -16227,7 +16257,7 @@ DEFINE CLASS frmreceive_edit AS form
 			RETURN .F.
 		ENDIF
 		
-		ThisForm.chkLab_Service.Visible = .F.
+		ThisForm.chkServicesPO.Visible = .F.
 		ThisForm.chkConvServ.Visible = .F.
 		ThisForm.chkEquipment.Visible = .F.
 		
@@ -16260,8 +16290,8 @@ DEFINE CLASS frmreceive_edit AS form
 			ELSE
 				IF Count_POIteminPurchaseOrder( cPOitem, ThisForm.nConnHandle, "SERVICES" ) > 0
 					This.Caption = "Receiving data for Lab Services"
-					ThisForm.chkLab_Service.Visible = .T.
-					ThisForm.chkLab_Service.Enabled = .T.
+					ThisForm.chkServicesPO.Visible = .T.
+					ThisForm.chkServicesPO.Enabled = .T.
 					
 					ThisForm.POType = "SRV"
 					*ThisForm.PO
@@ -17124,7 +17154,7 @@ DEFINE CLASS frmreceive_edit AS form
 		*!*	ENDIF
 	ENDPROC
 
-	PROCEDURE chkLab_Service.InteractiveChange
+	PROCEDURE chkServicesPO.InteractiveChange
 		*!*	PRIVATE lServicesPO, cForm, lConvServ, lEquipment
 		*!*	lServicesPO = PrepareSQLlogic( This.Value, 'ServicesPO',.F. )
 		*!*	cForm = ShowSQLtxt(This.Parent.txtForm.Value,'Form',2)
@@ -17133,7 +17163,7 @@ DEFINE CLASS frmreceive_edit AS form
 		
 	ENDPROC
 
-	PROCEDURE chkLab_Service.Valid
+	PROCEDURE chkServicesPO.Valid
 		*ThisForm.ShowPOitemType()
 	ENDPROC
 
@@ -17447,16 +17477,8 @@ DEFINE CLASS frmreceive_edit AS form
 		
 			IF nAcct_PU = 1
 				ThisForm.txtAcct_Qty.Value = nActualW 
-				IF nWO_Detail > 0
-		
-					ThisForm.txtPO_QTY.Value = nActualW 
-				ENDIF
 			ENDIF
-			
-			nPO_PU	= PrepareSQLnum(ThisForm.lblPO_PU.Caption,'PU',-1)
-			IF nPO_PU = 1
-				ThisForm.txtPO_QTY.Value = nActualW 
-			ENDIF
+			* PO_QTY stays from PurchaseOrder.Order_QTY
 		ENDIF
 	ENDPROC
 
@@ -17937,11 +17959,13 @@ DEFINE CLASS frmreceive_edit AS form
 			RETURN .F.
 		ENDIF
 		
-		PRIVATE nOrder_QTY, nOrder_P, nOrder_PU, nStockLst_Total
+		PRIVATE nOrder_QTY, nOrder_P, nOrder_PU, nStockLst_QTY, nStockLst_P, nStockLst_PU
 		nOrder_QTY = 0
 		nOrder_P = 0
 		nOrder_PU = 0
-		nStockLst_Total = 0
+		nStockLst_QTY = 0
+		nStockLst_P = 0
+		nStockLst_PU = 0
 		
 		*************************
 		IF USED("tmpPOitemP")
@@ -17949,7 +17973,7 @@ DEFINE CLASS frmreceive_edit AS form
 		ENDIF
 		
 		
-		cSQL = "SELECT Order_QTY, Order_P, Order_PU, StockLst_Total "
+		cSQL = "SELECT Order_QTY, Order_P, Order_PU, StockLst_QTY, StockLst_P, StockLst_PU "
 		cSQL = cSQL + " FROM dbo.PurchaseOrder WITH(NOLOCK) "
 		cSQL = cSQL + " WHERE POitem = dbo.f_ProperPOitem('"+ThisForm.cPOitem+"') "
 		
@@ -17983,9 +18007,11 @@ DEFINE CLASS frmreceive_edit AS form
 		IF USED("tmpPOitemP")
 			IF RECCOUNT("tmpPOitemP") > 0
 				nOrder_QTY 	= PrepareSQLnum(tmpPOitemP.Order_QTY,'Order_QTY',-5)
-				nOrder_P	= PrepareSQLnum(tmpPOitemP.Order_P,'Order_p',-5)
+				nOrder_P	= PrepareSQLnum(tmpPOitemP.Order_P,'Order_P',-5)
 				nOrder_PU	= PrepareSQLnum(tmpPOitemP.Order_PU,'Order_PU',-1)
-				nStockLst_Total	= PrepareSQLnum(tmpPOitemP.StockLst_Total,'StockLst_Total',-5)
+				nStockLst_QTY	= PrepareSQLnum(tmpPOitemP.StockLst_QTY,'StockLst_QTY',-5)
+				nStockLst_P	= PrepareSQLnum(tmpPOitemP.StockLst_P,'StockLst_P',-5)
+				nStockLst_PU	= PrepareSQLnum(tmpPOitemP.StockLst_PU,'StockLst_PU',-1)
 						
 			ENDIF
 			USE IN tmpPOitemP
@@ -18003,8 +18029,16 @@ DEFINE CLASS frmreceive_edit AS form
 		
 		ENDIF
 		
-		IF nStockLst_Total > 0
-			
+		IF nStockLst_P > 0
+			ThisForm.txtAcct_P.Value = nStockLst_P
+		ENDIF
+		IF nStockLst_PU > 0
+			ThisForm.lblAcct_PU.Caption 	= PrepareSQLtxt(nStockLst_PU,'Acct_PU',2)
+			ThisForm.lblAcct_PUstr.Caption	= Get_PUstr_from_nPU(nStockLst_PU, ThisForm.nConnHandle)
+			ThisForm.lblAcct_PUlabel.Caption = Get_Label_from_nPU(nStockLst_PU, ThisForm.nConnHandle)
+		ENDIF
+		IF nStockLst_QTY > 0 AND PrepareSQLnum(ThisForm.txtAcct_Qty.Value,'R_QTY',-5) = 0
+			ThisForm.txtAcct_Qty.Value = nStockLst_QTY
 		ENDIF
 		
 	ENDPROC
@@ -18288,16 +18322,8 @@ DEFINE CLASS frmreceive_edit AS form
 		
 			IF nAcct_PU = 1
 				ThisForm.txtAcct_Qty.Value = nActualW 
-				IF nWO_Detail > 0
-		
-					ThisForm.txtPO_QTY.Value = nActualW 
-				ENDIF
 			ENDIF
-			
-			nPO_PU	= PrepareSQLnum(ThisForm.lblPO_PU.Caption,'PU',-1)
-			IF nPO_PU = 1
-				ThisForm.txtPO_QTY.Value = nActualW 
-			ENDIF
+			* PO_QTY stays from PurchaseOrder.Order_QTY
 		ENDIF
 	ENDPROC
 
@@ -18350,15 +18376,8 @@ DEFINE CLASS frmreceive_edit AS form
 	ENDPROC
 
 	PROCEDURE txtBillW.Valid
-		PRIVATE nBillW, nAcct_PU, nPO_PU
-		nBillW = PrepareSQLnum(This.Value,'BillW',9,1)
-		
-		IF nBillW > 0
-			nPO_PU	= PrepareSQLnum(ThisForm.lblPO_PU.Caption,'PU',-1)
-			IF nPO_PU = 1
-				ThisForm.txtPO_QTY.Value = nBillW 
-			ENDIF
-		ENDIF
+		* Vendor PO_QTY comes from PurchaseOrder.Order_QTY, not billed pounds.
+		RETURN .T.
 	ENDPROC
 
 	PROCEDURE txtDate.Valid
@@ -18698,7 +18717,7 @@ DEFINE CLASS frmreceive_edit AS form
 							*Do not pull POitem Data
 							IF ThisForm.cWhat = 'EDIT -POItem'
 								ThisForm.chkConvServ.Enabled = .T.
-								ThisForm.chkLab_Service.Enabled = .T.
+								ThisForm.chkServicesPO.Enabled = .T.
 								ThisForm.chkEquipment.Enabled = .T.
 							ENDIF
 						ELSE
