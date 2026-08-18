@@ -14218,7 +14218,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 			CASE nStkMastCntRid > 0
 		*		nMess = MESSAGEBOX("Please use the default PO Receive Stock (Y)"+CHR(13)+"if this has errors Answer (N)o",4+32,"Use Default Add Stock")
 		*		IF nMess = 6
-					DO FORM Forms\PORecvStock WITH pPOitem, 'StockLst', pnReceivingID, nRMA, nID_Detail, cHeat, nID_Master 
+					DO FORM Forms\Recv_Stock WITH pPOitem, 'StockLst', pnReceivingID, nRMA, nID_Detail, cHeat, '', nID_Master, 0, 0
 		*                             			   pPOitem,    pLst,    pnReceivingID, pnRMA, pnID_Detail, cHeat, pnID_Master
 					*					PARAMETER  pPOitem,    pLst,    pnReceivingID, pnRMA, pnID_Detail, cHeat, pnID_Master 
 		*		ELSE
@@ -14227,7 +14227,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 			CASE nBkrMastCntRid > 0
 		*		nMess = MESSAGEBOX("Please use the default PO Receive Stock (Y)"+CHR(13)+"if this has errors Answer (N)o",4+32,"Use Default Add Stock")
 		*		IF nMess = 6
-					DO FORM Forms\PORecvStock WITH pPOitem, 'BrokerLst', pnReceivingID, nRMA, nID_Detail, cHeat, nID_Master
+					DO FORM Forms\Recv_Stock WITH pPOitem, 'BrokerLst', pnReceivingID, nRMA, nID_Detail, cHeat, '', nID_Master, 0, 0
 					*						PARAMETER pPOitem, pLst, pnReceivingID, pnRMA, pnID_Detail, cHeat, pnID_Master 
 		*		ELSE
 		*			ThisFormSet.RecvStockLoad( pPOitem, ThisFormSet.nConnHandle, 'BrokerLst', pnReceivingID, nRMA, nID_Detail, nID_Master  )
@@ -14237,7 +14237,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 				
 		*		nMess = MESSAGEBOX("Please use the default PO Receive Stock (Y)"+CHR(13)+"if this has errors Answer (N)o",4+32,"Use Default Add Stock")
 		*		IF nMess = 6
-					DO FORM Forms\PORecvStock WITH pPOitem, 'StockLst', pnReceivingID, nRMA, nID_Detail, cHeat, nID_Master 
+					DO FORM Forms\Recv_Stock WITH pPOitem, 'StockLst', pnReceivingID, nRMA, nID_Detail, cHeat, '', nID_Master, 0, 0
 					*						PARAMETER pPOitem, pLst, pnReceivingID, pnRMA, pnID_Detail, cHeat, pnID_Master 
 		*		ELSE
 		*			ThisFormSet.RecvStockLoad( pPOitem, ThisFormSet.nConnHandle, 'StockLst ', pnReceivingID, nRMA, nID_Detail, nID_Master  )
@@ -14247,7 +14247,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 				
 		*		nMess = MESSAGEBOX("Please use the default PO Receive Stock (Y)"+CHR(13)+"if this has errors Answer (N)o",4+32,"Use Default Add Stock")
 		*		IF nMess = 6
-					DO FORM Forms\PORecvStock WITH pPOitem, 'BrokerLst', pnReceivingID, nRMA, nID_Detail, cHeat, nID_Master 
+					DO FORM Forms\Recv_Stock WITH pPOitem, 'BrokerLst', pnReceivingID, nRMA, nID_Detail, cHeat, '', nID_Master, 0, 0 
 					*						PARAMETER pPOitem, pLst, pnReceivingID, pnRMA, pnID_Detail, cHeat, pnID_Master 
 		*		ELSE
 		*			ThisFormSet.RecvStockLoad( pPOitem, ThisFormSet.nConnHandle, 'BrokerLst', pnReceivingID, nRMA, nID_Detail, nID_Master  )
@@ -14260,7 +14260,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 				*Only counts if Services = 0 AND ConvServ = 0 AND Equipment = 0 
 				IF nCountPOitem > 0
 					*ThisFormSet.RecvStockLoad( pPOitem, ThisFormSet.nConnHandle, 'StockLst ', pnReceivingID, nRMA, nID_Detail, nID_Master  )
-					DO FORM Forms\PORecvStock WITH pPOitem, 'StockLst', pnReceivingID, nRMA     , 0       , cHeat, 0
+					DO FORM Forms\Recv_Stock WITH pPOitem, 'StockLst', pnReceivingID, nRMA, 0, cHeat, '', 0, 0, 0
 					*						PARAMETER pPOitem, pLst,    pnReceivingID, pnRMA, pnID_Detail, cHeat, pnID_Master 
 				
 					cMess = "ReceivePOStockLst(POitem,ReceivingID,Heat,RMA)."+CHR(13)
@@ -14300,7 +14300,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 						
 					ENDIF
 					
-					DO FORM Forms\PORecvStock WITH pPOitem, cTableName, pnReceivingID, nRMA,  nID_Detail, cHeat, nID_Master 
+					DO FORM Forms\Recv_Stock WITH pPOitem, cTableName, pnReceivingID, nRMA, nID_Detail, cHeat, '', nID_Master, 0, 0
 					*					PARAMETER  pPOitem,    pLst,    pnReceivingID, pnRMA, pnID_Detail,cHeat, pnID_Master 
 				ENDIF
 			ENDCASE
@@ -14350,7 +14350,7 @@ DEFINE CLASS frmshop_stocklst_edit AS formset
 			
 				*
 				*ThisFormSet.RecvStockLoad( pPOitem, ThisFormSet.nConnHandle, 'StockLst ', pnReceivingID, nRMA, nID_Detail, nID_Master  )
-				DO FORM Forms\PORecvStock WITH pPOitem, 'StockLst', pnReceivingID, nRMA, nID_Detail, cHeat, nID_Master 
+				DO FORM Forms\Recv_Stock WITH pPOitem, 'StockLst', pnReceivingID, nRMA, nID_Detail, cHeat, '', nID_Master, 0, 0
 				*					PARAMETER  pPOitem,     pLst,   pnReceivingID, pnRMA, pnID_Detail, cHeat, pnID_Master 
 			ENDIF
 		ENDIF

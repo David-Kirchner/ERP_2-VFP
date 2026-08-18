@@ -6835,8 +6835,8 @@ DEFINE CLASS purchaseorder AS formset
 			*This.FrmPO.AlwaysOnTop = .F.
 			*This.frmPOMaint.Visible = .F.
 			*ThisForm.AlwaysOnTop = .F.
-		*	DO FORM forms\PORecvStock WITH pPOitem, pTableName, pnReceivingID, pnRMA_Detail, pnID_Detail, cHeat, pnID_Master, pnWO_Detail
-			DO FORM Forms\PORecvStock WITH cPOitem,'StockLst' ,             0,            0,           0,    '',           0,     0
+		*	DO FORM Forms\Recv_Stock WITH pPOitem, pTableName, pnReceivingID, pnRMA_Detail, pnID_Detail, cHeat, pLot, pnID_Master, pnWO_Detail, plMillTrace
+			DO FORM Forms\Recv_Stock WITH cPOitem,'StockLst', 0, 0, 0, '', '', 0, 0, 0
 			*ThisForm.AlwaysOnTop = .T.
 			*This.frmPOMaint.Visible = .T.
 			*This.FrmPO.AlwaysOnTop = .T.
@@ -6882,8 +6882,8 @@ DEFINE CLASS purchaseorder AS formset
 		
 			IF nStkMastCnt > 0
 				ThisForm.AlwaysOnTop = .F.
-		*		DO FORM forms\PORecvStock WITH pPOitem, pTableName, pnReceivingID, pnRMA_Detail, pnID_Detail, cHeat, pnID_Master, pnWO_Detail
-				DO FORM Forms\PORecvStock WITH cPOitem,'BrokerLst' ,             0,            0,           0,    '',           0,     0
+		*		DO FORM Forms\Recv_Stock WITH pPOitem, pTableName, pnReceivingID, pnRMA_Detail, pnID_Detail, cHeat, pLot, pnID_Master, pnWO_Detail, plMillTrace
+				DO FORM Forms\Recv_Stock WITH cPOitem,'BrokerLst', 0, 0, 0, '', '', 0, 0, 0
 		
 				ThisForm.AlwaysOnTop = .T.
 				*PARAMETER pPOitem, pnConn, pLst, pnReceivingID
