@@ -110,7 +110,7 @@ To avoid `SetServer`, `UserInfo`, and permission forms entirely:
 
 | Project | Main | Output |
 |---------|------|--------|
-| **ERP.pjx** | `PROGS\main.prg` | `erp.app` — full system |
+| **ERP.pjx** | `main.prg` (repo root) | `erp.app` — full system |
 | **SetupERP.pjx** | `PROGS\SetupERP_main.prg` | `SetupERP.app` — setup utility only |
 
 Never point SetupERP at `main.prg`.

@@ -4,19 +4,18 @@
 |------|--------|
 | **Project folder** | `E:\VFP\ERP_2` |
 | **GitHub repo** | [David-Kirchner/ERP_2-VFP](https://github.com/David-Kirchner/ERP_2-VFP) |
-| **SQL database** | `ERP_1` (same name on SuperMicro and Server26) |
+| **SQL database** | `SAUSA` (same name on SuperMicro and BobWhite) |
 
 Legacy VFP sources: `E:\VFP\ERP_1` (archived; do not use for new work).
 
 ## SQL Server
 
+SQL scripts are **not** in this repo. Pointer only: [`MEM\SQL\README.md`](MEM/SQL/README.md). Canonical tree: [David-Kirchner/SQL-ERP_2](https://github.com/David-Kirchner/SQL-ERP_2) (OneDrive `SQL` folder).
+
 | Profile | Data server (OLTP) | Database | Report Server (SSRS) |
 |---------|------------------|----------|----------------------|
-| **Production** | `SuperMicro` | `ERP_1` | `Server26` (SSRS on SQL 2016) |
-| **Development** | `Server26\Server26` | `ERP_1` | `Server26\Server26` |
-| **Windfall** (legacy) | `RAPTOR` | `ERP_1` | `RAPTOR` |
-
-Apply schema on **both** servers — see [`MEM\SQL\README.md`](MEM/SQL/README.md) (full build in `Create ERP_new`, incremental in `Config` / `Migrations`).
+| **Development** | `SuperMicro` | `SAUSA` | `SuperMicro` |
+| **Production** | `BobWhite` | `SAUSA` | `BobWhite` |
 
 Connection: [`ERP_Environment.xml`](ERP_Environment.xml). Per-machine overrides: `ERP_Environment.local.xml` (gitignored).
 
@@ -44,7 +43,7 @@ Use `RUN /C` for git — **not** `RUN /N` (async; races with FoxBin2Prg).
 
 1. Open `ERP.PJX` in VFP 9.
 2. Default directory: `E:\VFP\ERP_2`.
-3. Run `PROGS\main.prg`.
+3. Run `main.prg` (project main at repo root; `DO FORM Forms\ERP_Menu`). There is no `PROGS\main.prg`. `erp_main.prg` is a build-test stub only.
 
 ## Company logo (personalization)
 
